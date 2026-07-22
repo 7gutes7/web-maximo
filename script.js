@@ -260,6 +260,13 @@ function initMatchCatalogCurtain() {
 
             rightCol.style.transform = `translate3d(0, ${translateYValue}px, 0)`;
             rightCol.style.webkitTransform = `translate3d(0, ${translateYValue}px, 0)`;
+
+            // Control de visibilidad del indicador flotante animado de scroll en la Sección 6
+            const scrollIndicator = document.getElementById('catalog-scroll-indicator');
+            if (scrollIndicator) {
+                const isFadedOut = flowScrolled > 120 || progressSec6 < 0.2;
+                scrollIndicator.classList.toggle('hidden', isFadedOut);
+            }
         }
     }
 
@@ -568,4 +575,39 @@ function handleDrawerSubmit(event) {
             document.getElementById('vm-drawer-form').reset();
         }, 1200);
     }, 800);
+}
+
+// Navegación inteligente suave y fluida entre secciones con el botón flotante global
+function scrollToNextSection() {
+    const vh = window.innerHeight;
+    const scrollY = window.scrollY || window.pageYOffset;
+    
+    // Lista ordenada de los puntos clave de scroll en la línea de tiempo de cortinas
+    const targets = [
+        1.0 * vh, // Sección 2 (El Diferenciador Absoluto)
+        3.5 * vh, // Sección 3 (Portafolio de Proyectos)
+        4.5 * vh, // Sección 4 (Galería Comercial)
+        6.5 * vh, // Sección 5 (Transición de Imagen)
+        8.5 * vh, // Sección 6 (Catálogo — El Match)
+        0         // Volver al Inicio (Hero)
+    ];
+
+    // Encontrar el siguiente hito de navegación con un margen de tolerancia de 30px
+    let nextTarget = targets.find(t => t > scrollY + 30);
+    if (nextTarget === undefined) {
+        nextTarget = 0; // Si estamos en la última sección, vuelve al inicio
+    }
+
+    const lenis = window.lenis;
+    if (lenis) {
+        lenis.scrollTo(nextTarget, {
+            duration: 2.2,
+            easing: (t) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t
+        });
+    } else {
+        window.scrollTo({
+            top: nextTarget,
+            behavior: 'smooth'
+        });
+    }
 }

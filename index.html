@@ -31,6 +31,14 @@
         </div>
     </nav>
 
+    <!-- Botón Flotante Global de Navegación Suave (Siguiente Sección) -->
+    <button class="global-scroll-btn" id="global-scroll-btn" onclick="scrollToNextSection()" aria-label="Navegar a la siguiente sección">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <polyline points="19 12 12 19 5 12"></polyline>
+        </svg>
+    </button>
+
     <!-- Contenedor del Efecto Cortina Inmóvil (Hero + Sección 2 + Sección 3) -->
     <div class="curtain-wrapper">
         <!-- 02. Hero Section (Inmóvil en Sticky top: 0, z-index: 1) -->
@@ -40,7 +48,7 @@
             <div class="container hero-flex" style="position: relative; z-index: 2;">
                 <div class="hero-bottom-row-grid">
                     <!-- Derecha Inferior (Valor Inmobiliario + Conectando) -->
-                    <div class="hero-right-bottom">
+                    <div class="hero-right-bottom" style="margin-left: auto;">
                         <h1 class="hero-title-right"><span style="display: block;">Valor</span><span
                                 style="display: block;">Inmobiliario</span></h1>
                         <p class="hero-subtext hero-subtext-right">
@@ -190,6 +198,14 @@
 
         <!-- 07. Sección 6: Catálogo de Inmuebles — El Match (Cortina 2 Fases z-index: 12 & Desfile de Tarjetas) -->
         <section class="section section-curtain-match" id="el-match">
+            <!-- Indicador Flotante Animado de Scroll (Punto medio vertical, pegado al borde derecho) -->
+            <div class="catalog-scroll-indicator" id="catalog-scroll-indicator">
+                <span class="scroll-text">SCROLL</span>
+                <svg class="scroll-arrow-triangle" width="18" height="14" viewBox="0 0 24 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="3,3 21,3 12,13" />
+                </svg>
+            </div>
+
             <div class="container catalog-grid-container">
                 <!-- Columna Izquierda (Fija, Centrada Verticalmente, Alineada al Margen Izquierdo) -->
                 <div class="catalog-left-col">

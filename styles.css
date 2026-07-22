@@ -339,11 +339,59 @@ body {
     gap: 2rem;
 }
 
-.hero-left-bottom {
+/* Botón Global Flotante de Navegación */
+.global-scroll-btn {
+    position: fixed;
+    bottom: calc(2.5rem + 30px);
+    left: max(var(--spacing-md), calc((100vw - 1200px) / 2 + var(--spacing-md) - 40px));
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 255, 255, 0.5);
+    background: rgba(16, 43, 70, 0.25);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #FFFFFF;
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-end;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    outline: none;
+    z-index: 100;
+    padding: 0;
+}
+
+.global-scroll-btn:hover {
+    border-color: var(--vm-gold);
+    color: var(--vm-gold);
+    background: rgba(16, 43, 70, 0.6);
+    transform: translateY(4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+.global-scroll-btn svg {
+    transition: transform 0.4s ease;
+}
+
+.global-scroll-btn:hover svg {
+    transform: translateY(2px);
+}
+
+.hero-scroll-btn:hover {
+    border-color: var(--vm-gold);
+    color: var(--vm-gold);
+    background: rgba(16, 43, 70, 0.6);
+    transform: translateY(4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+.hero-scroll-btn svg {
+    transition: transform 0.4s ease;
+}
+
+.hero-scroll-btn:hover svg {
+    transform: translateY(2px);
 }
 
 .hero-tagline {
@@ -774,6 +822,62 @@ body {
 .catalog-title-sub {
     font-size: clamp(2rem, 3.5vw, 3.2rem);
     font-weight: 700;
+}
+
+/* Indicador Flotante Animado de Scroll (Punto medio vertical, pegado al borde derecho, sin botón) */
+.catalog-scroll-indicator {
+    position: absolute;
+    top: 50%;
+    right: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: #102B46;
+    z-index: 20;
+    pointer-events: none;
+    transition: opacity 0.6s ease, filter 0.6s ease, transform 0.6s ease;
+    animation: catalogScrollPulse 1.5s infinite cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.catalog-scroll-indicator .scroll-text {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: #102B46;
+    text-transform: uppercase;
+}
+
+.catalog-scroll-indicator .scroll-arrow-triangle {
+    color: #102B46;
+}
+
+@keyframes catalogScrollPulse {
+    0% {
+        opacity: 0;
+        filter: blur(10px);
+        transform: translateY(calc(-50% - 8px));
+    }
+    35%, 65% {
+        opacity: 1;
+        filter: blur(0px);
+        transform: translateY(-50%);
+    }
+    100% {
+        opacity: 0;
+        filter: blur(10px);
+        transform: translateY(calc(-50% + 8px));
+    }
+}
+
+.catalog-scroll-indicator.hidden {
+    opacity: 0 !important;
+    filter: blur(10px) !important;
+    transform: translateY(calc(-50% + 12px)) !important;
+    pointer-events: none;
 }
 
 /* Desfile de Tarjetas de Inmuebles */
