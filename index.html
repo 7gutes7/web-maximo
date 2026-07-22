@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valor Máximo | Real Estate de Precisión & Match Inmobiliario</title>
+    <meta name="description"
+        content="Sistema estratégico de match inmobiliario. Conectamos al arrendador con el emprendedor en el lugar y momento correcto.">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+
+<body>
+
+    <!-- 01. Navegación Flotante -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <ul class="nav-links">
+                <li><a href="#">El Match</a></li>
+                <li><a href="#">The Journey</a></li>
+            </ul>
+            <a href="#" class="logo" aria-label="Valor Máximo Inicio">
+                <img src="valorM01.svg" alt="Valor Máximo" class="logo-img">
+            </a>
+            <div class="nav-actions">
+                <a href="#" class="nav-link-portal" onclick="openMatchDrawer(); return false;">Portal Login</a>
+                <button onclick="openMatchDrawer()" class="btn btn-dark">Get Qualified</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenedor del Efecto Cortina Inmóvil (Hero + Sección 2 + Sección 3) -->
+    <div class="curtain-wrapper">
+        <!-- 02. Hero Section (Inmóvil en Sticky top: 0, z-index: 1) -->
+        <section class="hero" id="inicio">
+            <video class="hero-video-bg" autoplay loop muted playsinline src="skybackvm01.mp4"></video>
+            <div class="hero-video-overlay"></div>
+            <div class="container hero-flex" style="position: relative; z-index: 2;">
+                <div class="hero-bottom-row-grid">
+                    <!-- Derecha Inferior (Valor Inmobiliario + Conectando) -->
+                    <div class="hero-right-bottom">
+                        <h1 class="hero-title-right"><span style="display: block;">Valor</span><span
+                                style="display: block;">Inmobiliario</span></h1>
+                        <p class="hero-subtext hero-subtext-right">
+                            Conectando negocios en el lugar y momento correcto.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 03. Sección 2: El Diferenciador Absoluto (Cortina Vertical z-index: 2) -->
+        <section class="section" id="esencia">
+            <canvas id="silk-canvas" class="silk-background-canvas"></canvas>
+            <div class="container" style="position: relative; z-index: 2;">
+                <div class="grid grid-2 reveal">
+                    <div>
+                        <span class="badge" style="margin-bottom: 1rem; display: inline-block; color: #FFFFFF; border-color: rgba(255, 255, 255, 0.35); background: rgba(255, 255, 255, 0.12);">El Diferenciador
+                            Absoluto</span>
+                        <h2 class="text-title" style="margin-bottom: 1.5rem; color: #FFFFFF;">Socios en tu espacio <br>aliados en el
+                            tiempo.</h2>
+                        <p class="text-muted" style="margin-bottom: 2rem; max-width: 400px; color: #FFFFFF; font-weight: 400;">
+                            En Valor Máximo, adoptamos un enfoque integral. Operamos como su brazo
+                            inmobiliario descentralizado, asegurando el rendimiento a largo plazo de su inversión.
+                        </p>
+                        <button onclick="openMatchDrawer()" class="btn btn-outline btn-outline-white" style="border-radius: 2px;">Conocer
+                            la filosofía</button>
+                    </div>
+                    <div class="grid grid-2" style="gap: 1rem;">
+                        <div class="feature-card">
+                            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5">
+                                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <h4 style="font-size: 1rem; margin-bottom: 0.5rem;">Contratos Sólidos</h4>
+                            <p class="text-muted" style="font-size: 0.85rem;">Estructuramos relaciones a largo plazo (1
+                                año+) para garantizar estabilidad operativa y retornos predecibles.</p>
+                        </div>
+                        <div class="feature-card">
+                            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5">
+                                <path d="M12 4v16m8-8H4" />
+                            </svg>
+                            <h4 style="font-size: 1rem; margin-bottom: 0.5rem;">Gestión Integral</h4>
+                            <p class="text-muted" style="font-size: 0.85rem;">Atención al cliente de primer nivel,
+                                gestión de recursos humanos y facturación sin fricciones.</p>
+                        </div>
+                        <div class="feature-card">
+                            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5">
+                                <path
+                                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            <h4 style="font-size: 1rem; margin-bottom: 0.5rem;">Mantenimiento Proactivo</h4>
+                            <p class="text-muted" style="font-size: 0.85rem;">Conservamos el valor del activo mediante
+                                protocolos de mantenimiento rigurosos e intervenciones precisas.</p>
+                        </div>
+                        <div class="feature-card" style="background: rgba(43, 111, 158, 0.05);">
+                            <span class="badge"
+                                style="font-size: 0.65rem; margin-bottom: 0.5rem; display: inline-block; border: none; background: rgba(43, 111, 158, 0.12); color: var(--vm-blue);">Próximamente</span>
+                            <h4 style="font-size: 1rem; margin-bottom: 0.5rem;">Acondicionamiento y Construcción</h4>
+                            <p class="text-muted" style="font-size: 0.85rem;">Soluciones llave en mano para adaptar el
+                                espacio exacto a las necesidades del emprendedor.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 04. Sección 3: Portafolio de Proyectos (Sticky Timeline & Blur Text Effect) -->
+        <section class="section section-curtain-left dark-section" id="casos-exito">
+            <div class="container portfolio-container">
+                <!-- Columna Izquierda (Contenido Fijo y Centrado) -->
+                <div class="portfolio-left-col">
+                    <span class="badge portfolio-badge">Casos de Éxito</span>
+                    <h2 class="text-title portfolio-title">Portafolio de Proyectos</h2>
+                    <p class="text-muted blur-text-element portfolio-blur-p">
+                        Marcas que han encontrado su hábitat ideal a través de nuestra plataforma de precisión.
+                    </p>
+                </div>
+
+                <!-- Columna Derecha (Columna Vertical de Tarjetas de Proyectos) -->
+                <div class="portfolio-right-col">
+                    <!-- 1. Enigma Room -->
+                    <div class="project-card project-card-stagger">
+                        <div class="project-card-content">
+                            <h3 class="project-title">Enigma Room</h3>
+                            <p class="project-description">Experiencia inmersiva y entretenimiento temático en hub
+                                comercial de alto flujo.</p>
+                        </div>
+                        <div class="project-img-holder">
+                            <img src="Enigma1.png" alt="Enigma Room" class="project-card-img">
+                        </div>
+                    </div>
+
+                    <!-- 2. Vinaterías La Dueña -->
+                    <div class="project-card project-card-stagger">
+                        <div class="project-card-content">
+                            <h3 class="project-title">Vinaterías La Dueña</h3>
+                            <p class="project-description">Boutique especializada en licores premium y etiqueta con
+                                ubicación AAA.</p>
+                        </div>
+                        <div class="project-img-holder">
+                            <img src="ladueña1.jpeg" alt="Vinaterías La Dueña" class="project-card-img">
+                        </div>
+                    </div>
+
+                    <!-- 3. B Clinic -->
+                    <div class="project-card project-card-stagger">
+                        <div class="project-card-content">
+                            <h3 class="project-title">B Clinic</h3>
+                            <p class="project-description">Clínica estética y de bienestar con infraestructura técnica
+                                especializada.</p>
+                        </div>
+                        <div class="project-img-holder">
+                            <img src="bclinic1.jpeg" alt="B Clinic" class="project-card-img">
+                        </div>
+                    </div>
+
+                    <!-- 4. Cafetería Mom -->
+                    <div class="project-card project-card-stagger">
+                        <div class="project-card-content">
+                            <h3 class="project-title">Cafetería Mom</h3>
+                            <p class="project-description">Concepto gastronómico de autor con terraza exterior y diseño
+                                de vanguardia.</p>
+                        </div>
+                        <div class="project-img-holder">
+                            <span class="project-img-label">CM</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 05. Sección 4: Galería Comercial (Cortina Inmóvil z-index: 8) -->
+        <section class="section section-curtain-galeria dark-section" id="galeria-comercial">
+            <div class="container galeria-container">
+                <div class="galeria-right-col">
+                    <span class="badge galeria-badge">Espacios Exclusivos</span>
+                    <h2 class="text-title galeria-title">Galería Comercial</h2>
+                </div>
+            </div>
+        </section>
+
+        <!-- 06. Sección 5: Transición de Imagen (Cortina 2 Fases z-index: 10) -->
+        <section class="section section-curtain-transition" id="transicion-imagen"></section>
+
+        <!-- 07. Sección 6: Catálogo de Inmuebles — El Match (Cortina 2 Fases z-index: 12 & Desfile de Tarjetas) -->
+        <section class="section section-curtain-match" id="el-match">
+            <div class="container catalog-grid-container">
+                <!-- Columna Izquierda (Fija, Centrada Verticalmente, Alineada al Margen Izquierdo) -->
+                <div class="catalog-left-col">
+                    <div class="catalog-header-floating">
+                        <h2 class="catalog-title-main font-serif" style="font-family: var(--font-serif); font-weight: 400; font-style: italic; font-size: clamp(2.6rem, 4vw, 3.6rem); line-height: 1.05; color: #102B46; margin-bottom: 0.2rem; text-align: left;">
+                            Catálogo de Inmuebles
+                        </h2>
+                        <h2 class="catalog-title-sub" style="font-family: var(--font-sans); font-weight: 700; font-size: clamp(2.2rem, 3.4vw, 3.2rem); color: #5B728C; margin-bottom: 1.5rem; text-align: left; line-height: 1;">
+                            — El Match
+                        </h2>
+                        <p class="text-muted catalog-header-p" style="font-family: var(--font-sans); max-width: 460px; font-size: 0.95rem; margin: 0; text-align: left; line-height: 1.6; color: #52637A;">
+                            Brutal honesty in commercial real estate. We manage over 138 spaces across premium plazas. We do not sell dreams: we present raw opportunities for those with an investment mindset. Read the warnings carefully.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha (Desfile Vertical de Tarjetas de Inmuebles) -->
+                <div class="catalog-right-col">
+                    <!-- Inmueble 1: Plaza Ceboruco -->
+                    <div class="catalog-item catalog-card-stagger">
+                        <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?q=80&w=2069&auto=format&fit=crop" alt="Plaza Ceboruco" class="catalog-img">
+                        <div class="catalog-content">
+                            <div class="catalog-meta">
+                                <div>
+                                    <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Plaza Ceboruco</h3>
+                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">Back Shops</p>
+                                </div>
+                                <span class="badge">08 AVAIL</span>
+                            </div>
+                            <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
+                                No visibility, discrete service only, 24h access. A space defined by its absence of pedestrian interference.
+                            </p>
+                            <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
+                                <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">TENANT PROFILE</span>
+                                <p style="font-size: 0.85rem; font-weight: 500;">Investment Mindset Required. High risk tolerance.</p>
+                            </div>
+                            <div>
+                                <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">FAILURE RISK</span>
+                                <div class="risk-high">30-40%</div>
+                            </div>
+                            <button onclick="openMatchDrawer()" class="btn btn-dark" style="width: 100%; margin-top: 1.5rem;">Request Detailed Sheet</button>
+                        </div>
+                    </div>
+
+                    <!-- Inmueble 2: Avenida Central -->
+                    <div class="catalog-item catalog-card-stagger">
+                        <img src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?q=80&w=2069&auto=format&fit=crop" alt="Avenida Central" class="catalog-img">
+                        <div class="catalog-content">
+                            <div class="catalog-meta">
+                                <div>
+                                    <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Avenida Central</h3>
+                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">Anchors</p>
+                                </div>
+                                <span class="badge">03 AVAIL</span>
+                            </div>
+                            <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
+                                High foot traffic, strict zoning. The client who invests the most pays the best.
+                            </p>
+                            <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
+                                <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">DELIVERY</span>
+                                <p style="font-size: 0.85rem; font-weight: 500;">Raw structural shell only.</p>
+                            </div>
+                            <div>
+                                <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">FAILURE RISK</span>
+                                <div class="risk-low" style="font-size: 1.1rem; color: #1a1a1a;">Moderate</div>
+                            </div>
+                            <button onclick="openMatchDrawer()" class="btn btn-outline" style="width: 100%; margin-top: 1.5rem;">Request Sheet</button>
+                        </div>
+                    </div>
+
+                    <!-- Inmueble 3: Sub-level Logistics Hub -->
+                    <div class="catalog-item catalog-card-stagger">
+                        <img src="https://images.unsplash.com/photo-1587293852726-0d4182b6e1b8?q=80&w=2070&auto=format&fit=crop" alt="Logistics Hub" class="catalog-img">
+                        <div class="catalog-content">
+                            <div class="catalog-meta">
+                                <div>
+                                    <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Sub-level</h3>
+                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">Logistics Hub</p>
+                                </div>
+                                <span class="badge">05 AVAIL</span>
+                            </div>
+                            <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
+                                Zero natural light. Engineered for efficiency, not aesthetics. Deeply pragmatic.
+                            </p>
+                            <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
+                                <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">TENANT PROFILE</span>
+                                <p style="font-size: 0.85rem; font-weight: 500;">Operational focus. No client facing.</p>
+                            </div>
+                            <div>
+                                <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">FAILURE RISK</span>
+                                <div class="risk-low" style="font-size: 1rem;">Low (if specialized)</div>
+                            </div>
+                            <button onclick="openMatchDrawer()" class="btn btn-outline" style="width: 100%; margin-top: 1.5rem;">Request Detailed Sheet</button>
+                        </div>
+                    </div>
+
+                    <!-- Inmuebles Simulados Adicionales (4 a 9) -->
+                    <!-- Inmueble 4: Distrito Financiero East -->
+                    <div class="catalog-item catalog-card-stagger">
+                        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop" alt="Distrito Financiero" class="catalog-img">
+                        <div class="catalog-content">
+                            <div class="catalog-meta">
+                                <div>
+                                    <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Distrito Financiero</h3>
+                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">Corporate Suite</p>
+                                </div>
+                                <span class="badge">02 AVAIL</span>
+                            </div>
+                            <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
+                                Premium corporate presence with panoramic city skyline view and underground parking access.
+                            </p>
+                            <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
+                                <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">TENANT PROFILE</span>
+                                <p style="font-size: 0.85rem; font-weight: 500;">Financial & HQ Operations.</p>
+                            </div>
+                            <div>
+                                <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">FAILURE RISK</span>
+                                <div class="risk-low" style="font-size: 1rem;">Very Low</div>
+                            </div>
+                            <button onclick="openMatchDrawer()" class="btn btn-dark" style="width: 100%; margin-top: 1.5rem;">Request Sheet</button>
+                        </div>
+                    </div>
+
+                    <!-- Inmueble 5: Terraza Gastronómica Park -->
+                    <div class="catalog-item catalog-card-stagger">
+                        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=2074&auto=format&fit=crop" alt="Terraza Gastronómica" class="catalog-img">
+                        <div class="catalog-content">
+                            <div class="catalog-meta">
+                                <div>
+                                    <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Terraza Park</h3>
+                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">Culinary Hub</p>
+                                </div>
+                                <span class="badge">04 AVAIL</span>
+                            </div>
+                            <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
+                                Open-air dining location with kitchen infrastructure and grease trap preparation.
+                            </p>
+                            <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
+                                <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">DELIVERY</span>
+                                <p style="font-size: 0.85rem; font-weight: 500;">Semi-fitted food & beverage venue.</p>
+                            </div>
+                            <div>
+                                <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">FAILURE RISK</span>
+                                <div class="risk-high" style="font-size: 1.2rem;">25-35%</div>
+                            </div>
+                            <button onclick="openMatchDrawer()" class="btn btn-outline" style="width: 100%; margin-top: 1.5rem;">Request Sheet</button>
+                        </div>
+                    </div>
+
+                    <!-- Inmueble 6: Paseo de las Artes -->
+                    <div class="catalog-item catalog-card-stagger">
+                        <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=2069&auto=format&fit=crop" alt="Paseo de las Artes" class="catalog-img">
+                        <div class="catalog-content">
+                            <div class="catalog-meta">
+                                <div>
+                                    <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Paseo de las Artes</h3>
+                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">Flagship Store</p>
+                                </div>
+                                <span class="badge">01 AVAIL</span>
+                            </div>
+                            <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
+                                High ceilings, double storefront windows, maximum visual exposure on pedestrian boulevard.
+                            </p>
+                            <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
+                                <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">TENANT PROFILE</span>
+                                <p style="font-size: 0.85rem; font-weight: 500;">Established Retail Flagship.</p>
+                            </div>
+                            <div>
+                                <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">FAILURE RISK</span>
+                                <div class="risk-low" style="font-size: 1.1rem; color: #1a1a1a;">Low</div>
+                            </div>
+                            <button onclick="openMatchDrawer()" class="btn btn-dark" style="width: 100%; margin-top: 1.5rem;">Request Sheet</button>
+                        </div>
+                    </div>
+
+                    <!-- Inmueble 7: Hub Tecnológico Norte -->
+                    <div class="catalog-item catalog-card-stagger">
+                        <img src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=2070&auto=format&fit=crop" alt="Hub Tecnológico" class="catalog-img">
+                        <div class="catalog-content">
+                            <div class="catalog-meta">
+                                <div>
+                                    <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Hub Tecnológico</h3>
+                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">R&D Lab</p>
+                                </div>
+                                <span class="badge">06 AVAIL</span>
+                            </div>
+                            <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
+                                Fiber optic redundant connections, climate controlled server rooms, 24/7 security perimeter.
+                            </p>
+                            <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
+                                <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">DELIVERY</span>
+                                <p style="font-size: 0.85rem; font-weight: 500;">Tech-ready shell.</p>
+                            </div>
+                            <div>
+                                <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">FAILURE RISK</span>
+                                <div class="risk-low" style="font-size: 1rem;">Low</div>
+                            </div>
+                            <button onclick="openMatchDrawer()" class="btn btn-outline" style="width: 100%; margin-top: 1.5rem;">Request Sheet</button>
+                        </div>
+                    </div>
+
+                    <!-- Inmueble 8: Galería Wellness & Spa -->
+                    <div class="catalog-item catalog-card-stagger">
+                        <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=2070&auto=format&fit=crop" alt="Galería Wellness" class="catalog-img">
+                        <div class="catalog-content">
+                            <div class="catalog-meta">
+                                <div>
+                                    <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Galería Wellness</h3>
+                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">Boutique Clinic</p>
+                                </div>
+                                <span class="badge">02 AVAIL</span>
+                            </div>
+                            <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
+                                Soundproofed space with hydro-sanitary preparation tailored for medical and wellness services.
+                            </p>
+                            <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
+                                <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">TENANT PROFILE</span>
+                                <p style="font-size: 0.85rem; font-weight: 500;">Health & Aesthetics operators.</p>
+                            </div>
+                            <div>
+                                <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">FAILURE RISK</span>
+                                <div class="risk-low" style="font-size: 1rem;">Moderate</div>
+                            </div>
+                            <button onclick="openMatchDrawer()" class="btn btn-dark" style="width: 100%; margin-top: 1.5rem;">Request Sheet</button>
+                        </div>
+                    </div>
+
+                    <!-- Inmueble 9: Centro Logístico Express -->
+                    <div class="catalog-item catalog-card-stagger">
+                        <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=2070&auto=format&fit=crop" alt="Centro Logístico" class="catalog-img">
+                        <div class="catalog-content">
+                            <div class="catalog-meta">
+                                <div>
+                                    <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Logístico Express</h3>
+                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">Dark Store</p>
+                                </div>
+                                <span class="badge">07 AVAIL</span>
+                            </div>
+                            <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
+                                Strategic last-mile distribution point with loading dock maneuver zone.
+                            </p>
+                            <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
+                                <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">TENANT PROFILE</span>
+                                <p style="font-size: 0.85rem; font-weight: 500;">E-commerce & Fulfillment.</p>
+                            </div>
+                            <div>
+                                <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">FAILURE RISK</span>
+                                <div class="risk-low" style="font-size: 1rem;">Low</div>
+                            </div>
+                            <button onclick="openMatchDrawer()" class="btn btn-outline" style="width: 100%; margin-top: 1.5rem;">Request Sheet</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- 05. Barra Lateral / Drawer Desplegable Full-Screen (Get Qualified Modal) -->
+    <div class="vm-drawer-overlay" id="vm-drawer-overlay" onclick="closeMatchDrawerOnBackdrop(event)">
+        <div class="vm-drawer-container" id="vm-drawer-container">
+            <!-- Panel Izquierdo: Imagen de Fondo (formulario1.png) con Título Editorial -->
+            <div class="vm-drawer-left" style="background-image: url('formulario1.png');">
+                <div class="vm-drawer-left-overlay"></div>
+                <div class="vm-drawer-left-content">
+                    <h2 class="vm-drawer-left-title">Enviar una<br>solicitud</h2>
+                    <p class="vm-drawer-left-sub">Motor de Búsqueda de Precisión VM-01</p>
+                </div>
+            </div>
+
+            <!-- Panel Derecho: Formulario de Selección Elegante Estilo Springs House -->
+            <div class="vm-drawer-right">
+                <!-- Top Actions: Pestañas de Modo + Botón Cerrar X -->
+                <div class="vm-drawer-header">
+                    <div class="vm-drawer-tabs">
+                        <button type="button" class="drawer-tab-btn active" data-tab="licitacion"
+                            onclick="setDrawerMode('licitacion', this)">LICITACIÓN</button>
+                        <button type="button" class="drawer-tab-btn" data-tab="llamar"
+                            onclick="setDrawerMode('llamar', this)">LLAMAR DE VUELTA</button>
+                    </div>
+                    <button type="button" class="vm-drawer-close" onclick="closeMatchDrawer()"
+                        aria-label="Cerrar formulario">&times;</button>
+                </div>
+
+                <!-- Form Body -->
+                <form class="vm-drawer-form" id="vm-drawer-form" onsubmit="handleDrawerSubmit(event)">
+                    <!-- Campo 1: Nombre / Cómo dirigirse -->
+                    <div class="vm-form-field">
+                        <input type="text" id="drawer-nombre" class="vm-input-line" placeholder=" " required />
+                        <label for="drawer-nombre" class="vm-input-label">¿Cómo debemos dirigirnos a usted?</label>
+                    </div>
+
+                    <!-- Campo 2: Fila con Teléfono e Ingreso de Hora de Llamada -->
+                    <div class="vm-form-row">
+                        <div class="vm-form-field flex-2">
+                            <input type="tel" id="drawer-telefono" class="vm-input-line" placeholder=" " required />
+                            <label for="drawer-telefono" class="vm-input-label">Teléfono</label>
+                        </div>
+                        <div class="vm-form-field flex-1" id="drawer-time-wrapper">
+                            <label class="vm-select-label">HORA DE LLAMADA</label>
+                            <select id="drawer-hora" class="vm-select-line">
+                                <option value="9:00–12:00">9:00–12:00</option>
+                                <option value="12:00–15:00">12:00–15:00</option>
+                                <option value="15:00–18:00">15:00–18:00</option>
+                                <option value="Cualquier hora">Cualquier hora</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Campos Específicos del Motor de Búsqueda VM-01 -->
+                    <div class="vm-form-row">
+                        <div class="vm-form-field flex-1">
+                            <input type="text" id="drawer-metraje" class="vm-input-line" placeholder=" " />
+                            <label for="drawer-metraje" class="vm-input-label">Metraje Requerido (m²)</label>
+                        </div>
+                        <div class="vm-form-field flex-1">
+                            <label class="vm-select-label">GIRO COMERCIAL</label>
+                            <select id="drawer-giro" class="vm-select-line">
+                                <option value="todos">Todos los giros...</option>
+                                <option value="restaurante">Restaurante / Gastronomía</option>
+                                <option value="retail">Retail / Boutique</option>
+                                <option value="corporativo">Oficina Corporativa</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Campo 3: Mensaje -->
+                    <div class="vm-form-field">
+                        <textarea id="drawer-mensaje" class="vm-input-line vm-textarea" placeholder=" "
+                            rows="2"></textarea>
+                        <label for="drawer-mensaje" class="vm-input-label">Mensaje</label>
+                    </div>
+
+                    <!-- Footer del Formulario: Botón Cream + Aviso Legal -->
+                    <div class="vm-drawer-footer">
+                        <button type="submit" class="vm-btn-submit-cream" id="drawer-submit-btn">DEJA UNA
+                            SOLICITUD</button>
+                        <div class="vm-drawer-disclaimer">
+                            AL HACER CLIC EN EL BOTÓN, ACEPTA LA POLÍTICA DE PRIVACIDAD.
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
