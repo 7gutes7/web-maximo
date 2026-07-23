@@ -43,7 +43,10 @@
     <div class="curtain-wrapper">
         <!-- 02. Hero Section (Inmóvil en Sticky top: 0, z-index: 1) -->
         <section class="hero" id="inicio">
-            <video class="hero-video-bg" autoplay loop muted playsinline src="skybackvm01.mp4"></video>
+            <video class="hero-video-bg" id="hero-video" autoplay loop muted playsinline webkit-playsinline preload="auto">
+                <source src="https://res.cloudinary.com/dznylzcr/video/upload/v1784792769/skybackvm01_hrvoql.mp4" type="video/mp4">
+                Tu navegador no soporta la reproducción de video.
+            </video>
             <div class="hero-video-overlay"></div>
             <div class="container hero-flex" style="position: relative; z-index: 2;">
                 <div class="hero-bottom-row-grid">
@@ -466,8 +469,9 @@
     <!-- 05. Barra Lateral / Drawer Desplegable Full-Screen (Get Qualified Modal) -->
     <div class="vm-drawer-overlay" id="vm-drawer-overlay" onclick="closeMatchDrawerOnBackdrop(event)">
         <div class="vm-drawer-container" id="vm-drawer-container">
-            <!-- Panel Izquierdo: Imagen de Fondo (formulario1.png) con Título Editorial -->
-            <div class="vm-drawer-left" style="background-image: url('formulario1.png');">
+            <!-- Panel Izquierdo: Fondo WebGL FloatingLines con Título Editorial -->
+            <div class="vm-drawer-left">
+                <canvas id="drawer-floating-lines-canvas" class="drawer-floating-lines-canvas"></canvas>
                 <div class="vm-drawer-left-overlay"></div>
                 <div class="vm-drawer-left-content">
                     <h2 class="vm-drawer-left-title">Enviar una<br>solicitud</h2>
@@ -551,6 +555,7 @@
         </div>
     </div>
 
+    <script src="main.js"></script>
     <script src="script.js"></script>
 </body>
 

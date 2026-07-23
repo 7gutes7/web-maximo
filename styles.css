@@ -309,6 +309,9 @@ body {
     object-fit: cover;
     z-index: 0;
     opacity: 0.95;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    will-change: transform;
 }
 
 .hero-video-overlay {
@@ -477,6 +480,9 @@ body {
     justify-content: center;
     clip-path: inset(var(--curtain, 100%) 0 0 0);
     will-change: clip-path;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    contain: paint;
     overflow: hidden;
 }
 
@@ -531,6 +537,9 @@ body {
     background-color: #102B46;
     clip-path: inset(0 var(--curtain-right, 100%) 0 0);
     will-change: clip-path;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    contain: paint;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -691,6 +700,9 @@ body {
     background: linear-gradient(180deg, rgba(16, 43, 70, 0.65) 0%, rgba(16, 43, 70, 0.45) 50%, rgba(16, 43, 70, 0.85) 100%), url('formulario1.png') center/cover no-repeat;
     clip-path: inset(var(--curtain-galeria, 100%) 0 0 0);
     will-change: clip-path;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    contain: paint;
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -743,6 +755,9 @@ body {
     clip-path: polygon(50% 0%, 100% 0%, 100% 0%, 50% 0%);
     -webkit-clip-path: polygon(50% 0%, 100% 0%, 100% 0%, 50% 0%);
     will-change: clip-path;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    contain: paint;
 }
 
 /* ==========================================================================
@@ -760,6 +775,9 @@ body {
     clip-path: polygon(0% 100%, 50% 100%, 50% 100%, 0% 100%);
     -webkit-clip-path: polygon(0% 100%, 50% 100%, 50% 100%, 0% 100%);
     will-change: clip-path;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    contain: paint;
     overflow: hidden;
     display: flex;
     align-items: flex-start;
@@ -799,6 +817,8 @@ body {
     max-width: 580px;
     margin-left: auto;
     will-change: transform;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
     padding-top: 15vh;
     padding-bottom: 300px;
 }
@@ -1031,23 +1051,34 @@ body {
     clip-path: inset(0 0 0 0);
 }
 
-/* Panel Izquierdo con Imagen (formulario1.png) */
+/* Panel Izquierdo del Drawer Modal con FloatingLines WebGL */
 .vm-drawer-left {
     flex: 1;
     height: 100%;
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
+    background-color: #102B46;
     position: relative;
     display: flex;
     align-items: flex-end;
     padding: 4rem 3.5rem;
+    overflow: hidden;
+}
+
+.drawer-floating-lines-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    display: block;
 }
 
 .vm-drawer-left-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(16, 43, 70, 0.2) 0%, rgba(16, 43, 70, 0.75) 100%);
+    background: linear-gradient(180deg, rgba(16, 43, 70, 0.15) 0%, rgba(16, 43, 70, 0.70) 100%);
+    z-index: 2;
+    pointer-events: none;
 }
 
 .vm-drawer-left-content {

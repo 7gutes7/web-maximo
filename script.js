@@ -6,10 +6,12 @@ document.addEventListener('DOMContentLoaded', () => {
     initCurtainReveals();
     initHorizontalCurtainReveals();
     initRevealObserver();
+    initHeroVideoObserver();
     initSilkBackground();
     initGaleriaCurtain();
     initTransitionCurtain();
     initMatchCatalogCurtain();
+    initDrawerFloatingLines();
 });
 
 // 0. Lenis — Smooth scroll con inercia
@@ -222,6 +224,19 @@ function initMatchCatalogCurtain() {
     const wrapper = document.querySelector('.curtain-wrapper');
     if (!sec || !wrapper) return;
 
+    const rightCol = sec.querySelector('.catalog-right-col');
+    const scrollIndicator = document.getElementById('catalog-scroll-indicator');
+
+    let maxTranslate = 0;
+    function measureLayout() {
+        if (rightCol) {
+            const vh = window.innerHeight;
+            maxTranslate = Math.max(0, rightCol.scrollHeight - vh + 300);
+        }
+    }
+    measureLayout();
+    window.addEventListener('resize', measureLayout, { passive: true });
+
     function update() {
         const rect = wrapper.getBoundingClientRect();
         const vh = window.innerHeight;
@@ -234,35 +249,29 @@ function initMatchCatalogCurtain() {
 
         if (progressSec6 <= 0.5) {
             // Fase 1: Revela la mitad izquierda (0% a 50%), de abajo hacia arriba (100% a 0%)
-            const phase1 = progressSec6 / 0.5; // 0.0 a 1.0
-            const yTop = 100 - (phase1 * 100); // 100% a 0%
+            const phase1 = progressSec6 / 0.5;
+            const yTop = 100 - (phase1 * 100);
             clipPathValue = `polygon(0% ${yTop}%, 50% ${yTop}%, 50% 100%, 0% 100%)`;
         } else {
             // Fase 2: Mitad izquierda 100% visible, abre la mitad derecha del centro (50%) a la derecha (100%)
-            const phase2 = (progressSec6 - 0.5) / 0.5; // 0.0 a 1.0
-            const xRight = 50 + (phase2 * 50); // 50% a 100%
+            const phase2 = (progressSec6 - 0.5) / 0.5;
+            const xRight = 50 + (phase2 * 50);
             clipPathValue = `polygon(0% 0%, ${xRight}% 0%, ${xRight}% 100%, 0% 100%)`;
         }
 
         sec.style.clipPath = clipPathValue;
         sec.style.webkitClipPath = clipPathValue;
 
-        // Desfile flotante en la columna derecha: finaliza con la última tarjeta 300px sobre el borde inferior
-        const rightCol = sec.querySelector('.catalog-right-col');
+        // Desfile flotante en la columna derecha
         if (rightCol) {
             const flowScrolled = Math.max(0, scrolled - 8.5 * vh);
             const totalTravel = 5.0 * vh;
             const flowProgress = Math.min(1, flowScrolled / totalTravel);
 
-            // Traslación máxima exacta para posicionar la última tarjeta a 300px del borde inferior de la Sección 6
-            const maxTranslate = Math.max(0, rightCol.scrollHeight - vh + 300);
             const translateYValue = -flowProgress * maxTranslate;
 
             rightCol.style.transform = `translate3d(0, ${translateYValue}px, 0)`;
-            rightCol.style.webkitTransform = `translate3d(0, ${translateYValue}px, 0)`;
 
-            // Control de visibilidad del indicador flotante animado de scroll en la Sección 6
-            const scrollIndicator = document.getElementById('catalog-scroll-indicator');
             if (scrollIndicator) {
                 const isFadedOut = flowScrolled > 120 || progressSec6 < 0.2;
                 scrollIndicator.classList.toggle('hidden', isFadedOut);
@@ -277,6 +286,29 @@ function initMatchCatalogCurtain() {
         window.addEventListener('scroll', update, { passive: true });
     }
     update();
+}
+
+// 0c1. Hero Video Observer (Pausa el video cuando no es visible en pantalla)
+function initHeroVideoObserver() {
+    const heroVideo = document.getElementById('hero-video');
+    const heroSection = document.getElementById('inicio');
+    if (!heroVideo || !heroSection) return;
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                if (heroVideo.paused) {
+                    heroVideo.play().catch(() => {});
+                }
+            } else {
+                if (!heroVideo.paused) {
+                    heroVideo.pause();
+                }
+            }
+        });
+    }, { threshold: 0.05 });
+
+    observer.observe(heroSection);
 }
 
 // 0d. Fondo Silk Canvas Shader (Sección 2 - El Diferenciador Absoluto)
@@ -380,12 +412,32 @@ function initSilkBackground() {
     window.addEventListener('resize', resize, { passive: true });
 
     let clock = new THREE.Clock();
+    let animId = null;
+    let isSilkAnimating = false;
+
     function animate() {
-        requestAnimationFrame(animate);
+        if (!isSilkAnimating) return;
+        animId = requestAnimationFrame(animate);
         uniforms.uTime.value += clock.getDelta() * 0.1;
         renderer.render(scene, camera);
     }
-    animate();
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                if (!isSilkAnimating) {
+                    isSilkAnimating = true;
+                    clock.start();
+                    animate();
+                }
+            } else {
+                isSilkAnimating = false;
+                if (animId) cancelAnimationFrame(animId);
+            }
+        });
+    }, { threshold: 0.01 });
+
+    observer.observe(container);
 }
 
 // 0c. Curtain Reveal Horizontal y Secuencia Sticky Timeline (Sección 3)
@@ -532,6 +584,7 @@ function openMatchDrawer() {
     if (!drawer) return;
     drawer.classList.add('active');
     document.body.style.overflow = 'hidden';
+    if (window.startDrawerLinesAnimation) window.startDrawerLinesAnimation();
 }
 
 function closeMatchDrawer() {
@@ -539,6 +592,7 @@ function closeMatchDrawer() {
     if (!drawer) return;
     drawer.classList.remove('active');
     document.body.style.overflow = '';
+    if (window.stopDrawerLinesAnimation) window.stopDrawerLinesAnimation();
 }
 
 function closeMatchDrawerOnBackdrop(event) {
@@ -610,4 +664,249 @@ function scrollToNextSection() {
             behavior: 'smooth'
         });
     }
+}
+
+// 0e. Fondo FloatingLines WebGL Shader en el Panel Izquierdo del Formulario / Drawer Modal (Get Qualified)
+function initDrawerFloatingLines() {
+    const canvas = document.getElementById('drawer-floating-lines-canvas');
+    const container = document.querySelector('.vm-drawer-left');
+    if (!canvas || !container || typeof THREE === 'undefined') return;
+
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+
+    const hexToVec3 = (hex) => {
+        hex = hex.replace('#', '');
+        return new THREE.Vector3(
+            parseInt(hex.slice(0, 2), 16) / 255,
+            parseInt(hex.slice(2, 4), 16) / 255,
+            parseInt(hex.slice(4, 6), 16) / 255
+        );
+    };
+
+    const vertexShader = `
+        precision highp float;
+        void main() {
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+    `;
+
+    const fragmentShader = `
+        precision highp float;
+        uniform float iTime;
+        uniform vec3 iResolution;
+        uniform float animationSpeed;
+        uniform bool enableTop;
+        uniform bool enableMiddle;
+        uniform bool enableBottom;
+        uniform int topLineCount;
+        uniform int middleLineCount;
+        uniform int bottomLineCount;
+        uniform float topLineDistance;
+        uniform float middleLineDistance;
+        uniform float bottomLineDistance;
+        uniform vec3 topWavePosition;
+        uniform vec3 middleWavePosition;
+        uniform vec3 bottomWavePosition;
+        uniform vec2 iMouse;
+        uniform bool interactive;
+        uniform float bendRadius;
+        uniform float bendStrength;
+        uniform float bendInfluence;
+        uniform bool parallax;
+        uniform float parallaxStrength;
+        uniform vec2 parallaxOffset;
+        uniform vec3 lineGradient[8];
+        uniform int lineGradientCount;
+
+        const vec3 BLACK = vec3(0.0);
+        const vec3 PINK = vec3(233.0, 71.0, 245.0) / 255.0;
+        const vec3 BLUE = vec3(47.0, 75.0, 162.0) / 255.0;
+
+        mat2 rotate(float r) {
+            return mat2(cos(r), sin(r), -sin(r), cos(r));
+        }
+
+        vec3 background_color(vec2 uv) {
+            vec3 col = vec3(0.0);
+            float y = sin(uv.x - 0.2) * 0.3 - 0.1;
+            float m = uv.y - y;
+            col += mix(BLUE, BLACK, smoothstep(0.0, 1.0, abs(m)));
+            col += mix(PINK, BLACK, smoothstep(0.0, 1.0, abs(m - 0.8)));
+            return col * 0.5;
+        }
+
+        vec3 getLineColor(float t, vec3 baseColor) {
+            if (lineGradientCount <= 0) return baseColor;
+            if (lineGradientCount == 1) return lineGradient[0] * 0.5;
+            float clampedT = clamp(t, 0.0, 0.9999);
+            float scaled = clampedT * float(lineGradientCount - 1);
+            int idx = int(floor(scaled));
+            float f = fract(scaled);
+            int idx2 = min(idx + 1, lineGradientCount - 1);
+            vec3 c1 = lineGradient[idx];
+            vec3 c2 = lineGradient[idx2];
+            return mix(c1, c2, f) * 0.85;
+        }
+
+        float wave(vec2 uv, float offset, vec2 screenUv, vec2 mouseUv, bool shouldBend) {
+            float time = iTime * animationSpeed;
+            float x_offset = offset;
+            float x_movement = time * 0.1;
+            float amp = sin(offset + time * 0.2) * 0.3;
+            float y = sin(uv.x + x_offset + x_movement) * amp;
+            if (shouldBend) {
+                vec2 d = screenUv - mouseUv;
+                float influence = exp(-dot(d, d) * bendRadius);
+                float bendOffset = (mouseUv.y - screenUv.y) * influence * bendStrength * bendInfluence;
+                y += bendOffset;
+            }
+            float m = uv.y - y;
+            return 0.0175 / max(abs(m) + 0.01, 1e-3) + 0.01;
+        }
+
+        void mainImage(out vec4 fragColor, in vec2 fragCoord) {
+            vec2 baseUv = (2.0 * fragCoord - iResolution.xy) / iResolution.y;
+            baseUv.y *= -1.0;
+            if (parallax) {
+                baseUv += parallaxOffset;
+            }
+            vec3 col = vec3(0.0);
+            vec3 b = lineGradientCount > 0 ? vec3(0.0) : background_color(baseUv);
+            vec2 mouseUv = vec2(0.0);
+            if (interactive) {
+                mouseUv = (2.0 * iMouse - iResolution.xy) / iResolution.y;
+                mouseUv.y *= -1.0;
+            }
+            if (enableBottom) {
+                for (int i = 0; i < 10; ++i) {
+                    if (i >= bottomLineCount) break;
+                    float fi = float(i);
+                    float t = fi / max(float(bottomLineCount - 1), 1.0);
+                    vec3 lineCol = getLineColor(t, b);
+                    float angle = bottomWavePosition.z * log(length(baseUv) + 1.0);
+                    vec2 ruv = baseUv * rotate(angle);
+                    col += lineCol * wave(ruv + vec2(bottomLineDistance * fi + bottomWavePosition.x, bottomWavePosition.y), 1.5 + 0.2 * fi, baseUv, mouseUv, interactive) * 0.4;
+                }
+            }
+            if (enableMiddle) {
+                for (int i = 0; i < 10; ++i) {
+                    if (i >= middleLineCount) break;
+                    float fi = float(i);
+                    float t = fi / max(float(middleLineCount - 1), 1.0);
+                    vec3 lineCol = getLineColor(t, b);
+                    float angle = middleWavePosition.z * log(length(baseUv) + 1.0);
+                    vec2 ruv = baseUv * rotate(angle);
+                    col += lineCol * wave(ruv + vec2(middleLineDistance * fi + middleWavePosition.x, middleWavePosition.y), 2.0 + 0.15 * fi, baseUv, mouseUv, interactive);
+                }
+            }
+            if (enableTop) {
+                for (int i = 0; i < 10; ++i) {
+                    if (i >= topLineCount) break;
+                    float fi = float(i);
+                    float t = fi / max(float(topLineCount - 1), 1.0);
+                    vec3 lineCol = getLineColor(t, b);
+                    float angle = topWavePosition.z * log(length(baseUv) + 1.0);
+                    vec2 ruv = baseUv * rotate(angle);
+                    ruv.x *= -1.0;
+                    col += lineCol * wave(ruv + vec2(topLineDistance * fi + topWavePosition.x, topWavePosition.y), 1.0 + 0.2 * fi, baseUv, mouseUv, interactive) * 0.3;
+                }
+            }
+            fragColor = vec4(col, 1.0);
+        }
+
+        void main() {
+            vec4 color = vec4(0.0);
+            mainImage(color, gl_FragCoord.xy);
+            gl_FragColor = color;
+        }
+    `;
+
+    const stops = [hexToVec3('#3d71e4'), hexToVec3('#6d6e68'), hexToVec3('#6a6a6a')];
+    const lineGradientArr = Array.from({ length: 8 }, () => new THREE.Vector3(1, 1, 1));
+    stops.forEach((v, i) => lineGradientArr[i].copy(v));
+
+    const uniforms = {
+        iTime: { value: 0 },
+        iResolution: { value: new THREE.Vector3(1, 1, 1) },
+        animationSpeed: { value: 1.0 },
+        enableTop: { value: true },
+        enableMiddle: { value: true },
+        enableBottom: { value: true },
+        topLineCount: { value: 10 },
+        middleLineCount: { value: 10 },
+        bottomLineCount: { value: 10 },
+        topLineDistance: { value: 0.575 },
+        middleLineDistance: { value: 0.575 },
+        bottomLineDistance: { value: 0.575 },
+        topWavePosition: { value: new THREE.Vector3(10.0, 0.5, -0.4) },
+        middleWavePosition: { value: new THREE.Vector3(5.0, 0.0, 0.2) },
+        bottomWavePosition: { value: new THREE.Vector3(2.0, -0.7, 0.4) },
+        iMouse: { value: new THREE.Vector2(-1000, -1000) },
+        interactive: { value: true },
+        bendRadius: { value: 8.0 },
+        bendStrength: { value: -2.0 },
+        bendInfluence: { value: 0 },
+        parallax: { value: true },
+        parallaxStrength: { value: 0.2 },
+        parallaxOffset: { value: new THREE.Vector2(0, 0) },
+        lineGradient: { value: lineGradientArr },
+        lineGradientCount: { value: 3 }
+    };
+
+    const material = new THREE.ShaderMaterial({
+        uniforms,
+        vertexShader,
+        fragmentShader,
+        transparent: true
+    });
+
+    const geometry = new THREE.PlaneGeometry(2, 2);
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    const clock = new THREE.Clock();
+
+    function resize() {
+        const width = container.clientWidth || window.innerWidth / 2;
+        const height = container.clientHeight || window.innerHeight;
+        renderer.setSize(width, height, false);
+        uniforms.iResolution.value.set(renderer.domElement.width, renderer.domElement.height, 1);
+    }
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
+
+    container.addEventListener('mousemove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const mouseX = (e.clientX - rect.left) * renderer.getPixelRatio();
+        const mouseY = (rect.height - (e.clientY - rect.top)) * renderer.getPixelRatio();
+        uniforms.iMouse.value.set(mouseX, mouseY);
+        uniforms.bendInfluence.value = 1.0;
+    });
+
+    let isDrawerLinesAnimating = false;
+    let drawerAnimId = null;
+
+    function animate() {
+        if (!isDrawerLinesAnimating) return;
+        drawerAnimId = requestAnimationFrame(animate);
+        uniforms.iTime.value = clock.getElapsedTime();
+        renderer.render(scene, camera);
+    }
+
+    window.startDrawerLinesAnimation = function() {
+        if (!isDrawerLinesAnimating) {
+            isDrawerLinesAnimating = true;
+            clock.start();
+            animate();
+        }
+    };
+
+    window.stopDrawerLinesAnimation = function() {
+        isDrawerLinesAnimating = false;
+        if (drawerAnimId) cancelAnimationFrame(drawerAnimId);
+    };
 }
