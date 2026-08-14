@@ -7,7 +7,7 @@
     <title>Valor Máximo | Real Estate de Precisión & Match Inmobiliario</title>
     <meta name="description"
         content="Sistema estratégico de match inmobiliario. Conectamos al arrendador con el emprendedor en el lugar y momento correcto.">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=36">
     <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
@@ -18,22 +18,23 @@
     <nav class="navbar" id="navbar">
         <div class="container">
             <ul class="nav-links">
-                <li><a href="#">El Match</a></li>
-                <li><a href="#">The Journey</a></li>
+                <li><a href="#el-match" onclick="scrollToTimelineSection(event, 8.5)">Catálogo</a></li>
+                <li><a href="#idea-lab" onclick="scrollToTimelineSection(event, 17.5)">Idea Lab</a></li>
             </ul>
             <a href="#" class="logo" aria-label="Valor Máximo Inicio">
                 <img src="valorM01.svg" alt="Valor Máximo" class="logo-img">
             </a>
             <div class="nav-actions">
-                <a href="#" class="nav-link-portal" onclick="openMatchDrawer(); return false;">Portal Login</a>
-                <button onclick="openMatchDrawer()" class="btn btn-dark">Get Qualified</button>
+                <button onclick="openMatchDrawer()" class="btn btn-dark">COTIZACIONES</button>
             </div>
         </div>
     </nav>
 
     <!-- Botón Flotante Global de Navegación Suave (Siguiente Sección) -->
-    <button class="global-scroll-btn" id="global-scroll-btn" onclick="scrollToNextSection()" aria-label="Navegar a la siguiente sección">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <button class="global-scroll-btn" id="global-scroll-btn" onclick="scrollToNextSection()"
+        aria-label="Navegar a la siguiente sección">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+            stroke-linecap="round" stroke-linejoin="round">
             <line x1="12" y1="5" x2="12" y2="19"></line>
             <polyline points="19 12 12 19 5 12"></polyline>
         </svg>
@@ -43,8 +44,9 @@
     <div class="curtain-wrapper">
         <!-- 02. Hero Section (Inmóvil en Sticky top: 0, z-index: 1) -->
         <section class="hero" id="inicio">
-            <video class="hero-video-bg" id="hero-video" autoplay loop muted playsinline webkit-playsinline preload="auto">
-                <source src="https://res.cloudinary.com/dznylzcr/video/upload/v1784792769/skybackvm01_hrvoql.mp4" type="video/mp4">
+            <video class="hero-video-bg" id="hero-video" autoplay loop muted playsinline webkit-playsinline
+                preload="auto">
+                <source src="RecorridoRivaPalacio.mp4">
                 Tu navegador no soporta la reproducción de video.
             </video>
             <div class="hero-video-overlay"></div>
@@ -68,16 +70,22 @@
             <div class="container" style="position: relative; z-index: 2;">
                 <div class="grid grid-2 reveal">
                     <div>
-                        <span class="badge" style="margin-bottom: 1rem; display: inline-block; color: #FFFFFF; border-color: rgba(255, 255, 255, 0.35); background: rgba(255, 255, 255, 0.12);">El Diferenciador
+                        <span class="badge"
+                            style="margin-bottom: 1rem; display: inline-block; color: #FFFFFF; border-color: rgba(255, 255, 255, 0.35); background: rgba(255, 255, 255, 0.12);">El
+                            Diferenciador
                             Absoluto</span>
-                        <h2 class="text-title" style="margin-bottom: 1.5rem; color: #FFFFFF;">Socios en tu espacio <br>aliados en el
-                            tiempo.</h2>
-                        <p class="text-muted" style="margin-bottom: 2rem; max-width: 400px; color: #FFFFFF; font-weight: 400;">
+                        <h2 class="text-title" style="margin-bottom: 1.5rem; color: #FFFFFF;">Socios de Valor
+                            <br>Aliados en el
+                            tiempo.
+                        </h2>
+                        <p class="text-muted"
+                            style="margin-bottom: 2rem; max-width: 400px; color: #FFFFFF; font-weight: 400;">
                             En Valor Máximo, adoptamos un enfoque integral. Operamos como su brazo
                             inmobiliario descentralizado, asegurando el rendimiento a largo plazo de su inversión.
                         </p>
-                        <button onclick="openMatchDrawer()" class="btn btn-outline btn-outline-white" style="border-radius: 2px;">Conocer
-                            la filosofía</button>
+                        <button onclick="openPhilosophyDrawer(); return false;"
+                            class="btn btn-outline btn-outline-white" style="border-radius: 2px;">Conocer la
+                            filosofía</button>
                     </div>
                     <div class="grid grid-2" style="gap: 1rem;">
                         <div class="feature-card">
@@ -109,9 +117,9 @@
                             <p class="text-muted" style="font-size: 0.85rem;">Conservamos el valor del activo mediante
                                 protocolos de mantenimiento rigurosos e intervenciones precisas.</p>
                         </div>
-                        <div class="feature-card" style="background: rgba(43, 111, 158, 0.05);">
+                        <div class="feature-card">
                             <span class="badge"
-                                style="font-size: 0.65rem; margin-bottom: 0.5rem; display: inline-block; border: none; background: rgba(43, 111, 158, 0.12); color: var(--vm-blue);">Próximamente</span>
+                                style="font-size: 0.65rem; margin-bottom: 0.5rem; display: inline-block; border: none; background: rgba(255, 255, 255, 0.12); color: #FFFFFF;">PLUS</span>
                             <h4 style="font-size: 1rem; margin-bottom: 0.5rem;">Acondicionamiento y Construcción</h4>
                             <p class="text-muted" style="font-size: 0.85rem;">Soluciones llave en mano para adaptar el
                                 espacio exacto a las necesidades del emprendedor.</p>
@@ -123,6 +131,11 @@
 
         <!-- 04. Sección 3: Portafolio de Proyectos (Sticky Timeline & Blur Text Effect) -->
         <section class="section section-curtain-left dark-section" id="casos-exito">
+            <div class="portfolio-video-bg">
+                <video autoplay loop muted playsinline webkit-playsinline preload="auto"
+                    src="Clouds_passing_fast_vegetation.mp4"></video>
+                <div class="portfolio-video-overlay"></div>
+            </div>
             <div class="container portfolio-container">
                 <!-- Columna Izquierda (Contenido Fijo y Centrado) -->
                 <div class="portfolio-left-col">
@@ -188,6 +201,12 @@
 
         <!-- 05. Sección 4: Galería Comercial (Cortina Inmóvil z-index: 8) -->
         <section class="section section-curtain-galeria dark-section" id="galeria-comercial">
+            <div class="galeria-video-bg">
+                <video autoplay loop muted playsinline webkit-playsinline preload="auto"
+                    src="estructuras01.mp4"></video>
+                <div class="galeria-video-overlay"></div>
+            </div>
+            <div class="image-trail-overlay" id="galeria-trail"></div>
             <div class="container galeria-container">
                 <div class="galeria-right-col">
                     <span class="badge galeria-badge">Espacios Exclusivos</span>
@@ -204,7 +223,8 @@
             <!-- Indicador Flotante Animado de Scroll (Punto medio vertical, pegado al borde derecho) -->
             <div class="catalog-scroll-indicator" id="catalog-scroll-indicator">
                 <span class="scroll-text">SCROLL</span>
-                <svg class="scroll-arrow-triangle" width="18" height="14" viewBox="0 0 24 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <svg class="scroll-arrow-triangle" width="18" height="14" viewBox="0 0 24 16" fill="none"
+                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <polygon points="3,3 21,3 12,13" />
                 </svg>
             </div>
@@ -213,14 +233,19 @@
                 <!-- Columna Izquierda (Fija, Centrada Verticalmente, Alineada al Margen Izquierdo) -->
                 <div class="catalog-left-col">
                     <div class="catalog-header-floating">
-                        <h2 class="catalog-title-main font-serif" style="font-family: var(--font-serif); font-weight: 400; font-style: italic; font-size: clamp(2.6rem, 4vw, 3.6rem); line-height: 1.05; color: #102B46; margin-bottom: 0.2rem; text-align: left;">
+                        <h2 class="catalog-title-main font-serif"
+                            style="font-family: var(--font-serif); font-weight: 400; font-style: italic; font-size: clamp(2.6rem, 4vw, 3.6rem); line-height: 1.05; color: #064E3B; margin-bottom: 0.2rem; text-align: left;">
                             Catálogo de Inmuebles
                         </h2>
-                        <h2 class="catalog-title-sub" style="font-family: var(--font-sans); font-weight: 700; font-size: clamp(2.2rem, 3.4vw, 3.2rem); color: #5B728C; margin-bottom: 1.5rem; text-align: left; line-height: 1;">
-                            — El Match
+                        <h2 class="catalog-title-sub"
+                            style="font-family: var(--font-sans); font-weight: 700; font-size: clamp(2.2rem, 3.4vw, 3.2rem); color: #5B728C; margin-bottom: 1.5rem; text-align: left; line-height: 1;">
+
                         </h2>
-                        <p class="text-muted catalog-header-p" style="font-family: var(--font-sans); max-width: 460px; font-size: 0.95rem; margin: 0; text-align: left; line-height: 1.6; color: #52637A;">
-                            Brutal honesty in commercial real estate. We manage over 138 spaces across premium plazas. We do not sell dreams: we present raw opportunities for those with an investment mindset. Read the warnings carefully.
+                        <p class="text-muted catalog-header-p"
+                            style="font-family: var(--font-sans); max-width: 460px; font-size: 0.95rem; margin: 0; text-align: left; line-height: 1.6; color: #404944;">
+                            Diversificación en bienes raíces comerciales. Administramos más de 138 espacios en plazas
+                            prémium. No vendemos sueños: presentamos oportunidades en bruto para aquellos con mentalidad
+                            de inversión.
                         </p>
                     </div>
                 </div>
@@ -228,241 +253,852 @@
                 <!-- Columna Derecha (Desfile Vertical de Tarjetas de Inmuebles) -->
                 <div class="catalog-right-col">
                     <!-- Inmueble 1: Plaza Ceboruco -->
-                    <div class="catalog-item catalog-card-stagger">
-                        <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?q=80&w=2069&auto=format&fit=crop" alt="Plaza Ceboruco" class="catalog-img">
+                    <div class="catalog-item catalog-card-stagger" onclick="openFichaModal(this)"
+                        data-ficha="riva-palacio" style="cursor:pointer;">
+                        <img src="galeria comercial/Riva Palacio/portada tarjeta.png" alt="Riva Palacio"
+                            class="catalog-img" onclick="openFichaModal(this)" style="cursor:pointer;">
                         <div class="catalog-content">
                             <div class="catalog-meta">
                                 <div>
-                                    <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Plaza Ceboruco</h3>
-                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">Back Shops</p>
+                                    <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Riva
+                                        Palacio</h3>
+                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">Back
+                                        Shops</p>
                                 </div>
-                                <span class="badge">08 AVAIL</span>
+                                <span class="badge badge-open" onclick="openFichaModal(this)" style="cursor:pointer;">11
+                                    DISPONIBLES</span>
                             </div>
                             <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
-                                No visibility, discrete service only, 24h access. A space defined by its absence of pedestrian interference.
+                                Maximizar la ocupación atrayendo oficinas y consultorios con modelos de atención
+                                especializada, aprovechando la ubicación del inmueble en una zona de alta actividad
+                                comercial para fortalecer su competitividad, rentabilidad y permanencia de los
+                                arrendatarios.
                             </p>
                             <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
-                                <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">TENANT PROFILE</span>
-                                <p style="font-size: 0.85rem; font-weight: 500;">Investment Mindset Required. High risk tolerance.</p>
+                                <span
+                                    style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">Perfil
+                                    Empresarial</span>
+                                <p style="font-size: 0.85rem; font-weight: 500;">Mentalidad inversora. Alta tolerancia
+                                    al riesgo.</p>
                             </div>
-                            <div>
-                                <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">FAILURE RISK</span>
-                                <div class="risk-high">30-40%</div>
+                            <div class="catalog-actions">
+                                <button onclick="openMatchDrawer()" class="btn btn-dark">Solicitar Ficha
+                                    Detallada</button>
+                                <button type="button" class="btn btn-details"
+                                    onclick="openFichaModal(this)">Detalles</button>
                             </div>
-                            <button onclick="openMatchDrawer()" class="btn btn-dark" style="width: 100%; margin-top: 1.5rem;">Request Detailed Sheet</button>
                         </div>
                     </div>
 
-                    <!-- Inmueble 2: Avenida Central -->
-                    <div class="catalog-item catalog-card-stagger">
-                        <img src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?q=80&w=2069&auto=format&fit=crop" alt="Avenida Central" class="catalog-img">
+                    <!-- Inmueble 2: Paseo Central -->
+                    <div class="catalog-item catalog-card-stagger" onclick="openFichaModal(this)" data-ficha="sub-level"
+                        style="cursor:pointer;">
+                        <img src="galeria comercial/Paseo Central/Portada.jpg" alt="Paseo Central" class="catalog-img"
+                            onclick="openFichaModal(this)" style="cursor:pointer;">
                         <div class="catalog-content">
                             <div class="catalog-meta">
                                 <div>
-                                    <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Avenida Central</h3>
-                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">Anchors</p>
+                                    <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Paseo
+                                        Central</h3>
+                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">Anchors
+                                    </p>
                                 </div>
-                                <span class="badge">03 AVAIL</span>
+                                <span class="badge badge-open" onclick="openFichaModal(this)" style="cursor:pointer;">
+                                    12 DISPONIBLES</span>
                             </div>
                             <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
-                                High foot traffic, strict zoning. The client who invests the most pays the best.
+                                La estrategia comercial se enfoca en atraer arrendatarios con propuestas de valor
+                                diferenciadas, mantener una mezcla equilibrada de giros y fortalecer el posicionamiento
+                                de la plaza como un destino comercial de alta calidad.
                             </p>
                             <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
-                                <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">DELIVERY</span>
+                                <span
+                                    style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">TENANT
+                                    PROFILE</span>
+                                <p style="font-size: 0.85rem; font-weight: 500;">Operational focus. No client facing.
+                                </p>
+                            </div>
+                            <div class="catalog-actions">
+                                <button onclick="openMatchDrawer()" class="btn btn-dark">Solicitar Ficha
+                                    Detallada</button>
+                                <button type="button" class="btn btn-details"
+                                    onclick="openFichaModal(this)">Detalles</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Inmueble 3: Plaza Independencia -->
+                    <div class="catalog-item catalog-card-stagger" onclick="openFichaModal(this)"
+                        data-ficha="avenida-central" style="cursor:pointer;">
+                        <img src="galeria comercial/Plaza Independencia/portada.jpg" alt="Plaza Independencia"
+                            class="catalog-img" onclick="openFichaModal(this)" style="cursor:pointer;">
+                        <div class="catalog-content">
+                            <div class="catalog-meta">
+                                <div>
+                                    <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Plaza
+                                        Independencia</h3>
+                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">Anchors
+                                    </p>
+                                </div>
+                                <span class="badge badge-open" onclick="openFichaModal(this)" style="cursor:pointer;">5
+                                    DISPONIBLES</span>
+                            </div>
+                            <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
+                                Casa de estilo colonial, conservada en excelente estado sin modificaciones en su diseño
+                                original ni en su fachada. La propiedad alberga tres unidades habitacionales
+                                independientes, distribuidas en dos niveles. Cuenta con puertas y pisos de madera, dos
+                                cocinas, cuartos de servicio y un amplio patio con capacidad para estacionar entre seis
+                                y ocho vehículos. Las instalaciones hidráulicas y eléctricas se encuentran en óptimas
+                                condiciones, listas para su uso inmediato.
+                            </p>
+                            <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
+                                <span
+                                    style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">DELIVERY</span>
                                 <p style="font-size: 0.85rem; font-weight: 500;">Raw structural shell only.</p>
                             </div>
-                            <div>
-                                <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">FAILURE RISK</span>
-                                <div class="risk-low" style="font-size: 1.1rem; color: #1a1a1a;">Moderate</div>
+                            <div class="catalog-actions">
+                                <button onclick="openMatchDrawer()" class="btn btn-dark">Solicitar Ficha
+                                    Detallada</button>
+                                <button type="button" class="btn btn-details"
+                                    onclick="openFichaModal(this)">Detalles</button>
                             </div>
-                            <button onclick="openMatchDrawer()" class="btn btn-outline" style="width: 100%; margin-top: 1.5rem;">Request Sheet</button>
                         </div>
                     </div>
 
-                    <!-- Inmueble 3: Sub-level Logistics Hub -->
-                    <div class="catalog-item catalog-card-stagger">
-                        <img src="https://images.unsplash.com/photo-1587293852726-0d4182b6e1b8?q=80&w=2070&auto=format&fit=crop" alt="Logistics Hub" class="catalog-img">
+                    <!-- Inmueble 4: Pino Suárez -->
+                    <div class="catalog-item catalog-card-stagger" onclick="openFichaModal(this)"
+                        data-ficha="distrito-financiero" style="cursor:pointer;">
+                        <img src="galeria comercial/Pino Suarez/portada.jpg" alt="Pino Suárez" class="catalog-img"
+                            onclick="openFichaModal(this)" style="cursor:pointer;">
                         <div class="catalog-content">
                             <div class="catalog-meta">
                                 <div>
-                                    <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Sub-level</h3>
-                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">Logistics Hub</p>
+                                    <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Pino
+                                        Suárez</h3>
+                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">
+                                        Corporate Suite</p>
                                 </div>
-                                <span class="badge">05 AVAIL</span>
+                                <span class="badge badge-open" onclick="openFichaModal(this)" style="cursor:pointer;">5
+                                    DISPONIBLES</span>
                             </div>
                             <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
-                                Zero natural light. Engineered for efficiency, not aesthetics. Deeply pragmatic.
+                                Posicionar el inmueble como un desarrollo comercial y de servicios de referencia en la
+                                zona, capitalizando la presencia de establecimientos ancla y su ubicación sobre
+                                vialidades de alta circulación para impulsar la ocupación de los espacios disponibles
+                                con giros complementarios que generen valor agregado.
                             </p>
                             <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
-                                <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">TENANT PROFILE</span>
-                                <p style="font-size: 0.85rem; font-weight: 500;">Operational focus. No client facing.</p>
-                            </div>
-                            <div>
-                                <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">FAILURE RISK</span>
-                                <div class="risk-low" style="font-size: 1rem;">Low (if specialized)</div>
-                            </div>
-                            <button onclick="openMatchDrawer()" class="btn btn-outline" style="width: 100%; margin-top: 1.5rem;">Request Detailed Sheet</button>
-                        </div>
-                    </div>
-
-                    <!-- Inmuebles Simulados Adicionales (4 a 9) -->
-                    <!-- Inmueble 4: Distrito Financiero East -->
-                    <div class="catalog-item catalog-card-stagger">
-                        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop" alt="Distrito Financiero" class="catalog-img">
-                        <div class="catalog-content">
-                            <div class="catalog-meta">
-                                <div>
-                                    <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Distrito Financiero</h3>
-                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">Corporate Suite</p>
-                                </div>
-                                <span class="badge">02 AVAIL</span>
-                            </div>
-                            <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
-                                Premium corporate presence with panoramic city skyline view and underground parking access.
-                            </p>
-                            <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
-                                <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">TENANT PROFILE</span>
+                                <span
+                                    style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">TENANT
+                                    PROFILE</span>
                                 <p style="font-size: 0.85rem; font-weight: 500;">Financial & HQ Operations.</p>
                             </div>
-                            <div>
-                                <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">FAILURE RISK</span>
-                                <div class="risk-low" style="font-size: 1rem;">Very Low</div>
+                            <div class="catalog-actions">
+                                <button onclick="openMatchDrawer()" class="btn btn-dark">Solicitar Ficha
+                                    Detallada</button>
+                                <button type="button" class="btn btn-details"
+                                    onclick="openFichaModal(this)">Detalles</button>
                             </div>
-                            <button onclick="openMatchDrawer()" class="btn btn-dark" style="width: 100%; margin-top: 1.5rem;">Request Sheet</button>
                         </div>
                     </div>
 
-                    <!-- Inmueble 5: Terraza Gastronómica Park -->
-                    <div class="catalog-item catalog-card-stagger">
-                        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=2074&auto=format&fit=crop" alt="Terraza Gastronómica" class="catalog-img">
+                    <!-- Inmueble 5: Edificio Hidalgo -->
+                    <div class="catalog-item catalog-card-stagger" onclick="openFichaModal(this)"
+                        data-ficha="paseo-artes" style="cursor:pointer;">
+                        <img src="galeria comercial/Hidalgo/Portada.jpg" alt="Edificio Hidalgo" class="catalog-img"
+                            onclick="openFichaModal(this)" style="cursor:pointer;">
                         <div class="catalog-content">
                             <div class="catalog-meta">
                                 <div>
-                                    <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Terraza Park</h3>
-                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">Culinary Hub</p>
+                                    <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Edificio
+                                        Hidalgo</h3>
+                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">Flagship
+                                        Store</p>
                                 </div>
-                                <span class="badge">04 AVAIL</span>
+                                <span class="badge badge-open" onclick="openFichaModal(this)" style="cursor:pointer;">2
+                                    DISPONIBLES</span>
                             </div>
                             <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
-                                Open-air dining location with kitchen infrastructure and grease trap preparation.
+                                Consolidar el inmueble como un edificio de uso mixto, orientado a integrar espacios
+                                comerciales, de almacenamiento y oficinas. Inmueble en venta.
                             </p>
                             <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
-                                <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">DELIVERY</span>
-                                <p style="font-size: 0.85rem; font-weight: 500;">Semi-fitted food & beverage venue.</p>
-                            </div>
-                            <div>
-                                <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">FAILURE RISK</span>
-                                <div class="risk-high" style="font-size: 1.2rem;">25-35%</div>
-                            </div>
-                            <button onclick="openMatchDrawer()" class="btn btn-outline" style="width: 100%; margin-top: 1.5rem;">Request Sheet</button>
-                        </div>
-                    </div>
-
-                    <!-- Inmueble 6: Paseo de las Artes -->
-                    <div class="catalog-item catalog-card-stagger">
-                        <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=2069&auto=format&fit=crop" alt="Paseo de las Artes" class="catalog-img">
-                        <div class="catalog-content">
-                            <div class="catalog-meta">
-                                <div>
-                                    <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Paseo de las Artes</h3>
-                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">Flagship Store</p>
-                                </div>
-                                <span class="badge">01 AVAIL</span>
-                            </div>
-                            <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
-                                High ceilings, double storefront windows, maximum visual exposure on pedestrian boulevard.
-                            </p>
-                            <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
-                                <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">TENANT PROFILE</span>
+                                <span
+                                    style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">TENANT
+                                    PROFILE</span>
                                 <p style="font-size: 0.85rem; font-weight: 500;">Established Retail Flagship.</p>
                             </div>
-                            <div>
-                                <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">FAILURE RISK</span>
-                                <div class="risk-low" style="font-size: 1.1rem; color: #1a1a1a;">Low</div>
+                            <div class="catalog-actions">
+                                <button onclick="openMatchDrawer()" class="btn btn-dark">Solicitar Ficha
+                                    Detallada</button>
+                                <button type="button" class="btn btn-details"
+                                    onclick="openFichaModal(this)">Detalles</button>
                             </div>
-                            <button onclick="openMatchDrawer()" class="btn btn-dark" style="width: 100%; margin-top: 1.5rem;">Request Sheet</button>
                         </div>
                     </div>
 
-                    <!-- Inmueble 7: Hub Tecnológico Norte -->
-                    <div class="catalog-item catalog-card-stagger">
-                        <img src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=2070&auto=format&fit=crop" alt="Hub Tecnológico" class="catalog-img">
+                    <!-- Inmueble 6: Felipe Villanueva -->
+                    <div class="catalog-item catalog-card-stagger" data-ficha="felipe-villanueva"
+                        style="cursor:pointer;" onclick="openFichaModal(this)">
+                        <img src="galeria comercial/Felipe Villanueva/portada.jpg" alt="Felipe Villanueva"
+                            class="catalog-img" onclick="openFichaModal(this)" style="cursor:pointer;">
                         <div class="catalog-content">
                             <div class="catalog-meta">
                                 <div>
-                                    <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Hub Tecnológico</h3>
-                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">R&D Lab</p>
+                                    <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Felipe
+                                        Villanueva</h3>
+                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">Culinary
+                                        Hub</p>
                                 </div>
-                                <span class="badge">06 AVAIL</span>
+                                <span class="badge badge-open" onclick="openFichaModal(this)" style="cursor:pointer;">2
+                                    DISPONIBLES</span>
                             </div>
                             <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
-                                Fiber optic redundant connections, climate controlled server rooms, 24/7 security perimeter.
+                                Consolidar el inmueble como un desarrollo de uso mixto, integrado por espacios
+                                comerciales, de servicios y oficinas, aprovechando su ubicación sobre vialidades con
+                                diferentes niveles de afluencia para atender diversos segmentos de mercado. Inmueble en
+                                venta.
                             </p>
                             <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
-                                <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">DELIVERY</span>
-                                <p style="font-size: 0.85rem; font-weight: 500;">Tech-ready shell.</p>
+                                <span
+                                    style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">DELIVERY</span>
+                                <p style="font-size: 0.85rem; font-weight: 500;">Semi-fitted food & beverage venue.</p>
                             </div>
-                            <div>
-                                <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">FAILURE RISK</span>
-                                <div class="risk-low" style="font-size: 1rem;">Low</div>
+                            <div class="catalog-actions">
+                                <button onclick="openMatchDrawer()" class="btn btn-dark">Solicitar Ficha
+                                    Detallada</button>
+                                <button type="button" class="btn btn-details"
+                                    onclick="openFichaModal(this)">Detalles</button>
                             </div>
-                            <button onclick="openMatchDrawer()" class="btn btn-outline" style="width: 100%; margin-top: 1.5rem;">Request Sheet</button>
                         </div>
                     </div>
 
-                    <!-- Inmueble 8: Galería Wellness & Spa -->
-                    <div class="catalog-item catalog-card-stagger">
-                        <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=2070&auto=format&fit=crop" alt="Galería Wellness" class="catalog-img">
+                    <!-- Inmueble 7: Villada -->
+                    <div class="catalog-item catalog-card-stagger" data-ficha="villada" style="cursor:pointer;"
+                        onclick="openFichaModal(this)">
+                        <img src="galeria comercial/Villada/Portada.jpg" alt="Villada" class="catalog-img"
+                            onclick="openFichaModal(this)" style="cursor:pointer;">
                         <div class="catalog-content">
                             <div class="catalog-meta">
                                 <div>
-                                    <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Galería Wellness</h3>
-                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">Boutique Clinic</p>
+                                    <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Villada
+                                    </h3>
+                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">Uso
+                                        Mixto & Residencial</p>
                                 </div>
-                                <span class="badge">02 AVAIL</span>
+                                <span class="badge badge-open" onclick="openFichaModal(this)" style="cursor:pointer;">3
+                                    DISPONIBLES</span>
                             </div>
                             <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
-                                Soundproofed space with hydro-sanitary preparation tailored for medical and wellness services.
+                                La estrategia comercial se orienta a atraer proyectos que respeten las características
+                                históricas del inmueble y maximicen su potencial para usos corporativos,
+                                institucionales, turísticos o residenciales de alto nivel. *Inmueble en venta y renta*
                             </p>
                             <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
-                                <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">TENANT PROFILE</span>
-                                <p style="font-size: 0.85rem; font-weight: 500;">Health & Aesthetics operators.</p>
+                                <span
+                                    style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">DELIVERY</span>
+                                <p style="font-size: 0.85rem; font-weight: 500;">3 casas unificadas (1,000 m²).</p>
                             </div>
-                            <div>
-                                <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">FAILURE RISK</span>
-                                <div class="risk-low" style="font-size: 1rem;">Moderate</div>
+                            <div class="catalog-actions">
+                                <button onclick="openMatchDrawer()" class="btn btn-dark">Solicitar Ficha
+                                    Detallada</button>
+                                <button type="button" class="btn btn-details"
+                                    onclick="openFichaModal(this)">Detalles</button>
                             </div>
-                            <button onclick="openMatchDrawer()" class="btn btn-dark" style="width: 100%; margin-top: 1.5rem;">Request Sheet</button>
                         </div>
                     </div>
 
-                    <!-- Inmueble 9: Centro Logístico Express -->
-                    <div class="catalog-item catalog-card-stagger">
-                        <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=2070&auto=format&fit=crop" alt="Centro Logístico" class="catalog-img">
+                    <!-- Inmueble 8: Av. Solidaridad Torres -->
+                    <div class="catalog-item catalog-card-stagger" data-ficha="solidaridad-torres"
+                        style="cursor:pointer;" onclick="openFichaModal(this)">
+                        <img src="galeria comercial/Av. Solidaridad Torres/Portada.jpg" alt="Av. Solidaridad Torres"
+                            class="catalog-img" onclick="openFichaModal(this)" style="cursor:pointer;">
                         <div class="catalog-content">
                             <div class="catalog-meta">
                                 <div>
-                                    <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Logístico Express</h3>
-                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">Dark Store</p>
+                                    <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Av.
+                                        Solidaridad Torres</h3>
+                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">Corredor
+                                        Comercial & Servicios</p>
                                 </div>
-                                <span class="badge">07 AVAIL</span>
+                                <span class="badge badge-open" onclick="openFichaModal(this)" style="cursor:pointer;">1
+                                    DISPONIBLE</span>
                             </div>
                             <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
-                                Strategic last-mile distribution point with loading dock maneuver zone.
+                                Consolidarse como un punto comercial de alta visibilidad, orientado a la instalación de
+                                negocios de comercio y servicios que aprovechen el constante flujo vehicular de la zona,
+                                maximizando la ocupación y el valor comercial del inmueble.
                             </p>
                             <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
-                                <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">TENANT PROFILE</span>
-                                <p style="font-size: 0.85rem; font-weight: 500;">E-commerce & Fulfillment.</p>
+                                <span
+                                    style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">TENANT
+                                    PROFILE</span>
+                                <p style="font-size: 0.85rem; font-weight: 500;">Comercio, servicios & networking.</p>
                             </div>
-                            <div>
-                                <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">FAILURE RISK</span>
-                                <div class="risk-low" style="font-size: 1rem;">Low</div>
+                            <div class="catalog-actions">
+                                <button onclick="openMatchDrawer()" class="btn btn-dark">Solicitar Ficha
+                                    Detallada</button>
+                                <button type="button" class="btn btn-details"
+                                    onclick="openFichaModal(this)">Detalles</button>
                             </div>
-                            <button onclick="openMatchDrawer()" class="btn btn-outline" style="width: 100%; margin-top: 1.5rem;">Request Sheet</button>
+                        </div>
+                    </div>
+
+                    <!-- Inmueble 9: Plaza Ceboruco -->
+                    <div class="catalog-item catalog-card-stagger" data-ficha="plaza-ceboruco" style="cursor:pointer;"
+                        onclick="openFichaModal(this)">
+                        <img src="galeria comercial/Plaza Ceboruco/portada.jpg" alt="Plaza Ceboruco" class="catalog-img"
+                            onclick="openFichaModal(this)" style="cursor:pointer;">
+                        <div class="catalog-content">
+                            <div class="catalog-meta">
+                                <div>
+                                    <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Plaza
+                                        Ceboruco</h3>
+                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">Plaza
+                                        Comercial 24/7</p>
+                                </div>
+                                <span class="badge badge-orange" onclick="openFichaModal(this)"
+                                    style="cursor:pointer;">0
+                                    DISPONIBLES</span>
+                            </div>
+                            <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
+                                Plaza comercial 24/7 con vigilancia y estacionamiento gratis. Mantener altos niveles de
+                                ocupación.
+                            </p>
+                            <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
+                                <span
+                                    style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">CARACTERÍSTICAS</span>
+                                <p style="font-size: 0.85rem; font-weight: 500;">Vigilancia 24/7 y Estacionamiento
+                                    Gratuito.</p>
+                            </div>
+                            <div class="catalog-actions">
+                                <button onclick="openMatchDrawer()" class="btn btn-dark">Solicitar Ficha
+                                    Detallada</button>
+                                <button type="button" class="btn btn-details"
+                                    onclick="openFichaModal(this)">Detalles</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Inmueble 10: Av. Lerdo -->
+                    <div class="catalog-item catalog-card-stagger" data-ficha="av-lerdo" style="cursor:pointer;"
+                        onclick="openFichaModal(this)">
+                        <img src="galeria comercial/Av. Lerdo/portada.jpg" alt="Av. Lerdo" class="catalog-img"
+                            onclick="openFichaModal(this)" style="cursor:pointer;">
+                        <div class="catalog-content">
+                            <div class="catalog-meta">
+                                <div>
+                                    <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Av. Lerdo
+                                    </h3>
+                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">
+                                        Comercial & Servicios Cotidianos</p>
+                                </div>
+                                <span class="badge badge-orange" onclick="openFichaModal(this)"
+                                    style="cursor:pointer;">0
+                                    DISPONIBLES</span>
+                            </div>
+                            <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
+                                Enfocado en satisfacer necesidades cotidianas y complementar la oferta de consumo de la
+                                zona.
+                            </p>
+                            <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
+                                <span
+                                    style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">TENANT
+                                    MIX</span>
+                                <p style="font-size: 0.85rem; font-weight: 500;">Farmacia Guadalajara, Vinos &
+                                    Restaurantes.</p>
+                            </div>
+                            <div class="catalog-actions">
+                                <button onclick="openMatchDrawer()" class="btn btn-dark">Solicitar Ficha
+                                    Detallada</button>
+                                <button type="button" class="btn btn-details"
+                                    onclick="openFichaModal(this)">Detalles</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Inmueble 11: Benito Juárez -->
+                    <div class="catalog-item catalog-card-stagger" data-ficha="benito-juarez" style="cursor:pointer;"
+                        onclick="openFichaModal(this)">
+                        <img src="galeria comercial/Benito Juarez/portada.jpg" alt="Benito Juárez" class="catalog-img"
+                            onclick="openFichaModal(this)" style="cursor:pointer;">
+                        <div class="catalog-content">
+                            <div class="catalog-meta">
+                                <div>
+                                    <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Benito
+                                        Juárez</h3>
+                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">Comercio
+                                        & Servicios Diversificados</p>
+                                </div>
+                                <span class="badge badge-orange" onclick="openFichaModal(this)"
+                                    style="cursor:pointer;">0
+                                    DISPONIBLES</span>
+                            </div>
+                            <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
+                                Mantener una oferta comercial diversificada mediante la integración de negocios de
+                                comercio y servicios. Inmueble en venta.
+                            </p>
+                            <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
+                                <span
+                                    style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">ESTATUS
+                                    DE VENTA</span>
+                                <p style="font-size: 0.85rem; font-weight: 500;">100% Ocupado / Disponible para Venta.
+                                </p>
+                            </div>
+                            <div class="catalog-actions">
+                                <button onclick="openMatchDrawer()" class="btn btn-dark">Solicitar Ficha
+                                    Detallada</button>
+                                <button type="button" class="btn btn-details"
+                                    onclick="openFichaModal(this)">Detalles</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Inmueble 13: Plaza Rancho El Meson II -->
+                    <div class="catalog-item catalog-card-stagger" data-ficha="plaza-rancho-el-meson-ii"
+                        style="cursor:pointer;" onclick="openFichaModal(this)">
+                        <img src="galeria comercial/Plaza rancho el meson II/portada.jpg" alt="Plaza Rancho El Mesón II"
+                            class="catalog-img" onclick="openFichaModal(this)" style="cursor:pointer;">
+                        <div class="catalog-content">
+                            <div class="catalog-meta">
+                                <div>
+                                    <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Plaza
+                                        Rancho El Mesón II</h3>
+                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">Centro
+                                        Comercial & Lifestyle</p>
+                                </div>
+                                <span class="badge badge-orange" onclick="openFichaModal(this)"
+                                    style="cursor:pointer;">0
+                                    DISPONIBLES</span>
+                            </div>
+                            <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
+                                Consolidar la plaza como un centro comercial de referencia para la zona de Calimaya,
+                                ofreciendo una mezcla estratégica de comercios, restaurantes y servicios.
+                            </p>
+                            <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
+                                <span
+                                    style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">TENANT
+                                    MIX</span>
+                                <p style="font-size: 0.85rem; font-weight: 500;">Farmacia Guadalajara, Bistro Jaime Mena
+                                    & Comex.</p>
+                            </div>
+                            <div class="catalog-actions">
+                                <button onclick="openMatchDrawer()" class="btn btn-dark">Solicitar Ficha
+                                    Detallada</button>
+                                <button type="button" class="btn btn-details"
+                                    onclick="openFichaModal(this)">Detalles</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Inmueble 14: Unni Plaza -->
+                    <div class="catalog-item catalog-card-stagger" data-ficha="unni-plaza" style="cursor:pointer;"
+                        onclick="openFichaModal(this)">
+                        <img src="galeria comercial/Unni Plaza/portada.jpg" alt="Unni Plaza" class="catalog-img"
+                            onclick="openFichaModal(this)" style="cursor:pointer;">
+                        <div class="catalog-content">
+                            <div class="catalog-meta">
+                                <div>
+                                    <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Unni Plaza
+                                    </h3>
+                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">
+                                        Comercial, Educación & Alimentos</p>
+                                </div>
+                                <span class="badge badge-orange" onclick="openFichaModal(this)"
+                                    style="cursor:pointer;">0
+                                    DISPONIBLES</span>
+                            </div>
+                            <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
+                                Mantener una ocupación del 100% mediante una mezcla equilibrada de comercios, servicios,
+                                educación y alimentos, fomentando la permanencia de arrendatarios.
+                            </p>
+                            <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
+                                <span
+                                    style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">TENANT
+                                    MIX</span>
+                                <p style="font-size: 0.85rem; font-weight: 500;">Universidad UEEM, Farmacia Guadalajara
+                                    & SUMO Buffet.</p>
+                            </div>
+                            <div class="catalog-actions">
+                                <button onclick="openMatchDrawer()" class="btn btn-dark">Solicitar Ficha
+                                    Detallada</button>
+                                <button type="button" class="btn btn-details"
+                                    onclick="openFichaModal(this)">Detalles</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Inmueble 15: Venustiano Carranza -->
+                    <div class="catalog-item catalog-card-stagger" data-ficha="venustiano-carranza"
+                        style="cursor:pointer;" onclick="openFichaModal(this)">
+                        <img src="galeria/unniplaza.jpg" alt="Venustiano Carranza" class="catalog-img"
+                            onclick="openFichaModal(this)" style="cursor:pointer;">
+                        <div class="catalog-content">
+                            <div class="catalog-meta">
+                                <div>
+                                    <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Venustiano
+                                        Carranza</h3>
+                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">
+                                        Comercial & Entretenimiento</p>
+                                </div>
+                                <span class="badge badge-orange" onclick="openFichaModal(this)"
+                                    style="cursor:pointer;">0
+                                    DISPONIBLES</span>
+                            </div>
+                            <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
+                                La estrategia comercial se orienta a mantener una ocupación del 100%, promoviendo la
+                                permanencia de arrendatarios con operaciones consolidadas.
+                            </p>
+                            <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
+                                <span
+                                    style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">TENANT
+                                    MIX</span>
+                                <p style="font-size: 0.85rem; font-weight: 500;">Mambo Café, La Dueña Vinos & Llantera.
+                                </p>
+                            </div>
+                            <div class="catalog-actions">
+                                <button onclick="openMatchDrawer()" class="btn btn-dark">Solicitar Ficha
+                                    Detallada</button>
+                                <button type="button" class="btn btn-details"
+                                    onclick="openFichaModal(this)">Detalles</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Inmueble 15: Wenceslao Labra -->
+                    <div class="catalog-item catalog-card-stagger" data-ficha="wenceslao-labra" style="cursor:pointer;"
+                        onclick="openFichaModal(this)">
+                        <img src="galeria/unniplaza.jpg" alt="Wenceslao Labra" class="catalog-img"
+                            onclick="openFichaModal(this)" style="cursor:pointer;">
+                        <div class="catalog-content">
+                            <div class="catalog-meta">
+                                <div>
+                                    <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Wenceslao
+                                        Labra</h3>
+                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">Comercio
+                                        & Servicios Automotrices</p>
+                                </div>
+                                <span class="badge badge-orange" onclick="openFichaModal(this)"
+                                    style="cursor:pointer;">0
+                                    DISPONIBLES</span>
+                            </div>
+                            <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
+                                La estrategia comercial se enfoca en mantener una ocupación del 100% con arrendatarios
+                                de operaciones consolidadas.
+                            </p>
+                            <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
+                                <span
+                                    style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">TENANT
+                                    MIX</span>
+                                <p style="font-size: 0.85rem; font-weight: 500;">OXXO, Refaccionaria Diesel & Check
+                                    Point.</p>
+                            </div>
+                            <div class="catalog-actions">
+                                <button onclick="openMatchDrawer()" class="btn btn-dark">Solicitar Ficha
+                                    Detallada</button>
+                                <button type="button" class="btn btn-details"
+                                    onclick="openFichaModal(this)">Detalles</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Inmueble 16: Brígida García -->
+                    <div class="catalog-item catalog-card-stagger" data-ficha="brigida-garcia" style="cursor:pointer;"
+                        onclick="openFichaModal(this)">
+                        <img src="galeria/unniplaza.jpg" alt="Brígida García" class="catalog-img"
+                            onclick="openFichaModal(this)" style="cursor:pointer;">
+                        <div class="catalog-content">
+                            <div class="catalog-meta">
+                                <div>
+                                    <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Brígida
+                                        García</h3>
+                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">
+                                        Comercial & Salud</p>
+                                </div>
+                                <span class="badge badge-orange" onclick="openFichaModal(this)"
+                                    style="cursor:pointer;">0
+                                    DISPONIBLES</span>
+                            </div>
+                            <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
+                                Mantener una ocupación estable mediante la conservación de arrendatarios con operaciones
+                                sólidas y la comercialización estratégica de los espacios.
+                            </p>
+                            <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
+                                <span
+                                    style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">TENANT
+                                    PROFILE</span>
+                                <p style="font-size: 0.85rem; font-weight: 500;">Farmacia Similares & CARFAGO.</p>
+                            </div>
+                            <div class="catalog-actions">
+                                <button onclick="openMatchDrawer()" class="btn btn-dark">Solicitar Ficha
+                                    Detallada</button>
+                                <button type="button" class="btn btn-details"
+                                    onclick="openFichaModal(this)">Detalles</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+        </section>
+
+        <!-- 08. Sección 7: Pilar de Integridad (z-index: 14, Cortina Vertical) -->
+        <section class="section section-curtain-integrity" id="pilar-integridad">
+            <div class="container integridad-container">
+                <!-- Columna Izquierda (Título Editorial + Descripción + CTA) -->
+                <div class="integridad-left-col">
+                    <span class="badge integridad-badge">Pilar de Integridad</span>
+                    <h2 class="text-title integridad-title">Confianza construida<br>en absoluta discreción.</h2>
+                    <p class="text-muted integridad-desc">
+                        La integridad es el activo invisible detrás de cada operación.
+                        Confidencialidad, discreción, seguridad y confianza protegen
+                        cada cifra, cada nombre y cada estrategia de nuestros clientes.
+                    </p>
+                    <button onclick="openCompromisoDrawer(); return false;" class="btn btn-outline btn-outline-white"
+                        style="border-radius: 2px;">Nuestro compromiso</button>
+                </div>
+
+                <!-- Columna Derecha (Pilares de Integridad) -->
+                <div class="integridad-right-col">
+                    <!-- 1. Integridad -->
+                    <div class="integridad-card integridad-card-stagger">
+                        <div class="integridad-card-num">01</div>
+                        <h4>Integridad</h4>
+                        <p>Principios innegociables. Lo que prometemos se cumple y lo que se cumple se documenta.</p>
+                    </div>
+
+                    <!-- 2. Confidencialidad -->
+                    <div class="integridad-card integridad-card-stagger">
+                        <div class="integridad-card-num">02</div>
+                        <h4>Confidencialidad</h4>
+                        <p>Cada cifra, nombre y estrategia permanecen bajo estricto resguardo. Su información es un
+                            activo, no un dato.</p>
+                    </div>
+
+                    <!-- 3. Discreción -->
+                    <div class="integridad-card integridad-card-stagger">
+                        <div class="integridad-card-num">03</div>
+                        <h4>Discreción</h4>
+                        <p>Operamos sin ruido. Las negociaciones sensibles se gestionan con reserva total y presencia
+                            invisible.</p>
+                    </div>
+
+                    <!-- 4. Seguridad -->
+                    <div class="integridad-card integridad-card-stagger">
+                        <div class="integridad-card-num">04</div>
+                        <h4>Seguridad</h4>
+                        <p>Resguardo documental y legal con protocolos rigurosos para proteger cada operación.</p>
+                    </div>
+
+                    <!-- 5. Confianza -->
+                    <div class="integridad-card integridad-card-stagger integridad-card-wide">
+                        <div class="integridad-card-num">05</div>
+                        <h4>Confianza</h4>
+                        <p>Relaciones de largo plazo construidas sobre transparencia radical y resultados verificables.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 09. Sección 8: Idea Lab (z-index: 14, Cortina Vertical) -->
+        <section class="section section-curtain-idealab" id="idea-lab">
+            <div class="container idealab-container">
+                <!-- Columna Izquierda (Título Editorial + Procesos) -->
+                <div class="idealab-left-col">
+                    <span class="badge idealab-badge">Idea Lab</span>
+                    <h2 class="text-title idealab-title">El laboratorio<br>de ideas viables.</h2>
+
+                    <!-- Procesos del Laboratorio -->
+                    <div class="idealab-right-col">
+                        <!-- 1. Brief de Ocupación -->
+                        <div class="idealab-card idealab-card-stagger">
+                            <div class="idealab-card-num">01</div>
+                            <h4>Brief de Ocupación</h4>
+                            <p>Convertimos tu concepto en requisitos medibles: metraje, giro, perfil de tenant y
+                                presupuesto operativo.</p>
+                        </div>
+
+                        <!-- 2. Fittable Score -->
+                        <div class="idealab-card idealab-card-stagger">
+                            <div class="idealab-card-num">02</div>
+                            <h4>Fittable Score</h4>
+                            <p>Puntuación de compatibilidad entre tu idea y cada espacio disponible de nuestra red de
+                                plazas.</p>
+                        </div>
+
+                        <!-- 3. Stress Test -->
+                        <div class="idealab-card idealab-card-stagger">
+                            <div class="idealab-card-num">03</div>
+                            <h4>Stress Test</h4>
+                            <p>Proyección de riesgo y punto de equilibrio por localización. Sin eufemismos, solo
+                                números.</p>
+                        </div>
+
+                        <!-- 4. Match Report -->
+                        <div class="idealab-card idealab-card-stagger">
+                            <div class="idealab-card-num">04</div>
+                            <h4>Match Report</h4>
+                            <p>Dossier con los espacios de mejor ajuste y cifras crudas para tu toma de decisión.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha (Marquee Vertical de Fotos con Efecto TiltedCard 3D — Galería 3) -->
+                <div class="idealab-gallery-col">
+                    <div class="idealab-gallery-track">
+                        <div class="idealab-gallery-list">
+                            <div class="tilted-card">
+                                <img src="galeria 3/villanueva.png" alt="Felipe Villanueva">
+                                <div class="tilted-card-overlay"><p class="tilted-card-text">Felipe Villanueva</p></div>
+                                <div class="tilted-card-glare"></div>
+                            </div>
+                            <div class="tilted-card">
+                                <img src="galeria 3/hidalgo.jpeg" alt="Edificio Hidalgo">
+                                <div class="tilted-card-overlay"><p class="tilted-card-text">Edificio Hidalgo</p></div>
+                                <div class="tilted-card-glare"></div>
+                            </div>
+                            <div class="tilted-card">
+                                <img src="galeria 3/paseo central.jpg" alt="Paseo Central">
+                                <div class="tilted-card-overlay"><p class="tilted-card-text">Paseo Central</p></div>
+                                <div class="tilted-card-glare"></div>
+                            </div>
+                            <div class="tilted-card">
+                                <img src="galeria 3/pinosuarez.jpeg" alt="Pino Suárez">
+                                <div class="tilted-card-overlay"><p class="tilted-card-text">Pino Suárez</p></div>
+                                <div class="tilted-card-glare"></div>
+                            </div>
+                            <div class="tilted-card">
+                                <img src="galeria 3/villada.png" alt="Villada">
+                                <div class="tilted-card-overlay"><p class="tilted-card-text">Villada</p></div>
+                                <div class="tilted-card-glare"></div>
+                            </div>
+                            <div class="tilted-card">
+                                <img src="galeria 3/riva palacio.jpg" alt="Riva Palacio">
+                                <div class="tilted-card-overlay"><p class="tilted-card-text">Riva Palacio</p></div>
+                                <div class="tilted-card-glare"></div>
+                            </div>
+                        </div>
+                        <div class="idealab-gallery-list" aria-hidden="true">
+                            <div class="tilted-card">
+                                <img src="galeria 3/villanueva.png" alt="">
+                                <div class="tilted-card-overlay"><p class="tilted-card-text">Felipe Villanueva</p></div>
+                                <div class="tilted-card-glare"></div>
+                            </div>
+                            <div class="tilted-card">
+                                <img src="galeria 3/hidalgo.jpeg" alt="">
+                                <div class="tilted-card-overlay"><p class="tilted-card-text">Edificio Hidalgo</p></div>
+                                <div class="tilted-card-glare"></div>
+                            </div>
+                            <div class="tilted-card">
+                                <img src="galeria 3/paseo central.jpg" alt="">
+                                <div class="tilted-card-overlay"><p class="tilted-card-text">Paseo Central</p></div>
+                                <div class="tilted-card-glare"></div>
+                            </div>
+                            <div class="tilted-card">
+                                <img src="galeria 3/pinosuarez.jpeg" alt="">
+                                <div class="tilted-card-overlay"><p class="tilted-card-text">Pino Suárez</p></div>
+                                <div class="tilted-card-glare"></div>
+                            </div>
+                            <div class="tilted-card">
+                                <img src="galeria 3/villada.png" alt="">
+                                <div class="tilted-card-overlay"><p class="tilted-card-text">Villada</p></div>
+                                <div class="tilted-card-glare"></div>
+                            </div>
+                            <div class="tilted-card">
+                                <img src="galeria 3/riva palacio.jpg" alt="">
+                                <div class="tilted-card-overlay"><p class="tilted-card-text">Riva Palacio</p></div>
+                                <div class="tilted-card-glare"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </section>
+
+        <!-- 10. Sección 9: Valor MáximoART (Fondo Verde Oscuro, SVG 60% MaskedHeading + Carrusel Izquierda a Derecha, z-index: 15) -->
+        <section class="section section-curtain-vmart" id="valormaximoart">
+
+            <!-- SVG Mask Centerpiece (Abarcando el 60% de la sección) -->
+            <div class="vmart-masked-container reveal">
+                <div class="vmart-mask-track">
+                    <img src="valormaximoART/0c1d194ed76fada0705204fc96bce180.jpg" alt="Arte 1">
+                    <img src="valormaximoART/0f9bae2c281d0acad623fe111ef13bc4.jpg" alt="Arte 2">
+                    <img src="valormaximoART/107b322401fcfc81014054b902fa4301.jpg" alt="Arte 3">
+                    <img src="valormaximoART/22e013e74f92ff56814c0523b9d8ea19.jpg" alt="Arte 4">
+                    <img src="valormaximoART/52e4285a050dd168c90a3df236ebedfa.jpg" alt="Arte 5">
+                    <img src="valormaximoART/76c339f1cb04a378b73d3c2df9a91bcd.jpg" alt="Arte 6">
+                    <img src="valormaximoART/8388d28c9479d74bc7172d828307dd08.jpg" alt="Arte 7">
+                    <img src="valormaximoART/9ff09c1156962c15f65e8bb85240ec2e.jpg" alt="Arte 8">
+                    <img src="valormaximoART/bc0f4db2dcbac1c04d826ad395dbe506.jpg" alt="Arte 9">
+                    <img src="valormaximoART/d399b1a5bfab57de3bbba91441225b04.jpg" alt="Arte 10">
+                    <img src="valormaximoART/eba9a04b15690ef7ce28d9cf02c50485.jpg" alt="Arte 11">
+
+                    <!-- Copia para el flujo infinito continuo -->
+                    <img src="valormaximoART/0c1d194ed76fada0705204fc96bce180.jpg" alt="">
+                    <img src="valormaximoART/0f9bae2c281d0acad623fe111ef13bc4.jpg" alt="">
+                    <img src="valormaximoART/107b322401fcfc81014054b902fa4301.jpg" alt="">
+                    <img src="valormaximoART/22e013e74f92ff56814c0523b9d8ea19.jpg" alt="">
+                    <img src="valormaximoART/52e4285a050dd168c90a3df236ebedfa.jpg" alt="">
+                    <img src="valormaximoART/76c339f1cb04a378b73d3c2df9a91bcd.jpg" alt="">
+                    <img src="valormaximoART/8388d28c9479d74bc7172d828307dd08.jpg" alt="">
+                    <img src="valormaximoART/9ff09c1156962c15f65e8bb85240ec2e.jpg" alt="">
+                    <img src="valormaximoART/bc0f4db2dcbac1c04d826ad395dbe506.jpg" alt="">
+                    <img src="valormaximoART/d399b1a5bfab57de3bbba91441225b04.jpg" alt="">
+                    <img src="valormaximoART/eba9a04b15690ef7ce28d9cf02c50485.jpg" alt="">
+                </div>
+            </div>
+
+            <!-- Carrusel de Fondo Secundario en Desfile (Izquierda a Derecha) -->
+            <div class="vmart-backdrop-carousel">
+                <div class="vmart-backdrop-track">
+                    <img src="valormaximoART/0c1d194ed76fada0705204fc96bce180.jpg" alt="">
+                    <img src="valormaximoART/0f9bae2c281d0acad623fe111ef13bc4.jpg" alt="">
+                    <img src="valormaximoART/107b322401fcfc81014054b902fa4301.jpg" alt="">
+                    <img src="valormaximoART/22e013e74f92ff56814c0523b9d8ea19.jpg" alt="">
+                    <img src="valormaximoART/52e4285a050dd168c90a3df236ebedfa.jpg" alt="">
+                    <img src="valormaximoART/76c339f1cb04a378b73d3c2df9a91bcd.jpg" alt="">
+                    <img src="valormaximoART/8388d28c9479d74bc7172d828307dd08.jpg" alt="">
+                    <img src="valormaximoART/9ff09c1156962c15f65e8bb85240ec2e.jpg" alt="">
+                    <img src="valormaximoART/bc0f4db2dcbac1c04d826ad395dbe506.jpg" alt="">
+                    <img src="valormaximoART/d399b1a5bfab57de3bbba91441225b04.jpg" alt="">
+                    <img src="valormaximoART/eba9a04b15690ef7ce28d9cf02c50485.jpg" alt="">
+
+                    <!-- Duplicado para loop continuo -->
+                    <img src="valormaximoART/0c1d194ed76fada0705204fc96bce180.jpg" alt="">
+                    <img src="valormaximoART/0f9bae2c281d0acad623fe111ef13bc4.jpg" alt="">
+                    <img src="valormaximoART/107b322401fcfc81014054b902fa4301.jpg" alt="">
+                    <img src="valormaximoART/22e013e74f92ff56814c0523b9d8ea19.jpg" alt="">
+                    <img src="valormaximoART/52e4285a050dd168c90a3df236ebedfa.jpg" alt="">
+                    <img src="valormaximoART/76c339f1cb04a378b73d3c2df9a91bcd.jpg" alt="">
+                    <img src="valormaximoART/8388d28c9479d74bc7172d828307dd08.jpg" alt="">
+                    <img src="valormaximoART/9ff09c1156962c15f65e8bb85240ec2e.jpg" alt="">
+                    <img src="valormaximoART/bc0f4db2dcbac1c04d826ad395dbe506.jpg" alt="">
+                    <img src="valormaximoART/d399b1a5bfab57de3bbba91441225b04.jpg" alt="">
+                    <img src="valormaximoART/eba9a04b15690ef7ce28d9cf02c50485.jpg" alt="">
+                </div>
+            </div>
+
+            <!-- Footer integrado en la parte inferior de la sección -->
+            <footer class="site-footer">
+                <div class="container footer-inner">
+                    <div class="footer-brand">
+                        <img src="valorM01.svg" alt="Valor Máximo" class="footer-logo">
+                        <p>Real Estate de precisión. Conectamos al arrendador con el emprendedor en el lugar y momento
+                            correcto.</p>
+                    </div>
+                    <div class="footer-links">
+                        <a href="#inicio" onclick="scrollToTimelineSection(event, 0)" class="footer-home-btn">Inicio</a>
+                        <a href="#el-match" onclick="scrollToTimelineSection(event, 8.5)">Catálogo</a>
+                        <a href="#idea-lab" onclick="scrollToTimelineSection(event, 17.5)">Idea Lab</a>
+                        <a href="#" onclick="openMatchDrawer(); return false;">Cotizaciones</a>
+                        <a href="#testimonios">Testimonios</a>
+                    </div>
+                </div>
+                <div class="container footer-legal">
+                    &copy; 2026 Valor Máximo. Todos los derechos reservados.
+                </div>
+            </footer>
         </section>
     </div>
 
@@ -484,10 +1120,7 @@
                 <!-- Top Actions: Pestañas de Modo + Botón Cerrar X -->
                 <div class="vm-drawer-header">
                     <div class="vm-drawer-tabs">
-                        <button type="button" class="drawer-tab-btn active" data-tab="licitacion"
-                            onclick="setDrawerMode('licitacion', this)">LICITACIÓN</button>
-                        <button type="button" class="drawer-tab-btn" data-tab="llamar"
-                            onclick="setDrawerMode('llamar', this)">LLAMAR DE VUELTA</button>
+                        <button type="button" class="drawer-tab-btn active" data-tab="formulario">FORMULARIO</button>
                     </div>
                     <button type="button" class="vm-drawer-close" onclick="closeMatchDrawer()"
                         aria-label="Cerrar formulario">&times;</button>
@@ -555,8 +1188,182 @@
         </div>
     </div>
 
+    <!-- Modal / Ventana Desplegable: Filosofía y Gestión de Crisis (100% ancho) -->
+    <div class="philosophy-drawer-overlay" id="philosophy-drawer-overlay"
+        onclick="closePhilosophyDrawerOnBackdrop(event)">
+        <div class="philosophy-drawer-panel" id="philosophy-drawer-panel">
+            <button type="button" class="philosophy-drawer-close" onclick="closePhilosophyDrawer()"
+                aria-label="Cerrar filosofía">&times;</button>
+
+            <div class="philosophy-container">
+                <!-- Parte Superior: Manifiesto -->
+                <div class="philosophy-header text-center">
+                    <span class="badge philosophy-badge">Manifiesto V2 — Valor Máximo</span>
+                    <h2 class="text-title philosophy-main-title">Filosofía y<br>Gestión de Crisis</h2>
+                    <p class="philosophy-subtitle">
+                        La excelencia no se define por lo que logras en un entorno normal. Se define en los momentos de
+                        crisis, donde lo predecible es ausente y lo impensable es inminente.
+                    </p>
+                </div>
+
+                <!-- Parte Inferior: Autoridad Ejecutiva (CEO vs Operaciones) -->
+                <div class="philosophy-body-grid">
+                    <div class="philosophy-body-left">
+                        <span class="philosophy-tag">| 10 Años de Precisión</span>
+                        <h3 class="philosophy-exec-title">AUTORIDAD<br>EJECUTIVA</h3>
+                    </div>
+                    <div class="philosophy-body-right">
+                        <p class="philosophy-body-desc">
+                            Un enfoque dual que separa radicalmente el trato humano de la disciplina implacable.
+                            Mientras la dirección general asegura el "human touch" y la planeación estratégica, nuestra
+                            unidad de operaciones ejecuta peritajes, negociaciones y cierres con precisión quirúrgica.
+                        </p>
+                        <div class="philosophy-roles-grid">
+                            <div class="philosophy-role-card">
+                                <h4>CEO</h4>
+                                <p>Relaciones públicas de alto nivel, macroestrategia y alineación de intereses a largo
+                                    plazo.</p>
+                            </div>
+                            <div class="philosophy-role-card">
+                                <h4>OPERACIONES</h4>
+                                <p>Ejecución táctica implacable, mantenimiento continuo, y gestión inmediata de
+                                    arrendatarios.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal / Ventana Desplegable: Nuestro Compromiso (Criterio Rector de la Propuesta) -->
+    <div class="philosophy-drawer-overlay" id="compromiso-drawer-overlay"
+        onclick="closeCompromisoDrawerOnBackdrop(event)">
+        <div class="philosophy-drawer-panel" id="compromiso-drawer-panel">
+            <button type="button" class="philosophy-drawer-close" onclick="closeCompromisoDrawer()"
+                aria-label="Cerrar compromiso">&times;</button>
+
+            <div class="philosophy-container">
+                <!-- Parte Inferior: La confianza no se declara, se demuestra -->
+                <div class="philosophy-body-grid">
+                    <div class="philosophy-body-left">
+                        <span class="philosophy-tag">| Criterio Rector</span>
+                        <h3 class="philosophy-exec-title">La confianza<br>no se declara:<br>se demuestra.</h3>
+                        <p class="philosophy-body-desc">
+                            Valor Máximo no se limita a afirmar que es una empresa confiable. Lo demuestra con
+                            información verificable, límites explícitos, tratamiento responsable de los datos,
+                            continuidad de la atención y transferencia humana en decisiones sensibles.
+                        </p>
+                        <p class="philosophy-body-desc">
+                            La finalidad es orientar a prospectos, clientes, propietarios, inversionistas y aliados
+                            sobre
+                            cómo usamos la información, qué compromisos rigen la relación y qué pueden esperar
+                            después de compartir sus datos.
+                        </p>
+                    </div>
+                    <div class="philosophy-body-right">
+                        <div class="philosophy-roles-grid">
+                            <div class="philosophy-role-card">
+                                <h4>INFORMACIÓN PARA DECIDIR</h4>
+                                <p>Utilizamos la información compartida para orientar cada recomendación y definir el
+                                    contexto de tu decisión.</p>
+                            </div>
+                            <div class="philosophy-role-card">
+                                <h4>COMPROMISOS DE LA RELACIÓN</h4>
+                                <p>Confidencialidad, discreción y transparencia rigen cada interacción, de la primera
+                                    conversación al cierre.</p>
+                            </div>
+                            <div class="philosophy-role-card">
+                                <h4>DATOS CON PROPÓSITO</h4>
+                                <p>Solo solicitamos la información necesaria y explicamos para qué sirve cada dato. Nada
+                                    se pide sin un fin claro.</p>
+                            </div>
+                            <div class="philosophy-role-card">
+                                <h4>CRITERIO HUMANO EN LO SENSIBLE</h4>
+                                <p>La automatización asiste, pero las decisiones delicadas siempre pasan por una
+                                    transferencia humana.</p>
+                            </div>
+                            <div class="philosophy-role-card">
+                                <h4>EVIDENCIAS VERIFICABLES</h4>
+                                <p>Cada afirmación se respalda con resultados y hechos comprobables, no con adjetivos.
+                                </p>
+                            </div>
+                            <div class="philosophy-role-card">
+                                <h4>LÍMITES EXPLÍCITOS</h4>
+                                <p>Reconocemos qué podemos garantizar y qué no. Una promesa responsable nunca se
+                                    convierte en una garantía irreal.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal / Ventana Desplegable: Propuestas de Uso (Idea Lab Galería) -->
+    <div class="propuestas-modal-overlay" id="propuestas-modal-overlay" onclick="closePropuestasModalOnBackdrop(event)">
+        <div class="propuestas-modal" id="propuestas-modal">
+            <button type="button" class="philosophy-drawer-close" onclick="closePropuestasModal()"
+                aria-label="Cerrar propuestas">&times;</button>
+
+            <div class="propuestas-modal-header">
+                <span class="badge philosophy-badge">Propuestas de uso</span>
+                <h2 class="text-title propuestas-modal-title" id="propuestas-modal-title">Ubicación</h2>
+            </div>
+
+            <div class="propuestas-track-viewport">
+                <div class="propuestas-track" id="propuestas-track"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal / Ventana Desplegable: Ficha Detallada del Inmueble -->
+    <div class="ficha-modal-overlay" id="ficha-modal-overlay" onclick="closeFichaModalOnBackdrop(event)">
+        <div class="ficha-modal" id="ficha-modal">
+            <button type="button" class="philosophy-drawer-close" onclick="closeFichaModal()"
+                aria-label="Cerrar ficha">&times;</button>
+
+            <div class="ficha-modal-header">
+                <span class="badge philosophy-badge">Ficha Técnica</span>
+                <h2 class="text-title ficha-modal-title" id="ficha-modal-title">Felipe Villanueva</h2>
+            </div>
+
+            <div class="ficha-modal-body">
+                <!-- Lado Izquierdo: Desfile de Fotos (izquierda a derecha) -->
+                <div class="ficha-photos-viewport" id="ficha-photos-viewport">
+                    <div class="ficha-photos-track" id="ficha-photos-track"></div>
+                </div>
+
+                <!-- Lado Derecho: Tabla Técnica -->
+                <div class="ficha-tech">
+                    <h3 class="ficha-tech-title">Datos del espacio</h3>
+                    <table class="ficha-table" id="ficha-table"></table>
+
+                    <h3 class="ficha-tech-title" id="ficha-general-title" style="margin-top:1.5rem;">Datos Generales
+                    </h3>
+                    <table class="ficha-table" id="ficha-general-table"></table>
+
+                    <h3 class="ficha-tech-title" id="ficha-ubicacion-title" style="margin-top:1.5rem;">Ubicación</h3>
+                    <div class="ficha-ubicacion" id="ficha-ubicacion">
+                        <iframe
+                            src="https://maps.google.com/maps?q=19.2928195,-99.6557402&z=17&ie=UTF8&iwloc=&output=embed"
+                            width="100%" height="220" style="border:0;" allowfullscreen=""
+                            referrerpolicy="no-referrer-when-downgrade" title="Ubicación de Riva Palacio"></iframe>
+                        <a class="ficha-ubicacion-link" href="https://maps.app.goo.gl/VjfTWGnuPBXwjuLr8" target="_blank"
+                            rel="noopener">Abrir en Google Maps</a>
+                    </div>
+
+                    <div class="ficha-tech-note">
+                        <p>Los valores son de referencia y pueden variar según la negociación y el local
+                            seleccionado.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="main.js"></script>
-    <script src="script.js"></script>
+    <script src="script.js?v=85.0"></script>
 </body>
 
 </html>
