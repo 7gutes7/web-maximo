@@ -249,6 +249,7 @@ function initHeroMagneticSnap() {
 // Snap Magnético de la Sección 2 (El Diferenciador Absoluto) — centra en 1.0vh
 // Umbral 0.33: énfasis, incluye el tramo donde la Sección 3 se asoma parcialmente.
 function initSection2MagneticSnap() {
+    if (window.innerWidth <= 768) return;
     createMagneticSnap({
         revealStartVh: 0,
         revealEndVh: 1,
@@ -305,23 +306,40 @@ function initCurtainReveals() {
     const wrapper = document.querySelector('.curtain-wrapper');
     const esencia = document.getElementById('esencia');
     if (!wrapper || !esencia) return;
+    const container = esencia.querySelector('.container');
 
     function update() {
         const rect = wrapper.getBoundingClientRect();
         const vh = window.innerHeight;
         const scrolled = -rect.top;
-        // Retraso de entrada de 100-150px (+0.15vh) antes de iniciar el despliegue de cortina
+        // Cortina Sección 2 despliega de 0.15vh a 1.0vh
         const progress = Math.min(1, Math.max(0, (scrolled - 0.15 * vh) / (0.85 * vh)));
         const clipPercent = (1 - progress) * 100;
 
         esencia.style.setProperty('--curtain', `${clipPercent}%`);
 
-        // Parallax slide-up and fade-in for section 2 content container
-        const container = esencia.querySelector('.container');
         if (container) {
-            const translateY = (1 - progress) * 60; // slides up smoothly
-            container.style.transform = `translateY(${translateY}px)`;
-            container.style.opacity = progress;
+            if (progress < 1.0) {
+                if (window.innerWidth > 768) {
+                    const translateY = (1 - progress) * 60;
+                    container.style.transform = `translate3d(0, ${translateY}px, 0)`;
+                    container.style.opacity = progress;
+                } else {
+                    container.style.transform = `translate3d(0, 0px, 0)`;
+                    container.style.opacity = 1;
+                }
+            } else {
+                // Scroll interno activo de 1.0vh a 3.6vh (mientras la cortina de la sig. sección está 100% DESACTIVADA).
+                // A 3.6vh el recuadro 'Acondicionamiento y Construcción' ya está 100% visible. Se da una pausa hasta 4.3vh.
+                const activeScrolled = Math.max(0, scrolled - 1.0 * vh);
+                const totalActiveTravel = 2.6 * vh;
+                const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
+                const maxScroll = Math.max(0, container.scrollHeight - vh + 80);
+
+                const translateYValue = -flowProgress * maxScroll;
+                container.style.transform = `translate3d(0, ${translateYValue}px, 0)`;
+                container.style.opacity = 1;
+            }
         }
     }
 
@@ -339,16 +357,33 @@ function initGaleriaCurtain() {
     const galeria = document.getElementById('galeria-comercial');
     const wrapper = document.querySelector('.curtain-wrapper');
     if (!galeria || !wrapper) return;
+    const container = galeria.querySelector('.container');
 
     function update() {
         const rect = wrapper.getBoundingClientRect();
         const vh = window.innerHeight;
         const scrolled = -rect.top;
-        // Retraso de entrada de 100-150px (+0.15vh): Revelación de Galería Comercial de 3.65vh a 4.5vh
-        const progress = Math.min(1, Math.max(0, (scrolled - 3.65 * vh) / (0.85 * vh)));
+
+        // La cortina SÓLO se activa a partir de 9.5vh (tras completar la Sección 3)
+        const progress = Math.min(1, Math.max(0, (scrolled - 9.5 * vh) / (0.7 * vh)));
         const clipPercent = (1 - progress) * 100;
 
         galeria.style.setProperty('--curtain-galeria', `${clipPercent}%`);
+
+        if (container) {
+            if (progress < 1.0) {
+                container.style.transform = `translate3d(0, 0px, 0)`;
+            } else {
+                // Scroll interno compacto de Galería Comercial activo de 10.2vh a 10.7vh
+                const activeScrolled = Math.max(0, scrolled - 10.2 * vh);
+                const totalActiveTravel = 0.5 * vh;
+                const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
+                const maxScroll = Math.max(0, container.scrollHeight - vh + 50);
+
+                const translateYValue = -flowProgress * maxScroll;
+                container.style.transform = `translate3d(0, ${translateYValue}px, 0)`;
+            }
+        }
     }
 
     const lenis = window.lenis;
@@ -371,20 +406,18 @@ function initTransitionCurtain() {
         const vh = window.innerHeight;
         const scrolled = -rect.top;
 
-        // Retraso de entrada de 100-150px (+0.15vh): Inicia la revelación a 4.65vh hasta 6.5vh
-        const progress = Math.min(1, Math.max(0, (scrolled - 4.65 * vh) / (1.85 * vh)));
+        // Cortina de Sección 5 SÓLO se activa a partir de 10.7vh (transición rápida e inmediata tras Galería Comercial)
+        const progress = Math.min(1, Math.max(0, (scrolled - 10.7 * vh) / (1.0 * vh)));
 
         let clipPathValue = '';
 
         if (progress <= 0.5) {
-            // Fase 1: Revela la mitad derecha (50% a 100%), de arriba hacia abajo (0% a 100%)
-            const phase1 = progress / 0.5; // 0.0 a 1.0
+            const phase1 = progress / 0.5;
             const yPercent = phase1 * 100;
             clipPathValue = `polygon(50% 0%, 100% 0%, 100% ${yPercent}%, 50% ${yPercent}%)`;
         } else {
-            // Fase 2: Mitad derecha 100% visible, abre la mitad izquierda del centro (50%) a la izquierda (0%)
-            const phase2 = (progress - 0.5) / 0.5; // 0.0 a 1.0
-            const xLeft = 50 - phase2 * 50; // 50% a 0%
+            const phase2 = (progress - 0.5) / 0.5;
+            const xLeft = 50 - phase2 * 50;
             clipPathValue = `polygon(${xLeft}% 0%, 100% 0%, 100% 100%, ${xLeft}% 100%)`;
         }
 
@@ -408,11 +441,12 @@ function initMatchCatalogCurtain() {
     if (!sec || !wrapper) return;
 
     const rightCol = sec.querySelector('.catalog-right-col');
+    const container = sec.querySelector('.catalog-grid-container');
     const scrollIndicator = document.getElementById('catalog-scroll-indicator');
 
     let maxTranslate = 0;
     function measureLayout() {
-        if (rightCol) {
+        if (rightCol && window.innerWidth > 768) {
             const vh = window.innerHeight;
             maxTranslate = Math.max(0, rightCol.scrollHeight - vh + 300);
         }
@@ -425,18 +459,16 @@ function initMatchCatalogCurtain() {
         const vh = window.innerHeight;
         const scrolled = -rect.top;
 
-        // Retraso de entrada de 100-150px (+0.15vh): Cortina Sección 6 inicia a 6.65vh hasta 8.5vh
-        const progressSec6 = Math.min(1, Math.max(0, (scrolled - 6.65 * vh) / (1.85 * vh)));
+        // Cortina de Catálogo se activa a partir de 12.2vh hasta 13.4vh
+        const progressSec6 = Math.min(1, Math.max(0, (scrolled - 12.2 * vh) / (1.2 * vh)));
 
         let clipPathValue = '';
 
         if (progressSec6 <= 0.5) {
-            // Fase 1: Revela la mitad izquierda (0% a 50%), de abajo hacia arriba (100% a 0%)
             const phase1 = progressSec6 / 0.5;
             const yTop = 100 - (phase1 * 100);
             clipPathValue = `polygon(0% ${yTop}%, 50% ${yTop}%, 50% 100%, 0% 100%)`;
         } else {
-            // Fase 2: Mitad izquierda 100% visible, abre la mitad derecha del centro (50%) a la derecha (100%)
             const phase2 = (progressSec6 - 0.5) / 0.5;
             const xRight = 50 + (phase2 * 50);
             clipPathValue = `polygon(0% 0%, ${xRight}% 0%, ${xRight}% 100%, 0% 100%)`;
@@ -445,29 +477,43 @@ function initMatchCatalogCurtain() {
         sec.style.clipPath = clipPathValue;
         sec.style.webkitClipPath = clipPathValue;
 
-        // Desfile flotante en la columna derecha
-        if (rightCol) {
-            const flowScrolled = Math.max(0, scrolled - 8.5 * vh);
-            const totalTravel = 5.0 * vh;
-            const flowProgress = Math.min(1, flowScrolled / totalTravel);
+        if (window.innerWidth > 768) {
+            if (rightCol) {
+                const flowScrolled = Math.max(0, scrolled - 13.4 * vh);
+                const totalTravel = 3.9 * vh;
+                const flowProgress = Math.min(1, flowScrolled / totalTravel);
 
-            const translateYValue = -flowProgress * maxTranslate;
+                const translateYValue = -flowProgress * maxTranslate;
 
-            rightCol.style.transform = `translate3d(0, ${translateYValue}px, 0)`;
+                rightCol.style.transform = `translate3d(0, ${translateYValue}px, 0)`;
 
-            if (scrollIndicator) {
-                const isFadedOut = flowScrolled > 120 || progressSec6 < 0.2;
-                scrollIndicator.classList.toggle('hidden', isFadedOut);
+                if (scrollIndicator) {
+                    const isFadedOut = flowScrolled > 120 || progressSec6 < 0.2;
+                    scrollIndicator.classList.toggle('hidden', isFadedOut);
+                }
+            }
+            if (container) container.style.transform = `translate3d(0, 0px, 0)`;
+        } else {
+            // Modo responsive: traslación fluida del contenedor completo sin textos ni elementos fijos o pegajosos
+            if (rightCol) rightCol.style.transform = `none`;
+            if (container) {
+                if (progressSec6 < 1.0) {
+                    container.style.transform = `translate3d(0, 0px, 0)`;
+                } else {
+                    const flowScrolled = Math.max(0, scrolled - 13.4 * vh);
+                    const totalTravel = 3.9 * vh;
+                    const flowProgress = Math.min(1, flowScrolled / totalTravel);
+                    const maxScroll = Math.max(0, container.scrollHeight - vh + 100);
+
+                    const translateYValue = -flowProgress * maxScroll;
+                    container.style.transform = `translate3d(0, ${translateYValue}px, 0)`;
+                }
             }
         }
 
-        // Ocultar botón flotante global de navegación en las secciones de cortina
-        // (Catálogo 8.5vh–13.5vh + Integridad 13.5vh–14.5vh + Idea Lab 14.5vh–17.5vh + Testimonios 17.5vh–19.5vh).
-        // La Sección 5 (Transición 6.5vh–8.5vh) conserva la flecha visible.
-        // En la última sección (Testimonios) y al final, la flecha no vuelve a mostrarse.
         const globalScrollBtn = document.getElementById('global-scroll-btn');
         if (globalScrollBtn) {
-            const isCurtainFlow = scrolled >= 8.5 * vh;
+            const isCurtainFlow = scrolled >= 12.2 * vh;
             globalScrollBtn.classList.toggle('hidden', isCurtainFlow);
         }
     }
@@ -488,30 +534,45 @@ function initIntegrityCurtain() {
     if (!sec || !wrapper) return;
 
     const leftCol = sec.querySelector('.integridad-left-col');
+    const container = sec.querySelector('.container');
     const staggerEls = sec.querySelectorAll('.integridad-card-stagger');
-    const cardThresholds = [13.7, 13.9, 14.1, 14.3, 14.5];
+    const cardThresholds = [18.3, 18.8, 19.3, 19.8, 20.3];
 
     function update() {
         const rect = wrapper.getBoundingClientRect();
         const vh = window.innerHeight;
         const scrolled = -rect.top;
 
-        // Retraso de entrada de 100-150px (+0.15vh): Revelación de 13.65vh a 14.5vh
-        const progress = Math.min(1, Math.max(0, (scrolled - 13.65 * vh) / (0.85 * vh)));
+        // Cortina SÓLO se activa a partir de 17.3vh hasta 18.15vh
+        const progress = Math.min(1, Math.max(0, (scrolled - 17.3 * vh) / (0.85 * vh)));
         const clipPercent = (1 - progress) * 100;
         sec.style.setProperty('--curtain-integrity', `${clipPercent}%`);
 
-        // Parallax slide-up y fade-in del contenido izquierdo
-        if (leftCol) {
-            const translateY = (1 - progress) * 60;
-            leftCol.style.transform = `translateY(${translateY}px)`;
-            leftCol.style.opacity = progress;
+        if (progress < 1.0) {
+            if (leftCol && window.innerWidth > 768) {
+                const translateY = (1 - progress) * 60;
+                leftCol.style.transform = `translateY(${translateY}px)`;
+                leftCol.style.opacity = progress;
+            } else if (container) {
+                container.style.transform = `translate3d(0, 0px, 0)`;
+            }
+        } else {
+            // Scroll interno activo de 18.15vh a 20.5vh
+            if (container) {
+                const activeScrolled = Math.max(0, scrolled - 18.15 * vh);
+                const totalActiveTravel = 2.35 * vh;
+                const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
+                const maxScroll = Math.max(0, container.scrollHeight - vh + 80);
+
+                const translateYValue = -flowProgress * maxScroll;
+                container.style.transform = `translate3d(0, ${translateYValue}px, 0)`;
+            }
         }
 
         // Entrada escalonada de las tarjetas de pilares
         const progressTotal = scrolled / vh;
         staggerEls.forEach((card, index) => {
-            const threshold = cardThresholds[index] !== undefined ? cardThresholds[index] : (13.7 + index * 0.2);
+            const threshold = cardThresholds[index] !== undefined ? cardThresholds[index] : (18.3 + index * 0.5);
             card.classList.toggle('active', progressTotal >= threshold);
         });
     }
@@ -532,31 +593,50 @@ function initIdeaLabCurtain() {
     if (!sec || !wrapper) return;
 
     const leftCol = sec.querySelector('.idealab-left-col');
+    const container = sec.querySelector('.container');
     const staggerEls = sec.querySelectorAll('.idealab-card-stagger');
-    const cardThresholds = [15.8, 16.1, 16.4, 16.7];
+    const cardThresholds = [20.8, 21.2, 21.6, 22.0];
 
     function update() {
         const rect = wrapper.getBoundingClientRect();
         const vh = window.innerHeight;
         const scrolled = -rect.top;
 
-        // Retraso de entrada de 100-150px (+0.15vh): Revelación de 14.65vh a 16.5vh
-        const progress = Math.min(1, Math.max(0, (scrolled - 14.65 * vh) / (1.85 * vh)));
+        // Cortina SÓLO se activa a partir de 20.5vh hasta 21.5vh
+        const progress = Math.min(1, Math.max(0, (scrolled - 20.5 * vh) / (1.0 * vh)));
         const clipPercent = (1 - progress) * 100;
         sec.style.setProperty('--curtain-idealab', `${clipPercent}%`);
 
-        // Parallax slide-up y fade-in del contenido izquierdo
-        if (leftCol) {
-            const translateY = (1 - progress) * 60;
-            leftCol.style.transform = `translateY(${translateY}px)`;
-            leftCol.style.opacity = progress;
+        if (progress < 1.0) {
+            if (leftCol && window.innerWidth > 768) {
+                const translateY = (1 - progress) * 60;
+                leftCol.style.transform = `translateY(${translateY}px)`;
+                leftCol.style.opacity = progress;
+            } else if (container) {
+                container.style.transform = `translate3d(0, 0px, 0)`;
+            }
+        } else {
+            // Scroll interno activo de 21.5vh a 25.5vh (recorriendo los 4 procesos completos sobre fondo 100% inmóvil)
+            if (container) {
+                const activeScrolled = Math.max(0, scrolled - 21.5 * vh);
+                const totalActiveTravel = 4.0 * vh;
+                const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
+                const maxScroll = Math.max(0, container.scrollHeight - vh + 180);
+
+                const translateYValue = -flowProgress * maxScroll;
+                container.style.transform = `translate3d(0, ${translateYValue}px, 0)`;
+            }
         }
 
-        // Entrada escalonada de las tarjetas de procesos
+        // Entrada de las tarjetas de procesos
         const progressTotal = scrolled / vh;
         staggerEls.forEach((card, index) => {
-            const threshold = cardThresholds[index] !== undefined ? cardThresholds[index] : (15.8 + index * 0.3);
-            card.classList.toggle('active', progressTotal >= threshold);
+            if (window.innerWidth <= 768) {
+                card.classList.add('active');
+            } else {
+                const threshold = cardThresholds[index] !== undefined ? cardThresholds[index] : (20.8 + index * 0.4);
+                card.classList.toggle('active', progressTotal >= threshold);
+            }
         });
     }
 
@@ -574,16 +654,31 @@ function initTestimoniosCurtain() {
     const sec = document.getElementById('valormaximoart') || document.getElementById('testimonios');
     const wrapper = document.querySelector('.curtain-wrapper');
     if (!sec || !wrapper) return;
+    const container = sec.querySelector('.container');
 
     function update() {
         const rect = wrapper.getBoundingClientRect();
         const vh = window.innerHeight;
         const scrolled = -rect.top;
 
-        // Retraso de entrada de 100-150px (+0.15vh): Revelación de 17.65vh a 19.5vh
-        const progress = Math.min(1, Math.max(0, (scrolled - 17.65 * vh) / (1.85 * vh)));
+        // Cortina SÓLO se activa a partir de 25.5vh hasta 26.8vh
+        const progress = Math.min(1, Math.max(0, (scrolled - 25.5 * vh) / (1.3 * vh)));
         const clipPercent = (1 - progress) * 100;
         sec.style.setProperty('--curtain-testimonios', `${clipPercent}%`);
+
+        if (container) {
+            if (progress < 1.0) {
+                container.style.transform = `translate3d(0, 0px, 0)`;
+            } else {
+                const activeScrolled = Math.max(0, scrolled - 26.8 * vh);
+                const totalActiveTravel = 2.5 * vh;
+                const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
+                const maxScroll = Math.max(0, container.scrollHeight - vh + 80);
+
+                const translateYValue = -flowProgress * maxScroll;
+                container.style.transform = `translate3d(0, ${translateYValue}px, 0)`;
+            }
+        }
     }
 
     const lenis = window.lenis;
@@ -1040,13 +1135,15 @@ function initSilkBackground() {
     observer.observe(container);
 }
 
-// 0c. Curtain Reveal Horizontal y Secuencia Sticky Timeline (Sección 3)
+// 0c. Curtain Reveal Horizontal y Secuencia Sticky Timeline (Sección 3: Portafolio — Casos de Éxito)
 function initHorizontalCurtainReveals() {
     const leftCurtains = document.querySelectorAll('.section-curtain-left');
     if (!leftCurtains.length) return;
 
     const blurTextP = document.querySelector('.blur-text-element');
     const cards = document.querySelectorAll('.project-card-stagger');
+    const sec = document.getElementById('casos-exito');
+    const container = sec ? sec.querySelector('.portfolio-container') : null;
 
     function update() {
         const wrapper = document.querySelector('.curtain-wrapper');
@@ -1055,32 +1152,49 @@ function initHorizontalCurtainReveals() {
         const vh = window.innerHeight;
         const scrolled = -rect.top;
 
-        // 1. Revelación horizontal de cortina con retraso de 100-150px (+0.15vh: scrolled de 1.15vh a 2.0vh)
-        const progress = Math.min(1, Math.max(0, (scrolled - 1.15 * vh) / (0.85 * vh)));
+        // La cortina SÓLO se activa tras visualizar al 100% 'Acondicionamiento y Construcción' (Sección 2) + 400px de margen
+        const delayPx = 400;
+        const startPx = 4.3 * vh + delayPx;
+
+        // Mientras scrolled < startPx, progress = 0 y clipRight = 100% (Cortina 100% DESACTIVADA / Oculta)
+        const progress = Math.min(1, Math.max(0, (scrolled - startPx) / (0.9 * vh)));
         const clipRight = Math.max(0, Math.min(100, 100 - progress * 100));
 
         leftCurtains.forEach(section => {
             section.style.setProperty('--curtain-right', `${clipRight}%`);
         });
 
-        // 2. Secuencia Timeline en vh acumulado
-        const progressTotal = scrolled / vh;
+        // Scroll interno fluido para el contenedor de la Sección 3
+        if (container) {
+            if (progress < 1.0) {
+                container.style.transform = `translate3d(0, 0px, 0)`;
+            } else {
+                const activeStartPx = startPx + 0.9 * vh;
+                const activeScrolled = Math.max(0, scrolled - activeStartPx);
+                const totalActiveTravel = 3.3 * vh;
+                const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
+                const maxScroll = Math.max(0, container.scrollHeight - vh + 100);
 
-        // Al comenzar la revelación total (>= 1.6vh), activa blur-text
-        if (blurTextP) {
-            blurTextP.classList.toggle('active', progressTotal >= 1.6);
+                const translateYValue = -flowProgress * maxScroll;
+                container.style.transform = `translate3d(0, ${translateYValue}px, 0)`;
+            }
         }
 
-        // Al continuar scrolleando, las 4 tarjetas entran secuencialmente
-        // 1. Enigma Room (>= 2.0vh)
-        // 2. Vinaterías La Dueña (>= 2.4vh)
-        // 3. B Clinic (>= 2.8vh)
-        // 4. Cafetería Mom (>= 3.2vh)
-        const cardThresholds = [2.0, 2.4, 2.8, 3.2];
-        cards.forEach((card, index) => {
-            const threshold = cardThresholds[index] !== undefined ? cardThresholds[index] : (2.0 + index * 0.4);
-            card.classList.toggle('active', progressTotal >= threshold);
-        });
+        // Secuencia Timeline en vh acumulado (SÓLO para escritorio)
+        if (window.innerWidth > 768) {
+            const progressTotal = scrolled / vh;
+            const baseVh = (startPx / vh) + 0.9; // ~5.7vh
+
+            if (blurTextP) {
+                blurTextP.classList.toggle('active', progressTotal >= (baseVh - 0.2));
+            }
+
+            const cardThresholds = [baseVh + 0.3, baseVh + 1.0, baseVh + 1.7, baseVh + 2.4];
+            cards.forEach((card, index) => {
+                const threshold = cardThresholds[index] !== undefined ? cardThresholds[index] : (baseVh + 0.3 + index * 0.7);
+                card.classList.toggle('active', progressTotal >= threshold);
+            });
+        }
     }
 
     const lenis = window.lenis;
@@ -1228,11 +1342,44 @@ function closePhilosophyDrawerOnBackdrop(event) {
 }
 
 // Ventana Desplegable Nuestro Compromiso (Pilar de Integridad)
+let compromisoWheelBound = false;
+
+function bindCompromisoWheel() {
+    if (compromisoWheelBound) return;
+    compromisoWheelBound = true;
+    document.addEventListener('wheel', handleCompromisoWheel, { passive: false });
+}
+
+function unbindCompromisoWheel() {
+    if (!compromisoWheelBound) return;
+    compromisoWheelBound = false;
+    document.removeEventListener('wheel', handleCompromisoWheel);
+}
+
+function handleCompromisoWheel(event) {
+    const drawer = document.getElementById('compromiso-drawer-overlay');
+    if (!drawer || !drawer.classList.contains('active')) return;
+
+    const panel = document.getElementById('compromiso-drawer-panel');
+    if (!panel) return;
+
+    const delta = event.deltaY;
+    if (panel.scrollHeight > panel.clientHeight) {
+        panel.scrollTop += delta;
+        event.preventDefault();
+    }
+}
+
 function openCompromisoDrawer() {
     const drawer = document.getElementById('compromiso-drawer-overlay');
     if (!drawer) return;
     drawer.classList.add('active');
     document.body.style.overflow = 'hidden';
+    if (window.lenis) window.lenis.stop();
+
+    const panel = document.getElementById('compromiso-drawer-panel');
+    if (panel) panel.scrollTop = 0;
+    bindCompromisoWheel();
 }
 
 function closeCompromisoDrawer() {
@@ -1240,6 +1387,8 @@ function closeCompromisoDrawer() {
     if (!drawer) return;
     drawer.classList.remove('active');
     document.body.style.overflow = '';
+    if (window.lenis) window.lenis.start();
+    unbindCompromisoWheel();
 }
 
 function closeCompromisoDrawerOnBackdrop(event) {
@@ -1250,7 +1399,39 @@ function closeCompromisoDrawerOnBackdrop(event) {
 // El track se desplaza de forma continua de abajo hacia arriba. Si el cursor está
 // sobre las fotos y el usuario hace scroll, el track responde moviéndose hacia
 // arriba o abajo según la dirección del scroll.
+// Carrusel Horizontal de Fotos en Móviles (Idea Lab — Izquierda a Derecha continua)
+function initMobileIdeaLabMarquee() {
+    const track = document.querySelector('#idea-lab .idealab-gallery-track');
+    if (!track) return;
+
+    let offset = 0;
+    let rafId = null;
+
+    function step() {
+        if (window.innerWidth <= 768) {
+            const halfWidth = track.scrollWidth / 2;
+            if (halfWidth > 0) {
+                offset += 1.2; // Desplazamiento fluido de izquierda a derecha una por una
+                if (offset >= halfWidth) {
+                    offset = 0;
+                }
+                track.style.setProperty('transform', `translate3d(${offset - halfWidth}px, 0px, 0px)`, 'important');
+            }
+        }
+        rafId = requestAnimationFrame(step);
+    }
+
+    if (rafId) cancelAnimationFrame(rafId);
+    rafId = requestAnimationFrame(step);
+}
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMobileIdeaLabMarquee);
+} else {
+    initMobileIdeaLabMarquee();
+}
+
 function initIdeaLabGalleryScroll() {
+    if (window.innerWidth <= 768) return;
     const col = document.querySelector('.idealab-gallery-col');
     const track = document.querySelector('.idealab-gallery-track');
     if (!col || !track) return;
@@ -1433,6 +1614,7 @@ function openPropuestasModal(locationKey) {
     const track = document.getElementById('propuestas-track');
     track.innerHTML = '';
     propuestasOffset = 0;
+    propuestasPaused = false;
     if (propuestasRAF) { cancelAnimationFrame(propuestasRAF); propuestasRAF = null; }
 
     if (images.length) {
@@ -1442,12 +1624,13 @@ function openPropuestasModal(locationKey) {
             const imgEl = document.createElement('img');
             imgEl.src = `galeria 3.5/${folderKey}/${src}`;
             imgEl.alt = hidden ? '' : `Propuesta de uso en ${displayTitle}`;
-            imgEl.loading = 'lazy';
+            imgEl.loading = 'eager';
             item.appendChild(imgEl);
             return item;
         });
-        // Duplicado para el loop continuo
+        // Triplicado para el loop continuo ininterrumpido
         build(false).forEach(el => track.appendChild(el));
+        build(true).forEach(el => track.appendChild(el));
         build(true).forEach(el => track.appendChild(el));
     }
 
@@ -1455,25 +1638,27 @@ function openPropuestasModal(locationKey) {
     document.body.style.overflow = 'hidden';
 
     // Arrancar el desfile (derecha → izquierda) tras medir el track
-    requestAnimationFrame(() => requestAnimationFrame(startPropuestasScroll));
+    setTimeout(startPropuestasScroll, 60);
 }
 
 function startPropuestasScroll() {
     const track = document.getElementById('propuestas-track');
-    if (!track) return;
+    const viewport = document.getElementById('propuestas-track-viewport');
+    if (!track || !viewport) return;
     if (propuestasRAF) { cancelAnimationFrame(propuestasRAF); propuestasRAF = null; }
 
-    const half = track.scrollWidth / 2; // ancho de una copia del set
-    const duration = 26000; // ms para recorrer una copia
+    const singleSetWidth = track.scrollWidth / 3;
+    if (singleSetWidth <= 0) {
+        propuestasRAF = requestAnimationFrame(startPropuestasScroll);
+        return;
+    }
 
     function step() {
-        if (propuestasPaused) {
-            propuestasRAF = requestAnimationFrame(step);
-            return;
+        propuestasOffset += 1.8; // px por frame (~60fps)
+        if (propuestasOffset >= singleSetWidth) {
+            propuestasOffset = 0;
         }
-        propuestasOffset += half / duration * 16.7; // px por frame (~60fps)
-        if (propuestasOffset >= half) propuestasOffset = 0;
-        track.style.transform = `translateX(${-propuestasOffset}px)`;
+        track.style.transform = `translate3d(${-propuestasOffset}px, 0px, 0px)`;
         propuestasRAF = requestAnimationFrame(step);
     }
     propuestasRAF = requestAnimationFrame(step);
@@ -2289,12 +2474,13 @@ function openFichaModal(el) {
             const img = document.createElement('img');
             img.src = encodeURI(src);
             img.alt = ficha.titulo;
-            img.loading = 'lazy';
+            img.loading = 'eager';
             item.appendChild(img);
             return item;
         });
         build().forEach(el => track.appendChild(el));
-        build().forEach(el => track.appendChild(el)); // duplicado para loop continuo
+        build().forEach(el => track.appendChild(el));
+        build().forEach(el => track.appendChild(el)); // 3 copias para loop infinito garantizado
     } else {
         const empty = document.createElement('div');
         empty.className = 'ficha-photo';
@@ -2313,7 +2499,7 @@ function openFichaModal(el) {
     if (window.lenis) window.lenis.stop();
     bindFichaWheel();
 
-    requestAnimationFrame(() => requestAnimationFrame(startFichaScroll));
+    setTimeout(startFichaScroll, 60);
 }
 
 // El scroll interno del modal (tabla técnica) se controla manualmente,
@@ -2339,18 +2525,9 @@ function handleFichaWheel(event) {
     const tech = document.querySelector('.ficha-modal .ficha-tech');
     if (!tech) return;
 
-    const isOverTech = tech.contains(event.target);
     const delta = event.deltaY;
-
-    if (isOverTech && tech.scrollHeight > tech.clientHeight) {
-        const max = tech.scrollHeight - tech.clientHeight;
-        const next = tech.scrollTop + delta;
-        if (next >= 0 && next <= max) {
-            tech.scrollTop = next;
-            event.preventDefault();
-            return;
-        }
-        // En los límites del scroll interno, no propagar para no mover las secciones.
+    if (tech.scrollHeight > tech.clientHeight) {
+        tech.scrollTop += delta;
         event.preventDefault();
     }
 }
@@ -2361,14 +2538,18 @@ function startFichaScroll() {
     if (!track || !viewport) return;
     if (fichaRAF) { cancelAnimationFrame(fichaRAF); fichaRAF = null; }
 
-    const half = track.scrollWidth / 2;
-    if (half <= 0) return;
-    const duration = Math.max(18000, half / viewport.clientWidth * 9000);
+    const singleSetWidth = track.scrollWidth / 3;
+    if (singleSetWidth <= 0) {
+        fichaRAF = requestAnimationFrame(startFichaScroll);
+        return;
+    }
 
     function step() {
-        fichaOffset += half / duration * 16.7;
-        if (fichaOffset >= half) fichaOffset = 0;
-        track.style.transform = `translateX(${-fichaOffset}px)`;
+        fichaOffset += 1.8;
+        if (fichaOffset >= singleSetWidth) {
+            fichaOffset = 0;
+        }
+        track.style.transform = `translate3d(${-fichaOffset}px, 0px, 0px)`;
         fichaRAF = requestAnimationFrame(step);
     }
     fichaRAF = requestAnimationFrame(step);
@@ -2456,15 +2637,14 @@ function scrollToNextSection() {
 
     // Lista ordenada de los puntos clave de scroll en la línea de tiempo de cortinas
     const targets = [
-        1.0 * vh, // Sección 2 (El Diferenciador Absoluto)
-        3.5 * vh, // Sección 3 (Portafolio de Proyectos)
-        4.5 * vh, // Sección 4 (Galería Comercial)
-        6.5 * vh, // Sección 5 (Transición de Imagen)
-        8.5 * vh, // Sección 6 (Catálogo — El Match)
-        14.5 * vh, // Sección 7 (Pilar de Integridad)
+        1.0 * vh,  // Sección 2 (El Diferenciador Absoluto)
+        3.65 * vh, // Sección 4 (Galería Comercial)
+        6.65 * vh, // Sección 5 (Transición de Imagen)
+        8.5 * vh,  // Sección 6 (Catálogo — El Match)
+        14.35 * vh,// Sección 7 (Pilar de Integridad)
         17.5 * vh, // Sección 8 (Idea Lab)
-        19.5 * vh, // Sección 9 (Testimonios + Footer)
-        0         // Volver al Inicio (Hero)
+        21.2 * vh, // Sección 9 (Testimonios + Footer)
+        0          // Volver al Inicio (Hero)
     ];
 
     // Encontrar el siguiente hito de navegación con un margen de tolerancia de 30px
