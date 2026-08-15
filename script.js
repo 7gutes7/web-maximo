@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initIntegrityCurtain();
     initIntegrityMagneticSnap();
     initIdeaLabCurtain();
-    initTestimoniosCurtain();
+    initVmartCurtain();
     initVmartMagneticSnap();
     initPortfolioVideoObserver();
     initGaleriaVideoObserver();
@@ -24,7 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initDrawerFloatingLines();
     initIdeaLabGalleryScroll();
     initPropuestasModal();
-    initPropuestasHoverPause();
 });
 
 // 0. Lenis — Smooth scroll con inercia
@@ -78,7 +77,7 @@ function initAutoSnap() {
             points.push(wrapperTop + 13.5 * vh);  // 08. Sección 6 (Desfile completo)
             points.push(wrapperTop + 14.5 * vh);  // 09. Sección 7 (Pilar de Integridad)
             points.push(wrapperTop + 17.5 * vh);  // 10. Sección 8 (Idea Lab - Final)
-            points.push(wrapperTop + 19.5 * vh);  // 11. Sección 9 (Testimonios + Footer)
+            points.push(wrapperTop + 19.5 * vh);  // 11. Sección 9 (ValorMáximoART + Footer)
         }
 
         // 2. Secciones del proyecto fuera del curtain wrapper
@@ -650,8 +649,8 @@ function initIdeaLabCurtain() {
 }
 
 // 0b6. Curtain Reveal Vertical (Sección 9: Valor MáximoART + Footer)
-function initTestimoniosCurtain() {
-    const sec = document.getElementById('valormaximoart') || document.getElementById('testimonios');
+function initVmartCurtain() {
+    const sec = document.getElementById('valormaximoart');
     const wrapper = document.querySelector('.curtain-wrapper');
     if (!sec || !wrapper) return;
     const container = sec.querySelector('.container');
@@ -664,7 +663,7 @@ function initTestimoniosCurtain() {
         // Cortina SÓLO se activa a partir de 25.5vh hasta 26.8vh
         const progress = Math.min(1, Math.max(0, (scrolled - 25.5 * vh) / (1.3 * vh)));
         const clipPercent = (1 - progress) * 100;
-        sec.style.setProperty('--curtain-testimonios', `${clipPercent}%`);
+        sec.style.setProperty('--curtain-vmart', `${clipPercent}%`);
 
         if (container) {
             if (progress < 1.0) {
@@ -1395,118 +1394,7 @@ function closeCompromisoDrawerOnBackdrop(event) {
     if (event.target.id === 'compromiso-drawer-overlay') closeCompromisoDrawer();
 }
 
-// Marquee Vertical de Fotos (Idea Lab — Columna Derecha)
-// El track se desplaza de forma continua de abajo hacia arriba. Si el cursor está
-// sobre las fotos y el usuario hace scroll, el track responde moviéndose hacia
-// arriba o abajo según la dirección del scroll.
-// Carrusel Horizontal de Fotos en Móviles (Idea Lab — Izquierda a Derecha continua)
-function initMobileIdeaLabMarquee() {
-    const track = document.querySelector('#idea-lab .idealab-gallery-track');
-    if (!track) return;
-
-    let offset = 0;
-    let rafId = null;
-
-    function step() {
-        if (window.innerWidth <= 768) {
-            const halfWidth = track.scrollWidth / 2;
-            if (halfWidth > 0) {
-                offset += 1.2; // Desplazamiento fluido de izquierda a derecha una por una
-                if (offset >= halfWidth) {
-                    offset = 0;
-                }
-                track.style.setProperty('transform', `translate3d(${offset - halfWidth}px, 0px, 0px)`, 'important');
-            }
-        }
-        rafId = requestAnimationFrame(step);
-    }
-
-    if (rafId) cancelAnimationFrame(rafId);
-    rafId = requestAnimationFrame(step);
-}
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initMobileIdeaLabMarquee);
-} else {
-    initMobileIdeaLabMarquee();
-}
-
-function initIdeaLabGalleryScroll() {
-    if (window.innerWidth <= 768) return;
-    const col = document.querySelector('.idealab-gallery-col');
-    const track = document.querySelector('.idealab-gallery-track');
-    if (!col || !track) return;
-
-    let isHovering = false;
-    let translateY = 0;
-    let halfHeight = 1;
-    let lastScrollY = window.scrollY;
-    let autoRAF = null;
-    let scrollRAF = null;
-
-    function measure() {
-        halfHeight = Math.max(1, track.scrollHeight / 2);
-    }
-    measure();
-    window.addEventListener('resize', measure, { passive: true });
-
-    function autoStep() {
-        // Movimiento automático: de abajo hacia arriba (translateY negativo)
-        translateY -= 1.4;
-        if (translateY <= -halfHeight) translateY += halfHeight;
-        track.style.transform = `translate3d(0, ${translateY}px, 0)`;
-        autoRAF = requestAnimationFrame(autoStep);
-    }
-
-    function scrollStep() {
-        const current = window.scrollY;
-        const delta = current - lastScrollY;
-        lastScrollY = current;
-        if (delta !== 0) {
-            // El track sigue la dirección del scroll
-            translateY -= delta;
-            // Mantener el loop infinito en ambas direcciones
-            if (translateY > 0) translateY -= halfHeight;
-            else if (translateY <= -halfHeight) translateY += halfHeight;
-            track.style.transform = `translate3d(0, ${translateY}px, 0)`;
-        }
-        scrollRAF = requestAnimationFrame(scrollStep);
-    }
-
-    col.addEventListener('mouseenter', () => {
-        isHovering = true;
-        if (autoRAF) { cancelAnimationFrame(autoRAF); autoRAF = null; }
-        lastScrollY = window.scrollY;
-        if (!scrollRAF) scrollRAF = requestAnimationFrame(scrollStep);
-    });
-
-    col.addEventListener('mouseleave', () => {
-        isHovering = false;
-        if (scrollRAF) { cancelAnimationFrame(scrollRAF); scrollRAF = null; }
-        if (!autoRAF) autoRAF = requestAnimationFrame(autoStep);
-    });
-
-    const lenis = window.lenis;
-    if (lenis) {
-        lenis.on('scroll', () => {
-            if (isHovering) {
-                const delta = lenis.scroll - lastScrollY;
-                lastScrollY = lenis.scroll;
-                if (delta !== 0) {
-                    translateY -= delta;
-                    if (translateY > 0) translateY -= halfHeight;
-                    else if (translateY <= -halfHeight) translateY += halfHeight;
-                    track.style.transform = `translate3d(0, ${translateY}px, 0)`;
-                }
-            }
-        });
-    }
-
-    autoRAF = requestAnimationFrame(autoStep);
-}
-
 // Modal Propuestas de Uso (Idea Lab — Galería 3)
-// Mapeo: cada foto en "galeria 3" se renombra con el mismo nombre de su carpeta
-// de propuestas en "galeria 3.5" (ej. "villanueva.jpg" → galeria 3.5/FELIPE VILLANUEVA/).
 const propuestasUbicaciones = {
     'FELIPE VILLANUEVA': ['Gemini_Generated_Image_p5qgngp5qgngp5qg.png', 'Gemini_Generated_Image_xb5426xb5426xb54.png'],
     'HIDALGO': ['portada.jpeg', 'Place_office_furniture_in_room_202608140136.jpeg', 'Place_office_furniture_in_room_202608140136 (1).jpeg', 'Place_small_nail_salon_202608140137.jpeg', 'Gemini_Generated_Image_2xmr5x2xmr5x2xmr.png', 'Gemini_Generated_Image_8hffm68hffm68hff.png', 'Gemini_Generated_Image_j54df0j54df0j54d.png'],
@@ -1516,7 +1404,6 @@ const propuestasUbicaciones = {
     'riva palacio': ['PHOTO-2026-05-16-16-46-53.jpg', 'PHOTO-2026-05-16-16-46-53 2.jpg', 'PHOTO-2026-05-16-16-46-53 4.jpg', 'PHOTO-2026-05-16-16-46-53 7.jpg', 'PHOTO-2026-05-16-16-46-53 8.jpg']
 };
 
-// Nombres visuales formateados con la primera letra en mayúscula (Title Case) para el modal de Idea Lab
 const propuestasNombresDisplay = {
     'FELIPE VILLANUEVA': 'Felipe Villanueva',
     'HIDALGO': 'Edificio Hidalgo',
@@ -1531,7 +1418,6 @@ function toTitleCase(str) {
     return str.toLowerCase().split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 }
 
-// Alias de nombre de archivo de la foto (en galeria 3) → clave en propuestasUbicaciones
 const propuestasAlias = {
     'villanueva': 'FELIPE VILLANUEVA',
     'hidalgo': 'HIDALGO',
@@ -1541,12 +1427,52 @@ const propuestasAlias = {
     'riva palacio': 'riva palacio'
 };
 
-let propuestasRAF = null;
-let propuestasOffset = 0;
-let propuestasPaused = false;
+const ideaLabSlidesData = [
+    { key: 'villanueva', title: 'Felipe Villanueva', image: 'galeria 3/villanueva.png' },
+    { key: 'hidalgo', title: 'Edificio Hidalgo', image: 'galeria 3/hidalgo.jpeg' },
+    { key: 'paseo central', title: 'Paseo Central', image: 'galeria 3/paseo central.jpg' },
+    { key: 'pinosuarez', title: 'Pino Suárez', image: 'galeria 3/pinosuarez.jpeg' },
+    { key: 'villada', title: 'Villada', image: 'galeria 3/villada.png' },
+    { key: 'riva palacio', title: 'Riva Palacio', image: 'galeria 3/riva palacio.jpg' }
+];
 
-function initPropuestasModal() {
-    initTiltedCards();
+let currentIdeaLabIndex = 0;
+
+function initIdeaLabGalleryScroll() {
+    renderIdeaLabCurrentSlide();
+}
+
+function moveIdeaLabSlide(direction) {
+    const total = ideaLabSlidesData.length;
+    currentIdeaLabIndex = (currentIdeaLabIndex + direction + total) % total;
+    renderIdeaLabCurrentSlide();
+}
+
+function renderIdeaLabCurrentSlide() {
+    const imgEl = document.getElementById('idealab-main-img');
+    const captionEl = document.getElementById('idealab-main-caption');
+    const counterEl = document.getElementById('idealab-slide-counter');
+
+    const data = ideaLabSlidesData[currentIdeaLabIndex];
+    if (!data) return;
+
+    if (imgEl) {
+        imgEl.src = data.image;
+        imgEl.alt = data.title;
+    }
+    if (captionEl) {
+        captionEl.textContent = data.title;
+    }
+    if (counterEl) {
+        counterEl.textContent = `${currentIdeaLabIndex + 1} / ${ideaLabSlidesData.length}`;
+    }
+}
+
+function openPropuestasModalFromIdeaLab() {
+    const data = ideaLabSlidesData[currentIdeaLabIndex];
+    if (data) {
+        openPropuestasModal(data.key);
+    }
 }
 
 // Componente 3D TiltedCard (Inspirado en ReactBits TiltedCard)
@@ -1600,6 +1526,177 @@ function initTiltedCards() {
     });
 }
 
+// ============================================================================
+// COMPONENTE 3D PHOTO STACK (Inspirado en ReactBits Stack Component)
+// Parámetros: randomRotation = false, sensitivity = 200, sendToBackOnClick = true
+// ============================================================================
+class PhotoStack {
+    constructor(containerEl, images, options = {}) {
+        this.container = containerEl;
+        this.images = images || [];
+        this.options = Object.assign({
+            sendToBackOnClick: true,
+            sensitivity: 200,
+            randomRotation: false
+        }, options);
+        this.currentIndex = 0;
+        this.isAnimating = false;
+        this.init();
+    }
+
+    init() {
+        this.container.innerHTML = '';
+        if (!this.images.length) return;
+
+        this.cards = [];
+        // Renderizar tarjetas en orden inverso para que el índice 0 quede al frente
+        for (let i = this.images.length - 1; i >= 0; i--) {
+            const card = document.createElement('div');
+            card.className = 'stack-card';
+            card.dataset.index = i;
+
+            const img = document.createElement('img');
+            img.src = this.images[i].src;
+            img.alt = this.images[i].alt || `Foto ${i + 1}`;
+            img.loading = 'eager';
+            card.appendChild(img);
+
+            this.container.appendChild(card);
+            this.cards.unshift(card);
+        }
+
+        this.updateCardPositions();
+        this.bindEvents();
+    }
+
+    updateCardPositions() {
+        const total = this.cards.length;
+        if (!total) return;
+
+        this.cards.forEach((card, i) => {
+            const pos = (i - this.currentIndex + total) % total;
+
+            if (pos === 0) {
+                // Tarjeta Principal (Frontal)
+                card.style.zIndex = total + 10;
+                card.style.opacity = '1';
+                card.style.transform = 'translate3d(0, 0, 0) scale(1) rotate(0deg)';
+                card.style.filter = 'brightness(1)';
+                card.style.pointerEvents = 'auto';
+            } else if (pos === 1) {
+                // Segunda Tarjeta (Detrás 1)
+                card.style.zIndex = total + 5;
+                card.style.opacity = '0.92';
+                card.style.transform = 'translate3d(0, 14px, -30px) scale(0.95) rotate(-1.5deg)';
+                card.style.filter = 'brightness(0.92)';
+                card.style.pointerEvents = 'none';
+            } else if (pos === 2) {
+                // Tercera Tarjeta (Detrás 2)
+                card.style.zIndex = total + 1;
+                card.style.opacity = '0.80';
+                card.style.transform = 'translate3d(0, 28px, -60px) scale(0.90) rotate(1.5deg)';
+                card.style.filter = 'brightness(0.82)';
+                card.style.pointerEvents = 'none';
+            } else {
+                // Tarjetas al fondo del mazo
+                card.style.zIndex = total - pos;
+                card.style.opacity = '0';
+                card.style.transform = 'translate3d(0, 38px, -90px) scale(0.85) rotate(0deg)';
+                card.style.filter = 'brightness(0.7)';
+                card.style.pointerEvents = 'none';
+            }
+        });
+
+        // Actualizar contador
+        const counterEl = document.getElementById('propuestas-stack-counter');
+        if (counterEl) {
+            counterEl.textContent = `${this.currentIndex + 1} / ${total}`;
+        }
+    }
+
+    sendToBack() {
+        if (this.isAnimating || this.cards.length <= 1) return;
+        this.isAnimating = true;
+
+        const topCard = this.cards[this.currentIndex];
+        topCard.style.transition = 'transform 0.45s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.45s ease';
+        topCard.style.transform = 'translate3d(115%, -25px, 40px) rotate(10deg)';
+        topCard.style.opacity = '0';
+
+        setTimeout(() => {
+            this.currentIndex = (this.currentIndex + 1) % this.cards.length;
+            topCard.style.transition = 'none';
+            this.updateCardPositions();
+
+            setTimeout(() => {
+                this.isAnimating = false;
+            }, 100);
+        }, 320);
+    }
+
+    prevCard() {
+        if (this.isAnimating || this.cards.length <= 1) return;
+        this.isAnimating = true;
+
+        this.currentIndex = (this.currentIndex - 1 + this.cards.length) % this.cards.length;
+        const prevCard = this.cards[this.currentIndex];
+
+        prevCard.style.transition = 'none';
+        prevCard.style.transform = 'translate3d(-115%, -25px, 40px) rotate(-10deg)';
+        prevCard.style.opacity = '0';
+        prevCard.style.zIndex = this.cards.length + 20;
+
+        void prevCard.offsetWidth;
+
+        prevCard.style.transition = 'transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease';
+        this.updateCardPositions();
+
+        setTimeout(() => {
+            this.isAnimating = false;
+        }, 350);
+    }
+
+    bindEvents() {
+        if (this.options.sendToBackOnClick) {
+            this.cards.forEach(card => {
+                card.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.sendToBack();
+                });
+            });
+        }
+
+        // Gesto Swipe (Touch / Mouse drag)
+        let startX = 0;
+        let isDragging = false;
+
+        const onStart = (e) => {
+            startX = e.touches ? e.touches[0].clientX : e.clientX;
+            isDragging = true;
+        };
+
+        const onEnd = (e) => {
+            if (!isDragging) return;
+            isDragging = false;
+            const endX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
+            const diffX = endX - startX;
+
+            if (Math.abs(diffX) > 40) {
+                if (diffX < 0) {
+                    this.sendToBack();
+                } else {
+                    this.prevCard();
+                }
+            }
+        };
+
+        this.container.addEventListener('touchstart', onStart, { passive: true });
+        this.container.addEventListener('touchend', onEnd, { passive: true });
+    }
+}
+
+let activePhotoStack = null;
+
 function openPropuestasModal(locationKey) {
     const overlay = document.getElementById('propuestas-modal-overlay');
     if (!overlay) return;
@@ -1611,61 +1708,23 @@ function openPropuestasModal(locationKey) {
     const displayTitle = propuestasNombresDisplay[folderKey] || toTitleCase(folderKey);
     document.getElementById('propuestas-modal-title').textContent = displayTitle;
 
-    const track = document.getElementById('propuestas-track');
-    track.innerHTML = '';
-    propuestasOffset = 0;
-    propuestasPaused = false;
-    if (propuestasRAF) { cancelAnimationFrame(propuestasRAF); propuestasRAF = null; }
+    const wrapper = document.getElementById('stack-wrapper');
+    if (wrapper) {
+        const imageList = images.map(src => ({
+            src: `galeria 3.5/${folderKey}/${src}`,
+            alt: `Propuesta de uso en ${displayTitle}`
+        }));
 
-    if (images.length) {
-        const build = (hidden) => images.map(src => {
-            const item = document.createElement('div');
-            item.className = 'propuesta-item';
-            const imgEl = document.createElement('img');
-            imgEl.src = `galeria 3.5/${folderKey}/${src}`;
-            imgEl.alt = hidden ? '' : `Propuesta de uso en ${displayTitle}`;
-            imgEl.loading = 'eager';
-            item.appendChild(imgEl);
-            return item;
+        window.activePhotoStack = new PhotoStack(wrapper, imageList, {
+            sendToBackOnClick: true,
+            sensitivity: 200,
+            randomRotation: false
         });
-        // Triplicado para el loop continuo ininterrumpido
-        build(false).forEach(el => track.appendChild(el));
-        build(true).forEach(el => track.appendChild(el));
-        build(true).forEach(el => track.appendChild(el));
     }
 
     overlay.classList.add('active');
     document.body.style.overflow = 'hidden';
-
-    // Arrancar el desfile (derecha → izquierda) tras medir el track
-    setTimeout(startPropuestasScroll, 60);
-}
-
-function startPropuestasScroll() {
-    const track = document.getElementById('propuestas-track');
-    const viewport = document.getElementById('propuestas-track-viewport');
-    if (!track || !viewport) return;
-    if (propuestasRAF) { cancelAnimationFrame(propuestasRAF); propuestasRAF = null; }
-
-    const singleSetWidth = track.scrollWidth / 3;
-    if (singleSetWidth <= 0) {
-        propuestasRAF = requestAnimationFrame(startPropuestasScroll);
-        return;
-    }
-
-    function step() {
-        propuestasOffset += 1.8; // px por frame (~60fps)
-        if (propuestasOffset >= singleSetWidth) {
-            propuestasOffset = 0;
-        }
-        track.style.transform = `translate3d(${-propuestasOffset}px, 0px, 0px)`;
-        propuestasRAF = requestAnimationFrame(step);
-    }
-    propuestasRAF = requestAnimationFrame(step);
-}
-
-function stopPropuestasScroll() {
-    if (propuestasRAF) { cancelAnimationFrame(propuestasRAF); propuestasRAF = null; }
+    if (window.lenis) window.lenis.stop();
 }
 
 function closePropuestasModal() {
@@ -1673,7 +1732,7 @@ function closePropuestasModal() {
     if (!overlay) return;
     overlay.classList.remove('active');
     document.body.style.overflow = '';
-    stopPropuestasScroll();
+    if (window.lenis) window.lenis.start();
 }
 
 function closePropuestasModalOnBackdrop(event) {
@@ -2643,7 +2702,7 @@ function scrollToNextSection() {
         8.5 * vh,  // Sección 6 (Catálogo — El Match)
         14.35 * vh,// Sección 7 (Pilar de Integridad)
         17.5 * vh, // Sección 8 (Idea Lab)
-        21.2 * vh, // Sección 9 (Testimonios + Footer)
+        21.2 * vh, // Sección 9 (ValorMáximoART + Footer)
         0          // Volver al Inicio (Hero)
     ];
 

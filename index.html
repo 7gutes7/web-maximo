@@ -944,74 +944,17 @@
                     </div>
                 </div>
 
-                <!-- Columna Derecha (Marquee Vertical de Fotos con Efecto TiltedCard 3D — Galería 3) -->
+                <!-- Columna Derecha: Visor de Fotos Estático con Flechas a los Lados -->
                 <div class="idealab-gallery-col">
-                    <div class="idealab-gallery-track">
-                        <div class="idealab-gallery-list">
-                            <div class="tilted-card">
-                                <img src="galeria 3/villanueva.png" alt="Felipe Villanueva">
-                                <div class="tilted-card-overlay"><p class="tilted-card-text">Felipe Villanueva</p></div>
-                                <div class="tilted-card-glare"></div>
-                            </div>
-                            <div class="tilted-card">
-                                <img src="galeria 3/hidalgo.jpeg" alt="Edificio Hidalgo">
-                                <div class="tilted-card-overlay"><p class="tilted-card-text">Edificio Hidalgo</p></div>
-                                <div class="tilted-card-glare"></div>
-                            </div>
-                            <div class="tilted-card">
-                                <img src="galeria 3/paseo central.jpg" alt="Paseo Central">
-                                <div class="tilted-card-overlay"><p class="tilted-card-text">Paseo Central</p></div>
-                                <div class="tilted-card-glare"></div>
-                            </div>
-                            <div class="tilted-card">
-                                <img src="galeria 3/pinosuarez.jpeg" alt="Pino Suárez">
-                                <div class="tilted-card-overlay"><p class="tilted-card-text">Pino Suárez</p></div>
-                                <div class="tilted-card-glare"></div>
-                            </div>
-                            <div class="tilted-card">
-                                <img src="galeria 3/villada.png" alt="Villada">
-                                <div class="tilted-card-overlay"><p class="tilted-card-text">Villada</p></div>
-                                <div class="tilted-card-glare"></div>
-                            </div>
-                            <div class="tilted-card">
-                                <img src="galeria 3/riva palacio.jpg" alt="Riva Palacio">
-                                <div class="tilted-card-overlay"><p class="tilted-card-text">Riva Palacio</p></div>
-                                <div class="tilted-card-glare"></div>
-                            </div>
+                    <div class="idealab-clean-viewer">
+                        <button type="button" class="idealab-arrow-btn prev" onclick="moveIdeaLabSlide(-1)" aria-label="Foto anterior">&larr;</button>
+                        <div class="idealab-image-frame" id="idealab-image-frame">
+                            <img id="idealab-main-img" src="galeria 3/villanueva.png" alt="Felipe Villanueva" onclick="openPropuestasModalFromIdeaLab()">
+                            <div class="idealab-image-caption" id="idealab-main-caption">Felipe Villanueva</div>
                         </div>
-                        <div class="idealab-gallery-list" aria-hidden="true">
-                            <div class="tilted-card">
-                                <img src="galeria 3/villanueva.png" alt="">
-                                <div class="tilted-card-overlay"><p class="tilted-card-text">Felipe Villanueva</p></div>
-                                <div class="tilted-card-glare"></div>
-                            </div>
-                            <div class="tilted-card">
-                                <img src="galeria 3/hidalgo.jpeg" alt="">
-                                <div class="tilted-card-overlay"><p class="tilted-card-text">Edificio Hidalgo</p></div>
-                                <div class="tilted-card-glare"></div>
-                            </div>
-                            <div class="tilted-card">
-                                <img src="galeria 3/paseo central.jpg" alt="">
-                                <div class="tilted-card-overlay"><p class="tilted-card-text">Paseo Central</p></div>
-                                <div class="tilted-card-glare"></div>
-                            </div>
-                            <div class="tilted-card">
-                                <img src="galeria 3/pinosuarez.jpeg" alt="">
-                                <div class="tilted-card-overlay"><p class="tilted-card-text">Pino Suárez</p></div>
-                                <div class="tilted-card-glare"></div>
-                            </div>
-                            <div class="tilted-card">
-                                <img src="galeria 3/villada.png" alt="">
-                                <div class="tilted-card-overlay"><p class="tilted-card-text">Villada</p></div>
-                                <div class="tilted-card-glare"></div>
-                            </div>
-                            <div class="tilted-card">
-                                <img src="galeria 3/riva palacio.jpg" alt="">
-                                <div class="tilted-card-overlay"><p class="tilted-card-text">Riva Palacio</p></div>
-                                <div class="tilted-card-glare"></div>
-                            </div>
-                        </div>
+                        <button type="button" class="idealab-arrow-btn next" onclick="moveIdeaLabSlide(1)" aria-label="Foto siguiente">&rarr;</button>
                     </div>
+                    <div class="idealab-slide-counter" id="idealab-slide-counter">1 / 6</div>
                 </div>
             </div>
         </section>
@@ -1019,63 +962,66 @@
         <!-- 10. Sección 9: Valor MáximoART (Fondo Verde Oscuro, SVG 60% MaskedHeading + Carrusel Izquierda a Derecha, z-index: 15) -->
         <section class="section section-curtain-vmart" id="valormaximoart">
 
-            <!-- SVG Mask Centerpiece (Abarcando el 60% de la sección) -->
-            <div class="vmart-masked-container reveal">
-                <div class="vmart-mask-track">
-                    <img src="valormaximoART/0c1d194ed76fada0705204fc96bce180.jpg" alt="Arte 1">
-                    <img src="valormaximoART/0f9bae2c281d0acad623fe111ef13bc4.jpg" alt="Arte 2">
-                    <img src="valormaximoART/107b322401fcfc81014054b902fa4301.jpg" alt="Arte 3">
-                    <img src="valormaximoART/22e013e74f92ff56814c0523b9d8ea19.jpg" alt="Arte 4">
-                    <img src="valormaximoART/52e4285a050dd168c90a3df236ebedfa.jpg" alt="Arte 5">
-                    <img src="valormaximoART/76c339f1cb04a378b73d3c2df9a91bcd.jpg" alt="Arte 6">
-                    <img src="valormaximoART/8388d28c9479d74bc7172d828307dd08.jpg" alt="Arte 7">
-                    <img src="valormaximoART/9ff09c1156962c15f65e8bb85240ec2e.jpg" alt="Arte 8">
-                    <img src="valormaximoART/bc0f4db2dcbac1c04d826ad395dbe506.jpg" alt="Arte 9">
-                    <img src="valormaximoART/d399b1a5bfab57de3bbba91441225b04.jpg" alt="Arte 10">
-                    <img src="valormaximoART/eba9a04b15690ef7ce28d9cf02c50485.jpg" alt="Arte 11">
+            <!-- Grupo Centralizado Matemático (SVG + Carrusel) -->
+            <div class="vmart-center-group">
+                <!-- SVG Mask Centerpiece (Abarcando el 60% de la sección) -->
+                <div class="vmart-masked-container reveal">
+                    <div class="vmart-mask-track">
+                        <img src="valormaximoART/0c1d194ed76fada0705204fc96bce180.jpg" alt="Arte 1">
+                        <img src="valormaximoART/0f9bae2c281d0acad623fe111ef13bc4.jpg" alt="Arte 2">
+                        <img src="valormaximoART/107b322401fcfc81014054b902fa4301.jpg" alt="Arte 3">
+                        <img src="valormaximoART/22e013e74f92ff56814c0523b9d8ea19.jpg" alt="Arte 4">
+                        <img src="valormaximoART/52e4285a050dd168c90a3df236ebedfa.jpg" alt="Arte 5">
+                        <img src="valormaximoART/76c339f1cb04a378b73d3c2df9a91bcd.jpg" alt="Arte 6">
+                        <img src="valormaximoART/8388d28c9479d74bc7172d828307dd08.jpg" alt="Arte 7">
+                        <img src="valormaximoART/9ff09c1156962c15f65e8bb85240ec2e.jpg" alt="Arte 8">
+                        <img src="valormaximoART/bc0f4db2dcbac1c04d826ad395dbe506.jpg" alt="Arte 9">
+                        <img src="valormaximoART/d399b1a5bfab57de3bbba91441225b04.jpg" alt="Arte 10">
+                        <img src="valormaximoART/eba9a04b15690ef7ce28d9cf02c50485.jpg" alt="Arte 11">
 
-                    <!-- Copia para el flujo infinito continuo -->
-                    <img src="valormaximoART/0c1d194ed76fada0705204fc96bce180.jpg" alt="">
-                    <img src="valormaximoART/0f9bae2c281d0acad623fe111ef13bc4.jpg" alt="">
-                    <img src="valormaximoART/107b322401fcfc81014054b902fa4301.jpg" alt="">
-                    <img src="valormaximoART/22e013e74f92ff56814c0523b9d8ea19.jpg" alt="">
-                    <img src="valormaximoART/52e4285a050dd168c90a3df236ebedfa.jpg" alt="">
-                    <img src="valormaximoART/76c339f1cb04a378b73d3c2df9a91bcd.jpg" alt="">
-                    <img src="valormaximoART/8388d28c9479d74bc7172d828307dd08.jpg" alt="">
-                    <img src="valormaximoART/9ff09c1156962c15f65e8bb85240ec2e.jpg" alt="">
-                    <img src="valormaximoART/bc0f4db2dcbac1c04d826ad395dbe506.jpg" alt="">
-                    <img src="valormaximoART/d399b1a5bfab57de3bbba91441225b04.jpg" alt="">
-                    <img src="valormaximoART/eba9a04b15690ef7ce28d9cf02c50485.jpg" alt="">
+                        <!-- Copia para el flujo infinito continuo -->
+                        <img src="valormaximoART/0c1d194ed76fada0705204fc96bce180.jpg" alt="">
+                        <img src="valormaximoART/0f9bae2c281d0acad623fe111ef13bc4.jpg" alt="">
+                        <img src="valormaximoART/107b322401fcfc81014054b902fa4301.jpg" alt="">
+                        <img src="valormaximoART/22e013e74f92ff56814c0523b9d8ea19.jpg" alt="">
+                        <img src="valormaximoART/52e4285a050dd168c90a3df236ebedfa.jpg" alt="">
+                        <img src="valormaximoART/76c339f1cb04a378b73d3c2df9a91bcd.jpg" alt="">
+                        <img src="valormaximoART/8388d28c9479d74bc7172d828307dd08.jpg" alt="">
+                        <img src="valormaximoART/9ff09c1156962c15f65e8bb85240ec2e.jpg" alt="">
+                        <img src="valormaximoART/bc0f4db2dcbac1c04d826ad395dbe506.jpg" alt="">
+                        <img src="valormaximoART/d399b1a5bfab57de3bbba91441225b04.jpg" alt="">
+                        <img src="valormaximoART/eba9a04b15690ef7ce28d9cf02c50485.jpg" alt="">
+                    </div>
                 </div>
-            </div>
 
-            <!-- Carrusel de Fondo Secundario en Desfile (Izquierda a Derecha) -->
-            <div class="vmart-backdrop-carousel">
-                <div class="vmart-backdrop-track">
-                    <img src="valormaximoART/0c1d194ed76fada0705204fc96bce180.jpg" alt="">
-                    <img src="valormaximoART/0f9bae2c281d0acad623fe111ef13bc4.jpg" alt="">
-                    <img src="valormaximoART/107b322401fcfc81014054b902fa4301.jpg" alt="">
-                    <img src="valormaximoART/22e013e74f92ff56814c0523b9d8ea19.jpg" alt="">
-                    <img src="valormaximoART/52e4285a050dd168c90a3df236ebedfa.jpg" alt="">
-                    <img src="valormaximoART/76c339f1cb04a378b73d3c2df9a91bcd.jpg" alt="">
-                    <img src="valormaximoART/8388d28c9479d74bc7172d828307dd08.jpg" alt="">
-                    <img src="valormaximoART/9ff09c1156962c15f65e8bb85240ec2e.jpg" alt="">
-                    <img src="valormaximoART/bc0f4db2dcbac1c04d826ad395dbe506.jpg" alt="">
-                    <img src="valormaximoART/d399b1a5bfab57de3bbba91441225b04.jpg" alt="">
-                    <img src="valormaximoART/eba9a04b15690ef7ce28d9cf02c50485.jpg" alt="">
+                <!-- Carrusel de Fondo Secundario en Desfile (Izquierda a Derecha) -->
+                <div class="vmart-backdrop-carousel">
+                    <div class="vmart-backdrop-track">
+                        <img src="valormaximoART/0c1d194ed76fada0705204fc96bce180.jpg" alt="">
+                        <img src="valormaximoART/0f9bae2c281d0acad623fe111ef13bc4.jpg" alt="">
+                        <img src="valormaximoART/107b322401fcfc81014054b902fa4301.jpg" alt="">
+                        <img src="valormaximoART/22e013e74f92ff56814c0523b9d8ea19.jpg" alt="">
+                        <img src="valormaximoART/52e4285a050dd168c90a3df236ebedfa.jpg" alt="">
+                        <img src="valormaximoART/76c339f1cb04a378b73d3c2df9a91bcd.jpg" alt="">
+                        <img src="valormaximoART/8388d28c9479d74bc7172d828307dd08.jpg" alt="">
+                        <img src="valormaximoART/9ff09c1156962c15f65e8bb85240ec2e.jpg" alt="">
+                        <img src="valormaximoART/bc0f4db2dcbac1c04d826ad395dbe506.jpg" alt="">
+                        <img src="valormaximoART/d399b1a5bfab57de3bbba91441225b04.jpg" alt="">
+                        <img src="valormaximoART/eba9a04b15690ef7ce28d9cf02c50485.jpg" alt="">
 
-                    <!-- Duplicado para loop continuo -->
-                    <img src="valormaximoART/0c1d194ed76fada0705204fc96bce180.jpg" alt="">
-                    <img src="valormaximoART/0f9bae2c281d0acad623fe111ef13bc4.jpg" alt="">
-                    <img src="valormaximoART/107b322401fcfc81014054b902fa4301.jpg" alt="">
-                    <img src="valormaximoART/22e013e74f92ff56814c0523b9d8ea19.jpg" alt="">
-                    <img src="valormaximoART/52e4285a050dd168c90a3df236ebedfa.jpg" alt="">
-                    <img src="valormaximoART/76c339f1cb04a378b73d3c2df9a91bcd.jpg" alt="">
-                    <img src="valormaximoART/8388d28c9479d74bc7172d828307dd08.jpg" alt="">
-                    <img src="valormaximoART/9ff09c1156962c15f65e8bb85240ec2e.jpg" alt="">
-                    <img src="valormaximoART/bc0f4db2dcbac1c04d826ad395dbe506.jpg" alt="">
-                    <img src="valormaximoART/d399b1a5bfab57de3bbba91441225b04.jpg" alt="">
-                    <img src="valormaximoART/eba9a04b15690ef7ce28d9cf02c50485.jpg" alt="">
+                        <!-- Duplicado para loop continuo -->
+                        <img src="valormaximoART/0c1d194ed76fada0705204fc96bce180.jpg" alt="">
+                        <img src="valormaximoART/0f9bae2c281d0acad623fe111ef13bc4.jpg" alt="">
+                        <img src="valormaximoART/107b322401fcfc81014054b902fa4301.jpg" alt="">
+                        <img src="valormaximoART/22e013e74f92ff56814c0523b9d8ea19.jpg" alt="">
+                        <img src="valormaximoART/52e4285a050dd168c90a3df236ebedfa.jpg" alt="">
+                        <img src="valormaximoART/76c339f1cb04a378b73d3c2df9a91bcd.jpg" alt="">
+                        <img src="valormaximoART/8388d28c9479d74bc7172d828307dd08.jpg" alt="">
+                        <img src="valormaximoART/9ff09c1156962c15f65e8bb85240ec2e.jpg" alt="">
+                        <img src="valormaximoART/bc0f4db2dcbac1c04d826ad395dbe506.jpg" alt="">
+                        <img src="valormaximoART/d399b1a5bfab57de3bbba91441225b04.jpg" alt="">
+                        <img src="valormaximoART/eba9a04b15690ef7ce28d9cf02c50485.jpg" alt="">
+                    </div>
                 </div>
             </div>
 
@@ -1084,15 +1030,13 @@
                 <div class="container footer-inner">
                     <div class="footer-brand">
                         <img src="valorM01.svg" alt="Valor Máximo" class="footer-logo">
-                        <p>Real Estate de precisión. Conectamos al arrendador con el emprendedor en el lugar y momento
-                            correcto.</p>
+                        <p class="footer-tagline">Real Estate de precisión. Conectamos al arrendador con el emprendedor en el lugar y momento correcto.</p>
                     </div>
                     <div class="footer-links">
-                        <a href="#inicio" onclick="scrollToTimelineSection(event, 0)" class="footer-home-btn">Inicio</a>
+                        <a href="#inicio" onclick="scrollToTimelineSection(event, 0)">Inicio</a>
                         <a href="#el-match" onclick="scrollToTimelineSection(event, 8.5)">Catálogo</a>
                         <a href="#idea-lab" onclick="scrollToTimelineSection(event, 17.5)">Idea Lab</a>
                         <a href="#" onclick="openMatchDrawer(); return false;">Cotizaciones</a>
-                        <a href="#testimonios">Testimonios</a>
                     </div>
                 </div>
                 <div class="container footer-legal">
@@ -1300,7 +1244,7 @@
         </div>
     </div>
 
-    <!-- Modal / Ventana Desplegable: Propuestas de Uso (Idea Lab Galería) -->
+    <!-- Modal / Ventana Desplegable: Propuestas de Uso (Idea Lab Galería con Efecto Stack 3D) -->
     <div class="propuestas-modal-overlay" id="propuestas-modal-overlay" onclick="closePropuestasModalOnBackdrop(event)">
         <div class="propuestas-modal" id="propuestas-modal">
             <button type="button" class="philosophy-drawer-close" onclick="closePropuestasModal()"
@@ -1311,8 +1255,16 @@
                 <h2 class="text-title propuestas-modal-title" id="propuestas-modal-title">Ubicación</h2>
             </div>
 
-            <div class="propuestas-track-viewport">
-                <div class="propuestas-track" id="propuestas-track"></div>
+            <!-- Contenedor del Efecto Stack 3D de Tarjetas Apiladas -->
+            <div class="propuestas-stack-container" id="propuestas-stack-container">
+                <div class="stack-wrapper" id="stack-wrapper"></div>
+            </div>
+
+            <!-- Controles e Indicador del Stack -->
+            <div class="stack-controls">
+                <button type="button" class="stack-nav-btn" onclick="if(window.activePhotoStack) window.activePhotoStack.prevCard(); event.stopPropagation();" aria-label="Anterior">&larr;</button>
+                <span class="stack-counter" id="propuestas-stack-counter">1 / 1</span>
+                <button type="button" class="stack-nav-btn" onclick="if(window.activePhotoStack) window.activePhotoStack.sendToBack(); event.stopPropagation();" aria-label="Siguiente">&rarr;</button>
             </div>
         </div>
     </div>
