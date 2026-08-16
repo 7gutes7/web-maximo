@@ -2051,6 +2051,9 @@ body {
         margin-bottom: 0.5rem !important;
         overflow: hidden !important;
         background: #e7e3d8 !important;
+        touch-action: pan-x !important;
+        user-select: none !important;
+        -webkit-user-select: none !important;
     }
 
     .ficha-photos-track {
@@ -2060,6 +2063,9 @@ body {
         height: 100% !important;
         width: max-content !important;
         align-items: center !important;
+        touch-action: pan-x !important;
+        user-select: none !important;
+        -webkit-user-select: none !important;
     }
 
     .ficha-photo {

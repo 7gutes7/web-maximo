@@ -2562,7 +2562,8 @@ function openFichaModal(el) {
             const item = document.createElement('div');
             item.className = 'ficha-photo';
             const img = document.createElement('img');
-            img.src = encodeURI(src);
+            const safeSrc = src.startsWith('http') ? src : src.split('/').map(p => encodeURIComponent(p)).join('/');
+            img.src = safeSrc;
             img.alt = ficha.titulo;
             img.loading = 'eager';
             item.appendChild(img);
@@ -2649,11 +2650,50 @@ function handleFichaWheel(event) {
     }
 }
 
+let fichaTrackTouchStartX = 0;
+let fichaTrackIsDragging = false;
+
+function bindFichaTrackTouch() {
+    const viewport = document.getElementById('ficha-photos-viewport');
+    if (!viewport || viewport.dataset.touchBound) return;
+    viewport.dataset.touchBound = 'true';
+
+    viewport.addEventListener('touchstart', (e) => {
+        if (e.touches && e.touches.length > 0) {
+            fichaTrackIsDragging = true;
+            fichaTrackTouchStartX = e.touches[0].clientX;
+        }
+    }, { passive: true });
+
+    viewport.addEventListener('touchmove', (e) => {
+        if (!fichaTrackIsDragging || !e.touches || e.touches.length === 0) return;
+        const currentX = e.touches[0].clientX;
+        const deltaX = fichaTrackTouchStartX - currentX;
+        fichaTrackTouchStartX = currentX;
+
+        fichaOffset += deltaX * 1.3;
+        const track = document.getElementById('ficha-photos-track');
+        if (track) {
+            const singleSetWidth = track.scrollWidth / 3;
+            if (singleSetWidth > 0) {
+                if (fichaOffset < 0) fichaOffset += singleSetWidth;
+                if (fichaOffset >= singleSetWidth) fichaOffset -= singleSetWidth;
+            }
+            track.style.transform = `translate3d(${-fichaOffset}px, 0px, 0px)`;
+        }
+    }, { passive: true });
+
+    viewport.addEventListener('touchend', () => {
+        fichaTrackIsDragging = false;
+    }, { passive: true });
+}
+
 function startFichaScroll() {
     const track = document.getElementById('ficha-photos-track');
     const viewport = document.getElementById('ficha-photos-viewport');
     if (!track || !viewport) return;
     if (fichaRAF) { cancelAnimationFrame(fichaRAF); fichaRAF = null; }
+    bindFichaTrackTouch();
 
     const singleSetWidth = track.scrollWidth / 3;
     if (singleSetWidth <= 0) {
@@ -2662,11 +2702,13 @@ function startFichaScroll() {
     }
 
     function step() {
-        fichaOffset += 1.8;
-        if (fichaOffset >= singleSetWidth) {
-            fichaOffset = 0;
+        if (!fichaTrackIsDragging) {
+            fichaOffset += 1.8;
+            if (fichaOffset >= singleSetWidth) {
+                fichaOffset = 0;
+            }
+            track.style.transform = `translate3d(${-fichaOffset}px, 0px, 0px)`;
         }
-        track.style.transform = `translate3d(${-fichaOffset}px, 0px, 0px)`;
         fichaRAF = requestAnimationFrame(step);
     }
     fichaRAF = requestAnimationFrame(step);
