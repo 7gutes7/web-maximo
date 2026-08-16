@@ -1346,17 +1346,44 @@ function closePhilosophyDrawerOnBackdrop(event) {
 
 // Ventana Desplegable Nuestro Compromiso (Pilar de Integridad)
 let compromisoWheelBound = false;
+let compromisoTouchStartY = 0;
+
+function handleCompromisoTouchStart(e) {
+    if (e.touches && e.touches.length > 0) {
+        compromisoTouchStartY = e.touches[0].clientY;
+    }
+}
+
+function handleCompromisoTouchMove(e) {
+    const drawer = document.getElementById('compromiso-drawer-overlay');
+    if (!drawer || !drawer.classList.contains('active')) return;
+
+    const panel = document.getElementById('compromiso-drawer-panel');
+    if (!panel || !e.touches || e.touches.length === 0) return;
+
+    const currentY = e.touches[0].clientY;
+    const deltaY = compromisoTouchStartY - currentY;
+    compromisoTouchStartY = currentY;
+
+    if (panel.scrollHeight > panel.clientHeight) {
+        panel.scrollTop += deltaY;
+    }
+}
 
 function bindCompromisoWheel() {
     if (compromisoWheelBound) return;
     compromisoWheelBound = true;
     document.addEventListener('wheel', handleCompromisoWheel, { passive: false });
+    document.addEventListener('touchstart', handleCompromisoTouchStart, { passive: true });
+    document.addEventListener('touchmove', handleCompromisoTouchMove, { passive: true });
 }
 
 function unbindCompromisoWheel() {
     if (!compromisoWheelBound) return;
     compromisoWheelBound = false;
     document.removeEventListener('wheel', handleCompromisoWheel);
+    document.removeEventListener('touchstart', handleCompromisoTouchStart);
+    document.removeEventListener('touchmove', handleCompromisoTouchMove);
 }
 
 function handleCompromisoWheel(event) {
@@ -2566,19 +2593,46 @@ function openFichaModal(el) {
 }
 
 // El scroll interno del modal (tabla técnica) se controla manualmente,
-// porque Lenis intercepta el evento wheel a nivel de documento.
+// porque Lenis intercepta los eventos wheel y touch a nivel de documento.
 let fichaWheelBound = false;
+let fichaTouchStartY = 0;
+
+function handleFichaTouchStart(e) {
+    if (e.touches && e.touches.length > 0) {
+        fichaTouchStartY = e.touches[0].clientY;
+    }
+}
+
+function handleFichaTouchMove(e) {
+    const overlay = document.getElementById('ficha-modal-overlay');
+    if (!overlay || !overlay.classList.contains('active')) return;
+
+    const tech = document.querySelector('.ficha-modal .ficha-tech');
+    if (!tech || !e.touches || e.touches.length === 0) return;
+
+    const currentY = e.touches[0].clientY;
+    const deltaY = fichaTouchStartY - currentY;
+    fichaTouchStartY = currentY;
+
+    if (tech.scrollHeight > tech.clientHeight) {
+        tech.scrollTop += deltaY;
+    }
+}
 
 function bindFichaWheel() {
     if (fichaWheelBound) return;
     fichaWheelBound = true;
     document.addEventListener('wheel', handleFichaWheel, { passive: false });
+    document.addEventListener('touchstart', handleFichaTouchStart, { passive: true });
+    document.addEventListener('touchmove', handleFichaTouchMove, { passive: true });
 }
 
 function unbindFichaWheel() {
     if (!fichaWheelBound) return;
     fichaWheelBound = false;
     document.removeEventListener('wheel', handleFichaWheel);
+    document.removeEventListener('touchstart', handleFichaTouchStart);
+    document.removeEventListener('touchmove', handleFichaTouchMove);
 }
 
 function handleFichaWheel(event) {
