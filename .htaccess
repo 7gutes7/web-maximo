@@ -1,0 +1,6 @@
+# Desactivar optimización/compresión destructiva de imágenes en Hostinger (LiteSpeed Web Server)
+<IfModule mod_headers.c>
+    <FilesMatch "\.(png|jpe?g|svg|webp)$">
+        Header set Cache-Control "max-age=31536000, public"
+    </FilesMatch>
+</IfModule>
