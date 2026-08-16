@@ -3176,7 +3176,14 @@ body {
         z-index: 10 !important;
         background-attachment: scroll !important;
         background-position: center center !important;
-        background-size: cover !important;
+        background-size: contain !important;
+        background-repeat: no-repeat !important;
+        background-color: #064E3B !important;
+        -webkit-transform: translate3d(0, 0, 0) !important;
+        transform: translate3d(0, 0, 0) !important;
+        -webkit-backface-visibility: hidden !important;
+        backface-visibility: hidden !important;
+        will-change: clip-path, transform !important;
     }
 
     #el-match {
