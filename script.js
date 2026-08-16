@@ -49,6 +49,7 @@ function initLenis() {
 
 // 0a. Snap Magnético por Viewport (estilo springs.house)
 function initAutoSnap() {
+    if (window.innerWidth <= 768) return;
     const lenis = window.lenis;
     if (!lenis) return;
 
@@ -151,6 +152,7 @@ function initAutoSnap() {
 // la siguiente (que empieza a cubrirla). La centra con un movimiento sutil y fluido,
 // con énfasis: dispara en todo momento de forma automática.
 function createMagneticSnap(config) {
+    if (window.innerWidth <= 768) return;
     const wrapper = document.querySelector('.curtain-wrapper');
     const lenis = window.lenis;
     if (!wrapper) return;
@@ -180,7 +182,7 @@ function createMagneticSnap(config) {
     }
 
     function maybeSnap() {
-        if (isSnapping || isDrawerActive()) return;
+        if (window.innerWidth <= 768 || isSnapping || isDrawerActive()) return;
         // Durante la navegación por clic (flecha/menú) se suprime el snap para
         // no bloquear el avance hacia la siguiente sección.
         if (window.__suppressSnapUntil && Date.now() < window.__suppressSnapUntil) return;
@@ -211,7 +213,7 @@ function createMagneticSnap(config) {
     }
 
     function scheduleSnap() {
-        if (isSnapping || isDrawerActive()) return;
+        if (window.innerWidth <= 768 || isSnapping || isDrawerActive()) return;
 
         // Disparo inmediato cuando el scroll está casi detenido (velocidad baja),
         // garantizando que el snap se active siempre de forma automática.
@@ -235,6 +237,7 @@ function createMagneticSnap(config) {
 
 // Snap Magnético de la Sección 1 (Hero) — centra en 0.0vh
 function initHeroMagneticSnap() {
+    if (window.innerWidth <= 768) return;
     createMagneticSnap({
         revealStartVh: 0,
         revealEndVh: 0.5,
@@ -261,6 +264,7 @@ function initSection2MagneticSnap() {
 
 // Snap Magnético de la Sección 4 (Galería Comercial) — centra en 10.2vh
 function initGaleriaMagneticSnap() {
+    if (window.innerWidth <= 768) return;
     createMagneticSnap({
         revealStartVh: 9.0,
         revealEndVh: 10.2,
@@ -275,6 +279,7 @@ function initGaleriaMagneticSnap() {
 // a la sección anterior (Catálogo, que termina de revelarse en 13.5vh) y a la
 // siguiente (Idea Lab, que empieza a cubrirla en 14.5vh). Centra en 14.5vh.
 function initIntegrityMagneticSnap() {
+    if (window.innerWidth <= 768) return;
     createMagneticSnap({
         revealStartVh: 13.5,
         revealEndVh: 14.5,
@@ -288,6 +293,7 @@ function initIntegrityMagneticSnap() {
 // Snap Magnético de la Última Sección (Valor MáximoART + Footer) — centra en 19.5vh
 // Se activa automáticamente cuando la sección alcanza la visibilidad requerida en el viewport.
 function initVmartMagneticSnap() {
+    if (window.innerWidth <= 768) return;
     createMagneticSnap({
         revealStartVh: 17.5,
         revealEndVh: 19.5,
