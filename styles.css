@@ -901,13 +901,29 @@ body {
     height: 100vh;
     width: 100%;
     margin-top: -100vh;
-    background: url('PORTADA_GALERIA_HD.png?v=hd_2026') center/cover no-repeat;
+    background-color: #064E3B;
     clip-path: polygon(50% 0%, 100% 0%, 100% 0%, 50% 0%);
     -webkit-clip-path: polygon(50% 0%, 100% 0%, 100% 0%, 50% 0%);
     will-change: clip-path;
     transform: translateZ(0);
     backface-visibility: hidden;
     contain: paint;
+    overflow: hidden;
+}
+
+.section-transition-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    display: block;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-select: none;
+    image-rendering: -webkit-optimize-contrast;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform: translateZ(0);
 }
 
 /* ==========================================================================
@@ -3174,16 +3190,21 @@ body {
         margin-top: -100vh !important;
         margin-top: calc(var(--vh, 1vh) * -100) !important;
         z-index: 10 !important;
-        background-attachment: scroll !important;
-        background-position: center center !important;
-        background-size: contain !important;
-        background-repeat: no-repeat !important;
         background-color: #064E3B !important;
         -webkit-transform: translate3d(0, 0, 0) !important;
         transform: translate3d(0, 0, 0) !important;
         -webkit-backface-visibility: hidden !important;
         backface-visibility: hidden !important;
         will-change: clip-path, transform !important;
+        overflow: hidden !important;
+    }
+
+    #transicion-imagen .section-transition-img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: contain !important;
+        object-position: center center !important;
+        background-color: #064E3B !important;
     }
 
     #el-match {
