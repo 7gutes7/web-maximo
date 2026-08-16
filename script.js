@@ -2596,10 +2596,12 @@ function openFichaModal(el) {
 // El scroll interno del modal (tabla técnica) se controla manualmente,
 // porque Lenis intercepta los eventos wheel y touch a nivel de documento.
 let fichaWheelBound = false;
+let fichaTouchStartX = 0;
 let fichaTouchStartY = 0;
 
 function handleFichaTouchStart(e) {
     if (e.touches && e.touches.length > 0) {
+        fichaTouchStartX = e.touches[0].clientX;
         fichaTouchStartY = e.touches[0].clientY;
     }
 }
@@ -2611,9 +2613,19 @@ function handleFichaTouchMove(e) {
     const tech = document.querySelector('.ficha-modal .ficha-tech');
     if (!tech || !e.touches || e.touches.length === 0) return;
 
+    const currentX = e.touches[0].clientX;
     const currentY = e.touches[0].clientY;
+    const deltaX = fichaTouchStartX - currentX;
     const deltaY = fichaTouchStartY - currentY;
+    fichaTouchStartX = currentX;
     fichaTouchStartY = currentY;
+
+    // Si el toque ocurrió dentro de un contenedor de tabla desplazable horizontalmente
+    const tableWrapper = e.target.closest ? e.target.closest('.ficha-table-wrapper') : null;
+    if (tableWrapper && Math.abs(deltaX) > Math.abs(deltaY) && tableWrapper.scrollWidth > tableWrapper.clientWidth) {
+        tableWrapper.scrollLeft += deltaX;
+        return;
+    }
 
     if (tech.scrollHeight > tech.clientHeight) {
         tech.scrollTop += deltaY;
