@@ -70,10 +70,10 @@ function initAutoSnap() {
             points.push(wrapperTop);              // 01. Hero Section
             points.push(wrapperTop + 1.0 * vh);   // 02. Sección 2 (#esencia)
             points.push(wrapperTop + 2.0 * vh);   // 03. Sección 3 (#casos-exito - Revelación)
-            points.push(wrapperTop + 3.4 * vh);   // 04. Sección 3 (Tarjetas completas)
-            points.push(wrapperTop + 4.5 * vh);   // 05. Sección 4 (#galeria-comercial)
-            points.push(wrapperTop + 6.5 * vh);   // 06. Sección 5 (#transicion-imagen)
-            points.push(wrapperTop + 8.5 * vh);   // 07. Sección 6 (#el-match - Revelación)
+            points.push(wrapperTop + 5.5 * vh);   // 04. Sección 3 (Tarjetas completas)
+            points.push(wrapperTop + 10.2 * vh);  // 05. Sección 4 (#galeria-comercial)
+            points.push(wrapperTop + 10.7 * vh);  // 06. Sección 5 (#transicion-imagen)
+            points.push(wrapperTop + 12.2 * vh);  // 07. Sección 6 (#el-match - Revelación)
             points.push(wrapperTop + 13.5 * vh);  // 08. Sección 6 (Desfile completo)
             points.push(wrapperTop + 14.5 * vh);  // 09. Sección 7 (Pilar de Integridad)
             points.push(wrapperTop + 17.5 * vh);  // 10. Sección 8 (Idea Lab - Final)
@@ -259,16 +259,14 @@ function initSection2MagneticSnap() {
     });
 }
 
-// Snap Magnético de la Sección 4 (Galería Comercial) — centra en 4.5vh
-// Influye en la Sección 3 (anterior) y en la Sección 5 (siguiente): se activa
-// únicamente cuando la Galería tiene el mayor porcentaje de visibilidad (umbral 0.5).
+// Snap Magnético de la Sección 4 (Galería Comercial) — centra en 10.2vh
 function initGaleriaMagneticSnap() {
     createMagneticSnap({
-        revealStartVh: 3.5,
-        revealEndVh: 4.5,
-        coverStartVh: 4.5,
-        coverEndVh: 6.5,
-        snapTargetVh: 4.5
+        revealStartVh: 9.0,
+        revealEndVh: 10.2,
+        coverStartVh: 10.2,
+        coverEndVh: 10.7,
+        snapTargetVh: 10.2
     });
 }
 
@@ -1151,8 +1149,8 @@ function initHorizontalCurtainReveals() {
         const vh = window.innerHeight;
         const scrolled = -rect.top;
 
-        // La cortina SÓLO se activa tras visualizar al 100% 'Acondicionamiento y Construcción' (Sección 2) + 400px de margen
-        const delayPx = 400;
+        // La cortina SÓLO se activa tras visualizar al 100% 'Acondicionamiento y Construcción' (Sección 2) + 300px de margen
+        const delayPx = 300;
         const startPx = 4.3 * vh + delayPx;
 
         // Mientras scrolled < startPx, progress = 0 y clipRight = 100% (Cortina 100% DESACTIVADA / Oculta)
@@ -2696,14 +2694,15 @@ function scrollToNextSection() {
 
     // Lista ordenada de los puntos clave de scroll en la línea de tiempo de cortinas
     const targets = [
-        1.0 * vh,  // Sección 2 (El Diferenciador Absoluto)
-        3.65 * vh, // Sección 4 (Galería Comercial)
-        6.65 * vh, // Sección 5 (Transición de Imagen)
-        8.5 * vh,  // Sección 6 (Catálogo — El Match)
-        14.35 * vh,// Sección 7 (Pilar de Integridad)
-        17.5 * vh, // Sección 8 (Idea Lab)
-        21.2 * vh, // Sección 9 (ValorMáximoART + Footer)
-        0          // Volver al Inicio (Hero)
+        1.0 * vh,   // Sección 2 (El Diferenciador Absoluto)
+        5.5 * vh,   // Sección 3 (Casos de Éxito)
+        10.2 * vh,  // Sección 4 (Galería Comercial)
+        10.7 * vh,  // Sección 5 (Transición de Imagen)
+        12.2 * vh,  // Sección 6 (Catálogo — El Match)
+        14.35 * vh, // Sección 7 (Pilar de Integridad)
+        17.5 * vh,  // Sección 8 (Idea Lab)
+        21.2 * vh,  // Sección 9 (ValorMáximoART + Footer)
+        0           // Volver al Inicio (Hero)
     ];
 
     // Encontrar el siguiente hito de navegación con un margen de tolerancia de 30px
