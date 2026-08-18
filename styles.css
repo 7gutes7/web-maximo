@@ -3690,3 +3690,20 @@ body {
     letter-spacing: 0.2em;
     color: #cfab0a;
 }
+
+/* -------- OPTIMIZACIÓN GPU FLUIDEZ MODO RESPONSIVO (60FPS TOUCH SCROLL) -------- */
+@media (max-width: 768px) {
+    .section-curtain-left,
+    .section-curtain-galeria,
+    .section-curtain-transition,
+    .section-curtain-match,
+    .section-curtain-integrity,
+    .section-curtain-idealab,
+    .section-curtain-vmart,
+    .curtain-wrapper {
+        will-change: clip-path, transform;
+        transform: translateZ(0);
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+    }
+}

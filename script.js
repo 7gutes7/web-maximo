@@ -1,9 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
     initMagicRingsPreloader();
     initLenis();
-    initHeroMagneticSnap();
-    initSection2MagneticSnap();
-    initGaleriaMagneticSnap();
+    if (window.innerWidth > 768) {
+        initHeroMagneticSnap();
+        initSection2MagneticSnap();
+        initGaleriaMagneticSnap();
+        initIntegrityMagneticSnap();
+        initVmartMagneticSnap();
+    }
     initScrollNavbar();
     initLogoSwap();
     initCurtainReveals();
@@ -15,10 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initTransitionCurtain();
     initMatchCatalogCurtain();
     initIntegrityCurtain();
-    initIntegrityMagneticSnap();
     initIdeaLabCurtain();
     initVmartCurtain();
-    initVmartMagneticSnap();
     initPortfolioVideoObserver();
     initGaleriaVideoObserver();
     initImageTrail();
@@ -30,13 +32,15 @@ document.addEventListener('DOMContentLoaded', () => {
 // 0. Lenis — Smooth scroll con inercia
 function initLenis() {
     if (typeof Lenis === 'undefined') return;
+    const isMobile = window.innerWidth <= 768;
     const lenis = new Lenis({
-        duration: 1.2,
+        duration: isMobile ? 0.8 : 1.2,
         easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         orientation: 'vertical',
         smoothWheel: true,
+        smoothTouch: false,
         wheelMultiplier: 1,
-        touchMultiplier: 1.5,
+        touchMultiplier: isMobile ? 0 : 1.5,
     });
 
     function raf(time) {
@@ -368,9 +372,10 @@ function initGaleriaCurtain() {
         const vh = window.innerHeight;
         const scrolled = -rect.top;
 
-        // En modo responsivo (<= 768px), la cortina de Galería se mantiene 100% congelada/desactivada hasta que el scroll interno del Portafolio despliegue el último contenedor al 100% (10.2vh). En Desktop se mantiene intacta a 6vh.
+        // En modo responsivo (<= 768px), la velocidad de revelado de cortina Galería Comercial (Sección 3 a 4) se reduce a la mitad (1.4vh). En Desktop permanece intacta a 0.7vh.
         const startPxGaleria = (window.innerWidth <= 768) ? 10.2 * vh : 6 * vh;
-        const progress = Math.min(1, Math.max(0, (scrolled - startPxGaleria) / (0.7 * vh)));
+        const revealDistanceGaleria = (window.innerWidth <= 768) ? 1.4 * vh : 0.7 * vh;
+        const progress = Math.min(1, Math.max(0, (scrolled - startPxGaleria) / revealDistanceGaleria));
         const clipPercent = (1 - progress) * 100;
 
         galeria.style.setProperty('--curtain-galeria', `${clipPercent}%`);
@@ -380,7 +385,7 @@ function initGaleriaCurtain() {
                 container.style.transform = `translate3d(0, 0px, 0)`;
             } else {
                 // Scroll interno compacto de Galería Comercial
-                const activeStartGaleria = (window.innerWidth <= 768) ? 10.8 * vh : 5.7 * vh;
+                const activeStartGaleria = (window.innerWidth <= 768) ? 11.6 * vh : 5.7 * vh;
                 const activeScrolled = Math.max(0, scrolled - activeStartGaleria);
                 const totalActiveTravel = 0.5 * vh;
                 const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
@@ -412,9 +417,10 @@ function initTransitionCurtain() {
         const vh = window.innerHeight;
         const scrolled = -rect.top;
 
-        // En modo responsivo (<= 768px), la cortina de Sección 5 (Transición de Imagen) se activa tras Sección 4 (11.8vh). En Desktop permanece intacta a 6.9vh.
-        const startPxSec5 = (window.innerWidth <= 768) ? 11.8 * vh : 6.9 * vh;
-        const progress = Math.min(1, Math.max(0, (scrolled - startPxSec5) / (1.0 * vh)));
+        // En modo responsivo (<= 768px), la cortina de Sección 5 (Transición de Imagen) se activa tras Sección 4 (12.1vh) con velocidad reducida a la mitad (2.0vh). En Desktop permanece intacta a 6.9vh.
+        const startPxSec5 = (window.innerWidth <= 768) ? 12.1 * vh : 6.9 * vh;
+        const revealDistanceSec5 = (window.innerWidth <= 768) ? 2.0 * vh : 1.0 * vh;
+        const progress = Math.min(1, Math.max(0, (scrolled - startPxSec5) / revealDistanceSec5));
 
         let clipPathValue = '';
 
@@ -466,8 +472,8 @@ function initMatchCatalogCurtain() {
         const vh = window.innerHeight;
         const scrolled = -rect.top;
 
-        // En modo responsivo (<= 768px), la cortina de Catálogo se activa a partir de 13.0vh con velocidad a la mitad (2.4vh). En Desktop se mantiene intacta a 8.2vh.
-        const startPxSec6 = (window.innerWidth <= 768) ? 13.0 * vh : 8.2 * vh;
+        // En modo responsivo (<= 768px), la cortina de Catálogo se activa a partir de 14.1vh con velocidad a la mitad (2.4vh). En Desktop se mantiene intacta a 8.2vh.
+        const startPxSec6 = (window.innerWidth <= 768) ? 14.1 * vh : 8.2 * vh;
         const revealDistanceSec6 = (window.innerWidth <= 768) ? 2.4 * vh : 1.2 * vh;
         const progressSec6 = Math.min(1, Math.max(0, (scrolled - startPxSec6) / revealDistanceSec6));
 
@@ -2938,8 +2944,8 @@ function scrollToNextSection() {
         3.2 * vh,   // Fondo de Sección 2 (Todos los contenedores desplegados al final)
         5.2 * vh,   // Sección 3 (Casos de Éxito / Portafolio: Cortina 100% desplegada)
         10.2 * vh,  // Sección 4 (Galería Comercial: Video animación estructuras01.mp4)
-        11.8 * vh,  // Sección 5 (Transición de Imagen: Portada PORTADA_GALERIA_HD.png)
-        15.4 * vh,  // Sección 6 (Catálogo — El Match: Inmediatamente tras cortina)
+        12.1 * vh,  // Sección 5 (Transición de Imagen: Portada PORTADA_GALERIA_HD.png con velocidad reducida a la mitad)
+        16.5 * vh,  // Sección 6 (Catálogo — El Match: Inmediatamente tras cortina)
         25.05 * vh, // Sección 7 (Pilar de Integridad: Inicio con la cortina 100% desplegada)
         27.4 * vh,  // Sección 7 (Pilar de Integridad: Fondo de la sección con los 5 contenedores desplegados)
         29.05 * vh, // Sección 8 (Idea Lab: Todos los contenedores desplegados con Edificio Hidalgo)
@@ -2955,11 +2961,16 @@ function scrollToNextSection() {
         nextTarget = 0; // Si estamos en la última sección, vuelve al inicio
     }
 
+    // En modo responsivo, reducir a la mitad la velocidad de desplazamiento por clic en flechas entre secciones 3, 4 y 5 (3.6s de duración)
+    const isMobile = window.innerWidth <= 768;
+    const isSection3To5 = isMobile && (nextTarget >= 5.0 * vh && nextTarget <= 13.0 * vh);
+    const scrollDuration = isSection3To5 ? 3.6 : (isMobile ? 2.8 : 2.2);
+
     const lenis = window.lenis;
     suppressSnapTemporarily();
     if (lenis) {
         lenis.scrollTo(nextTarget, {
-            duration: 2.2,
+            duration: scrollDuration,
             easing: (t) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t
         });
     } else {
