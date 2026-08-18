@@ -730,9 +730,9 @@ function initVmartCurtain() {
             } else {
                 const activeStartSec9 = 45.2 * vh;
                 const activeScrolled = Math.max(0, scrolled - activeStartSec9);
-                const totalActiveTravel = 2.0 * vh;
+                const totalActiveTravel = (window.innerWidth <= 768) ? 2.5 * vh : 2.0 * vh;
                 const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
-                const maxScroll = Math.max(0, container.scrollHeight - vh + 80);
+                const maxScroll = Math.max(0, container.scrollHeight - vh + 40);
 
                 const translateYValue = -flowProgress * maxScroll;
                 container.style.transform = `translate3d(0, ${translateYValue}px, 0)`;
