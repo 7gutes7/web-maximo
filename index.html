@@ -7,7 +7,8 @@
     <title>Valor Máximo | Real Estate de Precisión & Match Inmobiliario</title>
     <meta name="description"
         content="Sistema estratégico de match inmobiliario. Conectamos al arrendador con el emprendedor en el lugar y momento correcto.">
-    <link rel="stylesheet" href="styles.css?v=36">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='96' fill='%23ffffff'/%3E%3Cg transform='translate(48, 48) scale(0.888)'%3E%3Cpolygon points='140.416 345.708 77.155 215.203 .354 215.203 99.537 419.815 140.416 345.708' fill='%23002117'/%3E%3Cpolygon points='327.987 328.627 391.248 459.132 468.048 459.132 368.866 254.52 327.987 328.627' fill='%23002117'/%3E%3Cpolygon points='419.993 .354 230.767 99.56 296.838 136.006 118.596 459.132 215.252 459.132 370.944 176.884 437.015 213.33 419.993 .354' fill='%23002117'/%3E%3C/g%3E%3C/svg%3E">
+    <link rel="stylesheet" href="styles.css?v=44">
     <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
@@ -18,8 +19,8 @@
     <nav class="navbar" id="navbar">
         <div class="container">
             <ul class="nav-links">
-                <li><a href="#el-match" onclick="scrollToTimelineSection(event, 8.5)">Catálogo</a></li>
-                <li><a href="#idea-lab" onclick="scrollToTimelineSection(event, 17.5)">Idea Lab</a></li>
+                <li><a href="#el-match" onclick="scrollToTimelineSection(event, 9.4)">Catálogo</a></li>
+                <li><a href="#idea-lab" onclick="scrollToTimelineSection(event, 19.2)">Idea Lab</a></li>
             </ul>
             <a href="#" class="logo" aria-label="Valor Máximo Inicio">
                 <img src="valorM01.svg" alt="Valor Máximo" class="logo-img">
@@ -223,8 +224,8 @@
         <!-- 07. Sección 6: Catálogo de Inmuebles — El Match (Cortina 2 Fases z-index: 12 & Desfile de Tarjetas) -->
         <section class="section section-curtain-match" id="el-match">
             <!-- Indicador Flotante Animado de Scroll (Punto medio vertical, pegado al borde derecho) -->
-            <div class="catalog-scroll-indicator" id="catalog-scroll-indicator">
-                <span class="scroll-text">SCROLL</span>
+            <div class="catalog-scroll-indicator" id="catalog-scroll-indicator" onclick="scrollToTimelineSection(event, 16.3)" style="cursor:pointer;" title="Ir a Pilar de Integridad">
+                <span class="scroll-text">PILAR DE INTEGRIDAD</span>
                 <svg class="scroll-arrow-triangle" width="18" height="14" viewBox="0 0 24 16" fill="none"
                     stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <polygon points="3,3 21,3 12,13" />
@@ -948,11 +949,12 @@
 
                 <!-- Columna Derecha: Visor de Fotos Estático con Flechas a los Lados -->
                 <div class="idealab-gallery-col">
+                    <div class="idealab-image-hint">Clic en la Imagen</div>
                     <div class="idealab-clean-viewer">
                         <button type="button" class="idealab-arrow-btn prev" onclick="moveIdeaLabSlide(-1)" aria-label="Foto anterior">&larr;</button>
                         <div class="idealab-image-frame" id="idealab-image-frame">
-                            <img id="idealab-main-img" src="galeria 3/villanueva.png" alt="Felipe Villanueva" onclick="openPropuestasModalFromIdeaLab()">
-                            <div class="idealab-image-caption" id="idealab-main-caption">Felipe Villanueva</div>
+                            <img id="idealab-main-img" src="galeria 3/hidalgo.jpeg" alt="Edificio Hidalgo" onclick="openPropuestasModalFromIdeaLab()">
+                            <div class="idealab-image-caption" id="idealab-main-caption">Edificio Hidalgo</div>
                         </div>
                         <button type="button" class="idealab-arrow-btn next" onclick="moveIdeaLabSlide(1)" aria-label="Foto siguiente">&rarr;</button>
                     </div>
@@ -1036,8 +1038,8 @@
                     </div>
                     <div class="footer-links">
                         <a href="#inicio" onclick="scrollToTimelineSection(event, 0)">Inicio</a>
-                        <a href="#el-match" onclick="scrollToTimelineSection(event, 8.5)">Catálogo</a>
-                        <a href="#idea-lab" onclick="scrollToTimelineSection(event, 17.5)">Idea Lab</a>
+                        <a href="#el-match" onclick="scrollToTimelineSection(event, 9.4)">Catálogo</a>
+                        <a href="#idea-lab" onclick="scrollToTimelineSection(event, 19.2)">Idea Lab</a>
                         <a href="#" onclick="openMatchDrawer(); return false;">Cotizaciones</a>
                     </div>
                 </div>
@@ -1320,7 +1322,7 @@
     </div>
 
     <script src="main.js"></script>
-    <script src="script.js?v=85.0"></script>
+    <script src="script.js?v=101.0"></script>
 </body>
 
 </html>

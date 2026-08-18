@@ -72,10 +72,10 @@ function initAutoSnap() {
             points.push(wrapperTop + 1.0 * vh);   // 02. Sección 2 (#esencia)
             points.push(wrapperTop + 2.0 * vh);   // 03. Sección 3 (#casos-exito - Revelación)
             points.push(wrapperTop + 5.5 * vh);   // 04. Sección 3 (Tarjetas completas)
-            points.push(wrapperTop + 10.2 * vh);  // 05. Sección 4 (#galeria-comercial)
-            points.push(wrapperTop + 10.7 * vh);  // 06. Sección 5 (#transicion-imagen)
-            points.push(wrapperTop + 12.2 * vh);  // 07. Sección 6 (#el-match - Revelación)
-            points.push(wrapperTop + 13.5 * vh);  // 08. Sección 6 (Desfile completo)
+            points.push(wrapperTop + 6.0 * vh);   // 05. Sección 4 (#galeria-comercial)
+            points.push(wrapperTop + 6.9 * vh);   // 06. Sección 5 (#transicion-imagen)
+            points.push(wrapperTop + 9.4 * vh);   // 07. Sección 6 (#el-match - Inmediatamente tras cortina)
+            points.push(wrapperTop + 13.3 * vh);  // 08. Sección 6 (Desfile completo)
             points.push(wrapperTop + 14.5 * vh);  // 09. Sección 7 (Pilar de Integridad)
             points.push(wrapperTop + 17.5 * vh);  // 10. Sección 8 (Idea Lab - Final)
             points.push(wrapperTop + 19.5 * vh);  // 11. Sección 9 (ValorMáximoART + Footer)
@@ -262,15 +262,15 @@ function initSection2MagneticSnap() {
     });
 }
 
-// Snap Magnético de la Sección 4 (Galería Comercial) — centra en 10.2vh
+// Snap Magnético de la Sección 4 (Galería Comercial) — centra en 9.0vh
 function initGaleriaMagneticSnap() {
     if (window.innerWidth <= 768) return;
     createMagneticSnap({
-        revealStartVh: 9.0,
-        revealEndVh: 10.2,
-        coverStartVh: 10.2,
-        coverEndVh: 10.7,
-        snapTargetVh: 10.2
+        revealStartVh: 7.8,
+        revealEndVh: 9.0,
+        coverStartVh: 9.0,
+        coverEndVh: 9.5,
+        snapTargetVh: 9.0
     });
 }
 
@@ -367,8 +367,8 @@ function initGaleriaCurtain() {
         const vh = window.innerHeight;
         const scrolled = -rect.top;
 
-        // La cortina SÓLO se activa a partir de 9.5vh (tras completar la Sección 3)
-        const progress = Math.min(1, Math.max(0, (scrolled - 9.5 * vh) / (0.7 * vh)));
+        // La cortina SÓLO se activa a partir de 5 * vh
+        const progress = Math.min(1, Math.max(0, (scrolled - 6 * vh) / (0.7 * vh)));
         const clipPercent = (1 - progress) * 100;
 
         galeria.style.setProperty('--curtain-galeria', `${clipPercent}%`);
@@ -377,8 +377,8 @@ function initGaleriaCurtain() {
             if (progress < 1.0) {
                 container.style.transform = `translate3d(0, 0px, 0)`;
             } else {
-                // Scroll interno compacto de Galería Comercial activo de 10.2vh a 10.7vh
-                const activeScrolled = Math.max(0, scrolled - 10.2 * vh);
+                // Scroll interno compacto de Galería Comercial activo a partir de 5.7 * vh
+                const activeScrolled = Math.max(0, scrolled - 5.7 * vh);
                 const totalActiveTravel = 0.5 * vh;
                 const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
                 const maxScroll = Math.max(0, container.scrollHeight - vh + 50);
@@ -410,7 +410,7 @@ function initTransitionCurtain() {
         const scrolled = -rect.top;
 
         // Cortina de Sección 5 SÓLO se activa a partir de 10.7vh (transición rápida e inmediata tras Galería Comercial)
-        const progress = Math.min(1, Math.max(0, (scrolled - 10.7 * vh) / (1.0 * vh)));
+        const progress = Math.min(1, Math.max(0, (scrolled - 6.9 * vh) / (1.0 * vh)));
 
         let clipPathValue = '';
 
@@ -463,7 +463,7 @@ function initMatchCatalogCurtain() {
         const scrolled = -rect.top;
 
         // Cortina de Catálogo se activa a partir de 12.2vh hasta 13.4vh
-        const progressSec6 = Math.min(1, Math.max(0, (scrolled - 12.2 * vh) / (1.2 * vh)));
+        const progressSec6 = Math.min(1, Math.max(0, (scrolled - 8.2 * vh) / (1.2 * vh)));
 
         let clipPathValue = '';
 
@@ -482,7 +482,8 @@ function initMatchCatalogCurtain() {
 
         if (window.innerWidth > 768) {
             if (rightCol) {
-                const flowScrolled = Math.max(0, scrolled - 13.4 * vh);
+                // Scroll interno activo inmediatamente tras completarse la cortina (8.2vh + 1.2vh = 9.4vh)
+                const flowScrolled = Math.max(0, scrolled - 9.4 * vh);
                 const totalTravel = 3.9 * vh;
                 const flowProgress = Math.min(1, flowScrolled / totalTravel);
 
@@ -503,7 +504,7 @@ function initMatchCatalogCurtain() {
                 if (progressSec6 < 1.0) {
                     container.style.transform = `translate3d(0, 0px, 0)`;
                 } else {
-                    const flowScrolled = Math.max(0, scrolled - 13.4 * vh);
+                    const flowScrolled = Math.max(0, scrolled - 9.4 * vh);
                     const totalTravel = 3.9 * vh;
                     const flowProgress = Math.min(1, flowScrolled / totalTravel);
                     const maxScroll = Math.max(0, container.scrollHeight - vh + 100);
@@ -516,8 +517,9 @@ function initMatchCatalogCurtain() {
 
         const globalScrollBtn = document.getElementById('global-scroll-btn');
         if (globalScrollBtn) {
-            const isCurtainFlow = scrolled >= 12.2 * vh;
-            globalScrollBtn.classList.toggle('hidden', isCurtainFlow);
+            const isCurtainFlow = scrolled >= 8.2 * vh && scrolled < 9.4 * vh;
+            const isLastSection = scrolled >= 20.5 * vh;
+            globalScrollBtn.classList.toggle('hidden', isCurtainFlow || isLastSection);
         }
     }
 
@@ -539,15 +541,15 @@ function initIntegrityCurtain() {
     const leftCol = sec.querySelector('.integridad-left-col');
     const container = sec.querySelector('.container');
     const staggerEls = sec.querySelectorAll('.integridad-card-stagger');
-    const cardThresholds = [18.3, 18.8, 19.3, 19.8, 20.3];
+    const cardThresholds = [14.1, 14.6, 15.1, 15.6, 16.1];
 
     function update() {
         const rect = wrapper.getBoundingClientRect();
         const vh = window.innerHeight;
         const scrolled = -rect.top;
 
-        // Cortina SÓLO se activa a partir de 17.3vh hasta 18.15vh
-        const progress = Math.min(1, Math.max(0, (scrolled - 17.3 * vh) / (0.85 * vh)));
+        // Cortina de Sección 7 (Pilar de Integridad) se activa a partir de 13.3vh (inmediatamente tras Catálogo)
+        const progress = Math.min(1, Math.max(0, (scrolled - 13.3 * vh) / (0.85 * vh)));
         const clipPercent = (1 - progress) * 100;
         sec.style.setProperty('--curtain-integrity', `${clipPercent}%`);
 
@@ -560,9 +562,9 @@ function initIntegrityCurtain() {
                 container.style.transform = `translate3d(0, 0px, 0)`;
             }
         } else {
-            // Scroll interno activo de 18.15vh a 20.5vh
+            // Scroll interno activo de 14.15vh a 16.5vh
             if (container) {
-                const activeScrolled = Math.max(0, scrolled - 18.15 * vh);
+                const activeScrolled = Math.max(0, scrolled - 14.15 * vh);
                 const totalActiveTravel = 2.35 * vh;
                 const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
                 const maxScroll = Math.max(0, container.scrollHeight - vh + 80);
@@ -572,10 +574,10 @@ function initIntegrityCurtain() {
             }
         }
 
-        // Entrada escalonada de las tarjetas de pilares
+        // Entrada escalonada fluida respetando el orden y efecto de cada uno de los contenedores
         const progressTotal = scrolled / vh;
         staggerEls.forEach((card, index) => {
-            const threshold = cardThresholds[index] !== undefined ? cardThresholds[index] : (18.3 + index * 0.5);
+            const threshold = cardThresholds[index] !== undefined ? cardThresholds[index] : (14.1 + index * 0.5);
             card.classList.toggle('active', progressTotal >= threshold);
         });
     }
@@ -598,15 +600,15 @@ function initIdeaLabCurtain() {
     const leftCol = sec.querySelector('.idealab-left-col');
     const container = sec.querySelector('.container');
     const staggerEls = sec.querySelectorAll('.idealab-card-stagger');
-    const cardThresholds = [20.8, 21.2, 21.6, 22.0];
+    const cardThresholds = [17.8, 18.2, 18.6, 19.0];
 
     function update() {
         const rect = wrapper.getBoundingClientRect();
         const vh = window.innerHeight;
         const scrolled = -rect.top;
 
-        // Cortina SÓLO se activa a partir de 20.5vh hasta 21.5vh
-        const progress = Math.min(1, Math.max(0, (scrolled - 20.5 * vh) / (1.0 * vh)));
+        // Cortina de Sección 8 (Idea Lab) se activa inmediatamente a partir de 16.5vh (tras Pilar de Integridad)
+        const progress = Math.min(1, Math.max(0, (scrolled - 16.5 * vh) / (1.0 * vh)));
         const clipPercent = (1 - progress) * 100;
         sec.style.setProperty('--curtain-idealab', `${clipPercent}%`);
 
@@ -619,9 +621,9 @@ function initIdeaLabCurtain() {
                 container.style.transform = `translate3d(0, 0px, 0)`;
             }
         } else {
-            // Scroll interno activo de 21.5vh a 25.5vh (recorriendo los 4 procesos completos sobre fondo 100% inmóvil)
+            // Scroll interno activo de 17.5vh a 21.5vh
             if (container) {
-                const activeScrolled = Math.max(0, scrolled - 21.5 * vh);
+                const activeScrolled = Math.max(0, scrolled - 17.5 * vh);
                 const totalActiveTravel = 4.0 * vh;
                 const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
                 const maxScroll = Math.max(0, container.scrollHeight - vh + 180);
@@ -631,13 +633,13 @@ function initIdeaLabCurtain() {
             }
         }
 
-        // Entrada de las tarjetas de procesos
+        // Entrada escalonada de las tarjetas de procesos (01 a 04)
         const progressTotal = scrolled / vh;
         staggerEls.forEach((card, index) => {
             if (window.innerWidth <= 768) {
                 card.classList.add('active');
             } else {
-                const threshold = cardThresholds[index] !== undefined ? cardThresholds[index] : (20.8 + index * 0.4);
+                const threshold = cardThresholds[index] !== undefined ? cardThresholds[index] : (17.8 + index * 0.4);
                 card.classList.toggle('active', progressTotal >= threshold);
             }
         });
@@ -664,8 +666,8 @@ function initVmartCurtain() {
         const vh = window.innerHeight;
         const scrolled = -rect.top;
 
-        // Cortina SÓLO se activa a partir de 25.5vh hasta 26.8vh
-        const progress = Math.min(1, Math.max(0, (scrolled - 25.5 * vh) / (1.3 * vh)));
+        // Cortina de Sección 9 (VMART) se activa inmediatamente a partir de 21.5vh (tras Idea Lab)
+        const progress = Math.min(1, Math.max(0, (scrolled - 21.5 * vh) / (1.3 * vh)));
         const clipPercent = (1 - progress) * 100;
         sec.style.setProperty('--curtain-vmart', `${clipPercent}%`);
 
@@ -673,13 +675,21 @@ function initVmartCurtain() {
             if (progress < 1.0) {
                 container.style.transform = `translate3d(0, 0px, 0)`;
             } else {
-                const activeScrolled = Math.max(0, scrolled - 26.8 * vh);
+                const activeScrolled = Math.max(0, scrolled - 22.8 * vh);
                 const totalActiveTravel = 2.5 * vh;
                 const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
                 const maxScroll = Math.max(0, container.scrollHeight - vh + 80);
 
                 const translateYValue = -flowProgress * maxScroll;
                 container.style.transform = `translate3d(0, ${translateYValue}px, 0)`;
+            }
+        }
+
+        const globalScrollBtn = document.getElementById('global-scroll-btn');
+        if (globalScrollBtn) {
+            const isLastSection = scrolled >= 20.5 * vh;
+            if (isLastSection) {
+                globalScrollBtn.classList.add('hidden');
             }
         }
     }
@@ -1155,12 +1165,12 @@ function initHorizontalCurtainReveals() {
         const vh = window.innerHeight;
         const scrolled = -rect.top;
 
-        // La cortina SÓLO se activa tras visualizar al 100% 'Acondicionamiento y Construcción' (Sección 2) + 300px de margen
-        const delayPx = 300;
-        const startPx = 4.3 * vh + delayPx;
+        // La cortina se activa inmediatamente tras visualizar la Sección 2
+        const startPx = 2 * vh;
 
         // Mientras scrolled < startPx, progress = 0 y clipRight = 100% (Cortina 100% DESACTIVADA / Oculta)
-        const progress = Math.min(1, Math.max(0, (scrolled - startPx) / (0.9 * vh)));
+        const revealDistance = 3.0 * vh; // Distancia de transición ajustada a 3.0vh
+        const progress = Math.min(1, Math.max(0, (scrolled - startPx) / revealDistance));
         const clipRight = Math.max(0, Math.min(100, 100 - progress * 100));
 
         leftCurtains.forEach(section => {
@@ -1172,7 +1182,7 @@ function initHorizontalCurtainReveals() {
             if (progress < 1.0) {
                 container.style.transform = `translate3d(0, 0px, 0)`;
             } else {
-                const activeStartPx = startPx + 0.9 * vh;
+                const activeStartPx = startPx + revealDistance;
                 const activeScrolled = Math.max(0, scrolled - activeStartPx);
                 const totalActiveTravel = 3.3 * vh;
                 const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
@@ -1459,12 +1469,12 @@ const propuestasAlias = {
 };
 
 const ideaLabSlidesData = [
-    { key: 'villanueva', title: 'Felipe Villanueva', image: 'galeria 3/villanueva.png' },
     { key: 'hidalgo', title: 'Edificio Hidalgo', image: 'galeria 3/hidalgo.jpeg' },
-    { key: 'paseo central', title: 'Paseo Central', image: 'galeria 3/paseo central.jpg' },
-    { key: 'pinosuarez', title: 'Pino Suárez', image: 'galeria 3/pinosuarez.jpeg' },
     { key: 'villada', title: 'Villada', image: 'galeria 3/villada.png' },
-    { key: 'riva palacio', title: 'Riva Palacio', image: 'galeria 3/riva palacio.jpg' }
+    { key: 'pinosuarez', title: 'Pino Suárez', image: 'galeria 3/pinosuarez.jpeg' },
+    { key: 'villanueva', title: 'Felipe Villanueva', image: 'galeria 3/villanueva.png' },
+    { key: 'riva palacio', title: 'Riva Palacio', image: 'galeria 3/riva palacio.jpg' },
+    { key: 'paseo central', title: 'Paseo Central', image: 'galeria 3/paseo central.jpg' }
 ];
 
 let currentIdeaLabIndex = 0;
@@ -2535,7 +2545,7 @@ function openFichaModal(el) {
         ubicacionBox.style.display = '';
         const iframe = ubicacionBox.querySelector('iframe');
         const link = ubicacionBox.querySelector('.ficha-ubicacion-link');
-        
+
         let embedUrl = ficha.ubicacion.embed;
         if (ficha.ubicacion.link && ficha.ubicacion.link.includes('@')) {
             const match = ficha.ubicacion.link.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
@@ -2543,7 +2553,7 @@ function openFichaModal(el) {
                 embedUrl = `https://maps.google.com/maps?q=${match[1]},${match[2]}&z=17&ie=UTF8&iwloc=&output=embed`;
             }
         }
-        
+
         if (iframe) iframe.src = embedUrl;
         if (link) link.href = ficha.ubicacion.link;
     } else {
@@ -2589,8 +2599,42 @@ function openFichaModal(el) {
     document.body.style.overflow = 'hidden';
     if (window.lenis) window.lenis.stop();
     bindFichaWheel();
+    bindTableMouseDrag();
 
     setTimeout(startFichaScroll, 60);
+}
+
+function bindTableMouseDrag() {
+    const wrappers = document.querySelectorAll('.ficha-table-wrapper');
+    wrappers.forEach(wrapper => {
+        if (wrapper.dataset.dragBound) return;
+        wrapper.dataset.dragBound = 'true';
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        wrapper.addEventListener('mousedown', (e) => {
+            isDown = true;
+            wrapper.style.cursor = 'grabbing';
+            startX = e.pageX - wrapper.offsetLeft;
+            scrollLeft = wrapper.scrollLeft;
+        });
+        wrapper.addEventListener('mouseleave', () => {
+            isDown = false;
+            wrapper.style.cursor = 'grab';
+        });
+        wrapper.addEventListener('mouseup', () => {
+            isDown = false;
+            wrapper.style.cursor = 'grab';
+        });
+        wrapper.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - wrapper.offsetLeft;
+            const walk = (x - startX) * 1.5;
+            wrapper.scrollLeft = scrollLeft - walk;
+        });
+    });
 }
 
 // El scroll interno del modal (tabla técnica) se controla manualmente,
@@ -2655,9 +2699,24 @@ function handleFichaWheel(event) {
     const tech = document.querySelector('.ficha-modal .ficha-tech');
     if (!tech) return;
 
-    const delta = event.deltaY;
-    if (tech.scrollHeight > tech.clientHeight) {
-        tech.scrollTop += delta;
+    const deltaX = event.deltaX;
+    const deltaY = event.deltaY;
+    const targetWrapper = event.target.closest ? event.target.closest('.ficha-table-wrapper') : null;
+
+    // 1. Navegación en Eje X (Swipe horizontal en Touchpad / Trackpad de 2 dedos)
+    if (Math.abs(deltaX) > 0) {
+        const wrapperToScroll = targetWrapper || tech.querySelector('.ficha-table-wrapper');
+        if (wrapperToScroll && wrapperToScroll.scrollWidth > wrapperToScroll.clientWidth) {
+            wrapperToScroll.scrollLeft += deltaX;
+            event.preventDefault();
+            event.stopPropagation();
+            return;
+        }
+    }
+
+    // 2. Navegación en Eje Y (Scroll vertical del modal)
+    if (Math.abs(deltaY) > 0 && tech.scrollHeight > tech.clientHeight) {
+        tech.scrollTop += deltaY;
         event.preventDefault();
     }
 }
@@ -2809,13 +2868,13 @@ function scrollToNextSection() {
     // Lista ordenada de los puntos clave de scroll en la línea de tiempo de cortinas
     const targets = [
         1.0 * vh,   // Sección 2 (El Diferenciador Absoluto)
-        5.5 * vh,   // Sección 3 (Casos de Éxito)
-        10.2 * vh,  // Sección 4 (Galería Comercial)
-        10.7 * vh,  // Sección 5 (Transición de Imagen)
-        12.2 * vh,  // Sección 6 (Catálogo — El Match)
-        14.35 * vh, // Sección 7 (Pilar de Integridad)
-        17.5 * vh,  // Sección 8 (Idea Lab)
-        21.2 * vh,  // Sección 9 (ValorMáximoART + Footer)
+        2.0 * vh,   // Sección 3 (Casos de Éxito)
+        6.0 * vh,   // Sección 4 (Galería Comercial)
+        6.9 * vh,   // Sección 5 (Transición de Imagen)
+        9.4 * vh,   // Sección 6 (Catálogo — El Match: Inmediatamente tras cortina)
+        16.2 * vh,  // Sección 7 (Pilar de Integridad: Posición completa con los 5 contenedores desplegados)
+        19.2 * vh,  // Sección 8 (Idea Lab: Todos los contenedores desplegados con Edificio Hidalgo)
+        22.8 * vh,  // Sección 9 (ValorMáximoART + Footer: Cortina 100% revelada, sin flecha de navegación)
         0           // Volver al Inicio (Hero)
     ];
 
