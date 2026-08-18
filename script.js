@@ -2897,11 +2897,11 @@ function scrollToTimelineSection(event, vh) {
     let targetVh = vh;
     if (window.innerWidth <= 768) {
         if (vh === 9.4) targetVh = 16.5;
-        else if (vh === 19.2) targetVh = 40.7;
+        else if (vh === 19.2) targetVh = 41.5;
         else if (vh === 16.3) targetVh = 36.5;
         else if (vh === 2.0) targetVh = 5.2;
     } else {
-        if (vh === 19.2) targetVh = 21.4;
+        if (vh === 19.2) targetVh = 23.0;
         else if (vh === 16.3) targetVh = 17.2;
         else if (vh === 22.8) targetVh = 25.4;
     }
@@ -2938,7 +2938,7 @@ function scrollToNextSection() {
         6.9 * vh,   // Sección 5 (Transición de Imagen)
         9.4 * vh,   // Sección 6 (Catálogo — El Match: Inmediatamente tras cortina)
         17.2 * vh,  // Sección 7 (Pilar de Integridad: Inicio con la cortina 100% desplegada)
-        21.4 * vh,  // Sección 8 (Idea Lab: Cortina 100% desplegada)
+        23.0 * vh,  // Sección 8 (Idea Lab: Todos los contenedores desplegados con Edificio Hidalgo)
         25.4 * vh,  // Sección 9 (ValorMáximoART + Footer: Cortina 100% revelada, sin flecha de navegación)
         0           // Volver al Inicio (Hero)
     ];
@@ -2951,7 +2951,7 @@ function scrollToNextSection() {
         12.1 * vh,  // Sección 5 (Transición de Imagen: Portada PORTADA_GALERIA_HD.png)
         16.5 * vh,  // Sección 6 (Catálogo — El Match: Inmediatamente tras cortina con velocidad a la mitad)
         36.5 * vh,  // Sección 7 (Pilar de Integridad: Inicio con la cortina 100% desplegada)
-        40.7 * vh,  // Sección 8 (Idea Lab: Cortina 100% desplegada)
+        41.5 * vh,  // Sección 8 (Idea Lab: Todos los contenedores desplegados con Edificio Hidalgo)
         44.2 * vh,  // Sección 9 (ValorMáximoART + Footer: Cortina 100% revelada, sin flecha de navegación)
         0           // Volver al Inicio (Hero)
     ];
