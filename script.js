@@ -2124,7 +2124,7 @@ const fichasInmuebles = {
             { concepto: 'Agua', valor: 'Cuota proporcional a los metros cuadrados arrendados.' },
         ],
         ubicacion: {
-            embed: 'https://maps.google.com/maps?q=19.2741794,-99.6669384&z=17&ie=UTF8&iwloc=&output=embed',
+            embed: 'https://maps.google.com/maps?q=Av.+Felipe+Villanueva,+Toluca,+M%C3%A9xico&z=17&ie=UTF8&iwloc=&output=embed',
             link: 'https://maps.app.goo.gl/V5sN6x8PoFgWP7yaA',
         },
     },
@@ -2173,7 +2173,7 @@ const fichasInmuebles = {
             { concepto: 'Servicios', valor: 'A confirmar' },
         ],
         ubicacion: {
-            embed: 'https://maps.google.com/maps?q=19.284043,-99.6563766&z=17&ie=UTF8&iwloc=&output=embed',
+            embed: 'https://maps.google.com/maps?q=19.2858101,-99.6586716&z=18&ie=UTF8&iwloc=&output=embed',
             link: 'https://maps.app.goo.gl/8w1Gxck4gDtbMF3f6',
         },
     },
@@ -2338,7 +2338,7 @@ const fichasInmuebles = {
             { concepto: 'Agua', valor: 'Cuota proporcional.' },
         ],
         ubicacion: {
-            embed: 'https://maps.google.com/maps?q=19.2803675,-99.6564654&z=17&ie=UTF8&iwloc=&output=embed',
+            embed: 'https://maps.google.com/maps?q=19.2803625,-99.6538905&z=18&ie=UTF8&iwloc=&output=embed',
             link: 'https://maps.app.goo.gl/pmdogp2UFdozHDNz8',
         },
     },
@@ -2411,7 +2411,7 @@ const fichasInmuebles = {
             { concepto: 'Servicios', valor: 'Servicios independientes.' },
         ],
         ubicacion: {
-            embed: 'https://maps.google.com/maps?q=Av.+Calimaya+Plaza+Comercial+El+Meson+2+Calimaya&z=17&ie=UTF8&iwloc=&output=embed',
+            embed: 'https://maps.google.com/maps?q=Plaza+Comercial+El+Meson+2,+Av.+Calimaya,+Rancho+El+Meson,+M%C3%A9x.&ftid=0x85cd89879a895cd9:0xf78972e90cf1c343&z=17&ie=UTF8&iwloc=&output=embed',
             link: 'https://maps.app.goo.gl/THzrzkqntGPwdr94A?g_st=iw',
         },
     },
