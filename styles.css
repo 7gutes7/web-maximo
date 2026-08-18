@@ -71,10 +71,16 @@ body {
     padding: 0 var(--spacing-md);
 }
 
-/* Wrapper de Cortinas Inmóviles (Timeline Scroll Extendido 3500vh) */
+/* Wrapper de Cortinas Inmóviles (Timeline Scroll Extendido) */
 .curtain-wrapper {
     height: 3500vh;
     position: relative;
+}
+
+@media (min-width: 769px) {
+    .curtain-wrapper {
+        height: 2500vh;
+    }
 }
 
 .section {
