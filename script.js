@@ -494,9 +494,9 @@ function initMatchCatalogCurtain() {
 
         if (window.innerWidth > 768) {
             if (rightCol) {
-                // Scroll interno activo inmediatamente tras completarse la cortina (8.2vh + 1.2vh = 9.4vh)
+                // Scroll interno activo inmediatamente tras completarse la cortina (8.2vh + 1.2vh = 9.4vh) con velocidad reducida a la mitad (7.8vh)
                 const flowScrolled = Math.max(0, scrolled - 9.4 * vh);
-                const totalTravel = 3.9 * vh;
+                const totalTravel = 7.8 * vh;
                 const flowProgress = Math.min(1, flowScrolled / totalTravel);
 
                 const translateYValue = -flowProgress * maxTranslate;
@@ -510,15 +510,15 @@ function initMatchCatalogCurtain() {
             }
             if (container) container.style.transform = `translate3d(0, 0px, 0)`;
         } else {
-            // Modo responsive: traslación fluida del contenedor completo sin textos ni elementos fijos o pegajosos
+            // Modo responsive: traslación fluida del contenedor completo con velocidad reducida a la mitad (20.0vh)
             if (rightCol) rightCol.style.transform = `none`;
             if (container) {
                 if (progressSec6 < 1.0) {
                     container.style.transform = `translate3d(0, 0px, 0)`;
                 } else {
-                    const activeStartSec6 = (window.innerWidth <= 768) ? 15.4 * vh : 9.4 * vh;
+                    const activeStartSec6 = (window.innerWidth <= 768) ? 16.5 * vh : 9.4 * vh;
                     const flowScrolled = Math.max(0, scrolled - activeStartSec6);
-                    const totalTravel = (window.innerWidth <= 768) ? 10.0 * vh : 3.9 * vh;
+                    const totalTravel = (window.innerWidth <= 768) ? 20.0 * vh : 7.8 * vh;
                     const flowProgress = Math.min(1, flowScrolled / totalTravel);
                     const maxScroll = Math.max(0, container.scrollHeight - vh + 100);
 
@@ -531,14 +531,14 @@ function initMatchCatalogCurtain() {
         const globalScrollBtn = document.getElementById('global-scroll-btn');
         if (globalScrollBtn) {
             if (window.innerWidth <= 768) {
-                // En modo responsivo (<= 768px), la flecha desaparece durante el Catálogo (13.0vh a 24.0vh) y en Idea Lab (28.05vh a 33.0vh), y reaparece al final de cada sección
-                const inCatalogResponsive = scrolled >= 13.0 * vh && scrolled < 24.0 * vh;
-                const inIdeaLabResponsive = scrolled >= 28.05 * vh && scrolled < 33.0 * vh;
-                const isLastSection = scrolled >= 33.0 * vh;
+                // En modo responsivo (<= 768px), la flecha desaparece durante el Catálogo (14.1vh a 36.5vh) y en Idea Lab (39.7vh a 44.2vh), y reaparece al final
+                const inCatalogResponsive = scrolled >= 14.1 * vh && scrolled < 36.5 * vh;
+                const inIdeaLabResponsive = scrolled >= 39.7 * vh && scrolled < 44.2 * vh;
+                const isLastSection = scrolled >= 44.2 * vh;
                 globalScrollBtn.classList.toggle('hidden', inCatalogResponsive || inIdeaLabResponsive || isLastSection);
             } else {
                 const isCurtainFlow = scrolled >= 8.2 * vh && scrolled < 9.4 * vh;
-                const isLastSection = scrolled >= 20.5 * vh;
+                const isLastSection = scrolled >= 26.0 * vh;
                 globalScrollBtn.classList.toggle('hidden', isCurtainFlow || isLastSection);
             }
         }
@@ -562,15 +562,15 @@ function initIntegrityCurtain() {
     const leftCol = sec.querySelector('.integridad-left-col');
     const container = sec.querySelector('.container');
     const staggerEls = sec.querySelectorAll('.integridad-card-stagger');
-    const cardThresholds = [14.1, 14.6, 15.1, 15.6, 16.1];
+    const cardThresholds = [18.0, 18.5, 19.0, 19.5, 20.0];
 
     function update() {
         const rect = wrapper.getBoundingClientRect();
         const vh = window.innerHeight;
         const scrolled = -rect.top;
 
-        // En modo responsivo (<= 768px), la cortina de Pilar de Integridad se activa a los 24.2vh tras desplegar las 16 fichas del Catálogo. En Desktop se mantiene intacta a 13.3vh.
-        const startPxSec7 = (window.innerWidth <= 768) ? 24.2 * vh : 13.3 * vh;
+        // En modo responsivo (<= 768px), la cortina de Pilar de Integridad se activa a los 36.5vh tras desplegar las 16 fichas del Catálogo a mitad de velocidad. En Desktop se activa a los 17.2vh.
+        const startPxSec7 = (window.innerWidth <= 768) ? 36.5 * vh : 17.2 * vh;
         const progress = Math.min(1, Math.max(0, (scrolled - startPxSec7) / (0.85 * vh)));
         const clipPercent = (1 - progress) * 100;
         sec.style.setProperty('--curtain-integrity', `${clipPercent}%`);
@@ -594,7 +594,7 @@ function initIntegrityCurtain() {
         if (progress >= 1.0) {
             // Scroll interno activo
             if (container) {
-                const activeStartSec7 = (window.innerWidth <= 768) ? 25.05 * vh : 14.15 * vh;
+                const activeStartSec7 = (window.innerWidth <= 768) ? 37.35 * vh : 18.05 * vh;
                 const activeScrolled = Math.max(0, scrolled - activeStartSec7);
                 const totalActiveTravel = 2.35 * vh;
                 const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
@@ -613,7 +613,7 @@ function initIntegrityCurtain() {
             if (window.innerWidth <= 768) {
                 card.classList.add('active');
             } else {
-                const threshold = cardThresholds[index] !== undefined ? cardThresholds[index] : (14.1 + index * 0.5);
+                const threshold = cardThresholds[index] !== undefined ? cardThresholds[index] : (18.0 + index * 0.5);
                 card.classList.toggle('active', progressTotal >= threshold);
             }
         });
@@ -637,15 +637,15 @@ function initIdeaLabCurtain() {
     const leftCol = sec.querySelector('.idealab-left-col');
     const container = sec.querySelector('.container');
     const staggerEls = sec.querySelectorAll('.idealab-card-stagger');
-    const cardThresholds = [17.8, 18.2, 18.6, 19.0];
+    const cardThresholds = [21.7, 22.1, 22.5, 22.9];
 
     function update() {
         const rect = wrapper.getBoundingClientRect();
         const vh = window.innerHeight;
         const scrolled = -rect.top;
 
-        // En modo responsivo (<= 768px), la cortina de Sección 8 (Idea Lab) se activa a los 28.05vh tras Pilar de Integridad. En Desktop se mantiene intacta a 16.5vh.
-        const startPxSec8 = (window.innerWidth <= 768) ? 28.05 * vh : 16.5 * vh;
+        // En modo responsivo (<= 768px), la cortina de Sección 8 (Idea Lab) se activa a los 39.7vh tras Pilar de Integridad. En Desktop se activa a los 20.4vh.
+        const startPxSec8 = (window.innerWidth <= 768) ? 39.7 * vh : 20.4 * vh;
         const progress = Math.min(1, Math.max(0, (scrolled - startPxSec8) / (1.0 * vh)));
         const clipPercent = (1 - progress) * 100;
         sec.style.setProperty('--curtain-idealab', `${clipPercent}%`);
@@ -661,7 +661,7 @@ function initIdeaLabCurtain() {
         } else {
             // Scroll interno activo de Idea Lab
             if (container) {
-                const activeStartSec8 = (window.innerWidth <= 768) ? 29.05 * vh : 17.5 * vh;
+                const activeStartSec8 = (window.innerWidth <= 768) ? 40.7 * vh : 21.4 * vh;
                 const activeScrolled = Math.max(0, scrolled - activeStartSec8);
                 const totalActiveTravel = (window.innerWidth <= 768) ? 3.5 * vh : 4.0 * vh;
                 const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
@@ -678,7 +678,7 @@ function initIdeaLabCurtain() {
             if (window.innerWidth <= 768) {
                 card.classList.add('active');
             } else {
-                const threshold = cardThresholds[index] !== undefined ? cardThresholds[index] : (17.8 + index * 0.4);
+                const threshold = cardThresholds[index] !== undefined ? cardThresholds[index] : (21.7 + index * 0.4);
                 card.classList.toggle('active', progressTotal >= threshold);
             }
         });
@@ -686,7 +686,7 @@ function initIdeaLabCurtain() {
         const globalScrollBtn = document.getElementById('global-scroll-btn');
         if (globalScrollBtn) {
             if (window.innerWidth <= 768) {
-                const inIdeaLab = scrolled >= 28.05 * vh && scrolled < 33.0 * vh;
+                const inIdeaLab = scrolled >= 39.7 * vh && scrolled < 44.2 * vh;
                 if (inIdeaLab) {
                     globalScrollBtn.classList.add('hidden');
                 }
@@ -715,8 +715,8 @@ function initVmartCurtain() {
         const vh = window.innerHeight;
         const scrolled = -rect.top;
 
-        // En modo responsivo (<= 768px), la cortina de Sección 9 (VMART) se activa a los 32.55vh y se revela completamente a los 33.55vh. En Desktop se mantiene intacta a 21.5vh.
-        const startPxSec9 = (window.innerWidth <= 768) ? 32.55 * vh : 21.5 * vh;
+        // En modo responsivo (<= 768px), la cortina de Sección 9 (VMART) se activa a los 44.2vh y se revela completamente a los 45.2vh. En Desktop se activa a los 25.4vh.
+        const startPxSec9 = (window.innerWidth <= 768) ? 44.2 * vh : 25.4 * vh;
         const revealDistanceSec9 = (window.innerWidth <= 768) ? 1.0 * vh : 1.3 * vh;
         const progress = Math.min(1, Math.max(0, (scrolled - startPxSec9) / revealDistanceSec9));
         const clipPercent = (1 - progress) * 100;
@@ -728,7 +728,7 @@ function initVmartCurtain() {
             } else if (progress < 1.0) {
                 container.style.transform = `translate3d(0, 0px, 0)`;
             } else {
-                const activeStartSec9 = 33.55 * vh;
+                const activeStartSec9 = 45.2 * vh;
                 const activeScrolled = Math.max(0, scrolled - activeStartSec9);
                 const totalActiveTravel = 2.0 * vh;
                 const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
@@ -741,7 +741,7 @@ function initVmartCurtain() {
 
         const globalScrollBtn = document.getElementById('global-scroll-btn');
         if (globalScrollBtn) {
-            const isLastSection = (window.innerWidth <= 768) ? (scrolled >= 33.0 * vh) : (scrolled >= 20.5 * vh);
+            const isLastSection = (window.innerWidth <= 768) ? (scrolled >= 44.2 * vh) : (scrolled >= 25.4 * vh);
             if (isLastSection) {
                 globalScrollBtn.classList.add('hidden');
             }
@@ -2896,10 +2896,14 @@ function scrollToTimelineSection(event, vh) {
     if (event) event.preventDefault();
     let targetVh = vh;
     if (window.innerWidth <= 768) {
-        if (vh === 9.4) targetVh = 14.2;
-        else if (vh === 19.2) targetVh = 29.05;
-        else if (vh === 16.3) targetVh = 24.2;
+        if (vh === 9.4) targetVh = 16.5;
+        else if (vh === 19.2) targetVh = 39.7;
+        else if (vh === 16.3) targetVh = 36.5;
         else if (vh === 2.0) targetVh = 5.2;
+    } else {
+        if (vh === 19.2) targetVh = 20.4;
+        else if (vh === 16.3) targetVh = 17.2;
+        else if (vh === 22.8) targetVh = 25.4;
     }
     const target = targetVh * window.innerHeight;
     const lenis = window.lenis;
@@ -2926,16 +2930,16 @@ function scrollToNextSection() {
     const vh = window.innerHeight;
     const scrollY = window.scrollY || window.pageYOffset;
 
-    // Lista ordenada de los puntos clave de scroll en la línea de tiempo de cortinas
+    // Lista ordenada de los puntos clave de scroll en la línea de tiempo de cortinas (Escritorio)
     const desktopTargets = [
         1.0 * vh,   // Sección 2 (El Diferenciador Absoluto)
         2.0 * vh,   // Sección 3 (Casos de Éxito)
         6.0 * vh,   // Sección 4 (Galería Comercial)
         6.9 * vh,   // Sección 5 (Transición de Imagen)
         9.4 * vh,   // Sección 6 (Catálogo — El Match: Inmediatamente tras cortina)
-        16.2 * vh,  // Sección 7 (Pilar de Integridad: Posición completa con los 5 contenedores desplegados)
-        19.2 * vh,  // Sección 8 (Idea Lab: Todos los contenedores desplegados con Edificio Hidalgo)
-        22.8 * vh,  // Sección 9 (ValorMáximoART + Footer: Cortina 100% revelada, sin flecha de navegación)
+        17.2 * vh,  // Sección 7 (Pilar de Integridad: Inicio con la cortina 100% desplegada)
+        20.4 * vh,  // Sección 8 (Idea Lab: Todos los contenedores desplegados con Edificio Hidalgo)
+        25.4 * vh,  // Sección 9 (ValorMáximoART + Footer: Cortina 100% revelada, sin flecha de navegación)
         0           // Volver al Inicio (Hero)
     ];
 
@@ -2944,12 +2948,11 @@ function scrollToNextSection() {
         3.2 * vh,   // Fondo de Sección 2 (Todos los contenedores desplegados al final)
         5.2 * vh,   // Sección 3 (Casos de Éxito / Portafolio: Cortina 100% desplegada)
         10.2 * vh,  // Sección 4 (Galería Comercial: Video animación estructuras01.mp4)
-        12.1 * vh,  // Sección 5 (Transición de Imagen: Portada PORTADA_GALERIA_HD.png con velocidad reducida a la mitad)
-        16.5 * vh,  // Sección 6 (Catálogo — El Match: Inmediatamente tras cortina)
-        25.05 * vh, // Sección 7 (Pilar de Integridad: Inicio con la cortina 100% desplegada)
-        27.4 * vh,  // Sección 7 (Pilar de Integridad: Fondo de la sección con los 5 contenedores desplegados)
-        29.05 * vh, // Sección 8 (Idea Lab: Todos los contenedores desplegados con Edificio Hidalgo)
-        34.0 * vh,  // Sección 9 (ValorMáximoART + Footer: Cortina 100% revelada, sin flecha de navegación)
+        12.1 * vh,  // Sección 5 (Transición de Imagen: Portada PORTADA_GALERIA_HD.png)
+        16.5 * vh,  // Sección 6 (Catálogo — El Match: Inmediatamente tras cortina con velocidad a la mitad)
+        36.5 * vh,  // Sección 7 (Pilar de Integridad: Inicio con la cortina 100% desplegada)
+        39.7 * vh,  // Sección 8 (Idea Lab: Todos los contenedores desplegados con Edificio Hidalgo)
+        44.2 * vh,  // Sección 9 (ValorMáximoART + Footer: Cortina 100% revelada, sin flecha de navegación)
         0           // Volver al Inicio (Hero)
     ];
 
