@@ -3,19 +3,22 @@
 <IfModule mod_expires.c>
     ExpiresActive On
     ExpiresDefault "access plus 1 month"
-    ExpiresByType text/css "access plus 1 month"
-    ExpiresByType application/javascript "access plus 1 month"
-    ExpiresByType text/javascript "access plus 1 month"
+
+    # Archivos estáticos con caché de 1 año
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType text/javascript "access plus 1 year"
     ExpiresByType image/jpeg "access plus 1 year"
     ExpiresByType image/png "access plus 1 year"
     ExpiresByType image/webp "access plus 1 year"
     ExpiresByType image/svg+xml "access plus 1 year"
     ExpiresByType font/ttf "access plus 1 year"
     ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType model/gltf-binary "access plus 1 year"
 </IfModule>
 
 <IfModule mod_headers.c>
-    <FilesMatch "\.(png|jpe?g|svg|webp|css|js|ttf|woff2)$">
+    <FilesMatch "\.(png|jpe?g|svg|webp|css|js|ttf|woff2|glb|gltf)$">
         Header set Cache-Control "max-age=31536000, public"
     </FilesMatch>
 </IfModule>
