@@ -367,8 +367,9 @@ function initGaleriaCurtain() {
         const vh = window.innerHeight;
         const scrolled = -rect.top;
 
-        // La cortina SÓLO se activa a partir de 5 * vh
-        const progress = Math.min(1, Math.max(0, (scrolled - 6 * vh) / (0.7 * vh)));
+        // En modo responsivo (<= 768px), la cortina de Galería se mantiene 100% congelada/desactivada hasta que el scroll interno del Portafolio despliegue el último contenedor al 100% (10.2vh). En Desktop se mantiene intacta a 6vh.
+        const startPxGaleria = (window.innerWidth <= 768) ? 10.2 * vh : 6 * vh;
+        const progress = Math.min(1, Math.max(0, (scrolled - startPxGaleria) / (0.7 * vh)));
         const clipPercent = (1 - progress) * 100;
 
         galeria.style.setProperty('--curtain-galeria', `${clipPercent}%`);
@@ -377,8 +378,9 @@ function initGaleriaCurtain() {
             if (progress < 1.0) {
                 container.style.transform = `translate3d(0, 0px, 0)`;
             } else {
-                // Scroll interno compacto de Galería Comercial activo a partir de 5.7 * vh
-                const activeScrolled = Math.max(0, scrolled - 5.7 * vh);
+                // Scroll interno compacto de Galería Comercial
+                const activeStartGaleria = (window.innerWidth <= 768) ? 10.8 * vh : 5.7 * vh;
+                const activeScrolled = Math.max(0, scrolled - activeStartGaleria);
                 const totalActiveTravel = 0.5 * vh;
                 const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
                 const maxScroll = Math.max(0, container.scrollHeight - vh + 50);
@@ -409,8 +411,9 @@ function initTransitionCurtain() {
         const vh = window.innerHeight;
         const scrolled = -rect.top;
 
-        // Cortina de Sección 5 SÓLO se activa a partir de 10.7vh (transición rápida e inmediata tras Galería Comercial)
-        const progress = Math.min(1, Math.max(0, (scrolled - 6.9 * vh) / (1.0 * vh)));
+        // En modo responsivo (<= 768px), la cortina de Sección 5 (Transición de Imagen) se activa tras Sección 4 (11.8vh). En Desktop permanece intacta a 6.9vh.
+        const startPxSec5 = (window.innerWidth <= 768) ? 11.8 * vh : 6.9 * vh;
+        const progress = Math.min(1, Math.max(0, (scrolled - startPxSec5) / (1.0 * vh)));
 
         let clipPathValue = '';
 
@@ -462,8 +465,10 @@ function initMatchCatalogCurtain() {
         const vh = window.innerHeight;
         const scrolled = -rect.top;
 
-        // Cortina de Catálogo se activa a partir de 12.2vh hasta 13.4vh
-        const progressSec6 = Math.min(1, Math.max(0, (scrolled - 8.2 * vh) / (1.2 * vh)));
+        // En modo responsivo (<= 768px), la cortina de Catálogo se activa a partir de 13.0vh con velocidad a la mitad (2.4vh). En Desktop se mantiene intacta a 8.2vh.
+        const startPxSec6 = (window.innerWidth <= 768) ? 13.0 * vh : 8.2 * vh;
+        const revealDistanceSec6 = (window.innerWidth <= 768) ? 2.4 * vh : 1.2 * vh;
+        const progressSec6 = Math.min(1, Math.max(0, (scrolled - startPxSec6) / revealDistanceSec6));
 
         let clipPathValue = '';
 
@@ -504,8 +509,9 @@ function initMatchCatalogCurtain() {
                 if (progressSec6 < 1.0) {
                     container.style.transform = `translate3d(0, 0px, 0)`;
                 } else {
-                    const flowScrolled = Math.max(0, scrolled - 9.4 * vh);
-                    const totalTravel = 3.9 * vh;
+                    const activeStartSec6 = (window.innerWidth <= 768) ? 15.4 * vh : 9.4 * vh;
+                    const flowScrolled = Math.max(0, scrolled - activeStartSec6);
+                    const totalTravel = (window.innerWidth <= 768) ? 10.0 * vh : 3.9 * vh;
                     const flowProgress = Math.min(1, flowScrolled / totalTravel);
                     const maxScroll = Math.max(0, container.scrollHeight - vh + 100);
 
@@ -517,9 +523,17 @@ function initMatchCatalogCurtain() {
 
         const globalScrollBtn = document.getElementById('global-scroll-btn');
         if (globalScrollBtn) {
-            const isCurtainFlow = scrolled >= 8.2 * vh && scrolled < 9.4 * vh;
-            const isLastSection = scrolled >= 20.5 * vh;
-            globalScrollBtn.classList.toggle('hidden', isCurtainFlow || isLastSection);
+            if (window.innerWidth <= 768) {
+                // En modo responsivo (<= 768px), la flecha desaparece durante el Catálogo (13.0vh a 24.0vh) y en Idea Lab (28.05vh a 33.0vh), y reaparece al final de cada sección
+                const inCatalogResponsive = scrolled >= 13.0 * vh && scrolled < 24.0 * vh;
+                const inIdeaLabResponsive = scrolled >= 28.05 * vh && scrolled < 33.0 * vh;
+                const isLastSection = scrolled >= 33.0 * vh;
+                globalScrollBtn.classList.toggle('hidden', inCatalogResponsive || inIdeaLabResponsive || isLastSection);
+            } else {
+                const isCurtainFlow = scrolled >= 8.2 * vh && scrolled < 9.4 * vh;
+                const isLastSection = scrolled >= 20.5 * vh;
+                globalScrollBtn.classList.toggle('hidden', isCurtainFlow || isLastSection);
+            }
         }
     }
 
@@ -548,23 +562,33 @@ function initIntegrityCurtain() {
         const vh = window.innerHeight;
         const scrolled = -rect.top;
 
-        // Cortina de Sección 7 (Pilar de Integridad) se activa a partir de 13.3vh (inmediatamente tras Catálogo)
-        const progress = Math.min(1, Math.max(0, (scrolled - 13.3 * vh) / (0.85 * vh)));
+        // En modo responsivo (<= 768px), la cortina de Pilar de Integridad se activa a los 24.2vh tras desplegar las 16 fichas del Catálogo. En Desktop se mantiene intacta a 13.3vh.
+        const startPxSec7 = (window.innerWidth <= 768) ? 24.2 * vh : 13.3 * vh;
+        const progress = Math.min(1, Math.max(0, (scrolled - startPxSec7) / (0.85 * vh)));
         const clipPercent = (1 - progress) * 100;
         sec.style.setProperty('--curtain-integrity', `${clipPercent}%`);
 
-        if (progress < 1.0) {
-            if (leftCol && window.innerWidth > 768) {
-                const translateY = (1 - progress) * 60;
-                leftCol.style.transform = `translateY(${translateY}px)`;
-                leftCol.style.opacity = progress;
-            } else if (container) {
-                container.style.transform = `translate3d(0, 0px, 0)`;
+        if (leftCol) {
+            if (window.innerWidth <= 768) {
+                leftCol.style.opacity = '1';
+                leftCol.style.transform = 'none';
+            } else {
+                if (progress < 1.0) {
+                    const translateY = (1 - progress) * 60;
+                    leftCol.style.transform = `translateY(${translateY}px)`;
+                    leftCol.style.opacity = progress;
+                } else {
+                    leftCol.style.transform = `translateY(0px)`;
+                    leftCol.style.opacity = '1';
+                }
             }
-        } else {
-            // Scroll interno activo de 14.15vh a 16.5vh
+        }
+
+        if (progress >= 1.0) {
+            // Scroll interno activo
             if (container) {
-                const activeScrolled = Math.max(0, scrolled - 14.15 * vh);
+                const activeStartSec7 = (window.innerWidth <= 768) ? 25.05 * vh : 14.15 * vh;
+                const activeScrolled = Math.max(0, scrolled - activeStartSec7);
                 const totalActiveTravel = 2.35 * vh;
                 const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
                 const maxScroll = Math.max(0, container.scrollHeight - vh + 80);
@@ -572,13 +596,19 @@ function initIntegrityCurtain() {
                 const translateYValue = -flowProgress * maxScroll;
                 container.style.transform = `translate3d(0, ${translateYValue}px, 0)`;
             }
+        } else if (container && window.innerWidth <= 768) {
+            container.style.transform = `translate3d(0, 0px, 0)`;
         }
 
-        // Entrada escalonada fluida respetando el orden y efecto de cada uno de los contenedores
+        // Entrada de las tarjetas de pilares (Todas activas en móvil para evitar desapariciones)
         const progressTotal = scrolled / vh;
         staggerEls.forEach((card, index) => {
-            const threshold = cardThresholds[index] !== undefined ? cardThresholds[index] : (14.1 + index * 0.5);
-            card.classList.toggle('active', progressTotal >= threshold);
+            if (window.innerWidth <= 768) {
+                card.classList.add('active');
+            } else {
+                const threshold = cardThresholds[index] !== undefined ? cardThresholds[index] : (14.1 + index * 0.5);
+                card.classList.toggle('active', progressTotal >= threshold);
+            }
         });
     }
 
@@ -607,8 +637,9 @@ function initIdeaLabCurtain() {
         const vh = window.innerHeight;
         const scrolled = -rect.top;
 
-        // Cortina de Sección 8 (Idea Lab) se activa inmediatamente a partir de 16.5vh (tras Pilar de Integridad)
-        const progress = Math.min(1, Math.max(0, (scrolled - 16.5 * vh) / (1.0 * vh)));
+        // En modo responsivo (<= 768px), la cortina de Sección 8 (Idea Lab) se activa a los 28.05vh tras Pilar de Integridad. En Desktop se mantiene intacta a 16.5vh.
+        const startPxSec8 = (window.innerWidth <= 768) ? 28.05 * vh : 16.5 * vh;
+        const progress = Math.min(1, Math.max(0, (scrolled - startPxSec8) / (1.0 * vh)));
         const clipPercent = (1 - progress) * 100;
         sec.style.setProperty('--curtain-idealab', `${clipPercent}%`);
 
@@ -621,10 +652,11 @@ function initIdeaLabCurtain() {
                 container.style.transform = `translate3d(0, 0px, 0)`;
             }
         } else {
-            // Scroll interno activo de 17.5vh a 21.5vh
+            // Scroll interno activo de Idea Lab
             if (container) {
-                const activeScrolled = Math.max(0, scrolled - 17.5 * vh);
-                const totalActiveTravel = 4.0 * vh;
+                const activeStartSec8 = (window.innerWidth <= 768) ? 29.05 * vh : 17.5 * vh;
+                const activeScrolled = Math.max(0, scrolled - activeStartSec8);
+                const totalActiveTravel = (window.innerWidth <= 768) ? 3.5 * vh : 4.0 * vh;
                 const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
                 const maxScroll = Math.max(0, container.scrollHeight - vh + 180);
 
@@ -643,6 +675,16 @@ function initIdeaLabCurtain() {
                 card.classList.toggle('active', progressTotal >= threshold);
             }
         });
+
+        const globalScrollBtn = document.getElementById('global-scroll-btn');
+        if (globalScrollBtn) {
+            if (window.innerWidth <= 768) {
+                const inIdeaLab = scrolled >= 28.05 * vh && scrolled < 33.0 * vh;
+                if (inIdeaLab) {
+                    globalScrollBtn.classList.add('hidden');
+                }
+            }
+        }
     }
 
     const lenis = window.lenis;
@@ -666,17 +708,22 @@ function initVmartCurtain() {
         const vh = window.innerHeight;
         const scrolled = -rect.top;
 
-        // Cortina de Sección 9 (VMART) se activa inmediatamente a partir de 21.5vh (tras Idea Lab)
-        const progress = Math.min(1, Math.max(0, (scrolled - 21.5 * vh) / (1.3 * vh)));
+        // En modo responsivo (<= 768px), la cortina de Sección 9 (VMART) se activa a los 32.55vh y se revela completamente a los 33.55vh. En Desktop se mantiene intacta a 21.5vh.
+        const startPxSec9 = (window.innerWidth <= 768) ? 32.55 * vh : 21.5 * vh;
+        const revealDistanceSec9 = (window.innerWidth <= 768) ? 1.0 * vh : 1.3 * vh;
+        const progress = Math.min(1, Math.max(0, (scrolled - startPxSec9) / revealDistanceSec9));
         const clipPercent = (1 - progress) * 100;
         sec.style.setProperty('--curtain-vmart', `${clipPercent}%`);
 
         if (container) {
-            if (progress < 1.0) {
+            if (window.innerWidth > 768) {
+                container.style.transform = `translate3d(0, 0px, 0)`;
+            } else if (progress < 1.0) {
                 container.style.transform = `translate3d(0, 0px, 0)`;
             } else {
-                const activeScrolled = Math.max(0, scrolled - 22.8 * vh);
-                const totalActiveTravel = 2.5 * vh;
+                const activeStartSec9 = 33.55 * vh;
+                const activeScrolled = Math.max(0, scrolled - activeStartSec9);
+                const totalActiveTravel = 2.0 * vh;
                 const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
                 const maxScroll = Math.max(0, container.scrollHeight - vh + 80);
 
@@ -687,7 +734,7 @@ function initVmartCurtain() {
 
         const globalScrollBtn = document.getElementById('global-scroll-btn');
         if (globalScrollBtn) {
-            const isLastSection = scrolled >= 20.5 * vh;
+            const isLastSection = (window.innerWidth <= 768) ? (scrolled >= 33.0 * vh) : (scrolled >= 20.5 * vh);
             if (isLastSection) {
                 globalScrollBtn.classList.add('hidden');
             }
@@ -1165,11 +1212,11 @@ function initHorizontalCurtainReveals() {
         const vh = window.innerHeight;
         const scrolled = -rect.top;
 
-        // La cortina se activa inmediatamente tras visualizar la Sección 2
-        const startPx = 2 * vh;
+        // En modo responsivo (<= 768px), la cortina de Sección 3 inicia tras la Sección 2 (3.2vh) y se revela completamente a los 5.2vh. En Desktop se mantiene intacta a 2vh.
+        const startPx = (window.innerWidth <= 768) ? 3.2 * vh : 2 * vh;
 
         // Mientras scrolled < startPx, progress = 0 y clipRight = 100% (Cortina 100% DESACTIVADA / Oculta)
-        const revealDistance = 3.0 * vh; // Distancia de transición ajustada a 3.0vh
+        const revealDistance = (window.innerWidth <= 768) ? 2.0 * vh : 3.0 * vh;
         const progress = Math.min(1, Math.max(0, (scrolled - startPx) / revealDistance));
         const clipRight = Math.max(0, Math.min(100, 100 - progress * 100));
 
@@ -1184,7 +1231,7 @@ function initHorizontalCurtainReveals() {
             } else {
                 const activeStartPx = startPx + revealDistance;
                 const activeScrolled = Math.max(0, scrolled - activeStartPx);
-                const totalActiveTravel = 3.3 * vh;
+                const totalActiveTravel = (window.innerWidth <= 768) ? 5.0 * vh : 3.3 * vh;
                 const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
                 const maxScroll = Math.max(0, container.scrollHeight - vh + 100);
 
@@ -2840,7 +2887,14 @@ function handleDrawerSubmit(event) {
 // Navegación del menú superior hacia hitos de la línea de tiempo (expresados en vh)
 function scrollToTimelineSection(event, vh) {
     if (event) event.preventDefault();
-    const target = vh * window.innerHeight;
+    let targetVh = vh;
+    if (window.innerWidth <= 768) {
+        if (vh === 9.4) targetVh = 14.2;
+        else if (vh === 19.2) targetVh = 29.05;
+        else if (vh === 16.3) targetVh = 24.2;
+        else if (vh === 2.0) targetVh = 5.2;
+    }
+    const target = targetVh * window.innerHeight;
     const lenis = window.lenis;
     suppressSnapTemporarily();
     if (lenis) {
@@ -2866,7 +2920,7 @@ function scrollToNextSection() {
     const scrollY = window.scrollY || window.pageYOffset;
 
     // Lista ordenada de los puntos clave de scroll en la línea de tiempo de cortinas
-    const targets = [
+    const desktopTargets = [
         1.0 * vh,   // Sección 2 (El Diferenciador Absoluto)
         2.0 * vh,   // Sección 3 (Casos de Éxito)
         6.0 * vh,   // Sección 4 (Galería Comercial)
@@ -2877,6 +2931,22 @@ function scrollToNextSection() {
         22.8 * vh,  // Sección 9 (ValorMáximoART + Footer: Cortina 100% revelada, sin flecha de navegación)
         0           // Volver al Inicio (Hero)
     ];
+
+    const responsiveTargets = [
+        1.0 * vh,   // Inicio de Sección 2 (El Diferenciador Absoluto)
+        3.2 * vh,   // Fondo de Sección 2 (Todos los contenedores desplegados al final)
+        5.2 * vh,   // Sección 3 (Casos de Éxito / Portafolio: Cortina 100% desplegada)
+        10.2 * vh,  // Sección 4 (Galería Comercial: Video animación estructuras01.mp4)
+        11.8 * vh,  // Sección 5 (Transición de Imagen: Portada PORTADA_GALERIA_HD.png)
+        15.4 * vh,  // Sección 6 (Catálogo — El Match: Inmediatamente tras cortina)
+        25.05 * vh, // Sección 7 (Pilar de Integridad: Inicio con la cortina 100% desplegada)
+        27.4 * vh,  // Sección 7 (Pilar de Integridad: Fondo de la sección con los 5 contenedores desplegados)
+        29.05 * vh, // Sección 8 (Idea Lab: Todos los contenedores desplegados con Edificio Hidalgo)
+        34.0 * vh,  // Sección 9 (ValorMáximoART + Footer: Cortina 100% revelada, sin flecha de navegación)
+        0           // Volver al Inicio (Hero)
+    ];
+
+    const targets = (window.innerWidth <= 768) ? responsiveTargets : desktopTargets;
 
     // Encontrar el siguiente hito de navegación con un margen de tolerancia de 30px
     let nextTarget = targets.find(t => t > scrollY + 30);

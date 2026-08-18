@@ -3257,10 +3257,17 @@ body {
         overflow: hidden !important;
     }
 
+    #transicion-imagen .section-transition-picture,
     #transicion-imagen .section-transition-img {
         width: 100% !important;
         height: 100% !important;
-        object-fit: contain !important;
+        display: block !important;
+    }
+
+    #transicion-imagen img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
         object-position: center center !important;
         background-color: #064E3B !important;
     }
@@ -3358,8 +3365,7 @@ body {
     #esencia .container,
     #casos-exito .portfolio-container,
     #el-match .catalog-grid-container,
-    #pilar-integridad .container,
-    #idea-lab .container {
+    #pilar-integridad .container {
         position: relative !important;
         z-index: 2 !important;
         width: 100% !important;
@@ -3519,6 +3525,7 @@ body {
     }
 
     /* -------- SECCIÓN 8 (IDEA LAB): ADAPTABILIDAD RESPONSIVA LIMPIA EN MÓVIL -------- */
+    #idea-lab .container,
     #idea-lab .idealab-container {
         position: relative !important;
         z-index: 2 !important;
@@ -3526,8 +3533,15 @@ body {
         height: auto !important;
         min-height: auto !important;
         overflow: visible !important;
-        padding: 6.5rem 1.25rem 3rem 1.25rem !important;
+        padding: 0.5rem 1.25rem 3rem 1.25rem !important;
+        margin-top: -2.375rem !important; /* Bajado 20px respecto al ajuste anterior */
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        text-align: center !important;
         box-sizing: border-box !important;
+        will-change: transform;
     }
 
     #idea-lab .idealab-gallery-col {
