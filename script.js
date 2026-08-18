@@ -1525,7 +1525,7 @@ const propuestasAlias = {
 const ideaLabSlidesData = [
     { key: 'hidalgo', title: 'Edificio Hidalgo', image: 'galeria 3/hidalgo.jpeg' },
     { key: 'villada', title: 'Villada', image: 'galeria 3/villada.png' },
-    { key: 'pinosuarez', title: 'Pino Suárez', image: 'galeria 3/pinosuarez.jpeg' },
+    { key: 'pinosuarez', title: 'Pino Suárez', image: 'galeria 3/pinosuarez.png' },
     { key: 'villanueva', title: 'Felipe Villanueva', image: 'galeria 3/villanueva.png' },
     { key: 'riva palacio', title: 'Riva Palacio', image: 'galeria 3/riva palacio.jpg' },
     { key: 'paseo central', title: 'Paseo Central', image: 'galeria 3/paseo central.jpg' }
@@ -3376,7 +3376,7 @@ function initMagicRingsPreloader() {
     const criticalAssets = [
         'valorISO.svg',
         'valorM01.svg',
-        '2PORTADA.jpg',
+        '2PORTADA.png',
         'PORTADA_GALERIA_HD.png',
         'galeria comercial/Riva Palacio/portada tarjeta.png',
         'galeria comercial/Paseo Central/Portada.jpg',
