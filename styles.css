@@ -3603,3 +3603,90 @@ body {
         object-fit: cover !important;
     }
 }
+
+/* -------- PANTALLA DE PRECARGA PRÉMIUM (PRELOADER MAGIC RINGS & LOGO ISO - FONDO VERDE OSCURO #064E3B) -------- */
+.vm-preloader-overlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    height: calc(var(--vh, 1vh) * 100) !important;
+    background-color: #064E3B !important; /* Verde Oscuro */
+    z-index: 999999 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    overflow: hidden !important;
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s ease !important;
+}
+
+.vm-preloader-overlay.hidden-preloader {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+#magic-rings-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.preloader-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.25rem;
+}
+
+.preloader-logo {
+    width: 110px;
+    height: auto;
+    filter: drop-shadow(0 0 25px rgba(207, 171, 10, 0.45));
+    animation: preloaderLogoPulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes preloaderLogoPulse {
+    0% {
+        transform: scale(0.96);
+        filter: drop-shadow(0 0 15px rgba(207, 171, 10, 0.3));
+    }
+    100% {
+        transform: scale(1.04);
+        filter: drop-shadow(0 0 35px rgba(207, 171, 10, 0.65));
+    }
+}
+
+.preloader-progress-bar {
+    width: 160px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+}
+
+.preloader-progress-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #006e4a, #cfab0a);
+    border-radius: 3px;
+    transition: width 0.2s ease-out;
+}
+
+.preloader-percentage {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    color: #cfab0a;
+}

@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    initMagicRingsPreloader();
     initLenis();
     initHeroMagneticSnap();
     initSection2MagneticSnap();
@@ -3212,4 +3213,206 @@ function initDrawerFloatingLines() {
         isDrawerLinesAnimating = false;
         if (drawerAnimId) cancelAnimationFrame(drawerAnimId);
     };
+}
+
+// 00. Preloader Prémium con Magic Rings (React Bits WebGL Shader) & Logo ISO (Fondo Verde Oscuro #064E3B)
+function initMagicRingsPreloader() {
+    const overlay = document.getElementById('vm-preloader-overlay');
+    const canvas = document.getElementById('magic-rings-canvas');
+    const progressFill = document.getElementById('preloader-progress-fill');
+    const percentageText = document.getElementById('preloader-percentage');
+    if (!overlay || !canvas || typeof THREE === 'undefined') return;
+
+    let renderer, scene, camera, material, mesh;
+    let animationFrameId = null;
+
+    try {
+        renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        scene = new THREE.Scene();
+        camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
+        camera.position.z = 1;
+
+        const vertexShader = `
+            varying vec2 vUv;
+            void main() {
+                vUv = uv;
+                gl_Position = vec4(position, 1.0);
+            }
+        `;
+
+        // Shader de WebGL réplica exacta de React Bits MagicRings
+        const fragmentShader = `
+            uniform float uTime;
+            uniform vec2 uResolution;
+            uniform vec3 colorOne;
+            uniform vec3 colorTwo;
+            varying vec2 vUv;
+
+            vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+            vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+            vec3 permute(vec3 x) { return mod289(((x*34.0)+1.0)*x); }
+
+            float snoise(vec2 v) {
+                const vec4 C = vec4(0.211324865405187, 0.366025403784439,
+                                    -0.577350269189626, 0.024390243902439);
+                vec2 i  = floor(v + dot(v, C.yy) );
+                vec2 x0 = v -   i + dot(i, C.xx);
+                vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+                vec4 x12 = x0.xyxy + C.xxzz;
+                x12.xy -= i1;
+                i = mod289(i);
+                vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 ))
+                    + i.x + vec3(0.0, i1.x, 1.0 ));
+                vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);
+                m = m*m; m = m*m;
+                vec3 x = 2.0 * fract(p * C.www) - 1.0;
+                vec3 h = abs(x) - 0.5;
+                vec3 ox = floor(x + 0.5);
+                vec3 a0 = x - ox;
+                m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
+                vec3 g;
+                g.x  = a0.x  * x0.x  + h.x  * x0.y;
+                g.yz = a0.yc * x12.xz + h.yz * x12.yw;
+                return 130.0 * dot(m, g);
+            }
+
+            void main() {
+                vec2 st = (gl_FragCoord.xy - 0.5 * uResolution.xy) / min(uResolution.x, uResolution.y);
+                float dist = length(st);
+                float angle = atan(st.y, st.x);
+                
+                float speed = 0.8;
+                float t = uTime * speed;
+                
+                float baseRadius = 0.18;
+                float radiusStep = 0.065;
+                float ringGap = 1.3;
+                float lineThickness = 0.0035;
+                float attenuation = 12.0;
+                float noiseAmount = 0.04;
+                
+                vec3 finalColor = vec3(0.0);
+                float finalAlpha = 0.0;
+                
+                for (float i = 0.0; i < 6.0; i += 1.0) {
+                    float r = baseRadius + i * radiusStep * ringGap;
+                    r += sin(t * 0.8 + i * 0.7) * 0.015;
+                    
+                    float n = snoise(vec2(st * 4.0 + vec2(cos(t * 0.4 + i), sin(t * 0.4 + i)))) * noiseAmount;
+                    float ringDist = abs(dist - (r + n));
+                    
+                    float glow = exp(-ringDist * attenuation * 25.0);
+                    float edge = smoothstep(lineThickness, 0.0, ringDist);
+                    float ringVal = edge + glow * 0.8;
+                    
+                    float colorMix = 0.5 + 0.5 * sin(t + angle * 2.0 + i * 0.8);
+                    vec3 ringCol = mix(colorOne, colorTwo, colorMix);
+                    
+                    finalColor += ringCol * ringVal;
+                    finalAlpha += ringVal;
+                }
+                
+                gl_FragColor = vec4(finalColor, clamp(finalAlpha, 0.0, 1.0));
+            }
+        `;
+
+        material = new THREE.ShaderMaterial({
+            vertexShader: vertexShader,
+            fragmentShader: fragmentShader,
+            uniforms: {
+                uTime: { value: 0 },
+                uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+                colorOne: { value: new THREE.Color('#cfab0a') },
+                colorTwo: { value: new THREE.Color('#006e4a') }
+            },
+            transparent: true
+        });
+
+        const geometry = new THREE.PlaneGeometry(2, 2);
+        mesh = new THREE.Mesh(geometry, material);
+        scene.add(mesh);
+
+        function resize() {
+            if (!renderer) return;
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            material.uniforms.uResolution.value.set(window.innerWidth, window.innerHeight);
+        }
+        window.addEventListener('resize', resize, { passive: true });
+
+        const clock = new THREE.Clock();
+        function animate() {
+            material.uniforms.uTime.value = clock.getElapsedTime();
+            renderer.render(scene, camera);
+            animationFrameId = requestAnimationFrame(animate);
+        }
+        animate();
+    } catch (e) {
+        console.warn("WebGL MagicRings fallback", e);
+    }
+
+    // Detener scroll de Lenis durante la precarga
+    if (window.lenis) {
+        window.lenis.stop();
+    }
+
+    // Lista de recursos críticos a precargar (Imágenes y Assets principales)
+    const criticalAssets = [
+        'valorISO.svg',
+        'valorM01.svg',
+        '2PORTADA.jpg',
+        'PORTADA_GALERIA_HD.png',
+        'galeria comercial/Riva Palacio/portada tarjeta.png',
+        'galeria comercial/Paseo Central/Portada.jpg',
+        'galeria comercial/Felipe Villanueva/portada.jpg',
+        'galeria comercial/Villada/Portada.jpg',
+        'galeria comercial/Benito Juarez/portada.jpg',
+        'galeria comercial/Plaza rancho el meson II/portada.jpg'
+    ];
+
+    let loadedCount = 0;
+    const totalAssets = criticalAssets.length;
+
+    function updateProgress() {
+        loadedCount++;
+        const percent = Math.min(100, Math.round((loadedCount / totalAssets) * 100));
+        if (progressFill) progressFill.style.width = `${percent}%`;
+        if (percentageText) percentageText.textContent = `${percent}%`;
+
+        if (loadedCount >= totalAssets) {
+            finishPreloader();
+        }
+    }
+
+    let isFinished = false;
+    function finishPreloader() {
+        if (isFinished) return;
+        isFinished = true;
+
+        if (progressFill) progressFill.style.width = `100%`;
+        if (percentageText) percentageText.textContent = `100%`;
+
+        setTimeout(() => {
+            overlay.classList.add('hidden-preloader');
+            if (window.lenis) {
+                window.lenis.start();
+            }
+            setTimeout(() => {
+                if (animationFrameId) cancelAnimationFrame(animationFrameId);
+                if (renderer) renderer.dispose();
+                overlay.style.display = 'none';
+            }, 800);
+        }, 400);
+    }
+
+    criticalAssets.forEach(src => {
+        const img = new Image();
+        img.onload = updateProgress;
+        img.onerror = updateProgress;
+        img.src = src;
+    });
+
+    setTimeout(finishPreloader, 2200);
 }
