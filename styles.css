@@ -991,7 +991,7 @@ body {
     transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
     padding-top: 15vh;
-    padding-bottom: 300px;
+    padding-bottom: 4rem;
 }
 
 /* Encabezado Fijo del Catálogo en el fondo (centrado verticalmente a la izquierda) */
@@ -1015,63 +1015,77 @@ body {
     font-weight: 700;
 }
 
-/* Indicador Flotante Animado de Scroll (Punto medio vertical, pegado al borde derecho, sin botón) */
+/* Indicador Animado de Scroll (Ubicado al costado derecho de la primera ficha en Desktop) */
 .catalog-scroll-indicator {
     position: absolute;
-    top: 50%;
-    right: 2.5rem;
+    top: calc(15vh + 140px);
+    right: -4.2rem;
+    left: auto;
+    transform: none;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 0.35rem;
-    background: transparent;
-    border: none;
+    margin: 0;
     padding: 0;
-    color: #064E3B;
-    z-index: 20;
+    background: transparent;
+    background-color: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: none;
+    box-shadow: none;
+    z-index: 50;
     pointer-events: none;
-    transition: opacity 0.6s ease, filter 0.6s ease, transform 0.6s ease;
-    animation: catalogScrollPulse 1.5s infinite cubic-bezier(0.4, 0, 0.2, 1);
+    animation: catalogScrollCurtainPulseDesktop 2.2s infinite cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 0.4s ease, filter 0.4s ease, transform 0.4s ease;
 }
 
 .catalog-scroll-indicator .scroll-text {
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.18em;
+    writing-mode: vertical-rl;
     color: #064E3B;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.28em;
     text-transform: uppercase;
+    margin-bottom: 0.4rem;
 }
 
 .catalog-scroll-indicator .scroll-arrow-triangle {
     color: #064E3B;
+    width: 16px;
+    height: 14px;
 }
 
-@keyframes catalogScrollPulse {
+@keyframes catalogScrollCurtainPulseDesktop {
     0% {
         opacity: 0;
-        filter: blur(10px);
-        transform: translateY(calc(-50% - 8px));
+        clip-path: inset(100% 0 0 0);
+        -webkit-clip-path: inset(100% 0 0 0);
+        filter: blur(6px);
+        transform: translateY(-8px);
     }
-
-    35%,
-    65% {
+    35%, 65% {
         opacity: 1;
+        clip-path: inset(0% 0 0 0);
+        -webkit-clip-path: inset(0% 0 0 0);
         filter: blur(0px);
-        transform: translateY(-50%);
+        transform: translateY(0px);
     }
-
     100% {
         opacity: 0;
-        filter: blur(10px);
-        transform: translateY(calc(-50% + 8px));
+        clip-path: inset(0 0 100% 0);
+        -webkit-clip-path: inset(0 0 100% 0);
+        filter: blur(6px);
+        transform: translateY(8px);
     }
 }
 
 .catalog-scroll-indicator.hidden {
     opacity: 0 !important;
     filter: blur(10px) !important;
-    transform: translateY(calc(-50% + 12px)) !important;
-    pointer-events: none;
+    transform: translateY(14px) !important;
+    pointer-events: none !important;
 }
 
 /* Desfile de Tarjetas de Inmuebles */
@@ -1175,6 +1189,55 @@ body {
 .risk-low {
     color: var(--vm-navy);
     font-weight: 700;
+}
+
+/* ==========================================================================
+   Cierre de Catálogo: Isotipo Oficial con Efecto Silk Shader de Relleno (Desktop & Base)
+   ========================================================================== */
+.catalog-closing-glass {
+    width: 100%;
+    margin: 3rem auto 1.5rem auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 10;
+    background: transparent;
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    overflow: visible;
+}
+
+.iso-silk-wrapper {
+    position: relative;
+    width: 152px;
+    height: 152px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    filter: drop-shadow(0 6px 22px rgba(0, 33, 23, 0.26));
+    overflow: visible;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
+}
+
+.iso-silk-wrapper:hover {
+    transform: scale(1.06);
+    filter: drop-shadow(0 10px 28px rgba(0, 33, 23, 0.35));
+}
+
+.iso-silk-canvas {
+    width: 152px !important;
+    height: 152px !important;
+    display: block;
+    mask-image: url('valorISO.svg');
+    -webkit-mask-image: url('valorISO.svg');
+    mask-size: contain;
+    -webkit-mask-size: contain;
+    mask-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
+    mask-position: center center;
+    -webkit-mask-position: center center;
 }
 
 /* Contenedores en columna derecha que entran de abajo hacia arriba escalonados */
@@ -1900,6 +1963,19 @@ body {
     padding-right: 3rem;
 }
 
+.ficha-header-top {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.ficha-iso-logo {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 6px rgba(0, 33, 23, 0.2));
+}
+
 .ficha-modal-title {
     color: #23201b;
     font-size: clamp(1.6rem, 3vw, 2.4rem);
@@ -2337,13 +2413,30 @@ body {
     justify-content: center;
 }
 
-.section-curtain-integrity::before {
-    content: "";
+.integridad-bg-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.integridad-bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    display: block;
+}
+
+.integridad-bg-overlay {
     position: absolute;
     inset: 0;
     background: rgba(11, 15, 25, 0.68);
-    z-index: 1;
-    pointer-events: none;
+    z-index: 2;
 }
 
 .integridad-container {
@@ -3328,8 +3421,96 @@ body {
     }
 
     #casos-exito {
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        top: 0 !important;
+        margin-top: 0 !important;
+        min-height: 320vh !important;
+        height: 320vh !important;
+        width: 100% !important;
+        clip-path: inset(var(--curtain-casos, 100%) 0 0 0) !important;
+        -webkit-clip-path: inset(var(--curtain-casos, 100%) 0 0 0) !important;
+        overflow: hidden !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        align-items: center !important;
+        box-sizing: border-box !important;
+        box-shadow: 0 -12px 36px rgba(0, 0, 0, 0.35) !important;
         z-index: 3 !important;
         background-color: #064E3B !important;
+        will-change: clip-path, transform;
+    }
+
+    #casos-exito .portfolio-container {
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 2 !important;
+        width: 100% !important;
+        height: 100vh !important;
+        min-height: 100vh !important;
+        overflow: visible !important;
+        padding: 6.5rem 1.25rem 4rem !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        align-items: center !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
+        will-change: transform;
+    }
+
+    #casos-exito .portfolio-video-bg {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100vh !important;
+        max-height: 100vh !important;
+        overflow: hidden !important;
+        z-index: 1 !important;
+        margin: 0 !important;
+        display: block !important;
+        pointer-events: none !important;
+    }
+
+    #casos-exito .portfolio-video-bg video {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        object-position: center center !important;
+    }
+
+    #casos-exito .portfolio-video-overlay {
+        position: absolute !important;
+        inset: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        z-index: 1 !important;
+        background: linear-gradient(180deg, rgba(6, 78, 59, 0.70) 0%, rgba(6, 78, 59, 0.35) 45%, rgba(6, 78, 59, 0.75) 100%) !important;
+    }
+
+    #casos-exito .portfolio-left-col {
+        width: 100% !important;
+        text-align: center !important;
+        margin-bottom: 2rem !important;
+    }
+
+    #casos-exito .portfolio-right-col {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        gap: 1.5rem !important;
+    }
+
+    #casos-exito .project-card-stagger {
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
     }
 
     #galeria-comercial {
@@ -3360,18 +3541,148 @@ body {
     }
 
     #el-match {
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        top: 0 !important;
+        margin-top: 0 !important;
+        min-height: 480vh !important;
+        height: 480vh !important;
+        width: 100% !important;
         z-index: 6 !important;
         background-color: var(--bg-light) !important;
+        overflow: hidden !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        align-items: center !important;
+        box-sizing: border-box !important;
+        box-shadow: 0 -12px 36px rgba(0, 0, 0, 0.35) !important;
+        will-change: transform;
+    }
+
+    #el-match .catalog-grid-container {
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 2 !important;
+        width: 100% !important;
+        height: 100vh !important;
+        min-height: 100vh !important;
+        overflow: visible !important;
+        padding: 6.5rem 1.25rem 0px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        align-items: center !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
+        will-change: transform;
     }
 
     #pilar-integridad {
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        top: 0 !important;
+        margin-top: 0 !important;
+        min-height: 320vh !important;
+        height: 320vh !important;
+        width: 100% !important;
+        clip-path: inset(var(--curtain-integrity, 100%) 0 0 0) !important;
+        -webkit-clip-path: inset(var(--curtain-integrity, 100%) 0 0 0) !important;
+        overflow: hidden !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        align-items: center !important;
+        box-sizing: border-box !important;
+        box-shadow: 0 -12px 36px rgba(0, 0, 0, 0.35) !important;
         z-index: 7 !important;
         background-color: #0b0f19 !important;
+        will-change: clip-path, transform;
+    }
+
+    #pilar-integridad .integridad-container {
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 2 !important;
+        width: 100% !important;
+        height: 100vh !important;
+        min-height: 100vh !important;
+        overflow: visible !important;
+        padding: 6.5rem 1.25rem 4rem !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        align-items: center !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
+        will-change: transform;
+    }
+
+    #pilar-integridad .integridad-right-col {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 1.2rem !important;
+        width: 100% !important;
+        max-width: 500px !important;
+        margin: 1.5rem auto 0 auto !important;
     }
 
     #idea-lab {
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        top: 0 !important;
+        margin-top: 0 !important;
+        min-height: 180vh !important;
+        height: 180vh !important;
+        width: 100% !important;
+        clip-path: inset(var(--curtain-idealab, 100%) 0 0 0) !important;
+        -webkit-clip-path: inset(var(--curtain-idealab, 100%) 0 0 0) !important;
+        overflow: hidden !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        align-items: center !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        box-sizing: border-box !important;
+        box-shadow: 0 -12px 36px rgba(0, 0, 0, 0.35) !important;
         z-index: 8 !important;
         background-color: var(--bg-light) !important;
+        will-change: clip-path, transform;
+    }
+
+    #idea-lab .idealab-container {
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 2 !important;
+        width: 100% !important;
+        height: 100vh !important;
+        min-height: 100vh !important;
+        overflow: visible !important;
+        padding: 6.5rem 1.25rem 4rem !important;
+        margin: 0 auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        align-items: center !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
+        will-change: transform;
+    }
+
+    #idea-lab .idealab-left-col {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        text-align: center !important;
+        margin: 0 auto !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
     }
 
     #valormaximoart {
@@ -3417,12 +3728,15 @@ body {
     #casos-exito .portfolio-video-bg,
     #casos-exito .portfolio-video-overlay,
     #galeria-comercial .galeria-video-bg,
-    #galeria-comercial .galeria-video-overlay {
+    #galeria-comercial .galeria-video-overlay,
+    #pilar-integridad .integridad-bg-wrapper,
+    #pilar-integridad .integridad-bg-overlay {
         position: absolute !important;
         top: 0 !important;
         left: 0 !important;
         width: 100% !important;
-        height: 100% !important;
+        height: 100vh !important;
+        height: calc(var(--vh, 1vh) * 100) !important;
         z-index: 1 !important;
         margin: 0 !important;
         display: block !important;
@@ -3432,34 +3746,18 @@ body {
 
     #inicio .hero-video-bg video,
     #casos-exito .portfolio-video-bg video,
-    #galeria-comercial .galeria-video-bg video {
+    #galeria-comercial .galeria-video-bg video,
+    #pilar-integridad .integridad-bg-img {
         position: absolute !important;
         top: 0 !important;
         left: 0 !important;
         width: 100% !important;
         height: 100% !important;
         object-fit: cover !important;
+        object-position: center center !important;
     }
 
-    #casos-exito .portfolio-container,
-    #el-match .catalog-grid-container,
-    #pilar-integridad .container,
-    #idea-lab .idealab-container {
-        position: relative !important;
-        z-index: 2 !important;
-        width: 100% !important;
-        height: auto !important;
-        min-height: auto !important;
-        overflow: visible !important;
-        padding: 6.5rem 1.25rem 4rem !important; /* +80px de holgura inicial para librar el header */
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: flex-start !important;
-        align-items: center !important;
-        text-align: center !important;
-        box-sizing: border-box !important;
-        transform: none !important;
-    }
+
 
     /* Sección 4 (Galería Comercial): Centrado Geométrico en Pantalla */
     #galeria-comercial .container,
@@ -3503,8 +3801,7 @@ body {
     #el-match .catalog-left-col,
     #el-match .catalog-header-floating,
     #el-match .catalog-right-col,
-    #pilar-integridad .integridad-left-col,
-    #idea-lab .idealab-left-col {
+    #pilar-integridad .integridad-left-col {
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
@@ -3514,6 +3811,7 @@ body {
         width: 100% !important;
         max-width: 100% !important;
         padding-top: 0 !important;
+        padding-bottom: 0 !important;
         position: relative !important;
         top: auto !important;
         bottom: auto !important;
@@ -3521,8 +3819,130 @@ body {
         right: auto !important;
     }
 
+    #el-match .catalog-right-col {
+        padding-bottom: 0 !important;
+        margin-bottom: 0 !important;
+    }
+
+    /* Indicador Flotante Animado de Scroll en Modo Responsivo (Horizontal, arriba de la ficha, flotante sin desplazar nada) */
     #el-match .catalog-scroll-indicator {
-        display: none !important;
+        display: flex !important;
+        position: absolute !important;
+        top: -3.4rem !important;
+        left: 50% !important;
+        right: auto !important;
+        bottom: auto !important;
+        transform: translateX(-50%) !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: transparent !important;
+        background-color: transparent !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        border: none !important;
+        box-shadow: none !important;
+        z-index: 100 !important;
+        pointer-events: none !important;
+        animation: catalogScrollCurtainPulse 2.2s infinite cubic-bezier(0.4, 0, 0.2, 1) !important;
+        transition: opacity 0.4s ease, filter 0.4s ease, transform 0.4s ease !important;
+    }
+
+    #el-match .catalog-scroll-indicator .scroll-text {
+        writing-mode: horizontal-tb !important;
+        color: #064E3B !important;
+        font-size: 0.78rem !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.22em !important;
+        text-transform: uppercase !important;
+        margin-bottom: 0.25rem !important;
+        text-align: center !important;
+    }
+
+    #el-match .catalog-scroll-indicator .scroll-arrow-triangle {
+        color: #064E3B !important;
+        width: 18px !important;
+        height: 14px !important;
+        display: block !important;
+    }
+
+    @keyframes catalogScrollCurtainPulse {
+        0% {
+            opacity: 0;
+            clip-path: inset(100% 0 0 0);
+            -webkit-clip-path: inset(100% 0 0 0);
+            filter: blur(6px);
+            transform: translate(-50%, -8px);
+        }
+        35%, 65% {
+            opacity: 1;
+            clip-path: inset(0% 0 0 0);
+            -webkit-clip-path: inset(0% 0 0 0);
+            filter: blur(0px);
+            transform: translate(-50%, 0px);
+        }
+        100% {
+            opacity: 0;
+            clip-path: inset(0 0 100% 0);
+            -webkit-clip-path: inset(0 0 100% 0);
+            filter: blur(6px);
+            transform: translate(-50%, 8px);
+        }
+    }
+
+    #el-match .catalog-scroll-indicator.hidden {
+        opacity: 0 !important;
+        clip-path: inset(0 0 100% 0) !important;
+        -webkit-clip-path: inset(0 0 100% 0) !important;
+        filter: blur(10px) !important;
+        transform: translate(-50%, 14px) !important;
+        pointer-events: none !important;
+    }
+
+    /* Cierre con Logo ISO y Silk Shader en Modo Responsivo */
+    .catalog-closing-glass {
+        margin: 2.5rem auto 3.5rem auto !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        position: relative !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        background: transparent !important;
+        background-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        overflow: visible !important;
+        z-index: 50 !important;
+        padding-bottom: 2.5rem !important;
+    }
+
+    .iso-silk-wrapper {
+        position: relative !important;
+        width: 152px !important;
+        height: 152px !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        transform: translateY(-20px) !important;
+        filter: drop-shadow(0 6px 20px rgba(0, 33, 23, 0.28)) !important;
+        overflow: visible !important;
+    }
+
+    .iso-silk-canvas {
+        width: 152px !important;
+        height: 152px !important;
+        display: block !important;
+        mask-image: url('valorISO.svg') !important;
+        -webkit-mask-image: url('valorISO.svg') !important;
+        mask-size: contain !important;
+        -webkit-mask-size: contain !important;
+        mask-repeat: no-repeat !important;
+        -webkit-mask-repeat: no-repeat !important;
+        mask-position: center center !important;
+        -webkit-mask-position: center center !important;
     }
 
     #galeria-comercial .galeria-badge,
@@ -3603,25 +4023,7 @@ body {
         width: 100% !important;
     }
 
-    /* -------- SECCIÓN 8 (IDEA LAB): ADAPTABILIDAD RESPONSIVA LIMPIA EN MÓVIL -------- */
-    #idea-lab .container,
-    #idea-lab .idealab-container {
-        position: relative !important;
-        z-index: 2 !important;
-        width: 100% !important;
-        height: auto !important;
-        min-height: auto !important;
-        overflow: visible !important;
-        padding: 0.5rem 1.25rem 3rem 1.25rem !important;
-        margin-top: -2.375rem !important; /* Bajado 20px respecto al ajuste anterior */
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: center !important;
-        align-items: center !important;
-        text-align: center !important;
-        box-sizing: border-box !important;
-        will-change: transform;
-    }
+
 
     #idea-lab .idealab-gallery-col {
         display: flex !important;

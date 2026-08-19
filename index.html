@@ -10,7 +10,7 @@
     <link rel="icon" type="image/svg+xml"
         href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='96' fill='%23ffffff'/%3E%3Cg transform='translate(48, 48) scale(0.888)'%3E%3Cpolygon points='140.416 345.708 77.155 215.203 .354 215.203 99.537 419.815 140.416 345.708' fill='%23002117'/%3E%3Cpolygon points='327.987 328.627 391.248 459.132 468.048 459.132 368.866 254.52 327.987 328.627' fill='%23002117'/%3E%3Cpolygon points='419.993 .354 230.767 99.56 296.838 136.006 118.596 459.132 215.252 459.132 370.944 176.884 437.015 213.33 419.993 .354' fill='%23002117'/%3E%3C/g%3E%3C/svg%3E">
     <link rel="stylesheet" href="fonts/local-fonts.css">
-    <link rel="stylesheet" href="styles.css?v=74">
+    <link rel="stylesheet" href="styles.css?v=114">
     <link rel="preload" as="image" href="valorISO.svg">
     <link rel="preload" as="image" href="galeria 3/hidalgo.jpeg" fetchpriority="high">
     <script src="js/lenis.min.js" defer></script>
@@ -237,16 +237,6 @@
 
         <!-- 07. Sección 6: Catálogo de Inmuebles — El Match (Cortina 2 Fases z-index: 12 & Desfile de Tarjetas) -->
         <section class="section section-curtain-match" id="el-match">
-            <!-- Indicador Flotante Animado de Scroll (Punto medio vertical, pegado al borde derecho) -->
-            <div class="catalog-scroll-indicator" id="catalog-scroll-indicator"
-                onclick="scrollToTimelineSection(event, 16.3)" style="cursor:pointer;" title="Ir a Pilar de Integridad">
-                <span class="scroll-text">SCROLL</span>
-                <svg class="scroll-arrow-triangle" width="18" height="14" viewBox="0 0 24 16" fill="none"
-                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <polygon points="3,3 21,3 12,13" />
-                </svg>
-            </div>
-
             <div class="container catalog-grid-container">
                 <!-- Columna Izquierda (Fija, Centrada Verticalmente, Alineada al Margen Izquierdo) -->
                 <div class="catalog-left-col">
@@ -270,6 +260,15 @@
 
                 <!-- Columna Derecha (Desfile Vertical de Tarjetas de Inmuebles) -->
                 <div class="catalog-right-col">
+                    <!-- Indicador Animado de Scroll arriba de la primera ficha -->
+                    <div class="catalog-scroll-indicator" id="catalog-scroll-indicator">
+                        <span class="scroll-text">SCROLL</span>
+                        <svg class="scroll-arrow-triangle" width="18" height="14" viewBox="0 0 24 16" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="3,3 21,3 12,13" />
+                        </svg>
+                    </div>
+
                     <!-- Inmueble 1: Plaza Ceboruco -->
                     <div class="catalog-item catalog-card-stagger" onclick="openFichaModal(this)"
                         data-ficha="riva-palacio" style="cursor:pointer;">
@@ -857,11 +856,23 @@
                         </div>
                     </div>
 
+                    <!-- Cierre del Desfile: Logo ISO con Efecto Silk Shader de Relleno -->
+                    <div class="catalog-closing-glass" id="catalog-closing-glass">
+                        <div class="iso-silk-wrapper">
+                            <canvas id="iso-silk-canvas" class="iso-silk-canvas" width="152" height="152"></canvas>
+                        </div>
+                    </div>
+
                 </div>
+            </div>
         </section>
 
         <!-- 08. Sección 7: Pilar de Integridad (z-index: 14, Cortina Vertical) -->
         <section class="section section-curtain-integrity" id="pilar-integridad">
+            <div class="integridad-bg-wrapper">
+                <img src="high_end_professional_conceptual_photography_of_data_security_and.png" alt="Seguridad y Confianza" class="integridad-bg-img" loading="lazy" decoding="async">
+                <div class="integridad-bg-overlay"></div>
+            </div>
             <div class="container integridad-container">
                 <!-- Columna Izquierda (Título Editorial + Descripción + CTA) -->
                 <div class="integridad-left-col">
@@ -1303,7 +1314,10 @@
                 aria-label="Cerrar ficha">&times;</button>
 
             <div class="ficha-modal-header">
-                <span class="badge philosophy-badge">Ficha Técnica</span>
+                <div class="ficha-header-top">
+                    <img src="valorISO.svg" alt="Valor Máximo ISO" class="ficha-iso-logo" loading="lazy" decoding="async">
+                    <span class="badge philosophy-badge">Ficha Técnica</span>
+                </div>
                 <h2 class="text-title ficha-modal-title" id="ficha-modal-title">Felipe Villanueva</h2>
             </div>
 
@@ -1346,7 +1360,7 @@
     </div>
 
     <script src="main.js" defer></script>
-    <script src="script.js?v=160.0" defer></script>
+    <script src="script.js?v=200.0" defer></script>
 </body>
 
 </html>
