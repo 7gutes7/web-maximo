@@ -3273,41 +3273,13 @@ function initPreloader() {
         window.lenis.stop();
     }
 
-    // Lista de recursos críticos a precargar (Imágenes y Assets principales)
-    const criticalAssets = [
-        'valorISO.svg',
-        'valorM01.svg',
-        '2PORTADA.png',
-        'PORTADA_GALERIA_HD.png',
-        'galeria comercial/Riva Palacio/portada tarjeta.png',
-        'galeria comercial/Paseo Central/Portada.jpg',
-        'galeria comercial/Felipe Villanueva/portada.jpg',
-        'galeria comercial/Villada/Portada.jpg',
-        'galeria comercial/Benito Juarez/portada.jpg',
-        'galeria comercial/Plaza rancho el meson II/portada.jpg'
-    ];
-
-    let loadedCount = 0;
-    const totalAssets = criticalAssets.length;
-
-    function updateProgress() {
-        loadedCount++;
-        const percent = Math.min(100, Math.round((loadedCount / totalAssets) * 100));
-        if (progressFill) progressFill.style.width = `${percent}%`;
-        if (percentageText) percentageText.textContent = `${percent}%`;
-
-        if (loadedCount >= totalAssets) {
-            finishPreloader();
-        }
-    }
-
     let isFinished = false;
     function finishPreloader() {
         if (isFinished) return;
         isFinished = true;
 
-        if (progressFill) progressFill.style.width = `100%`;
-        if (percentageText) percentageText.textContent = `100%`;
+        if (progressFill) progressFill.style.width = '100%';
+        if (percentageText) percentageText.textContent = '100%';
 
         setTimeout(() => {
             overlay.classList.add('hidden-preloader');
@@ -3316,16 +3288,28 @@ function initPreloader() {
             }
             setTimeout(() => {
                 overlay.style.display = 'none';
-            }, 800);
-        }, 400);
+            }, 450);
+        }, 100);
     }
 
-    criticalAssets.forEach(src => {
-        const img = new Image();
-        img.onload = updateProgress;
-        img.onerror = updateProgress;
-        img.src = src;
-    });
+    // Progreso ultra rápido y fluido de precarga (~400ms para no penalizar el LCP)
+    const startTime = performance.now();
+    const duration = 400;
 
-    setTimeout(finishPreloader, 2200);
+    function step(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(100, Math.round((elapsed / duration) * 100));
+
+        if (progressFill) progressFill.style.width = `${progress}%`;
+        if (percentageText) percentageText.textContent = `${progress}%`;
+
+        if (progress < 100) {
+            requestAnimationFrame(step);
+        } else {
+            finishPreloader();
+        }
+    }
+
+    requestAnimationFrame(step);
+    setTimeout(finishPreloader, 600);
 }
