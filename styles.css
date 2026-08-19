@@ -3601,6 +3601,46 @@ body {
         height: 100% !important;
         object-fit: cover !important;
     }
+
+    /* Desactivar interactividad y clics en contenedores de Sección 2 y Sección 3 en modo responsive (manteniendo su efecto visual y de aparición) */
+    #esencia .feature-card,
+    #casos-exito .project-card {
+        pointer-events: none !important;
+        cursor: default !important;
+        -webkit-tap-highlight-color: transparent !important;
+        user-select: none !important;
+        -webkit-user-select: none !important;
+    }
+
+    #esencia .feature-card:hover,
+    #esencia .feature-card:active,
+    #esencia .feature-card:focus {
+        background: rgba(255, 255, 255, 0.08) !important;
+        border-color: rgba(255, 255, 255, 0.20) !important;
+        transform: none !important;
+        box-shadow: 0 10px 30px rgba(6, 78, 59, 0.05) !important;
+    }
+
+    #casos-exito .project-card:hover,
+    #casos-exito .project-card:active,
+    #casos-exito .project-card:focus {
+        background: rgba(255, 255, 255, 0.06) !important;
+        border-color: rgba(255, 255, 255, 0.12) !important;
+        transform: none !important;
+        box-shadow: none !important;
+    }
+
+    #casos-exito .project-card:hover .project-card-img,
+    #casos-exito .project-card:active .project-card-img {
+        transform: none !important;
+    }
+
+    /* Permitir interacción en botones de acción dentro de la sección 2 (ej. Conocer la filosofía) */
+    #esencia button,
+    #esencia .btn {
+        pointer-events: auto !important;
+        cursor: pointer !important;
+    }
 }
 
 /* -------- PANTALLA DE PRECARGA PRÉMIUM (PRELOADER MAGIC RINGS & LOGO ISO - FONDO VERDE OSCURO #064E3B) -------- */
