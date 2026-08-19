@@ -397,7 +397,7 @@ body {
     height: 100%;
     justify-content: flex-end;
     padding-top: 5.5rem;
-    padding-bottom: 2.5rem;
+    padding-bottom: 150px;
 }
 
 .hero-bottom-row-grid {
@@ -3261,7 +3261,7 @@ body {
         height: 100% !important;
         width: 100% !important;
         padding-top: 0 !important;
-        padding-bottom: 1.5rem !important; /* Desciende el texto hasta el margen inferior */
+        padding-bottom: 150px !important; /* Siempre a exactamente 150px del borde inferior */
         margin-top: auto !important;
         box-sizing: border-box !important;
     }
