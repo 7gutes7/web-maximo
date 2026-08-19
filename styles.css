@@ -3287,8 +3287,44 @@ body {
     }
 
     #esencia {
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        top: 0 !important;
+        margin-top: 0 !important;
+        min-height: 320vh !important;
+        height: 320vh !important;
+        width: 100% !important;
+        clip-path: inset(var(--curtain, 100%) 0 0 0) !important;
+        -webkit-clip-path: inset(var(--curtain, 100%) 0 0 0) !important;
+        overflow: hidden !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        align-items: center !important;
+        box-sizing: border-box !important;
+        box-shadow: 0 -12px 36px rgba(0, 0, 0, 0.35) !important;
         z-index: 2 !important;
         background-color: #0b0f19 !important;
+        will-change: clip-path, transform;
+    }
+
+    #esencia .container {
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 2 !important;
+        width: 100% !important;
+        height: 100vh !important;
+        min-height: 100vh !important;
+        overflow: visible !important;
+        padding: 6.5rem 1.25rem 4rem !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        align-items: center !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
+        will-change: transform;
     }
 
     #casos-exito {

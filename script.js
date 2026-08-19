@@ -157,43 +157,64 @@ function initCurtainEdgeProximitySnap() {
 
 // 0b. Curtain Reveal Vertical (Sección 2 sobre Hero)
 function initCurtainReveals() {
-    if (window.innerWidth <= 768) return;
-    const wrapper = document.querySelector('.curtain-wrapper');
     const esencia = document.getElementById('esencia');
-    if (!wrapper || !esencia) return;
+    if (!esencia) return;
     const container = esencia.querySelector('.container');
 
     function update() {
-        const rect = wrapper.getBoundingClientRect();
         const vh = window.innerHeight;
-        const scrolled = -rect.top;
-        // Cortina Sección 2 despliega de 0.15vh a 1.0vh
-        const progress = Math.min(1, Math.max(0, (scrolled - 0.15 * vh) / (0.85 * vh)));
-        const clipPercent = (1 - progress) * 100;
+        const isMobile = window.innerWidth <= 768;
 
-        esencia.style.setProperty('--curtain', `${clipPercent}%`);
+        if (isMobile) {
+            const scrollY = window.scrollY || window.pageYOffset;
 
-        if (container) {
-            if (progress < 1.0) {
-                if (window.innerWidth > 768) {
+            // Cortina Sección 2 despliega en el tramo de 0.1vh a 1.0vh
+            const progressReveal = Math.min(1, Math.max(0, (scrollY - 0.1 * vh) / (0.9 * vh)));
+            const clipPercent = (1 - progressReveal) * 100;
+            esencia.style.setProperty('--curtain', `${clipPercent}%`);
+
+            if (container) {
+                if (progressReveal < 1.0) {
+                    container.style.transform = `translate3d(0, 0px, 0)`;
+                } else {
+                    // Scroll interno activo de 1.0vh a 2.8vh
+                    const activeScrolled = Math.max(0, scrollY - 1.0 * vh);
+                    const totalActiveTravel = 1.8 * vh;
+                    const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
+                    const maxScroll = Math.max(0, container.scrollHeight - vh + 100);
+
+                    const translateYValue = -flowProgress * maxScroll;
+                    container.style.transform = `translate3d(0, ${translateYValue}px, 0)`;
+                }
+            }
+        } else {
+            const wrapper = document.querySelector('.curtain-wrapper');
+            if (!wrapper) return;
+            const rect = wrapper.getBoundingClientRect();
+            const scrolled = -rect.top;
+
+            // Cortina Sección 2 despliega de 0.15vh a 1.0vh
+            const progress = Math.min(1, Math.max(0, (scrolled - 0.15 * vh) / (0.85 * vh)));
+            const clipPercent = (1 - progress) * 100;
+            esencia.style.setProperty('--curtain', `${clipPercent}%`);
+
+            if (container) {
+                if (progress < 1.0) {
                     const translateY = (1 - progress) * 60;
                     container.style.transform = `translate3d(0, ${translateY}px, 0)`;
                     container.style.opacity = progress;
                 } else {
-                    container.style.transform = `translate3d(0, 0px, 0)`;
+                    // Scroll interno activo de 1.0vh a 3.6vh (mientras la cortina de la sig. sección está 100% DESACTIVADA).
+                    // A 3.6vh el recuadro 'Acondicionamiento y Construcción' ya está 100% visible. Se da una pausa hasta 4.3vh.
+                    const activeScrolled = Math.max(0, scrolled - 1.0 * vh);
+                    const totalActiveTravel = 2.6 * vh;
+                    const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
+                    const maxScroll = Math.max(0, container.scrollHeight - vh + 80);
+
+                    const translateYValue = -flowProgress * maxScroll;
+                    container.style.transform = `translate3d(0, ${translateYValue}px, 0)`;
                     container.style.opacity = 1;
                 }
-            } else {
-                // Scroll interno activo de 1.0vh a 3.6vh (mientras la cortina de la sig. sección está 100% DESACTIVADA).
-                // A 3.6vh el recuadro 'Acondicionamiento y Construcción' ya está 100% visible. Se da una pausa hasta 4.3vh.
-                const activeScrolled = Math.max(0, scrolled - 1.0 * vh);
-                const totalActiveTravel = 2.6 * vh;
-                const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
-                const maxScroll = Math.max(0, container.scrollHeight - vh + 80);
-
-                const translateYValue = -flowProgress * maxScroll;
-                container.style.transform = `translate3d(0, ${translateYValue}px, 0)`;
-                container.style.opacity = 1;
             }
         }
     }
@@ -201,9 +222,8 @@ function initCurtainReveals() {
     const lenis = window.lenis;
     if (lenis) {
         lenis.on('scroll', update);
-    } else {
-        window.addEventListener('scroll', update, { passive: true });
     }
+    window.addEventListener('scroll', update, { passive: true });
     update();
 }
 
