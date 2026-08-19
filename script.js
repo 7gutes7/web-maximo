@@ -2,11 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initPreloader();
     initLenis();
     if (window.innerWidth > 768) {
-        initHeroMagneticSnap();
-        initSection2MagneticSnap();
-        initGaleriaMagneticSnap();
-        initIntegrityMagneticSnap();
-        initVmartMagneticSnap();
+        initCurtainEdgeProximitySnap();
     }
     initScrollNavbar();
     initLogoSwap();
@@ -57,257 +53,106 @@ function initLenis() {
     window.lenis = lenis;
 }
 
-// 0a. Snap Magnético por Viewport (estilo springs.house)
-function initAutoSnap() {
+// 0a. Snap Magnético Inteligente por Proximidad de Borde de Cortina (<= 150px de cualquier borde en Desktop)
+function initCurtainEdgeProximitySnap() {
     if (window.innerWidth <= 768) return;
     const lenis = window.lenis;
-    if (!lenis) return;
+    const wrapper = document.querySelector('.curtain-wrapper');
+    if (!lenis || !wrapper) return;
 
     function isDrawerActive() {
         const drawer = document.getElementById('vm-drawer-overlay');
         return drawer && drawer.classList.contains('active');
     }
-
-    let isSnapping = false;
-
-    function getSnapPoints() {
-        const vh = window.innerHeight;
-        const points = [];
-
-        // 1. Puntos dentro del contenedor de cortinas sticky
-        const wrapper = document.querySelector('.curtain-wrapper');
-        if (wrapper) {
-            const wrapperTop = wrapper.offsetTop;
-            points.push(wrapperTop);              // 01. Hero Section
-            points.push(wrapperTop + 1.0 * vh);   // 02. Sección 2 (#esencia)
-            points.push(wrapperTop + 2.0 * vh);   // 03. Sección 3 (#casos-exito - Revelación)
-            points.push(wrapperTop + 5.5 * vh);   // 04. Sección 3 (Tarjetas completas)
-            points.push(wrapperTop + 6.0 * vh);   // 05. Sección 4 (#galeria-comercial)
-            points.push(wrapperTop + 6.9 * vh);   // 06. Sección 5 (#transicion-imagen)
-            points.push(wrapperTop + 9.4 * vh);   // 07. Sección 6 (#el-match - Inmediatamente tras cortina)
-            points.push(wrapperTop + 13.3 * vh);  // 08. Sección 6 (Desfile completo)
-            points.push(wrapperTop + 14.5 * vh);  // 09. Sección 7 (Pilar de Integridad)
-            points.push(wrapperTop + 17.5 * vh);  // 10. Sección 8 (Idea Lab - Final)
-            points.push(wrapperTop + 19.5 * vh);  // 11. Sección 9 (ValorMáximoART + Footer)
-        }
-
-        // 2. Secciones del proyecto fuera del curtain wrapper
-        const allSections = document.querySelectorAll('body > section, main > section, section:not(.curtain-wrapper section), footer, .footer');
-        allSections.forEach(sec => {
-            if (!wrapper || !wrapper.contains(sec)) {
-                if (sec.offsetTop >= 0) {
-                    points.push(sec.offsetTop);
-                }
-            }
-        });
-
-        // Eliminar duplicados y ordenar de menor a mayor
-        return Array.from(new Set(points)).sort((a, b) => a - b);
-    }
-
-    function executeSnap() {
-        if (isDrawerActive() || isSnapping) return;
-        const currentScrollY = window.scrollY;
-        const docHeight = document.documentElement.scrollHeight;
-        const viewHeight = window.innerHeight;
-        const maxScroll = docHeight - viewHeight;
-
-        const points = getSnapPoints();
-        if (!points.length) return;
-
-        // Encontrar el punto de snap más cercano al scroll actual
-        let closest = points[0];
-        let minDiff = Math.abs(currentScrollY - points[0]);
-
-        for (let i = 1; i < points.length; i++) {
-            const diff = Math.abs(currentScrollY - points[i]);
-            if (diff < minDiff) {
-                minDiff = diff;
-                closest = points[i];
-            }
-        }
-
-        const targetY = Math.max(0, Math.min(closest, maxScroll));
-
-        // Si la distancia al punto de snap es mayor a 15px, ejecutar desplazamiento suave
-        if (Math.abs(currentScrollY - targetY) > 15) {
-            isSnapping = true;
-            // Velocidad reducida un 35% -> Duración extendida de 1.2s a 1.85s
-            lenis.scrollTo(targetY, {
-                duration: 1.85,
-                easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-                onComplete: () => {
-                    setTimeout(() => { isSnapping = false; }, 80);
-                }
-            });
-        }
-    }
-
-    let snapTimer;
-    function scheduleSnap() {
-        if (isSnapping) return;
-        clearTimeout(snapTimer);
-        snapTimer = setTimeout(executeSnap, 160);
-    }
-
-    lenis.on('scroll', scheduleSnap);
-    window.addEventListener('scroll', scheduleSnap, { passive: true });
-
-    setTimeout(executeSnap, 200);
-}
-
-// 0a2. Snap Magnético Suave Genérico (por porcentaje de visibilidad)
-// Se activa cuando la sección tiene el mayor porcentaje de visibilidad durante la
-// navegación, influyendo tanto en la sección anterior (revelado sobre ella) como en
-// la siguiente (que empieza a cubrirla). La centra con un movimiento sutil y fluido,
-// con énfasis: dispara en todo momento de forma automática.
-function createMagneticSnap(config) {
-    if (window.innerWidth <= 768) return;
-    const wrapper = document.querySelector('.curtain-wrapper');
-    const lenis = window.lenis;
-    if (!wrapper) return;
-
-    const { revealStartVh, revealEndVh, coverStartVh, coverEndVh, snapTargetVh, threshold = 0.5 } = config;
 
     let isSnapping = false;
     let snapTimer = null;
     let releaseTimer = null;
 
-    function isDrawerActive() {
-        const drawer = document.getElementById('vm-drawer-overlay');
-        return drawer && drawer.classList.contains('active');
-    }
+    // Relación de todas las transiciones de cortina en Desktop y su orientación geométrica
+    const transitions = [
+        // 01. Sección 2 (#esencia) - Cortina Vertical
+        { name: 'esencia', type: 'vertical', startVh: 0.15, endVh: 1.0 },
+        // 02. Sección 3 (#casos-exito) - Cortina Horizontal (entra desde la derecha)
+        { name: 'casos-exito', type: 'horizontal', startVh: 2.0, endVh: 5.0 },
+        // 03. Sección 4 (#galeria-comercial) - Cortina Vertical
+        { name: 'galeria', type: 'vertical', startVh: 6.0, endVh: 6.9 },
+        // 04. Sección 5 (#transicion-imagen) - Cortina 2 Fases
+        { name: 'transicion', type: 'vertical', startVh: 6.9, endVh: 8.2 },
+        // 05. Sección 6 (#el-match / Catálogo) - Cortina 2 Fases
+        { name: 'match', type: 'vertical', startVh: 8.2, endVh: 9.4 },
+        // 06. Sección 7 (#pilar-integridad) - Cortina Vertical
+        { name: 'integridad', type: 'vertical', startVh: 17.2, endVh: 18.05 },
+        // 07. Sección 8 (#idea-lab) - Cortina Vertical
+        { name: 'idealab', type: 'vertical', startVh: 20.4, endVh: 21.4 },
+        // 08. Sección 9 (#valormaximoart + Footer) - Cortina Vertical
+        { name: 'vmart', type: 'vertical', startVh: 25.4, endVh: 26.7 }
+    ];
 
-    // Proporción de visibilidad real de la sección en el viewport:
-    // fracción de cortina revelada × (1 - fracción con la que la siguiente sección la cubre)
-    function getShare() {
-        const vh = window.innerHeight;
-        const rect = wrapper.getBoundingClientRect();
-        const scrolled = -rect.top;
-
-        const reveal = Math.min(1, Math.max(0, (scrolled - revealStartVh * vh) / ((revealEndVh - revealStartVh) * vh)));
-        const cover = Math.min(1, Math.max(0, (scrolled - coverStartVh * vh) / ((coverEndVh - coverStartVh) * vh)));
-
-        return reveal * (1 - cover);
-    }
-
-    function maybeSnap() {
+    function checkProximityAndSnap() {
         if (window.innerWidth <= 768 || isSnapping || isDrawerActive()) return;
-        // Durante la navegación por clic (flecha/menú) se suprime el snap para
-        // no bloquear el avance hacia la siguiente sección.
         if (window.__suppressSnapUntil && Date.now() < window.__suppressSnapUntil) return;
 
-        const share = getShare();
-        // Solo cuando la sección tiene el mayor porcentaje de visibilidad
-        if (share < threshold) return;
-
         const vh = window.innerHeight;
-        const target = snapTargetVh * vh; // posición donde la sección cubre el 100% del viewport (centrada)
-        if (Math.abs(window.scrollY - target) <= 10) return;
+        const vw = window.innerWidth;
+        const scrollY = window.scrollY;
 
-        isSnapping = true;
-        // Liberar el bloqueo SIEMPRE tras la duración máxima de la animación lenta (3.6s)
-        clearTimeout(releaseTimer);
-        releaseTimer = setTimeout(() => { isSnapping = false; }, 3600);
+        for (const t of transitions) {
+            const startPx = t.startVh * vh;
+            const endPx = t.endVh * vh;
+            const totalTravelPx = endPx - startPx;
 
-        if (lenis) {
-            lenis.scrollTo(target, {
-                duration: 2.2, // Duración a mitad de velocidad (2.2s) para un desplegado pausado y majestuoso
-                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-                onComplete: () => { isSnapping = false; }
-            });
-        } else {
-            window.scrollTo({ top: target, behavior: 'smooth' });
-            setTimeout(() => { isSnapping = false; }, 2600);
+            // Comprobar si el scroll actual se encuentra en el rango de transición de esta cortina
+            if (scrollY >= startPx - 40 && scrollY <= endPx + 40) {
+                const progress = Math.min(1, Math.max(0, (scrollY - startPx) / totalTravelPx));
+
+                // Dimensión de la ventana según el eje de la cortina (16:9)
+                const dimension = (t.type === 'horizontal') ? vw : vh;
+
+                // Distancia física del borde de la cortina a los bordes de la pantalla (en píxeles)
+                const distanceToComplete = (1 - progress) * dimension; // Píxeles restantes para abrirse al 100%
+                const distanceToClose = progress * dimension;          // Píxeles restantes para cerrarse al 0%
+
+                let targetPx = null;
+
+                // Regla de proximidad: la cortina se completará si la transición está a 150px o menos del borde
+                if (distanceToComplete <= 150 && distanceToComplete > 0.5) {
+                    targetPx = endPx; // A <= 150px de abrirse -> Snap hacia el 100%
+                } else if (distanceToClose <= 150 && distanceToClose > 0.5) {
+                    targetPx = startPx; // A <= 150px de cerrarse -> Snap hacia el 0%
+                }
+
+                if (targetPx !== null && Math.abs(scrollY - targetPx) > 6) {
+                    isSnapping = true;
+                    clearTimeout(releaseTimer);
+                    releaseTimer = setTimeout(() => { isSnapping = false; }, 2400);
+
+                    lenis.scrollTo(targetPx, {
+                        duration: 1.6,
+                        easing: (p) => Math.min(1, 1.001 - Math.pow(2, -10 * p)),
+                        onComplete: () => { isSnapping = false; }
+                    });
+                    return;
+                }
+            }
         }
     }
 
-    function scheduleSnap() {
+    function scheduleProximityCheck() {
         if (window.innerWidth <= 768 || isSnapping || isDrawerActive()) return;
 
-        // Disparo inmediato cuando el scroll está casi detenido (velocidad baja),
-        // garantizando que el snap se active siempre de forma automática.
-        if (lenis && !isNaN(lenis.velocity) && Math.abs(lenis.velocity) < 3) {
-            maybeSnap();
+        // Disparo si la inercia del scroll casi se detiene
+        if (lenis && !isNaN(lenis.velocity) && Math.abs(lenis.velocity) < 2) {
+            checkProximityAndSnap();
             return;
         }
 
-        // Respaldo: debounce corto tras el último evento de scroll
         clearTimeout(snapTimer);
-        snapTimer = setTimeout(maybeSnap, 120);
+        snapTimer = setTimeout(checkProximityAndSnap, 130);
     }
 
-    if (lenis) {
-        lenis.on('scroll', scheduleSnap);
-    }
-    window.addEventListener('scroll', scheduleSnap, { passive: true });
-
-    setTimeout(maybeSnap, 400);
-}
-
-// Snap Magnético de la Sección 1 (Hero) — centra en 0.0vh
-function initHeroMagneticSnap() {
-    if (window.innerWidth <= 768) return;
-    createMagneticSnap({
-        revealStartVh: 0,
-        revealEndVh: 0.5,
-        coverStartVh: 0.5,
-        coverEndVh: 1.0,
-        snapTargetVh: 0.0,
-        threshold: 0.38
-    });
-}
-
-// Snap Magnético de la Sección 2 (El Diferenciador Absoluto) — centra en 1.0vh
-// Umbral 0.33: énfasis, incluye el tramo donde la Sección 3 se asoma parcialmente.
-function initSection2MagneticSnap() {
-    if (window.innerWidth <= 768) return;
-    createMagneticSnap({
-        revealStartVh: 0,
-        revealEndVh: 1,
-        coverStartVh: 1,
-        coverEndVh: 2,
-        snapTargetVh: 1.0,
-        threshold: 0.33
-    });
-}
-
-// Snap Magnético de la Sección 4 (Galería Comercial) — centra en 6.0vh
-function initGaleriaMagneticSnap() {
-    if (window.innerWidth <= 768) return;
-    createMagneticSnap({
-        revealStartVh: 5.5,
-        revealEndVh: 6.0,
-        coverStartVh: 6.7,
-        coverEndVh: 7.2,
-        snapTargetVh: 6.0
-    });
-}
-
-// Snap Magnético de la Sección 7 (Pilar de Integridad) — centra en 17.2vh
-function initIntegrityMagneticSnap() {
-    if (window.innerWidth <= 768) return;
-    createMagneticSnap({
-        revealStartVh: 16.5,
-        revealEndVh: 17.2,
-        coverStartVh: 18.05,
-        coverEndVh: 20.4,
-        snapTargetVh: 17.2,
-        threshold: 0.42
-    });
-}
-
-// Snap Magnético de la Última Sección (Valor MáximoART + Footer) — centra en 26.7vh
-function initVmartMagneticSnap() {
-    if (window.innerWidth <= 768) return;
-    createMagneticSnap({
-        revealStartVh: 24.5,
-        revealEndVh: 25.4,
-        coverStartVh: 26.7,
-        coverEndVh: 28.0,
-        snapTargetVh: 26.7,
-        threshold: 0.38
-    });
+    lenis.on('scroll', scheduleProximityCheck);
+    window.addEventListener('scroll', scheduleProximityCheck, { passive: true });
 }
 
 // 0b. Curtain Reveal Vertical (Sección 2 sobre Hero)
