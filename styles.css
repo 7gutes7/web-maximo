@@ -1110,7 +1110,9 @@ body {
 .catalog-img {
     width: 100%;
     height: 240px;
+    aspect-ratio: 16 / 9;
     object-fit: cover;
+    display: block;
     filter: grayscale(100%);
     transition: filter 0.4s ease, transform 0.4s ease;
 }
@@ -3651,6 +3653,23 @@ body {
         box-shadow: none !important;
     }
 
+    /* Estabilización anti-CLS para las tarjetas del Catálogo en modo responsivo */
+    #el-match .catalog-item {
+        transform: none !important;
+        transition: none !important;
+        contain: paint layout;
+    }
+
+    #el-match .catalog-item:hover,
+    #el-match .catalog-item:active {
+        transform: none !important;
+        box-shadow: 0 10px 30px rgba(6, 78, 59, 0.06) !important;
+    }
+
+    #el-match .catalog-item:hover .catalog-img {
+        transform: none !important;
+    }
+
     /* Permitir interacción única en botones y flechas de acción (ej. Nuestro compromiso, flechas de galería) */
     #esencia button,
     #esencia .btn,
@@ -3678,7 +3697,7 @@ body {
     justify-content: center !important;
     align-items: center !important;
     overflow: hidden !important;
-    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s ease !important;
+    transition: opacity 0.45s ease-out, visibility 0.45s ease-out;
 }
 
 .vm-preloader-overlay.hidden-preloader {
@@ -3693,26 +3712,19 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 1.25rem;
+    gap: 1.5rem;
 }
 
 .preloader-logo {
     width: 110px;
     height: auto;
-    filter: drop-shadow(0 0 25px rgba(207, 171, 10, 0.45));
-    animation: preloaderLogoPulse 2s ease-in-out infinite alternate;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.25));
+    animation: preloaderPulse 2.5s ease-in-out infinite alternate;
 }
 
-@keyframes preloaderLogoPulse {
-    0% {
-        transform: scale(0.96);
-        filter: drop-shadow(0 0 15px rgba(207, 171, 10, 0.3));
-    }
-    100% {
-        transform: scale(1.04);
-        filter: drop-shadow(0 0 35px rgba(207, 171, 10, 0.65));
-    }
+@keyframes preloaderPulse {
+    0% { transform: scale(0.97); opacity: 0.9; }
+    100% { transform: scale(1.03); opacity: 1; }
 }
 
 .preloader-progress-bar {
@@ -3738,6 +3750,10 @@ body {
     font-weight: 600;
     letter-spacing: 0.2em;
     color: #cfab0a;
+    font-variant-numeric: tabular-nums;
+    display: inline-block;
+    min-width: 48px;
+    text-align: center;
 }
 
 /* -------- OPTIMIZACIÓN GPU FLUIDEZ MODO RESPONSIVO (60FPS TOUCH SCROLL) -------- */
