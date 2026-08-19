@@ -3602,14 +3602,21 @@ body {
         object-fit: cover !important;
     }
 
-    /* Desactivar interactividad y clics en contenedores de Sección 2 y Sección 3 en modo responsive (manteniendo su efecto visual y de aparición) */
+    /* Desactivar interactividad y clics en contenedores de Sección 2, Sección 3 y Sección 7 (Pilar de Integridad) en modo responsive */
     #esencia .feature-card,
-    #casos-exito .project-card {
+    #casos-exito .project-card,
+    #pilar-integridad .integridad-card {
         pointer-events: none !important;
         cursor: default !important;
         -webkit-tap-highlight-color: transparent !important;
         user-select: none !important;
         -webkit-user-select: none !important;
+    }
+
+    #pilar-integridad .integridad-card,
+    #pilar-integridad .integridad-card-stagger {
+        transform: none !important;
+        transition: none !important;
     }
 
     #esencia .feature-card:hover,
@@ -3635,9 +3642,22 @@ body {
         transform: none !important;
     }
 
-    /* Permitir interacción en botones de acción dentro de la sección 2 (ej. Conocer la filosofía) */
+    #pilar-integridad .integridad-card:hover,
+    #pilar-integridad .integridad-card:active,
+    #pilar-integridad .integridad-card:focus {
+        background: rgba(255, 255, 255, 0.06) !important;
+        border-color: rgba(255, 255, 255, 0.12) !important;
+        transform: none !important;
+        box-shadow: none !important;
+    }
+
+    /* Permitir interacción única en botones y flechas de acción (ej. Nuestro compromiso, flechas de galería) */
     #esencia button,
-    #esencia .btn {
+    #esencia .btn,
+    #pilar-integridad button,
+    #pilar-integridad .btn,
+    .integridad-arrow-btn,
+    .idealab-arrow-btn {
         pointer-events: auto !important;
         cursor: pointer !important;
     }
