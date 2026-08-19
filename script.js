@@ -921,14 +921,14 @@ function initImageTrail() {
 
 // 0d. Fondo Silk Shader (Sección 2 - El Diferenciador Absoluto)
 function initSilkBackground() {
-    if (window.innerWidth <= 768) return;
     const canvas = document.getElementById('silk-canvas');
     const container = document.getElementById('esencia');
     if (!canvas || !container || typeof THREE === 'undefined') return;
 
+    const isMobile = window.innerWidth <= 768;
     // Renderer transparente para que el fondo oscuro de #esencia se vea a través del patrón
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: !isMobile });
+    renderer.setPixelRatio(isMobile ? 1 : Math.min(window.devicePixelRatio, 2));
     renderer.setClearColor(0x000000, 0);
 
     const scene = new THREE.Scene();
