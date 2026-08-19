@@ -175,16 +175,16 @@ function initCurtainReveals() {
 
             if (container) {
                 if (progressReveal < 1.0) {
-                    container.style.transform = `translate3d(0, 0px, 0)`;
+                    container.style.setProperty('transform', 'translate3d(0, 0px, 0)', 'important');
                 } else {
                     // Scroll interno activo de 1.0vh a 2.8vh
                     const activeScrolled = Math.max(0, scrollY - 1.0 * vh);
                     const totalActiveTravel = 1.8 * vh;
                     const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
-                    const maxScroll = Math.max(0, container.scrollHeight - vh + 100);
+                    const maxScroll = Math.max(0, container.scrollHeight - vh + 120);
 
                     const translateYValue = -flowProgress * maxScroll;
-                    container.style.transform = `translate3d(0, ${translateYValue}px, 0)`;
+                    container.style.setProperty('transform', `translate3d(0, ${translateYValue}px, 0)`, 'important');
                 }
             }
         } else {
