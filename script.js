@@ -367,9 +367,9 @@ function initGaleriaCurtain() {
         const vh = window.innerHeight;
         const scrolled = -rect.top;
 
-        // En modo responsivo (<= 768px), la velocidad de revelado de cortina Galería Comercial (Sección 3 a 4) se reduce a la mitad (1.4vh). En Desktop permanece intacta a 0.7vh.
+        // En modo responsivo (<= 768px), la velocidad de revelado de cortina Galería Comercial se suaviza a 1.8vh. En Desktop se extiende a 0.9vh.
         const startPxGaleria = (window.innerWidth <= 768) ? 10.2 * vh : 6 * vh;
-        const revealDistanceGaleria = (window.innerWidth <= 768) ? 1.4 * vh : 0.7 * vh;
+        const revealDistanceGaleria = (window.innerWidth <= 768) ? 1.8 * vh : 0.9 * vh;
         const progress = Math.min(1, Math.max(0, (scrolled - startPxGaleria) / revealDistanceGaleria));
         const clipPercent = (1 - progress) * 100;
 
@@ -380,7 +380,7 @@ function initGaleriaCurtain() {
                 container.style.transform = `translate3d(0, 0px, 0)`;
             } else {
                 // Scroll interno compacto de Galería Comercial
-                const activeStartGaleria = (window.innerWidth <= 768) ? 11.6 * vh : 6.7 * vh;
+                const activeStartGaleria = startPxGaleria + revealDistanceGaleria;
                 const activeScrolled = Math.max(0, scrolled - activeStartGaleria);
                 const totalActiveTravel = 0.5 * vh;
                 const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
