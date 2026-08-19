@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    initMagicRingsPreloader();
+    initPreloader();
     initLenis();
     if (window.innerWidth > 768) {
         initHeroMagneticSnap();
@@ -26,7 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initImageTrail();
     initDrawerFloatingLines();
     initIdeaLabGalleryScroll();
-    initPropuestasModal();
 });
 
 // 0. Lenis — Smooth scroll con inercia
@@ -267,44 +266,40 @@ function initSection2MagneticSnap() {
     });
 }
 
-// Snap Magnético de la Sección 4 (Galería Comercial) — centra en 9.0vh
+// Snap Magnético de la Sección 4 (Galería Comercial) — centra en 6.0vh
 function initGaleriaMagneticSnap() {
     if (window.innerWidth <= 768) return;
     createMagneticSnap({
-        revealStartVh: 7.8,
-        revealEndVh: 9.0,
-        coverStartVh: 9.0,
-        coverEndVh: 9.5,
-        snapTargetVh: 9.0
+        revealStartVh: 5.5,
+        revealEndVh: 6.0,
+        coverStartVh: 6.7,
+        coverEndVh: 7.2,
+        snapTargetVh: 6.0
     });
 }
 
-// Snap Magnético de la Sección 7 (Pilar de Integridad) — por mayor visibilidad
-// Se activa cuando Integridad tiene el mayor porcentaje de visibilidad respecto
-// a la sección anterior (Catálogo, que termina de revelarse en 13.5vh) y a la
-// siguiente (Idea Lab, que empieza a cubrirla en 14.5vh). Centra en 14.5vh.
+// Snap Magnético de la Sección 7 (Pilar de Integridad) — centra en 17.2vh
 function initIntegrityMagneticSnap() {
     if (window.innerWidth <= 768) return;
     createMagneticSnap({
-        revealStartVh: 13.5,
-        revealEndVh: 14.5,
-        coverStartVh: 14.5,
-        coverEndVh: 16.5,
-        snapTargetVh: 14.5,
+        revealStartVh: 16.5,
+        revealEndVh: 17.2,
+        coverStartVh: 18.05,
+        coverEndVh: 20.4,
+        snapTargetVh: 17.2,
         threshold: 0.42
     });
 }
 
-// Snap Magnético de la Última Sección (Valor MáximoART + Footer) — centra en 19.5vh
-// Se activa automáticamente cuando la sección alcanza la visibilidad requerida en el viewport.
+// Snap Magnético de la Última Sección (Valor MáximoART + Footer) — centra en 26.7vh
 function initVmartMagneticSnap() {
     if (window.innerWidth <= 768) return;
     createMagneticSnap({
-        revealStartVh: 17.5,
-        revealEndVh: 19.5,
-        coverStartVh: 19.5,
-        coverEndVh: 21.0,
-        snapTargetVh: 19.5,
+        revealStartVh: 24.5,
+        revealEndVh: 25.4,
+        coverStartVh: 26.7,
+        coverEndVh: 28.0,
+        snapTargetVh: 26.7,
         threshold: 0.38
     });
 }
@@ -385,7 +380,7 @@ function initGaleriaCurtain() {
                 container.style.transform = `translate3d(0, 0px, 0)`;
             } else {
                 // Scroll interno compacto de Galería Comercial
-                const activeStartGaleria = (window.innerWidth <= 768) ? 11.6 * vh : 5.7 * vh;
+                const activeStartGaleria = (window.innerWidth <= 768) ? 11.6 * vh : 6.7 * vh;
                 const activeScrolled = Math.max(0, scrolled - activeStartGaleria);
                 const totalActiveTravel = 0.5 * vh;
                 const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
@@ -603,7 +598,7 @@ function initIntegrityCurtain() {
                 const translateYValue = -flowProgress * maxScroll;
                 container.style.transform = `translate3d(0, ${translateYValue}px, 0)`;
             }
-        } else if (container && window.innerWidth <= 768) {
+        } else if (container) {
             container.style.transform = `translate3d(0, 0px, 0)`;
         }
 
@@ -655,7 +650,8 @@ function initIdeaLabCurtain() {
                 const translateY = (1 - progress) * 60;
                 leftCol.style.transform = `translateY(${translateY}px)`;
                 leftCol.style.opacity = progress;
-            } else if (container) {
+            }
+            if (container) {
                 container.style.transform = `translate3d(0, 0px, 0)`;
             }
         } else {
@@ -1374,14 +1370,20 @@ function openMatchDrawer() {
     if (!drawer) return;
     drawer.classList.add('active');
     document.body.style.overflow = 'hidden';
+    if (window.lenis) window.lenis.stop();
     if (window.startDrawerLinesAnimation) window.startDrawerLinesAnimation();
 }
 
 function closeMatchDrawer() {
     const drawer = document.getElementById('vm-drawer-overlay');
     if (!drawer) return;
+    if (document.activeElement && typeof document.activeElement.blur === 'function') {
+        document.activeElement.blur();
+    }
     drawer.classList.remove('active');
     document.body.style.overflow = '';
+    if (window.lenis) window.lenis.start();
+    suppressSnapTemporarily();
     if (window.stopDrawerLinesAnimation) window.stopDrawerLinesAnimation();
 }
 
@@ -1395,13 +1397,19 @@ function openPhilosophyDrawer() {
     if (!drawer) return;
     drawer.classList.add('active');
     document.body.style.overflow = 'hidden';
+    if (window.lenis) window.lenis.stop();
 }
 
 function closePhilosophyDrawer() {
     const drawer = document.getElementById('philosophy-drawer-overlay');
     if (!drawer) return;
+    if (document.activeElement && typeof document.activeElement.blur === 'function') {
+        document.activeElement.blur();
+    }
     drawer.classList.remove('active');
     document.body.style.overflow = '';
+    if (window.lenis) window.lenis.start();
+    suppressSnapTemporarily();
 }
 
 function closePhilosophyDrawerOnBackdrop(event) {
@@ -3229,143 +3237,12 @@ function initDrawerFloatingLines() {
     };
 }
 
-// 00. Preloader Prémium con Magic Rings (React Bits WebGL Shader) & Logo ISO (Fondo Verde Oscuro #064E3B)
-function initMagicRingsPreloader() {
+// 00. Pantalla de Precarga Prémium (Logo ISO - Fondo Verde Oscuro #064E3B)
+function initPreloader() {
     const overlay = document.getElementById('vm-preloader-overlay');
-    const canvas = document.getElementById('magic-rings-canvas');
     const progressFill = document.getElementById('preloader-progress-fill');
     const percentageText = document.getElementById('preloader-percentage');
-    if (!overlay || !canvas || typeof THREE === 'undefined') return;
-
-    let renderer, scene, camera, material, mesh;
-    let animationFrameId = null;
-
-    try {
-        renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        renderer.setSize(window.innerWidth, window.innerHeight);
-
-        scene = new THREE.Scene();
-        camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
-        camera.position.z = 1;
-
-        const vertexShader = `
-            varying vec2 vUv;
-            void main() {
-                vUv = uv;
-                gl_Position = vec4(position, 1.0);
-            }
-        `;
-
-        // Shader de WebGL réplica exacta de React Bits MagicRings
-        const fragmentShader = `
-            uniform float uTime;
-            uniform vec2 uResolution;
-            uniform vec3 colorOne;
-            uniform vec3 colorTwo;
-            varying vec2 vUv;
-
-            vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-            vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-            vec3 permute(vec3 x) { return mod289(((x*34.0)+1.0)*x); }
-
-            float snoise(vec2 v) {
-                const vec4 C = vec4(0.211324865405187, 0.366025403784439,
-                                    -0.577350269189626, 0.024390243902439);
-                vec2 i  = floor(v + dot(v, C.yy) );
-                vec2 x0 = v -   i + dot(i, C.xx);
-                vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
-                vec4 x12 = x0.xyxy + C.xxzz;
-                x12.xy -= i1;
-                i = mod289(i);
-                vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 ))
-                    + i.x + vec3(0.0, i1.x, 1.0 ));
-                vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);
-                m = m*m; m = m*m;
-                vec3 x = 2.0 * fract(p * C.www) - 1.0;
-                vec3 h = abs(x) - 0.5;
-                vec3 ox = floor(x + 0.5);
-                vec3 a0 = x - ox;
-                m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
-                vec3 g;
-                g.x  = a0.x  * x0.x  + h.x  * x0.y;
-                g.yz = a0.yc * x12.xz + h.yz * x12.yw;
-                return 130.0 * dot(m, g);
-            }
-
-            void main() {
-                vec2 st = (gl_FragCoord.xy - 0.5 * uResolution.xy) / min(uResolution.x, uResolution.y);
-                float dist = length(st);
-                float angle = atan(st.y, st.x);
-                
-                float speed = 0.8;
-                float t = uTime * speed;
-                
-                float baseRadius = 0.18;
-                float radiusStep = 0.065;
-                float ringGap = 1.3;
-                float lineThickness = 0.0035;
-                float attenuation = 12.0;
-                float noiseAmount = 0.04;
-                
-                vec3 finalColor = vec3(0.0);
-                float finalAlpha = 0.0;
-                
-                for (float i = 0.0; i < 6.0; i += 1.0) {
-                    float r = baseRadius + i * radiusStep * ringGap;
-                    r += sin(t * 0.8 + i * 0.7) * 0.015;
-                    
-                    float n = snoise(vec2(st * 4.0 + vec2(cos(t * 0.4 + i), sin(t * 0.4 + i)))) * noiseAmount;
-                    float ringDist = abs(dist - (r + n));
-                    
-                    float glow = exp(-ringDist * attenuation * 25.0);
-                    float edge = smoothstep(lineThickness, 0.0, ringDist);
-                    float ringVal = edge + glow * 0.8;
-                    
-                    float colorMix = 0.5 + 0.5 * sin(t + angle * 2.0 + i * 0.8);
-                    vec3 ringCol = mix(colorOne, colorTwo, colorMix);
-                    
-                    finalColor += ringCol * ringVal;
-                    finalAlpha += ringVal;
-                }
-                
-                gl_FragColor = vec4(finalColor, clamp(finalAlpha, 0.0, 1.0));
-            }
-        `;
-
-        material = new THREE.ShaderMaterial({
-            vertexShader: vertexShader,
-            fragmentShader: fragmentShader,
-            uniforms: {
-                uTime: { value: 0 },
-                uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
-                colorOne: { value: new THREE.Color('#cfab0a') },
-                colorTwo: { value: new THREE.Color('#006e4a') }
-            },
-            transparent: true
-        });
-
-        const geometry = new THREE.PlaneGeometry(2, 2);
-        mesh = new THREE.Mesh(geometry, material);
-        scene.add(mesh);
-
-        function resize() {
-            if (!renderer) return;
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            material.uniforms.uResolution.value.set(window.innerWidth, window.innerHeight);
-        }
-        window.addEventListener('resize', resize, { passive: true });
-
-        const clock = new THREE.Clock();
-        function animate() {
-            material.uniforms.uTime.value = clock.getElapsedTime();
-            renderer.render(scene, camera);
-            animationFrameId = requestAnimationFrame(animate);
-        }
-        animate();
-    } catch (e) {
-        console.warn("WebGL MagicRings fallback", e);
-    }
+    if (!overlay) return;
 
     // Detener scroll de Lenis durante la precarga
     if (window.lenis) {
@@ -3414,8 +3291,6 @@ function initMagicRingsPreloader() {
                 window.lenis.start();
             }
             setTimeout(() => {
-                if (animationFrameId) cancelAnimationFrame(animationFrameId);
-                if (renderer) renderer.dispose();
                 overlay.style.display = 'none';
             }, 800);
         }, 400);
