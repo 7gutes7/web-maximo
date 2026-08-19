@@ -1226,15 +1226,15 @@ function initHorizontalCurtainReveals() {
             section.style.setProperty('--curtain-right', `${clipRight}%`);
         });
 
-        // Scroll interno fluido para el contenedor de la Sección 3
+        // Scroll interno fluido para el contenedor de la Sección 3 (Método 1: 3.0vh de recorrido ágil + pausa de lectura en móvil sin alterar secciones siguientes)
         if (container) {
             if (progress < 1.0) {
                 container.style.transform = `translate3d(0, 0px, 0)`;
             } else {
                 const activeStartPx = startPx + revealDistance;
                 const activeScrolled = Math.max(0, scrolled - activeStartPx);
-                const totalActiveTravel = (window.innerWidth <= 768) ? 5.0 * vh : 3.3 * vh;
-                const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
+                const scrollTravel = (window.innerWidth <= 768) ? 3.0 * vh : 3.3 * vh;
+                const flowProgress = Math.min(1, activeScrolled / scrollTravel);
                 const maxScroll = Math.max(0, container.scrollHeight - vh + 100);
 
                 const translateYValue = -flowProgress * maxScroll;
