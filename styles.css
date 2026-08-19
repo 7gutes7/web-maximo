@@ -3767,10 +3767,8 @@ body {
     .section-curtain-match,
     .section-curtain-integrity,
     .section-curtain-idealab,
-    .section-curtain-vmart,
-    .curtain-wrapper {
-        will-change: clip-path, transform;
-        transform: translateZ(0);
+    .section-curtain-vmart {
+        will-change: clip-path;
         backface-visibility: hidden;
         -webkit-backface-visibility: hidden;
     }
