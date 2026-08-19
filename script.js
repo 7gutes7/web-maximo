@@ -1076,19 +1076,18 @@ function initSilkBackground() {
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
     const vertexShader = `
+        precision highp float;
         varying vec2 vUv;
-        varying vec3 vPosition;
 
         void main() {
-            vPosition = position;
             vUv = uv;
             gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
         }
     `;
 
     const fragmentShader = `
+        precision highp float;
         varying vec2 vUv;
-        varying vec3 vPosition;
 
         uniform float uTime;
         uniform vec3  uColor;
@@ -3065,6 +3064,17 @@ function initDrawerFloatingLines() {
             return col * 0.5;
         }
 
+        vec3 getGradientColor(int index) {
+            if (index == 0) return lineGradient[0];
+            if (index == 1) return lineGradient[1];
+            if (index == 2) return lineGradient[2];
+            if (index == 3) return lineGradient[3];
+            if (index == 4) return lineGradient[4];
+            if (index == 5) return lineGradient[5];
+            if (index == 6) return lineGradient[6];
+            return lineGradient[7];
+        }
+
         vec3 getLineColor(float t, vec3 baseColor) {
             if (lineGradientCount <= 0) return baseColor;
             if (lineGradientCount == 1) return lineGradient[0] * 0.5;
@@ -3073,8 +3083,8 @@ function initDrawerFloatingLines() {
             int idx = int(floor(scaled));
             float f = fract(scaled);
             int idx2 = min(idx + 1, lineGradientCount - 1);
-            vec3 c1 = lineGradient[idx];
-            vec3 c2 = lineGradient[idx2];
+            vec3 c1 = getGradientColor(idx);
+            vec3 c2 = getGradientColor(idx2);
             return mix(c1, c2, f) * 0.85;
         }
 
