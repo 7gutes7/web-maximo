@@ -2991,8 +2991,13 @@ function scrollToNextSection() {
     }
 }
 
-// 0e. Fondo FloatingLines WebGL Shader en el Panel Izquierdo del Formulario / Drawer Modal (Get Qualified)
+// 0e. Fondo FloatingLines WebGL Shader en el Panel Izquierdo del Formulario / Drawer Modal (Get Qualified - Solo Desktop)
 function initDrawerFloatingLines() {
+    window.startDrawerLinesAnimation = function () {};
+    window.stopDrawerLinesAnimation = function () {};
+
+    if (window.innerWidth <= 768) return;
+
     const canvas = document.getElementById('drawer-floating-lines-canvas');
     const container = document.querySelector('.vm-drawer-left');
     if (!canvas || !container || typeof THREE === 'undefined') return;
@@ -3207,6 +3212,13 @@ function initDrawerFloatingLines() {
     const clock = new THREE.Clock();
 
     function resize() {
+        if (window.innerWidth <= 768) {
+            if (isDrawerLinesAnimating) {
+                isDrawerLinesAnimating = false;
+                if (drawerAnimId) cancelAnimationFrame(drawerAnimId);
+            }
+            return;
+        }
         const width = container.clientWidth || window.innerWidth / 2;
         const height = container.clientHeight || window.innerHeight;
         renderer.setSize(width, height, false);
@@ -3216,6 +3228,7 @@ function initDrawerFloatingLines() {
     window.addEventListener('resize', resize, { passive: true });
 
     container.addEventListener('mousemove', (e) => {
+        if (window.innerWidth <= 768) return;
         const rect = canvas.getBoundingClientRect();
         const mouseX = (e.clientX - rect.left) * renderer.getPixelRatio();
         const mouseY = (rect.height - (e.clientY - rect.top)) * renderer.getPixelRatio();
@@ -3227,13 +3240,14 @@ function initDrawerFloatingLines() {
     let drawerAnimId = null;
 
     function animate() {
-        if (!isDrawerLinesAnimating) return;
+        if (!isDrawerLinesAnimating || window.innerWidth <= 768) return;
         drawerAnimId = requestAnimationFrame(animate);
         uniforms.iTime.value = clock.getElapsedTime();
         renderer.render(scene, camera);
     }
 
     window.startDrawerLinesAnimation = function () {
+        if (window.innerWidth <= 768) return;
         if (!isDrawerLinesAnimating) {
             isDrawerLinesAnimating = true;
             clock.start();

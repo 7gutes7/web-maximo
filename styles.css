@@ -3135,8 +3135,9 @@ body {
         flex-direction: column;
     }
 
-    .vm-drawer-left {
-        display: none;
+    .vm-drawer-left,
+    #drawer-floating-lines-canvas {
+        display: none !important;
     }
 
     .vm-drawer-right {
