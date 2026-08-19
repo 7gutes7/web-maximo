@@ -157,6 +157,7 @@ function initCurtainEdgeProximitySnap() {
 
 // 0b. Curtain Reveal Vertical (Sección 2 sobre Hero)
 function initCurtainReveals() {
+    if (window.innerWidth <= 768) return;
     const wrapper = document.querySelector('.curtain-wrapper');
     const esencia = document.getElementById('esencia');
     if (!wrapper || !esencia) return;
@@ -208,6 +209,7 @@ function initCurtainReveals() {
 
 // 0b2. Curtain Reveal Vertical (Sección 4: Galería Comercial)
 function initGaleriaCurtain() {
+    if (window.innerWidth <= 768) return;
     const galeria = document.getElementById('galeria-comercial');
     const wrapper = document.querySelector('.curtain-wrapper');
     if (!galeria || !wrapper) return;
@@ -254,6 +256,7 @@ function initGaleriaCurtain() {
 
 // 0b3. Curtain Reveal 2 Fases (Sección 5: Transición de Imagen)
 function initTransitionCurtain() {
+    if (window.innerWidth <= 768) return;
     const sec = document.getElementById('transicion-imagen');
     const wrapper = document.querySelector('.curtain-wrapper');
     if (!sec || !wrapper) return;
@@ -295,6 +298,7 @@ function initTransitionCurtain() {
 
 // 0b4. Curtain Reveal 2 Fases Invertida & Desfile de Tarjetas (Sección 6: Catálogo — El Match)
 function initMatchCatalogCurtain() {
+    if (window.innerWidth <= 768) return;
     const sec = document.getElementById('el-match');
     const wrapper = document.querySelector('.curtain-wrapper');
     if (!sec || !wrapper) return;
@@ -401,6 +405,7 @@ function initMatchCatalogCurtain() {
 
 // 0b5. Curtain Reveal Vertical (Sección 7: Pilar de Integridad)
 function initIntegrityCurtain() {
+    if (window.innerWidth <= 768) return;
     const sec = document.getElementById('pilar-integridad');
     const wrapper = document.querySelector('.curtain-wrapper');
     if (!sec || !wrapper) return;
@@ -476,6 +481,7 @@ function initIntegrityCurtain() {
 
 // 0b5. Curtain Reveal Vertical (Sección 8: Idea Lab)
 function initIdeaLabCurtain() {
+    if (window.innerWidth <= 768) return;
     const sec = document.getElementById('idea-lab');
     const wrapper = document.querySelector('.curtain-wrapper');
     if (!sec || !wrapper) return;
@@ -552,6 +558,7 @@ function initIdeaLabCurtain() {
 
 // 0b6. Curtain Reveal Vertical (Sección 9: Valor MáximoART + Footer)
 function initVmartCurtain() {
+    if (window.innerWidth <= 768) return;
     const sec = document.getElementById('valormaximoart');
     const wrapper = document.querySelector('.curtain-wrapper');
     if (!sec || !wrapper) return;
@@ -914,6 +921,7 @@ function initImageTrail() {
 
 // 0d. Fondo Silk Shader (Sección 2 - El Diferenciador Absoluto)
 function initSilkBackground() {
+    if (window.innerWidth <= 768) return;
     const canvas = document.getElementById('silk-canvas');
     const container = document.getElementById('esencia');
     if (!canvas || !container || typeof THREE === 'undefined') return;
@@ -1050,6 +1058,7 @@ function initSilkBackground() {
 
 // 0c. Curtain Reveal Horizontal y Secuencia Sticky Timeline (Sección 3: Portafolio — Casos de Éxito)
 function initHorizontalCurtainReveals() {
+    if (window.innerWidth <= 768) return;
     const leftCurtains = document.querySelectorAll('.section-curtain-left');
     if (!leftCurtains.length) return;
 
@@ -2787,6 +2796,22 @@ function suppressSnapTemporarily() {
 function scrollToNextSection() {
     const vh = window.innerHeight;
     const scrollY = window.scrollY || window.pageYOffset;
+    const isMobile = window.innerWidth <= 768;
+
+    if (isMobile) {
+        const sectionIds = ['inicio', 'esencia', 'casos-exito', 'galeria-comercial', 'transicion-imagen', 'el-match', 'pilar-integridad', 'idea-lab', 'valormaximoart'];
+        const targets = sectionIds
+            .map(id => document.getElementById(id))
+            .filter(Boolean)
+            .map(el => el.offsetTop);
+        targets.push(0); // Volver al inicio al final
+
+        let nextTarget = targets.find(t => t > scrollY + 40);
+        if (nextTarget === undefined) nextTarget = 0;
+
+        window.scrollTo({ top: nextTarget, behavior: 'smooth' });
+        return;
+    }
 
     // Lista ordenada de los puntos clave de scroll en la línea de tiempo de cortinas (Escritorio)
     const desktopTargets = [
@@ -2801,37 +2826,16 @@ function scrollToNextSection() {
         0           // Volver al Inicio (Hero)
     ];
 
-    const responsiveTargets = [
-        1.0 * vh,   // Inicio de Sección 2 (El Diferenciador Absoluto)
-        3.2 * vh,   // Fondo de Sección 2 (Todos los contenedores desplegados al final)
-        5.2 * vh,   // Sección 3 (Casos de Éxito / Portafolio: Cortina 100% desplegada)
-        10.2 * vh,  // Sección 4 (Galería Comercial: Video animación estructuras01.mp4)
-        12.1 * vh,  // Sección 5 (Transición de Imagen: Portada PORTADA_GALERIA_HD.png)
-        16.5 * vh,  // Sección 6 (Catálogo — El Match: Inmediatamente tras cortina con velocidad a la mitad)
-        36.5 * vh,  // Sección 7 (Pilar de Integridad: Inicio con la cortina 100% desplegada)
-        41.5 * vh,  // Sección 8 (Idea Lab: Todos los contenedores desplegados con Edificio Hidalgo)
-        45.2 * vh,  // Sección 9 (ValorMáximoART + Footer: Cortina 100% revelada)
-        0           // Volver al Inicio (Hero)
-    ];
-
-    const targets = (window.innerWidth <= 768) ? responsiveTargets : desktopTargets;
-
-    // Encontrar el siguiente hito de navegación con un margen de tolerancia de 30px
-    let nextTarget = targets.find(t => t > scrollY + 30);
+    let nextTarget = desktopTargets.find(t => t > scrollY + 30);
     if (nextTarget === undefined) {
         nextTarget = 0; // Si estamos en la última sección, vuelve al inicio
     }
-
-    // En modo responsivo, reducir a la mitad la velocidad de desplazamiento por clic en flechas entre secciones 3, 4 y 5 (3.6s de duración)
-    const isMobile = window.innerWidth <= 768;
-    const isSection3To5 = isMobile && (nextTarget >= 5.0 * vh && nextTarget <= 13.0 * vh);
-    const scrollDuration = isSection3To5 ? 3.6 : (isMobile ? 2.8 : 2.2);
 
     const lenis = window.lenis;
     suppressSnapTemporarily();
     if (lenis) {
         lenis.scrollTo(nextTarget, {
-            duration: scrollDuration,
+            duration: 2.2,
             easing: (t) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t
         });
     } else {

@@ -69,9 +69,9 @@ body {
     padding: 0 var(--spacing-md);
 }
 
-/* Wrapper de Cortinas Inmóviles (Timeline Scroll Extendido) */
+/* Wrapper de Cortinas (Desktop 2800vh / Mobile Auto) */
 .curtain-wrapper {
-    height: 4800vh;
+    height: auto;
     position: relative;
 }
 
@@ -3209,7 +3209,14 @@ body {
         font-size: 1.0rem;
     }
 
-    /* -------- SECCIONES DE CORTINA EN MODO RESPONSIVE (Fondo 100% Inmóvil) -------- */
+    /* -------- SECCIONES STICKY STACKING EN MODO RESPONSIVE (ESTILO SPRINGS.HOUSE) -------- */
+    .curtain-wrapper {
+        height: auto !important;
+        position: relative !important;
+        overflow: visible !important;
+    }
+
+    #inicio,
     #esencia,
     #casos-exito,
     #galeria-comercial,
@@ -3218,51 +3225,49 @@ body {
     #pilar-integridad,
     #idea-lab,
     #valormaximoart {
+        position: -webkit-sticky !important;
         position: sticky !important;
         top: 0 !important;
-        z-index: 2 !important;
+        margin-top: 0 !important;
         min-height: 100vh !important;
-        height: 100vh !important;
-        height: calc(var(--vh, 1vh) * 100) !important;
+        height: auto !important;
         width: 100% !important;
-        overflow: hidden !important;
-        display: block !important;
+        clip-path: none !important;
+        -webkit-clip-path: none !important;
+        overflow: visible !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        align-items: center !important;
+        box-sizing: border-box !important;
+        box-shadow: 0 -12px 36px rgba(0, 0, 0, 0.35) !important;
+        will-change: transform;
+    }
+
+    #inicio {
+        z-index: 1 !important;
+        background-color: #064E3B !important;
     }
 
     #esencia {
-        margin-top: -100vh !important;
-        margin-top: calc(var(--vh, 1vh) * -100) !important;
+        z-index: 2 !important;
         background-color: #0b0f19 !important;
-        clip-path: inset(var(--curtain, 100%) 0 0 0) !important;
-        -webkit-clip-path: inset(var(--curtain, 100%) 0 0 0) !important;
     }
 
     #casos-exito {
-        margin-top: -100vh !important;
-        margin-top: calc(var(--vh, 1vh) * -100) !important;
+        z-index: 3 !important;
         background-color: #064E3B !important;
-        clip-path: inset(0 var(--curtain-right, 100%) 0 0) !important;
-        -webkit-clip-path: inset(0 var(--curtain-right, 100%) 0 0) !important;
     }
 
     #galeria-comercial {
-        margin-top: -100vh !important;
-        margin-top: calc(var(--vh, 1vh) * -100) !important;
+        z-index: 4 !important;
         background-color: #064E3B !important;
-        clip-path: inset(var(--curtain-galeria, 100%) 0 0 0) !important;
-        -webkit-clip-path: inset(var(--curtain-galeria, 100%) 0 0 0) !important;
     }
 
     #transicion-imagen {
-        margin-top: -100vh !important;
-        margin-top: calc(var(--vh, 1vh) * -100) !important;
-        z-index: 10 !important;
+        z-index: 5 !important;
         background-color: #064E3B !important;
-        -webkit-transform: translate3d(0, 0, 0) !important;
-        transform: translate3d(0, 0, 0) !important;
-        -webkit-backface-visibility: hidden !important;
-        backface-visibility: hidden !important;
-        will-change: clip-path, transform !important;
+        height: 100vh !important;
         overflow: hidden !important;
     }
 
@@ -3282,37 +3287,23 @@ body {
     }
 
     #el-match {
-        margin-top: -100vh !important;
-        margin-top: calc(var(--vh, 1vh) * -100) !important;
+        z-index: 6 !important;
         background-color: var(--bg-light) !important;
-        z-index: 12 !important;
     }
 
     #pilar-integridad {
-        margin-top: -100vh !important;
-        margin-top: calc(var(--vh, 1vh) * -100) !important;
+        z-index: 7 !important;
         background-color: #0b0f19 !important;
-        clip-path: inset(var(--curtain-integrity, 100%) 0 0 0) !important;
-        -webkit-clip-path: inset(var(--curtain-integrity, 100%) 0 0 0) !important;
-        z-index: 14 !important;
     }
 
     #idea-lab {
-        margin-top: -100vh !important;
-        margin-top: calc(var(--vh, 1vh) * -100) !important;
-        background-color: #0b0f19 !important;
-        clip-path: inset(var(--curtain-idealab, 100%) 0 0 0) !important;
-        -webkit-clip-path: inset(var(--curtain-idealab, 100%) 0 0 0) !important;
-        z-index: 16 !important;
+        z-index: 8 !important;
+        background-color: var(--bg-light) !important;
     }
 
     #valormaximoart {
-        margin-top: -100vh !important;
-        margin-top: calc(var(--vh, 1vh) * -100) !important;
+        z-index: 9 !important;
         background-color: #0b0f19 !important;
-        clip-path: inset(var(--curtain-vmart, 100%) 0 0 0) !important;
-        -webkit-clip-path: inset(var(--curtain-vmart, 100%) 0 0 0) !important;
-        z-index: 18 !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: space-between !important;
@@ -3346,18 +3337,19 @@ body {
         opacity: 1 !important;
     }
 
-    /* El fondo (silk canvas, videos, overlays) permanece 100% FIJO E INMÓVIL ocupando el 100% de la ventana (0px movimiento) */
+    /* Fondos de video e imágenes dentro de cada sección sticky en modo responsive */
+    #inicio .hero-video-bg,
     #esencia .silk-background-canvas,
     #silk-canvas,
     #casos-exito .portfolio-video-bg,
     #casos-exito .portfolio-video-overlay,
     #galeria-comercial .galeria-video-bg,
     #galeria-comercial .galeria-video-overlay {
-        position: fixed !important;
+        position: absolute !important;
         top: 0 !important;
         left: 0 !important;
-        width: 100vw !important;
-        height: 100vh !important;
+        width: 100% !important;
+        height: 100% !important;
         z-index: 1 !important;
         margin: 0 !important;
         display: block !important;
@@ -3365,7 +3357,12 @@ body {
         transform: none !important;
     }
 
+    #inicio .hero-video-bg video,
+    #casos-exito .portfolio-video-bg video,
     #galeria-comercial .galeria-video-bg video {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
         width: 100% !important;
         height: 100% !important;
         object-fit: cover !important;
@@ -3374,24 +3371,25 @@ body {
     #esencia .container,
     #casos-exito .portfolio-container,
     #el-match .catalog-grid-container,
-    #pilar-integridad .container {
+    #pilar-integridad .container,
+    #idea-lab .idealab-container {
         position: relative !important;
         z-index: 2 !important;
         width: 100% !important;
         height: auto !important;
         min-height: auto !important;
         overflow: visible !important;
-        padding: 10.375rem 1.25rem 4rem !important; /* +100px de holgura inicial para librar el header de 80px */
+        padding: 6.5rem 1.25rem 4rem !important; /* +80px de holgura inicial para librar el header */
         display: flex !important;
         flex-direction: column !important;
-        justify-content: center !important;
+        justify-content: flex-start !important;
         align-items: center !important;
         text-align: center !important;
         box-sizing: border-box !important;
-        will-change: transform;
+        transform: none !important;
     }
 
-    /* Sección 4 (Galería Comercial): Centrado Geométrico Absoluto (50% Vertical & Horizontal en 100vh) */
+    /* Sección 4 (Galería Comercial): Centrado Geométrico en Pantalla */
     #galeria-comercial .container,
     #galeria-comercial .galeria-container {
         position: relative !important;
@@ -3408,7 +3406,7 @@ body {
         align-items: center !important;
         text-align: center !important;
         box-sizing: border-box !important;
-        will-change: transform;
+        transform: none !important;
     }
 
     /* Centrado horizontal y vertical de las columnas de textos e insignias en modo responsive */
