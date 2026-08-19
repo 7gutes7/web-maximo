@@ -127,10 +127,11 @@ body {
     border: 1px solid rgba(43, 105, 84, 0.2);
 }
 
-.badge-orange {
-    background: rgba(234, 88, 12, 0.15) !important;
-    color: #c2410c !important;
-    border: 1px solid rgba(234, 88, 12, 0.35) !important;
+.badge-orange,
+.badge-yellow {
+    background: rgba(234, 179, 8, 0.16) !important;
+    color: #854d0e !important;
+    border: 1px solid rgba(202, 138, 4, 0.45) !important;
 }
 
 /* ==========================================================================
@@ -3284,9 +3285,23 @@ body {
 }
 
 @media (max-width: 768px) {
+    .navbar,
+    .navbar.scrolled {
+        top: 0 !important;
+        left: 0 !important;
+        transform: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 0 !important;
+        padding: 0.85rem 1.25rem !important;
+        margin: 0 !important;
+    }
+
     .navbar .container {
         display: flex;
         justify-content: space-between;
+        width: 100% !important;
+        max-width: 100% !important;
     }
 
     .logo-img {
@@ -3410,7 +3425,7 @@ body {
         height: 100vh !important;
         min-height: 100vh !important;
         overflow: visible !important;
-        padding: 6.5rem 1.25rem 4rem !important;
+        padding: calc(6.5rem + 20px) 1.25rem 4rem !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: flex-start !important;
@@ -3451,7 +3466,7 @@ body {
         height: 100vh !important;
         min-height: 100vh !important;
         overflow: visible !important;
-        padding: 6.5rem 1.25rem 4rem !important;
+        padding: calc(6.5rem + 30px) 1.25rem 4rem !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: flex-start !important;
@@ -3519,10 +3534,20 @@ body {
     }
 
     #transicion-imagen {
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        top: 0 !important;
+        margin-top: 0 !important;
+        min-height: 100vh !important;
+        height: 100vh !important;
+        width: 100% !important;
+        clip-path: inset(50% 0 50% 0);
+        -webkit-clip-path: inset(50% 0 50% 0);
+        overflow: hidden !important;
+        box-shadow: 0 -12px 36px rgba(0, 0, 0, 0.35) !important;
         z-index: 5 !important;
         background-color: #064E3B !important;
-        height: 100vh !important;
-        overflow: hidden !important;
+        will-change: clip-path, transform;
     }
 
     #transicion-imagen .section-transition-picture,

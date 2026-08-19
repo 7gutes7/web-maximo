@@ -179,8 +179,8 @@ function initCurtainReveals() {
         if (isMobile) {
             const scrollY = window.scrollY || window.pageYOffset;
 
-            // Cortina Sección 2 despliega en el tramo de 0.1vh a 1.0vh
-            const progressReveal = Math.min(1, Math.max(0, (scrollY - 0.1 * vh) / (0.9 * vh)));
+            // Cortina Sección 2 despliega de inmediato al hacer scroll en el tramo de 0.05vh a 0.9vh
+            const progressReveal = Math.min(1, Math.max(0, (scrollY - 0.05 * vh) / (0.85 * vh)));
             const clipPercent = (1 - progressReveal) * 100;
             esencia.style.setProperty('--curtain', `${clipPercent}%`);
 
@@ -188,9 +188,9 @@ function initCurtainReveals() {
                 if (progressReveal < 1.0) {
                     container.style.setProperty('transform', 'translate3d(0, 0px, 0)', 'important');
                 } else {
-                    // Scroll interno activo de 1.0vh a 2.8vh
-                    const activeScrolled = Math.max(0, scrollY - 1.0 * vh);
-                    const totalActiveTravel = 1.8 * vh;
+                    // Scroll interno activo de 0.9vh a 2.8vh (1.9vh de recorrido hasta el fondo de Sec 2)
+                    const activeScrolled = Math.max(0, scrollY - 0.9 * vh);
+                    const totalActiveTravel = 1.9 * vh;
                     const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
                     const maxScroll = Math.max(0, container.scrollHeight - vh + 120);
 
@@ -285,37 +285,51 @@ function initGaleriaCurtain() {
     update();
 }
 
-// 0b3. Curtain Reveal 2 Fases (Sección 5: Transición de Imagen)
+// 0b3. Curtain Reveal Centro Apertura (Sección 5: Portada Galería)
 function initTransitionCurtain() {
-    if (window.innerWidth <= 768) return;
     const sec = document.getElementById('transicion-imagen');
-    const wrapper = document.querySelector('.curtain-wrapper');
-    if (!sec || !wrapper) return;
+    if (!sec) return;
 
     function update() {
-        const rect = wrapper.getBoundingClientRect();
         const vh = window.innerHeight;
-        const scrolled = -rect.top;
+        const isMobile = window.innerWidth <= 768;
 
-        // En modo responsivo (<= 768px), la cortina de Sección 5 (Transición de Imagen) se activa tras Sección 4 (12.1vh) con velocidad reducida a la mitad (2.0vh). En Desktop permanece intacta a 6.9vh.
-        const startPxSec5 = (window.innerWidth <= 768) ? 12.1 * vh : 6.9 * vh;
-        const revealDistanceSec5 = (window.innerWidth <= 768) ? 2.0 * vh : 1.0 * vh;
-        const progress = Math.min(1, Math.max(0, (scrolled - startPxSec5) / revealDistanceSec5));
+        if (isMobile) {
+            const scrollY = window.scrollY || window.pageYOffset;
+            // Apertura de centro hacia arriba y hacia abajo al mismo tiempo en el tramo de 8.4vh a 9.4vh
+            const startPxSec5 = 8.4 * vh;
+            const revealDistanceSec5 = 1.0 * vh;
+            const progress = Math.min(1, Math.max(0, (scrollY - startPxSec5) / revealDistanceSec5));
+            const insetPercent = (1 - progress) * 50;
 
-        let clipPathValue = '';
-
-        if (progress <= 0.5) {
-            const phase1 = progress / 0.5;
-            const yPercent = phase1 * 100;
-            clipPathValue = `polygon(50% 0%, 100% 0%, 100% ${yPercent}%, 50% ${yPercent}%)`;
+            const clipValue = `inset(${insetPercent}% 0% ${insetPercent}% 0%)`;
+            sec.style.setProperty('clip-path', clipValue, 'important');
+            sec.style.setProperty('-webkit-clip-path', clipValue, 'important');
         } else {
-            const phase2 = (progress - 0.5) / 0.5;
-            const xLeft = 50 - phase2 * 50;
-            clipPathValue = `polygon(${xLeft}% 0%, 100% 0%, 100% 100%, ${xLeft}% 100%)`;
-        }
+            const wrapper = document.querySelector('.curtain-wrapper');
+            if (!wrapper) return;
+            const rect = wrapper.getBoundingClientRect();
+            const scrolled = -rect.top;
 
-        sec.style.clipPath = clipPathValue;
-        sec.style.webkitClipPath = clipPathValue;
+            const startPxSec5 = 6.9 * vh;
+            const revealDistanceSec5 = 1.0 * vh;
+            const progress = Math.min(1, Math.max(0, (scrolled - startPxSec5) / revealDistanceSec5));
+
+            let clipPathValue = '';
+
+            if (progress <= 0.5) {
+                const phase1 = progress / 0.5;
+                const yPercent = phase1 * 100;
+                clipPathValue = `polygon(50% 0%, 100% 0%, 100% ${yPercent}%, 50% ${yPercent}%)`;
+            } else {
+                const phase2 = (progress - 0.5) / 0.5;
+                const xLeft = 50 - phase2 * 50;
+                clipPathValue = `polygon(${xLeft}% 0%, 100% 0%, 100% 100%, ${xLeft}% 100%)`;
+            }
+
+            sec.style.clipPath = clipPathValue;
+            sec.style.webkitClipPath = clipPathValue;
+        }
     }
 
     const lenis = window.lenis;
@@ -1271,9 +1285,9 @@ function initHorizontalCurtainReveals() {
         if (isMobile) {
             const scrollY = window.scrollY || window.pageYOffset;
 
-            // 1. Fase Apertura de Cortina Sección 3 (inicia tras scroll interno de Sección 2 a los 2.8vh)
+            // 1. Fase Apertura de Cortina Sección 3 (inicia tras scroll interno de Sección 2 a los 2.8vh hasta los 4.2vh)
             const revealStart = 2.8 * vh;
-            const revealDuration = 0.8 * vh;
+            const revealDuration = 1.4 * vh;
             const progressReveal = Math.min(1, Math.max(0, (scrollY - revealStart) / revealDuration));
             const clipPercent = (1 - progressReveal) * 100;
             sec.style.setProperty('--curtain-casos', `${clipPercent}%`);
@@ -1283,8 +1297,8 @@ function initHorizontalCurtainReveals() {
                 if (progressReveal < 1.0) {
                     container.style.setProperty('transform', 'translate3d(0, 0px, 0)', 'important');
                 } else {
-                    // 2. Fase Scroll Interno Tarjetas Sección 3 (de 3.6vh a 5.4vh = 1.8vh de recorrido)
-                    const activeStart = revealStart + revealDuration; // 3.6 * vh
+                    // 2. Fase Scroll Interno Tarjetas Sección 3 (de 4.2vh a 6.0vh = 1.8vh de recorrido)
+                    const activeStart = 4.2 * vh;
                     const activeScrolled = Math.max(0, scrollY - activeStart);
                     const totalActiveTravel = 1.8 * vh;
                     const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
@@ -3030,17 +3044,33 @@ function scrollToNextSection() {
     const isMobile = window.innerWidth <= 768;
 
     if (isMobile) {
-        const sectionIds = ['inicio', 'esencia', 'casos-exito', 'galeria-comercial', 'transicion-imagen', 'el-match', 'pilar-integridad', 'idea-lab', 'valormaximoart'];
-        const targets = sectionIds
-            .map(id => document.getElementById(id))
-            .filter(Boolean)
-            .map(el => el.offsetTop);
-        targets.push(0); // Volver al inicio al final
+        // Hitos de navegación suave responsiva calibrados con la línea de tiempo de cortinas
+        const mobileTargets = [
+            1.0 * vh,   // Sección 2 Inicio (El Diferenciador Absoluto: Cortina 100% abierta con tarjetas superiores)
+            2.8 * vh,   // Sección 2 Fondo (1ra Imagen: Fondo de Sec 2 con tarjetas Contratos, Gestión, Mantenimiento, Acondicionamiento)
+            4.2 * vh,   // Sección 3 Inicio (2da Imagen: Casos de Éxito / Portafolio de Proyectos 100% desplegado en pantalla con Enigma Room, La Dueña, B Clinic)
+            6.0 * vh,   // Sección 3 Fondo (Scroll completo por las tarjetas de proyectos)
+            7.4 * vh,   // Sección 4 (Galería Comercial)
+            8.4 * vh,   // Sección 5 (Portada Galería)
+            9.4 * vh,   // Sección 6 (Catálogo — El Match)
+            14.2 * vh,  // Sección 7 (Pilar de Integridad)
+            17.4 * vh,  // Sección 8 (Idea Lab)
+            18.2 * vh,  // Sección 9 (ValorMáximoART)
+            0           // Volver al Inicio (Hero)
+        ];
 
-        let nextTarget = targets.find(t => t > scrollY + 40);
+        let nextTarget = mobileTargets.find(t => t > scrollY + 40);
         if (nextTarget === undefined) nextTarget = 0;
 
-        window.scrollTo({ top: nextTarget, behavior: 'smooth' });
+        const lenis = window.lenis;
+        if (lenis) {
+            lenis.scrollTo(nextTarget, {
+                duration: 1.4,
+                easing: (t) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t
+            });
+        } else {
+            window.scrollTo({ top: nextTarget, behavior: 'smooth' });
+        }
         return;
     }
 
