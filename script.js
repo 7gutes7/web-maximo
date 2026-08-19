@@ -28,18 +28,24 @@ document.addEventListener('DOMContentLoaded', () => {
     initIdeaLabGalleryScroll();
 });
 
-// 0. Lenis — Smooth scroll con inercia
+// 0. Lenis — Smooth scroll con inercia (Escritorio) y Scroll Táctil Nativo a 120Hz Ultra Fluido (Móvil)
 function initLenis() {
     if (typeof Lenis === 'undefined') return;
     const isMobile = window.innerWidth <= 768;
+    if (isMobile) {
+        // En móvil, deshabilitamos Lenis para permitir el scroll táctil 100% nativo de iOS/Android.
+        // Esto elimina por completo los saltos y tirones al cambiar de dirección o dar reversa.
+        window.lenis = null;
+        return;
+    }
     const lenis = new Lenis({
-        duration: isMobile ? 0.8 : 1.2,
+        duration: 1.2,
         easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         orientation: 'vertical',
         smoothWheel: true,
         smoothTouch: false,
         wheelMultiplier: 1,
-        touchMultiplier: isMobile ? 0 : 1.5,
+        touchMultiplier: 1.5,
     });
 
     function raf(time) {
