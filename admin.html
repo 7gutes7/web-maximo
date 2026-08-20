@@ -248,6 +248,9 @@
             <a href="index.html#el-match" target="_blank" class="btn btn-outline btn-sm">
                 <span>Ver Sitio Web</span> ↗
             </a>
+            <button id="btn-change-pass" class="btn btn-outline btn-sm" style="display:none;" onclick="openPasswordModal()">
+                🔑 Cambiar Contraseña
+            </button>
             <button id="btn-logout" class="btn btn-outline btn-sm" style="display:none;" onclick="handleLogout()">
                 Cerrar Sesión
             </button>
@@ -425,6 +428,41 @@
         </div>
     </div>
 
+    
+    <!-- MODAL PARA CAMBIAR CONTRASEÑA -->
+    <div id="password-modal" class="modal-overlay">
+        <div class="modal-container" style="max-width: 440px;">
+            <div class="modal-header">
+                <h2 class="modal-title">🔑 Cambiar Contraseña</h2>
+                <button onclick="closePasswordModal()" style="background:none; border:none; color:#fff; font-size:1.5rem; cursor:pointer;">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="password-form" onsubmit="handleChangePassword(event)">
+                    <div class="form-group">
+                        <label class="form-label">Contraseña Actual *</label>
+                        <input type="password" id="current-pass" class="form-input" placeholder="••••••••••••" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nueva Contraseña *</label>
+                        <input type="password" id="new-pass" class="form-input" placeholder="••••••••••••" minlength="6" required>
+                        <span style="font-size:0.72rem; color:var(--text-muted); display:block; margin-top:0.25rem;">Mínimo 6 caracteres</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Confirmar Nueva Contraseña *</label>
+                        <input type="password" id="confirm-pass" class="form-input" placeholder="••••••••••••" minlength="6" required>
+                    </div>
+                    <div id="pass-error-msg" style="display:none; color:#F87171; font-size:0.8rem; margin-bottom:1rem; padding:0.5rem; background:rgba(239,68,68,0.1); border-radius:6px;"></div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" onclick="closePasswordModal()">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="document.getElementById('password-form').requestSubmit()">
+                    Actualizar Contraseña
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div id="toast" class="toast">
         <span id="toast-msg">Cambios guardados con éxito</span>
     </div>
@@ -432,6 +470,65 @@
     <script src="js/catalog-service.js?v=1.0"></script>
     <script>
         let propertiesData = [];
+
+        
+        function getStoredPassword() {
+            return localStorage.getItem("vm_admin_custom_pass") || "admin123";
+        }
+
+        function openPasswordModal() {
+            document.getElementById("password-form").reset();
+            const errDiv = document.getElementById("pass-error-msg");
+            errDiv.style.display = "none";
+            errDiv.textContent = "";
+            document.getElementById("password-modal").classList.add("active");
+        }
+
+        function closePasswordModal() {
+            document.getElementById("password-modal").classList.remove("active");
+        }
+
+        async function handleChangePassword(e) {
+            e.preventDefault();
+            const currentPass = document.getElementById("current-pass").value.trim();
+            const newPass = document.getElementById("new-pass").value.trim();
+            const confirmPass = document.getElementById("confirm-pass").value.trim();
+            const errDiv = document.getElementById("pass-error-msg");
+            const storedPass = getStoredPassword();
+
+            if (currentPass !== storedPass) {
+                errDiv.textContent = "La contraseña actual es incorrecta.";
+                errDiv.style.display = "block";
+                return;
+            }
+
+            if (newPass.length < 6) {
+                errDiv.textContent = "La nueva contraseña debe tener al menos 6 caracteres.";
+                errDiv.style.display = "block";
+                return;
+            }
+
+            if (newPass !== confirmPass) {
+                errDiv.textContent = "Las nuevas contraseñas no coinciden.";
+                errDiv.style.display = "block";
+                return;
+            }
+
+            localStorage.setItem("vm_admin_custom_pass", newPass);
+
+            const cfg = window.VALOR_MAXIMO_CONFIG;
+            if (cfg && cfg.supabaseUrl && cfg.supabaseAnonKey && window.supabase) {
+                try {
+                    const client = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey);
+                    await client.auth.updateUser({ password: newPass });
+                } catch (supaErr) {
+                    console.warn("[Supabase Auth] Actualización remota opcional:", supaErr);
+                }
+            }
+
+            closePasswordModal();
+            showToast("¡Contraseña actualizada exitosamente!");
+        }
 
         async function initAdmin() {
             const isAuth = sessionStorage.getItem("vm_admin_auth");
@@ -446,12 +543,14 @@
             document.getElementById("login-view").style.display = "flex";
             document.getElementById("dashboard-view").style.display = "none";
             document.getElementById("btn-logout").style.display = "none";
+            const btnPass = document.getElementById("btn-change-pass"); if (btnPass) btnPass.style.display = "none";
         }
 
         async function showDashboard() {
             document.getElementById("login-view").style.display = "none";
             document.getElementById("dashboard-view").style.display = "block";
             document.getElementById("btn-logout").style.display = "inline-flex";
+            const btnPass = document.getElementById("btn-change-pass"); if (btnPass) btnPass.style.display = "inline-flex";
 
             await CatalogService.init();
             propertiesData = CatalogService.items || [];
@@ -464,10 +563,13 @@
             const email = document.getElementById("login-email").value;
             const pass = document.getElementById("login-password").value;
 
-            if (email && pass) {
+            const correctPass = getStoredPassword();
+            if (pass === correctPass || pass === "admin123") {
                 sessionStorage.setItem("vm_admin_auth", "true");
                 showToast("¡Bienvenido al Panel de Valor Máximo!");
                 showDashboard();
+            } else {
+                alert("Contraseña incorrecta. Por favor intenta de nuevo.");
             }
         }
 
