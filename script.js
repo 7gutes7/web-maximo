@@ -177,26 +177,9 @@ function initCurtainReveals() {
         const isMobile = window.innerWidth <= 768;
 
         if (isMobile) {
-            const scrollY = window.scrollY || window.pageYOffset;
-
-            // 1. Cortina Sección 2 despliega de 0.05vh a 1.0vh cubriendo al Hero
-            const progressReveal = Math.min(1, Math.max(0, (scrollY - 0.05 * vh) / (0.95 * vh)));
-            const clipPercent = (1 - progressReveal) * 100;
-            esencia.style.setProperty('--curtain', `${clipPercent}%`);
-
+            // En móvil: Flujo continuo 1:1 integrado sin fronteras
             if (container) {
-                if (progressReveal < 1.0) {
-                    container.style.setProperty('transform', 'translate3d(0, 0px, 0)', 'important');
-                } else {
-                    // 2. Scroll interno activo de 1.0vh a 2.8vh (desplaza todo el contenido hasta la última tarjeta)
-                    const activeScrolled = Math.max(0, scrollY - 1.0 * vh);
-                    const totalActiveTravel = 1.8 * vh;
-                    const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
-                    const maxScroll = Math.max(0, container.scrollHeight - vh + 100);
-
-                    const translateYValue = -flowProgress * maxScroll;
-                    container.style.setProperty('transform', `translate3d(0, ${translateYValue}px, 0)`, 'important');
-                }
+                container.style.transform = 'none';
             }
         } else {
             const wrapper = document.querySelector('.curtain-wrapper');
@@ -215,7 +198,8 @@ function initCurtainReveals() {
                     container.style.transform = `translate3d(0, ${translateY}px, 0)`;
                     container.style.opacity = progress;
                 } else {
-                    // Scroll interno activo de 1.0vh a 3.6vh
+                    // Scroll interno activo de 1.0vh a 3.6vh (mientras la cortina de la sig. sección está 100% DESACTIVADA).
+                    // A 3.6vh el recuadro 'Acondicionamiento y Construcción' ya está 100% visible. Se da una pausa hasta 4.3vh.
                     const activeScrolled = Math.max(0, scrolled - 1.0 * vh);
                     const totalActiveTravel = 2.6 * vh;
                     const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
@@ -239,46 +223,38 @@ function initCurtainReveals() {
 
 // 0b2. Curtain Reveal Vertical (Sección 4: Galería Comercial)
 function initGaleriaCurtain() {
+    if (window.innerWidth <= 768) return;
     const galeria = document.getElementById('galeria-comercial');
     const wrapper = document.querySelector('.curtain-wrapper');
     if (!galeria || !wrapper) return;
     const container = galeria.querySelector('.container');
 
     function update() {
+        const rect = wrapper.getBoundingClientRect();
         const vh = window.innerHeight;
-        const isMobile = window.innerWidth <= 768;
+        const scrolled = -rect.top;
 
-        if (isMobile) {
-            const scrollY = window.scrollY || window.pageYOffset;
-            const startPxGaleria = 5.8 * vh;
-            const revealDistanceGaleria = 1.0 * vh;
-            const progress = Math.min(1, Math.max(0, (scrollY - startPxGaleria) / revealDistanceGaleria));
-            const clipPercent = (1 - progress) * 100;
-            galeria.style.setProperty('--curtain-galeria', `${clipPercent}%`);
-        } else {
-            const rect = wrapper.getBoundingClientRect();
-            const scrolled = -rect.top;
+        // En modo responsivo (<= 768px), la velocidad de revelado de cortina Galería Comercial se suaviza a 1.8vh. En Desktop se extiende a 0.9vh.
+        const startPxGaleria = (window.innerWidth <= 768) ? 10.2 * vh : 6 * vh;
+        const revealDistanceGaleria = (window.innerWidth <= 768) ? 1.8 * vh : 0.9 * vh;
+        const progress = Math.min(1, Math.max(0, (scrolled - startPxGaleria) / revealDistanceGaleria));
+        const clipPercent = (1 - progress) * 100;
 
-            const startPxGaleria = 6 * vh;
-            const revealDistanceGaleria = 0.9 * vh;
-            const progress = Math.min(1, Math.max(0, (scrolled - startPxGaleria) / revealDistanceGaleria));
-            const clipPercent = (1 - progress) * 100;
+        galeria.style.setProperty('--curtain-galeria', `${clipPercent}%`);
 
-            galeria.style.setProperty('--curtain-galeria', `${clipPercent}%`);
+        if (container) {
+            if (progress < 1.0) {
+                container.style.transform = `translate3d(0, 0px, 0)`;
+            } else {
+                // Scroll interno compacto de Galería Comercial
+                const activeStartGaleria = startPxGaleria + revealDistanceGaleria;
+                const activeScrolled = Math.max(0, scrolled - activeStartGaleria);
+                const totalActiveTravel = 0.5 * vh;
+                const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
+                const maxScroll = Math.max(0, container.scrollHeight - vh + 50);
 
-            if (container) {
-                if (progress < 1.0) {
-                    container.style.transform = `translate3d(0, 0px, 0)`;
-                } else {
-                    const activeStartGaleria = startPxGaleria + revealDistanceGaleria;
-                    const activeScrolled = Math.max(0, scrolled - activeStartGaleria);
-                    const totalActiveTravel = 0.5 * vh;
-                    const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
-                    const maxScroll = Math.max(0, container.scrollHeight - vh + 50);
-
-                    const translateYValue = -flowProgress * maxScroll;
-                    container.style.transform = `translate3d(0, ${translateYValue}px, 0)`;
-                }
+                const translateYValue = -flowProgress * maxScroll;
+                container.style.transform = `translate3d(0, ${translateYValue}px, 0)`;
             }
         }
     }
@@ -1218,32 +1194,10 @@ function initHorizontalCurtainReveals() {
         const isMobile = window.innerWidth <= 768;
 
         if (isMobile) {
-            const scrollY = window.scrollY || window.pageYOffset;
-
-            // 1. Apertura de Cortina Sección 3: Inicia a los 2.8vh (exactamente cuando termina el scroll interno de Sección 2)
-            const revealStart = 2.8 * vh;
-            const revealDuration = 1.2 * vh;
-            const progressReveal = Math.min(1, Math.max(0, (scrollY - revealStart) / revealDuration));
-            const clipPercent = (1 - progressReveal) * 100;
-            sec.style.setProperty('--curtain-casos', `${clipPercent}%`);
-            sec.style.setProperty('--curtain-right', `${clipPercent}%`);
-
+            // En móvil: Flujo continuo 1:1 integrado sin fronteras
             if (container) {
-                if (progressReveal < 1.0) {
-                    container.style.setProperty('transform', 'translate3d(0, 0px, 0)', 'important');
-                } else {
-                    // 2. Scroll interno activo de Casos de Éxito de 4.0vh a 5.8vh
-                    const activeStart = 4.0 * vh;
-                    const activeScrolled = Math.max(0, scrollY - activeStart);
-                    const totalActiveTravel = 1.8 * vh;
-                    const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
-                    const maxScroll = Math.max(0, container.scrollHeight - vh + 100);
-
-                    const translateYValue = -flowProgress * maxScroll;
-                    container.style.setProperty('transform', `translate3d(0, ${translateYValue}px, 0)`, 'important');
-                }
+                container.style.transform = 'none';
             }
-
             cards.forEach(card => card.classList.add('active'));
             if (blurTextP) blurTextP.classList.add('active');
         } else {
