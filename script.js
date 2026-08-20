@@ -177,26 +177,9 @@ function initCurtainReveals() {
         const isMobile = window.innerWidth <= 768;
 
         if (isMobile) {
-            const scrollY = window.scrollY || window.pageYOffset;
-
-            // Cortina Sección 2 despliega de inmediato al hacer scroll en el tramo de 0.05vh a 0.9vh
-            const progressReveal = Math.min(1, Math.max(0, (scrollY - 0.05 * vh) / (0.85 * vh)));
-            const clipPercent = (1 - progressReveal) * 100;
-            esencia.style.setProperty('--curtain', `${clipPercent}%`);
-
+            // En móvil: Flujo continuo 1:1 integrado sin fronteras
             if (container) {
-                if (progressReveal < 1.0) {
-                    container.style.setProperty('transform', 'translate3d(0, 0px, 0)', 'important');
-                } else {
-                    // Scroll interno activo de 0.9vh a 2.8vh (1.9vh de recorrido hasta el fondo de Sec 2)
-                    const activeScrolled = Math.max(0, scrollY - 0.9 * vh);
-                    const totalActiveTravel = 1.9 * vh;
-                    const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
-                    const maxScroll = Math.max(0, container.scrollHeight - vh + 120);
-
-                    const translateYValue = -flowProgress * maxScroll;
-                    container.style.setProperty('transform', `translate3d(0, ${translateYValue}px, 0)`, 'important');
-                }
+                container.style.transform = 'none';
             }
         } else {
             const wrapper = document.querySelector('.curtain-wrapper');
@@ -443,30 +426,10 @@ function initIntegrityCurtain() {
         const isMobile = window.innerWidth <= 768;
 
         if (isMobile) {
-            const scrollY = window.scrollY || window.pageYOffset;
-            const secTop = sec.offsetTop;
-
-            // Cortina Sección 7 despliega cuando el scroll llega al final de la Sección 6 (1.0vh antes de secTop)
-            const revealStart = secTop - 1.0 * vh;
-            const progressReveal = Math.min(1, Math.max(0, (scrollY - revealStart) / (1.0 * vh)));
-            const clipPercent = (1 - progressReveal) * 100;
-            sec.style.setProperty('--curtain-integrity', `${clipPercent}%`);
-
+            // En móvil: Flujo continuo 1:1 integrado sin fronteras
             if (container) {
-                if (progressReveal < 1.0) {
-                    container.style.setProperty('transform', 'translate3d(0, 0px, 0)', 'important');
-                } else {
-                    // Scroll interno activo desde secTop
-                    const activeScrolled = Math.max(0, scrollY - secTop);
-                    const totalActiveTravel = 1.8 * vh;
-                    const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
-                    const maxScroll = Math.max(0, container.scrollHeight - vh + 120);
-
-                    const translateYValue = -flowProgress * maxScroll;
-                    container.style.setProperty('transform', `translate3d(0, ${translateYValue}px, 0)`, 'important');
-                }
+                container.style.transform = 'none';
             }
-
             staggerEls.forEach((card) => {
                 card.classList.add('active');
             });
@@ -538,30 +501,10 @@ function initIdeaLabCurtain() {
         const isMobile = window.innerWidth <= 768;
 
         if (isMobile) {
-            const scrollY = window.scrollY || window.pageYOffset;
-            const secTop = sec.offsetTop;
-
-            // Cortina Sección 8 despliega cuando el scroll llega al final de la Sección 7 (1.0vh antes de secTop)
-            const revealStart = secTop - 1.0 * vh;
-            const progressReveal = Math.min(1, Math.max(0, (scrollY - revealStart) / (1.0 * vh)));
-            const clipPercent = (1 - progressReveal) * 100;
-            sec.style.setProperty('--curtain-idealab', `${clipPercent}%`);
-
+            // En móvil: Flujo continuo 1:1 integrado sin fronteras
             if (container) {
-                if (progressReveal < 1.0) {
-                    container.style.setProperty('transform', 'translate3d(0, 0px, 0)', 'important');
-                } else {
-                    // Scroll interno activo desde secTop
-                    const activeScrolled = Math.max(0, scrollY - secTop);
-                    const totalActiveTravel = 0.8 * vh;
-                    const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
-                    const maxScroll = Math.max(0, container.scrollHeight - vh + 40);
-
-                    const translateYValue = -flowProgress * maxScroll;
-                    container.style.setProperty('transform', `translate3d(0, ${translateYValue}px, 0)`, 'important');
-                }
+                container.style.transform = 'none';
             }
-
             staggerEls.forEach((card) => {
                 card.classList.add('active');
             });
@@ -625,12 +568,10 @@ function initVmartCurtain() {
         const isMobile = window.innerWidth <= 768;
 
         if (isMobile) {
-            const scrollY = window.scrollY || window.pageYOffset;
-            const secTop = sec.offsetTop;
-            const revealStart = secTop - 1.0 * vh;
-            const progress = Math.min(1, Math.max(0, (scrollY - revealStart) / (1.0 * vh)));
-            const clipPercent = (1 - progress) * 100;
-            sec.style.setProperty('--curtain-vmart', `${clipPercent}%`);
+            // En móvil: Flujo continuo 1:1 integrado sin fronteras
+            if (container) {
+                container.style.transform = 'none';
+            }
         } else {
             const wrapper = document.querySelector('.curtain-wrapper');
             if (!wrapper) return;
@@ -1253,32 +1194,10 @@ function initHorizontalCurtainReveals() {
         const isMobile = window.innerWidth <= 768;
 
         if (isMobile) {
-            const scrollY = window.scrollY || window.pageYOffset;
-
-            // 1. Fase Apertura de Cortina Sección 3 (inicia tras scroll interno de Sección 2 a los 2.8vh hasta los 4.2vh)
-            const revealStart = 2.8 * vh;
-            const revealDuration = 1.4 * vh;
-            const progressReveal = Math.min(1, Math.max(0, (scrollY - revealStart) / revealDuration));
-            const clipPercent = (1 - progressReveal) * 100;
-            sec.style.setProperty('--curtain-casos', `${clipPercent}%`);
-            sec.style.setProperty('--curtain-right', `${clipPercent}%`);
-
+            // En móvil: Flujo continuo 1:1 integrado sin fronteras
             if (container) {
-                if (progressReveal < 1.0) {
-                    container.style.setProperty('transform', 'translate3d(0, 0px, 0)', 'important');
-                } else {
-                    // 2. Fase Scroll Interno Tarjetas Sección 3 (de 4.2vh a 6.0vh = 1.8vh de recorrido)
-                    const activeStart = 4.2 * vh;
-                    const activeScrolled = Math.max(0, scrollY - activeStart);
-                    const totalActiveTravel = 1.8 * vh;
-                    const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
-                    const maxScroll = Math.max(0, container.scrollHeight - vh + 120);
-
-                    const translateYValue = -flowProgress * maxScroll;
-                    container.style.setProperty('transform', `translate3d(0, ${translateYValue}px, 0)`, 'important');
-                }
+                container.style.transform = 'none';
             }
-
             cards.forEach(card => card.classList.add('active'));
             if (blurTextP) blurTextP.classList.add('active');
         } else {
@@ -3062,20 +2981,16 @@ function scrollToNextSection() {
         const sec8 = document.getElementById('idea-lab');
         const sec9 = document.getElementById('valormaximoart');
 
-        // Hitos de navegación suave responsiva calibrados dinámicamente con los offsets de cada sección
+        // Hitos de navegación suave responsiva calibrados dinámicamente con el inicio de cada sección
         const mobileTargets = [
             sec2 ? sec2.offsetTop : 1.0 * vh,
-            sec2 ? sec2.offsetTop + 1.8 * vh : 2.8 * vh,
-            sec3 ? sec3.offsetTop : 4.2 * vh,
-            sec3 ? sec3.offsetTop + 1.8 * vh : 6.0 * vh,
-            sec4 ? sec4.offsetTop : 7.4 * vh,
-            sec5 ? sec5.offsetTop : 8.4 * vh,
-            sec6 ? sec6.offsetTop : 9.4 * vh,
-            sec7 ? sec7.offsetTop : 11.0 * vh,
-            sec7 ? sec7.offsetTop + 1.8 * vh : 12.8 * vh,
-            sec8 ? sec8.offsetTop : 14.0 * vh,
-            sec8 ? sec8.offsetTop + 0.8 * vh : 14.8 * vh,
-            sec9 ? sec9.offsetTop : 15.8 * vh,
+            sec3 ? sec3.offsetTop : 2.0 * vh,
+            sec4 ? sec4.offsetTop : 3.0 * vh,
+            sec5 ? sec5.offsetTop : 4.0 * vh,
+            sec6 ? sec6.offsetTop : 5.0 * vh,
+            sec7 ? sec7.offsetTop : 6.0 * vh,
+            sec8 ? sec8.offsetTop : 7.0 * vh,
+            sec9 ? sec9.offsetTop : 8.0 * vh,
             0           // Volver al Inicio (Hero)
         ];
 

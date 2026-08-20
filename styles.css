@@ -3395,16 +3395,15 @@ body {
     }
 
     #esencia {
-        position: -webkit-sticky !important;
-        position: sticky !important;
-        top: 0 !important;
+        position: relative !important;
+        top: auto !important;
         margin-top: 0 !important;
-        min-height: 320vh !important;
-        height: 320vh !important;
+        min-height: 100vh !important;
+        height: auto !important;
         width: 100% !important;
-        clip-path: inset(var(--curtain, 100%) 0 0 0) !important;
-        -webkit-clip-path: inset(var(--curtain, 100%) 0 0 0) !important;
-        overflow: hidden !important;
+        clip-path: none !important;
+        -webkit-clip-path: none !important;
+        overflow: visible !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: flex-start !important;
@@ -3413,17 +3412,16 @@ body {
         box-shadow: 0 -12px 36px rgba(0, 0, 0, 0.35) !important;
         z-index: 2 !important;
         background-color: #0b0f19 !important;
-        will-change: clip-path, transform;
     }
 
     #esencia .container {
-        position: -webkit-sticky !important;
-        position: sticky !important;
-        top: 0 !important;
+        position: relative !important;
+        top: auto !important;
         z-index: 2 !important;
         width: 100% !important;
-        height: 100vh !important;
+        height: auto !important;
         min-height: 100vh !important;
+        max-height: none !important;
         overflow: visible !important;
         padding: calc(6.5rem + 20px) 1.25rem 4rem !important;
         display: flex !important;
@@ -3432,20 +3430,19 @@ body {
         align-items: center !important;
         text-align: center !important;
         box-sizing: border-box !important;
-        will-change: transform;
+        transform: none !important;
     }
 
     #casos-exito {
-        position: -webkit-sticky !important;
-        position: sticky !important;
-        top: 0 !important;
+        position: relative !important;
+        top: auto !important;
         margin-top: 0 !important;
-        min-height: 320vh !important;
-        height: 320vh !important;
+        min-height: 100vh !important;
+        height: auto !important;
         width: 100% !important;
-        clip-path: inset(var(--curtain-casos, 100%) 0 0 0) !important;
-        -webkit-clip-path: inset(var(--curtain-casos, 100%) 0 0 0) !important;
-        overflow: hidden !important;
+        clip-path: none !important;
+        -webkit-clip-path: none !important;
+        overflow: visible !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: flex-start !important;
@@ -3454,17 +3451,16 @@ body {
         box-shadow: 0 -12px 36px rgba(0, 0, 0, 0.35) !important;
         z-index: 3 !important;
         background-color: #064E3B !important;
-        will-change: clip-path, transform;
     }
 
     #casos-exito .portfolio-container {
-        position: -webkit-sticky !important;
-        position: sticky !important;
-        top: 0 !important;
+        position: relative !important;
+        top: auto !important;
         z-index: 2 !important;
         width: 100% !important;
-        height: 100vh !important;
+        height: auto !important;
         min-height: 100vh !important;
+        max-height: none !important;
         overflow: visible !important;
         padding: calc(6.5rem + 30px) 1.25rem 4rem !important;
         display: flex !important;
@@ -3473,7 +3469,7 @@ body {
         align-items: center !important;
         text-align: center !important;
         box-sizing: border-box !important;
-        will-change: transform;
+        transform: none !important;
     }
 
     #casos-exito .portfolio-video-bg {
@@ -3481,8 +3477,8 @@ body {
         top: 0 !important;
         left: 0 !important;
         width: 100% !important;
-        height: 100vh !important;
-        max-height: 100vh !important;
+        height: 100% !important;
+        min-height: 100% !important;
         overflow: hidden !important;
         z-index: 1 !important;
         margin: 0 !important;
@@ -3529,14 +3525,17 @@ body {
     }
 
     #galeria-comercial {
+        position: relative !important;
+        top: auto !important;
+        min-height: 100vh !important;
+        height: auto !important;
         z-index: 4 !important;
         background-color: #064E3B !important;
     }
 
     #transicion-imagen {
-        position: -webkit-sticky !important;
-        position: sticky !important;
-        top: 0 !important;
+        position: relative !important;
+        top: auto !important;
         margin-top: 0 !important;
         min-height: 100vh !important;
         height: 100vh !important;
@@ -3602,16 +3601,15 @@ body {
     }
 
     #pilar-integridad {
-        position: -webkit-sticky !important;
-        position: sticky !important;
-        top: 0 !important;
+        position: relative !important;
+        top: auto !important;
         margin-top: 0 !important;
-        min-height: 320vh !important;
-        height: 320vh !important;
+        min-height: 100vh !important;
+        height: auto !important;
         width: 100% !important;
-        clip-path: inset(var(--curtain-integrity, 100%) 0 0 0) !important;
-        -webkit-clip-path: inset(var(--curtain-integrity, 100%) 0 0 0) !important;
-        overflow: hidden !important;
+        clip-path: none !important;
+        -webkit-clip-path: none !important;
+        overflow: visible !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: flex-start !important;
@@ -3620,17 +3618,16 @@ body {
         box-shadow: 0 -12px 36px rgba(0, 0, 0, 0.35) !important;
         z-index: 7 !important;
         background-color: #0b0f19 !important;
-        will-change: clip-path, transform;
     }
 
     #pilar-integridad .integridad-container {
-        position: -webkit-sticky !important;
-        position: sticky !important;
-        top: 0 !important;
+        position: relative !important;
+        top: auto !important;
         z-index: 2 !important;
         width: 100% !important;
-        height: 100vh !important;
+        height: auto !important;
         min-height: 100vh !important;
+        max-height: none !important;
         overflow: visible !important;
         padding: 6.5rem 1.25rem 4rem !important;
         display: flex !important;
@@ -3639,7 +3636,7 @@ body {
         align-items: center !important;
         text-align: center !important;
         box-sizing: border-box !important;
-        will-change: transform;
+        transform: none !important;
     }
 
     #pilar-integridad .integridad-right-col {
@@ -3652,16 +3649,15 @@ body {
     }
 
     #idea-lab {
-        position: -webkit-sticky !important;
-        position: sticky !important;
-        top: 0 !important;
+        position: relative !important;
+        top: auto !important;
         margin-top: 0 !important;
-        min-height: 180vh !important;
-        height: 180vh !important;
+        min-height: 100vh !important;
+        height: auto !important;
         width: 100% !important;
-        clip-path: inset(var(--curtain-idealab, 100%) 0 0 0) !important;
-        -webkit-clip-path: inset(var(--curtain-idealab, 100%) 0 0 0) !important;
-        overflow: hidden !important;
+        clip-path: none !important;
+        -webkit-clip-path: none !important;
+        overflow: visible !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: flex-start !important;
@@ -3672,17 +3668,16 @@ body {
         box-shadow: 0 -12px 36px rgba(0, 0, 0, 0.35) !important;
         z-index: 8 !important;
         background-color: var(--bg-light) !important;
-        will-change: clip-path, transform;
     }
 
     #idea-lab .idealab-container {
-        position: -webkit-sticky !important;
-        position: sticky !important;
-        top: 0 !important;
+        position: relative !important;
+        top: auto !important;
         z-index: 2 !important;
         width: 100% !important;
-        height: 100vh !important;
+        height: auto !important;
         min-height: 100vh !important;
+        max-height: none !important;
         overflow: visible !important;
         padding: 6.5rem 1.25rem 4rem !important;
         margin: 0 auto !important;
@@ -3692,7 +3687,7 @@ body {
         align-items: center !important;
         text-align: center !important;
         box-sizing: border-box !important;
-        will-change: transform;
+        transform: none !important;
     }
 
     #idea-lab .idealab-left-col {
@@ -3708,6 +3703,10 @@ body {
     }
 
     #valormaximoart {
+        position: relative !important;
+        top: auto !important;
+        min-height: 100vh !important;
+        height: auto !important;
         z-index: 9 !important;
         background-color: #0b0f19 !important;
         display: flex !important;
@@ -3743,7 +3742,7 @@ body {
         opacity: 1 !important;
     }
 
-    /* Fondos de video e imágenes dentro de cada sección sticky en modo responsive */
+    /* Fondos de video e imágenes dentro de cada sección en modo responsive */
     #inicio .hero-video-bg,
     #esencia .silk-background-canvas,
     #silk-canvas,
@@ -3757,8 +3756,8 @@ body {
         top: 0 !important;
         left: 0 !important;
         width: 100% !important;
-        height: 100vh !important;
-        height: calc(var(--vh, 1vh) * 100) !important;
+        height: 100% !important;
+        min-height: 100% !important;
         z-index: 1 !important;
         margin: 0 !important;
         display: block !important;
