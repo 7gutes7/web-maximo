@@ -335,29 +335,23 @@ function initMatchCatalogCurtain() {
     const container = sec.querySelector('.catalog-grid-container');
     const scrollIndicator = document.getElementById('catalog-scroll-indicator');
 
-    if (container) {
-        container.addEventListener('scroll', () => {
-            if (window.innerWidth <= 768 && scrollIndicator) {
-                scrollIndicator.classList.toggle('hidden', container.scrollTop > 30);
-            }
-        }, { passive: true });
-    }
-
     function update() {
         const vh = window.innerHeight;
         const isMobile = window.innerWidth <= 768;
 
         if (isMobile) {
-            // En móvil (Solución 3): Scroll táctil nativo 1:1 directo
-            // El contenedor tiene scroll nativo overflow-y: auto sin ningún transform artificial
+            // En móvil: Flujo continuo 1:1 integrado sin fronteras ni trampas de scroll
             if (container) {
                 container.style.transform = 'none';
             }
             if (rightCol) {
                 rightCol.style.transform = 'none';
             }
-            if (scrollIndicator && container) {
-                scrollIndicator.classList.toggle('hidden', container.scrollTop > 30);
+            if (scrollIndicator) {
+                const scrollY = window.scrollY || window.pageYOffset;
+                const secTop = sec.offsetTop;
+                const isFadedOut = scrollY > (secTop + 60) || scrollY < (secTop - 0.5 * vh);
+                scrollIndicator.classList.toggle('hidden', isFadedOut);
             }
         } else {
             const wrapper = document.querySelector('.curtain-wrapper');
@@ -408,8 +402,9 @@ function initMatchCatalogCurtain() {
         const globalScrollBtn = document.getElementById('global-scroll-btn');
         if (globalScrollBtn) {
             if (window.innerWidth <= 768) {
-                const currentScroll = window.scrollY || window.pageYOffset;
-                const isLastSection = currentScroll >= 15.0 * vh;
+                const scrollY = window.scrollY || window.pageYOffset;
+                const lastSec = document.getElementById('valormaximoart');
+                const isLastSection = lastSec ? scrollY >= (lastSec.offsetTop - 0.5 * vh) : false;
                 globalScrollBtn.classList.toggle('hidden', isLastSection);
             } else {
                 const wrapper = document.querySelector('.curtain-wrapper');
@@ -449,9 +444,11 @@ function initIntegrityCurtain() {
 
         if (isMobile) {
             const scrollY = window.scrollY || window.pageYOffset;
+            const secTop = sec.offsetTop;
 
-            // Cortina Sección 7 despliega en el tramo de 9.4vh a 10.4vh (1.0vh de distancia, idéntica a Sección 2)
-            const progressReveal = Math.min(1, Math.max(0, (scrollY - 9.4 * vh) / (1.0 * vh)));
+            // Cortina Sección 7 despliega cuando el scroll llega al final de la Sección 6 (1.0vh antes de secTop)
+            const revealStart = secTop - 1.0 * vh;
+            const progressReveal = Math.min(1, Math.max(0, (scrollY - revealStart) / (1.0 * vh)));
             const clipPercent = (1 - progressReveal) * 100;
             sec.style.setProperty('--curtain-integrity', `${clipPercent}%`);
 
@@ -459,8 +456,8 @@ function initIntegrityCurtain() {
                 if (progressReveal < 1.0) {
                     container.style.setProperty('transform', 'translate3d(0, 0px, 0)', 'important');
                 } else {
-                    // Scroll interno activo de 10.4vh a 12.2vh (1.8vh de recorrido)
-                    const activeScrolled = Math.max(0, scrollY - 10.4 * vh);
+                    // Scroll interno activo desde secTop
+                    const activeScrolled = Math.max(0, scrollY - secTop);
                     const totalActiveTravel = 1.8 * vh;
                     const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
                     const maxScroll = Math.max(0, container.scrollHeight - vh + 120);
@@ -542,9 +539,11 @@ function initIdeaLabCurtain() {
 
         if (isMobile) {
             const scrollY = window.scrollY || window.pageYOffset;
+            const secTop = sec.offsetTop;
 
-            // Cortina Sección 8 despliega en el tramo de 12.6vh a 13.6vh (1.0vh de distancia, idéntica a Sección 2)
-            const progressReveal = Math.min(1, Math.max(0, (scrollY - 12.6 * vh) / (1.0 * vh)));
+            // Cortina Sección 8 despliega cuando el scroll llega al final de la Sección 7 (1.0vh antes de secTop)
+            const revealStart = secTop - 1.0 * vh;
+            const progressReveal = Math.min(1, Math.max(0, (scrollY - revealStart) / (1.0 * vh)));
             const clipPercent = (1 - progressReveal) * 100;
             sec.style.setProperty('--curtain-idealab', `${clipPercent}%`);
 
@@ -552,8 +551,8 @@ function initIdeaLabCurtain() {
                 if (progressReveal < 1.0) {
                     container.style.setProperty('transform', 'translate3d(0, 0px, 0)', 'important');
                 } else {
-                    // Scroll interno de 13.6vh a 14.4vh (0.8vh de recorrido)
-                    const activeScrolled = Math.max(0, scrollY - 13.6 * vh);
+                    // Scroll interno activo desde secTop
+                    const activeScrolled = Math.max(0, scrollY - secTop);
                     const totalActiveTravel = 0.8 * vh;
                     const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
                     const maxScroll = Math.max(0, container.scrollHeight - vh + 40);
@@ -627,9 +626,9 @@ function initVmartCurtain() {
 
         if (isMobile) {
             const scrollY = window.scrollY || window.pageYOffset;
-            const startPxSec9 = 14.4 * vh;
-            const revealDistanceSec9 = 1.0 * vh;
-            const progress = Math.min(1, Math.max(0, (scrollY - startPxSec9) / revealDistanceSec9));
+            const secTop = sec.offsetTop;
+            const revealStart = secTop - 1.0 * vh;
+            const progress = Math.min(1, Math.max(0, (scrollY - revealStart) / (1.0 * vh)));
             const clipPercent = (1 - progress) * 100;
             sec.style.setProperty('--curtain-vmart', `${clipPercent}%`);
         } else {
@@ -3000,26 +2999,37 @@ function smoothScrollToPosition(targetPosition, duration = 850) {
 // Navegación del menú superior hacia hitos de la línea de tiempo (expresados en vh)
 function scrollToTimelineSection(event, vh) {
     if (event) event.preventDefault();
-    let targetVh = vh;
     if (window.innerWidth <= 768) {
+        let target = 0;
         if (vh === 9.4) {
-            targetVh = 9.4;   // Catálogo (El Match)
+            const sec = document.getElementById('el-match');
+            target = sec ? sec.offsetTop : 9.4 * window.innerHeight;
         } else if (vh === 19.2 || vh === 20.4) {
-            targetVh = 13.6;  // Idea Lab en móvil
+            const sec = document.getElementById('idea-lab');
+            target = sec ? sec.offsetTop : 14.0 * window.innerHeight;
         } else if (vh === 16.3 || vh === 17.2) {
-            targetVh = 10.4;  // Integridad en móvil
+            const sec = document.getElementById('pilar-integridad');
+            target = sec ? sec.offsetTop : 11.0 * window.innerHeight;
         } else if (vh === 2.0) {
-            targetVh = 4.2;   // Casos de Éxito en móvil
+            const sec = document.getElementById('casos-exito');
+            target = sec ? sec.offsetTop : 4.2 * window.innerHeight;
+        } else {
+            target = vh * window.innerHeight;
         }
-    } else {
-        if (vh === 19.2) targetVh = 23.0;
-        else if (vh === 16.3) targetVh = 20.4;
-        else if (vh === 22.8) targetVh = 26.7;
+        suppressSnapTemporarily();
+        smoothScrollToPosition(target, 900);
+        return;
     }
+
+    let targetVh = vh;
+    if (vh === 19.2) targetVh = 23.0;
+    else if (vh === 16.3) targetVh = 20.4;
+    else if (vh === 22.8) targetVh = 26.7;
+
     const target = targetVh * window.innerHeight;
     const lenis = window.lenis;
     suppressSnapTemporarily();
-    if (lenis && window.innerWidth > 768) {
+    if (lenis) {
         lenis.scrollTo(target, {
             duration: 2.2,
             easing: (t) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t
@@ -3043,20 +3053,29 @@ function scrollToNextSection() {
     const isMobile = window.innerWidth <= 768;
 
     if (isMobile) {
-        // Hitos de navegación suave responsiva calibrados con la línea de tiempo de cortinas completas
+        const sec2 = document.getElementById('esencia');
+        const sec3 = document.getElementById('casos-exito');
+        const sec4 = document.getElementById('galeria-comercial');
+        const sec5 = document.getElementById('transicion-imagen');
+        const sec6 = document.getElementById('el-match');
+        const sec7 = document.getElementById('pilar-integridad');
+        const sec8 = document.getElementById('idea-lab');
+        const sec9 = document.getElementById('valormaximoart');
+
+        // Hitos de navegación suave responsiva calibrados dinámicamente con los offsets de cada sección
         const mobileTargets = [
-            1.0 * vh,   // Sección 2 Inicio (El Diferenciador Absoluto: Cortina 100% abierta)
-            2.8 * vh,   // Sección 2 Fondo (Tarjetas Contratos, Gestión, Mantenimiento, Acondicionamiento)
-            4.2 * vh,   // Sección 3 Inicio (Casos de Éxito / Portafolio 100% desplegado)
-            6.0 * vh,   // Sección 3 Fondo (Scroll completo por las tarjetas de proyectos)
-            7.4 * vh,   // Sección 4 (Galería Comercial 100% visible)
-            8.4 * vh,   // Sección 5 (Portada Galería 100% visible)
-            9.4 * vh,   // Sección 6 (Catálogo — El Match: Scroll táctil nativo 1:1)
-            10.4 * vh,  // Sección 7 Inicio (Pilar de Integridad 100% abierta)
-            12.2 * vh,  // Sección 7 Fondo (Todos los 5 pilares completos)
-            13.6 * vh,  // Sección 8 Inicio (Idea Lab 100% abierta)
-            14.4 * vh,  // Sección 8 Fondo (Procesos Idea Lab completos)
-            15.4 * vh,  // Sección 9 (ValorMáximoART 100% desplegado y Footer)
+            sec2 ? sec2.offsetTop : 1.0 * vh,
+            sec2 ? sec2.offsetTop + 1.8 * vh : 2.8 * vh,
+            sec3 ? sec3.offsetTop : 4.2 * vh,
+            sec3 ? sec3.offsetTop + 1.8 * vh : 6.0 * vh,
+            sec4 ? sec4.offsetTop : 7.4 * vh,
+            sec5 ? sec5.offsetTop : 8.4 * vh,
+            sec6 ? sec6.offsetTop : 9.4 * vh,
+            sec7 ? sec7.offsetTop : 11.0 * vh,
+            sec7 ? sec7.offsetTop + 1.8 * vh : 12.8 * vh,
+            sec8 ? sec8.offsetTop : 14.0 * vh,
+            sec8 ? sec8.offsetTop + 0.8 * vh : 14.8 * vh,
+            sec9 ? sec9.offsetTop : 15.8 * vh,
             0           // Volver al Inicio (Hero)
         ];
 

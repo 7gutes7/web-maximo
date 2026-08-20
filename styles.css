@@ -3565,16 +3565,15 @@ body {
     }
 
     #el-match {
-        position: -webkit-sticky !important;
-        position: sticky !important;
-        top: 0 !important;
+        position: relative !important;
+        top: auto !important;
         margin-top: 0 !important;
         min-height: 100vh !important;
-        height: 100vh !important;
+        height: auto !important;
         width: 100% !important;
         z-index: 6 !important;
         background-color: var(--bg-light) !important;
-        overflow: hidden !important;
+        overflow: visible !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: flex-start !important;
@@ -3585,17 +3584,14 @@ body {
 
     #el-match .catalog-grid-container {
         position: relative !important;
-        top: 0 !important;
+        top: auto !important;
         z-index: 2 !important;
         width: 100% !important;
-        height: 100vh !important;
+        height: auto !important;
         min-height: 100vh !important;
-        max-height: 100vh !important;
-        overflow-y: auto !important;
-        overflow-x: hidden !important;
-        -webkit-overflow-scrolling: touch !important;
-        overscroll-behavior-y: contain !important;
-        padding: 5.5rem 1.25rem 2.5rem !important;
+        max-height: none !important;
+        overflow: visible !important;
+        padding: 5.5rem 1.25rem 3rem !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: flex-start !important;
@@ -3846,6 +3842,12 @@ body {
     }
 
     #el-match .catalog-right-col {
+        position: relative !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        transform: none !important;
+        padding-top: 1.5rem !important;
         padding-bottom: 0 !important;
         margin-bottom: 0 !important;
     }
