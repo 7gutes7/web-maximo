@@ -335,59 +335,12 @@ function initMatchCatalogCurtain() {
     const container = sec.querySelector('.catalog-grid-container');
     const scrollIndicator = document.getElementById('catalog-scroll-indicator');
 
-    // Estado para interpolación suave LERP con Freno Inteligente (Exclusivo para modo responsive)
-    let currentTranslateY = 0;
-    let targetTranslateY = 0;
-    let isLerpLoopRunning = false;
-    let isScrollingActive = false;
-    let scrollStopTimer = null;
-
-    function onScrollActivity() {
-        isScrollingActive = true;
-        clearTimeout(scrollStopTimer);
-        scrollStopTimer = setTimeout(() => {
-            isScrollingActive = false;
-        }, 90);
-    }
-
-    window.addEventListener('scroll', onScrollActivity, { passive: true });
-    window.addEventListener('touchend', () => { isScrollingActive = false; }, { passive: true });
-    window.addEventListener('touchcancel', () => { isScrollingActive = false; }, { passive: true });
-
-    function lerpLoop() {
-        if (window.innerWidth > 768) {
-            isLerpLoopRunning = false;
-            return;
-        }
-
-        const diff = targetTranslateY - currentTranslateY;
-
-        // Freno Inteligente:
-        // - Mientras el dedo se mueve activamente: factor 0.02 (máxima suavidad sedosa y controlada)
-        // - Al detener el dedo o soltar la pantalla: freno de mano inmediato (0.30) para clavar la posición en seco
-        const factor = isScrollingActive ? 0.02 : 0.30;
-
-        if (Math.abs(diff) > 0.15) {
-            currentTranslateY += diff * factor;
-            if (container) {
-                container.style.setProperty('transform', `translate3d(0, ${currentTranslateY.toFixed(2)}px, 0)`, 'important');
+    if (container) {
+        container.addEventListener('scroll', () => {
+            if (window.innerWidth <= 768 && scrollIndicator) {
+                scrollIndicator.classList.toggle('hidden', container.scrollTop > 30);
             }
-            requestAnimationFrame(lerpLoop);
-        } else {
-            currentTranslateY = targetTranslateY;
-            if (container) {
-                container.style.setProperty('transform', `translate3d(0, ${currentTranslateY.toFixed(2)}px, 0)`, 'important');
-            }
-            isLerpLoopRunning = false;
-        }
-    }
-
-    function requestSmoothUpdate() {
-        onScrollActivity();
-        if (!isLerpLoopRunning) {
-            isLerpLoopRunning = true;
-            requestAnimationFrame(lerpLoop);
-        }
+        }, { passive: true });
     }
 
     function update() {
@@ -395,31 +348,16 @@ function initMatchCatalogCurtain() {
         const isMobile = window.innerWidth <= 768;
 
         if (isMobile) {
-            // En móvil, la Sección 6 toca el borde superior exactamente a los 9.4vh
-            const currentScroll = window.scrollY || window.pageYOffset;
-            const startPxMobile = 9.4 * vh;
-            const activeScrolled = Math.max(0, currentScroll - startPxMobile);
-
+            // En móvil (Solución 3): Scroll táctil nativo 1:1 directo
+            // El contenedor tiene scroll nativo overflow-y: auto sin ningún transform artificial
             if (container) {
-                if (activeScrolled <= 0) {
-                    targetTranslateY = 0;
-                    requestSmoothUpdate();
-                } else {
-                    const totalTravel = 3.8 * vh;
-                    const flowProgress = Math.min(1, activeScrolled / totalTravel);
-
-                    // Medir el recorrido exacto del contenedor para que el logo quede perfectamente visible sin hueco inferior
-                    const maxScroll = Math.max(0, container.scrollHeight - vh + 30);
-
-                    targetTranslateY = -flowProgress * maxScroll;
-                    requestSmoothUpdate();
-                }
+                container.style.transform = 'none';
             }
-
-            // Ocultar la animación de scroll sobre la primera ficha en cuanto el usuario empieza a bajar (> 35px)
-            if (scrollIndicator) {
-                const isFadedOut = activeScrolled > 35 || currentScroll < (startPxMobile - 100);
-                scrollIndicator.classList.toggle('hidden', isFadedOut);
+            if (rightCol) {
+                rightCol.style.transform = 'none';
+            }
+            if (scrollIndicator && container) {
+                scrollIndicator.classList.toggle('hidden', container.scrollTop > 30);
             }
         } else {
             const wrapper = document.querySelector('.curtain-wrapper');
@@ -470,15 +408,9 @@ function initMatchCatalogCurtain() {
         const globalScrollBtn = document.getElementById('global-scroll-btn');
         if (globalScrollBtn) {
             if (window.innerWidth <= 768) {
-                const startPxMobile = 9.4 * vh;
-                const totalTravel = 3.8 * vh;
-                const endPxMobile = startPxMobile + totalTravel;
                 const currentScroll = window.scrollY || window.pageYOffset;
-
-                // Ocultar un poco antes de llegar a la Sección 6 (200px antes) hasta 80px antes del final
-                const inCatalogResponsive = currentScroll >= (startPxMobile - 200) && currentScroll < (endPxMobile - 80);
-                const isLastSection = currentScroll >= 19.0 * vh;
-                globalScrollBtn.classList.toggle('hidden', inCatalogResponsive || isLastSection);
+                const isLastSection = currentScroll >= 15.0 * vh;
+                globalScrollBtn.classList.toggle('hidden', isLastSection);
             } else {
                 const wrapper = document.querySelector('.curtain-wrapper');
                 if (wrapper) {
@@ -518,8 +450,8 @@ function initIntegrityCurtain() {
         if (isMobile) {
             const scrollY = window.scrollY || window.pageYOffset;
 
-            // Cortina Sección 7 despliega en el tramo de 13.2vh a 14.2vh (1.0vh de distancia, idéntica a Sección 2)
-            const progressReveal = Math.min(1, Math.max(0, (scrollY - 13.2 * vh) / (1.0 * vh)));
+            // Cortina Sección 7 despliega en el tramo de 9.4vh a 10.4vh (1.0vh de distancia, idéntica a Sección 2)
+            const progressReveal = Math.min(1, Math.max(0, (scrollY - 9.4 * vh) / (1.0 * vh)));
             const clipPercent = (1 - progressReveal) * 100;
             sec.style.setProperty('--curtain-integrity', `${clipPercent}%`);
 
@@ -527,8 +459,8 @@ function initIntegrityCurtain() {
                 if (progressReveal < 1.0) {
                     container.style.setProperty('transform', 'translate3d(0, 0px, 0)', 'important');
                 } else {
-                    // Scroll interno activo de 14.2vh en adelante (con holgura y velocidad idéntica a Sección 2)
-                    const activeScrolled = Math.max(0, scrollY - 14.2 * vh);
+                    // Scroll interno activo de 10.4vh a 12.2vh (1.8vh de recorrido)
+                    const activeScrolled = Math.max(0, scrollY - 10.4 * vh);
                     const totalActiveTravel = 1.8 * vh;
                     const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
                     const maxScroll = Math.max(0, container.scrollHeight - vh + 120);
@@ -611,8 +543,8 @@ function initIdeaLabCurtain() {
         if (isMobile) {
             const scrollY = window.scrollY || window.pageYOffset;
 
-            // Cortina Sección 8 despliega en el tramo de 16.4vh a 17.4vh (1.0vh de distancia, idéntica a Sección 2)
-            const progressReveal = Math.min(1, Math.max(0, (scrollY - 16.4 * vh) / (1.0 * vh)));
+            // Cortina Sección 8 despliega en el tramo de 12.6vh a 13.6vh (1.0vh de distancia, idéntica a Sección 2)
+            const progressReveal = Math.min(1, Math.max(0, (scrollY - 12.6 * vh) / (1.0 * vh)));
             const clipPercent = (1 - progressReveal) * 100;
             sec.style.setProperty('--curtain-idealab', `${clipPercent}%`);
 
@@ -620,8 +552,8 @@ function initIdeaLabCurtain() {
                 if (progressReveal < 1.0) {
                     container.style.setProperty('transform', 'translate3d(0, 0px, 0)', 'important');
                 } else {
-                    // Scroll interno recortado y ágil de 17.4vh a 18.2vh (desplazamiento directo sin scroll muerto)
-                    const activeScrolled = Math.max(0, scrollY - 17.4 * vh);
+                    // Scroll interno de 13.6vh a 14.4vh (0.8vh de recorrido)
+                    const activeScrolled = Math.max(0, scrollY - 13.6 * vh);
                     const totalActiveTravel = 0.8 * vh;
                     const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
                     const maxScroll = Math.max(0, container.scrollHeight - vh + 40);
@@ -695,7 +627,7 @@ function initVmartCurtain() {
 
         if (isMobile) {
             const scrollY = window.scrollY || window.pageYOffset;
-            const startPxSec9 = 18.2 * vh;
+            const startPxSec9 = 14.4 * vh;
             const revealDistanceSec9 = 1.0 * vh;
             const progress = Math.min(1, Math.max(0, (scrollY - startPxSec9) / revealDistanceSec9));
             const clipPercent = (1 - progress) * 100;
@@ -3073,9 +3005,9 @@ function scrollToTimelineSection(event, vh) {
         if (vh === 9.4) {
             targetVh = 9.4;   // Catálogo (El Match)
         } else if (vh === 19.2 || vh === 20.4) {
-            targetVh = 17.4;  // Idea Lab en móvil
+            targetVh = 13.6;  // Idea Lab en móvil
         } else if (vh === 16.3 || vh === 17.2) {
-            targetVh = 14.2;  // Integridad en móvil
+            targetVh = 10.4;  // Integridad en móvil
         } else if (vh === 2.0) {
             targetVh = 4.2;   // Casos de Éxito en móvil
         }
@@ -3119,14 +3051,12 @@ function scrollToNextSection() {
             6.0 * vh,   // Sección 3 Fondo (Scroll completo por las tarjetas de proyectos)
             7.4 * vh,   // Sección 4 (Galería Comercial 100% visible)
             8.4 * vh,   // Sección 5 (Portada Galería 100% visible)
-            9.4 * vh,   // Sección 6 Inicio (Catálogo — El Match: Primeras fichas)
-            11.3 * vh,  // Sección 6 Mitad (Desfile intermedio de fichas)
-            13.2 * vh,  // Sección 6 Fondo (Logo ISO y Cierre de Catálogo)
-            14.2 * vh,  // Sección 7 Inicio (Pilar de Integridad 100% abierta)
-            16.0 * vh,  // Sección 7 Fondo (Todos los 5 pilares completos)
-            17.4 * vh,  // Sección 8 Inicio (Idea Lab 100% abierta)
-            18.2 * vh,  // Sección 8 Fondo (Procesos Idea Lab completos)
-            19.2 * vh,  // Sección 9 (ValorMáximoART 100% desplegado y Footer)
+            9.4 * vh,   // Sección 6 (Catálogo — El Match: Scroll táctil nativo 1:1)
+            10.4 * vh,  // Sección 7 Inicio (Pilar de Integridad 100% abierta)
+            12.2 * vh,  // Sección 7 Fondo (Todos los 5 pilares completos)
+            13.6 * vh,  // Sección 8 Inicio (Idea Lab 100% abierta)
+            14.4 * vh,  // Sección 8 Fondo (Procesos Idea Lab completos)
+            15.4 * vh,  // Sección 9 (ValorMáximoART 100% desplegado y Footer)
             0           // Volver al Inicio (Hero)
         ];
 

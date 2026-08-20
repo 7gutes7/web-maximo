@@ -3569,8 +3569,8 @@ body {
         position: sticky !important;
         top: 0 !important;
         margin-top: 0 !important;
-        min-height: 480vh !important;
-        height: 480vh !important;
+        min-height: 100vh !important;
+        height: 100vh !important;
         width: 100% !important;
         z-index: 6 !important;
         background-color: var(--bg-light) !important;
@@ -3581,26 +3581,28 @@ body {
         align-items: center !important;
         box-sizing: border-box !important;
         box-shadow: 0 -12px 36px rgba(0, 0, 0, 0.35) !important;
-        will-change: transform;
     }
 
     #el-match .catalog-grid-container {
-        position: -webkit-sticky !important;
-        position: sticky !important;
+        position: relative !important;
         top: 0 !important;
         z-index: 2 !important;
         width: 100% !important;
         height: 100vh !important;
         min-height: 100vh !important;
-        overflow: visible !important;
-        padding: 6.5rem 1.25rem 0px !important;
+        max-height: 100vh !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        -webkit-overflow-scrolling: touch !important;
+        overscroll-behavior-y: contain !important;
+        padding: 5.5rem 1.25rem 2.5rem !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: flex-start !important;
         align-items: center !important;
         text-align: center !important;
         box-sizing: border-box !important;
-        will-change: transform;
+        transform: none !important;
     }
 
     #pilar-integridad {
