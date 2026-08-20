@@ -285,51 +285,36 @@ function initGaleriaCurtain() {
     update();
 }
 
-// 0b3. Curtain Reveal Centro Apertura (Sección 5: Portada Galería)
+// 0b3. Curtain Reveal 2 Fases (Sección 5: Portada Galería - Sólo Escritorio)
 function initTransitionCurtain() {
+    if (window.innerWidth <= 768) return;
     const sec = document.getElementById('transicion-imagen');
-    if (!sec) return;
+    const wrapper = document.querySelector('.curtain-wrapper');
+    if (!sec || !wrapper) return;
 
     function update() {
+        const rect = wrapper.getBoundingClientRect();
         const vh = window.innerHeight;
-        const isMobile = window.innerWidth <= 768;
+        const scrolled = -rect.top;
 
-        if (isMobile) {
-            const scrollY = window.scrollY || window.pageYOffset;
-            // Apertura de centro hacia arriba y hacia abajo al mismo tiempo en el tramo de 8.4vh a 9.4vh
-            const startPxSec5 = 8.4 * vh;
-            const revealDistanceSec5 = 1.0 * vh;
-            const progress = Math.min(1, Math.max(0, (scrollY - startPxSec5) / revealDistanceSec5));
-            const insetPercent = (1 - progress) * 50;
+        const startPxSec5 = 6.9 * vh;
+        const revealDistanceSec5 = 1.0 * vh;
+        const progress = Math.min(1, Math.max(0, (scrolled - startPxSec5) / revealDistanceSec5));
 
-            const clipValue = `inset(${insetPercent}% 0% ${insetPercent}% 0%)`;
-            sec.style.setProperty('clip-path', clipValue, 'important');
-            sec.style.setProperty('-webkit-clip-path', clipValue, 'important');
+        let clipPathValue = '';
+
+        if (progress <= 0.5) {
+            const phase1 = progress / 0.5;
+            const yPercent = phase1 * 100;
+            clipPathValue = `polygon(50% 0%, 100% 0%, 100% ${yPercent}%, 50% ${yPercent}%)`;
         } else {
-            const wrapper = document.querySelector('.curtain-wrapper');
-            if (!wrapper) return;
-            const rect = wrapper.getBoundingClientRect();
-            const scrolled = -rect.top;
-
-            const startPxSec5 = 6.9 * vh;
-            const revealDistanceSec5 = 1.0 * vh;
-            const progress = Math.min(1, Math.max(0, (scrolled - startPxSec5) / revealDistanceSec5));
-
-            let clipPathValue = '';
-
-            if (progress <= 0.5) {
-                const phase1 = progress / 0.5;
-                const yPercent = phase1 * 100;
-                clipPathValue = `polygon(50% 0%, 100% 0%, 100% ${yPercent}%, 50% ${yPercent}%)`;
-            } else {
-                const phase2 = (progress - 0.5) / 0.5;
-                const xLeft = 50 - phase2 * 50;
-                clipPathValue = `polygon(${xLeft}% 0%, 100% 0%, 100% 100%, ${xLeft}% 100%)`;
-            }
-
-            sec.style.clipPath = clipPathValue;
-            sec.style.webkitClipPath = clipPathValue;
+            const phase2 = (progress - 0.5) / 0.5;
+            const xLeft = 50 - phase2 * 50;
+            clipPathValue = `polygon(${xLeft}% 0%, 100% 0%, 100% 100%, ${xLeft}% 100%)`;
         }
+
+        sec.style.clipPath = clipPathValue;
+        sec.style.webkitClipPath = clipPathValue;
     }
 
     const lenis = window.lenis;
@@ -367,10 +352,8 @@ function initMatchCatalogCurtain() {
                     const totalTravel = 3.8 * vh;
                     const flowProgress = Math.min(1, activeScrolled / totalTravel);
 
-                    // Medir la altura completa incluyendo el contenedor y el logo SVG de cierre
-                    const closingLogo = sec.querySelector('.catalog-closing-glass');
-                    const closingHeight = closingLogo ? (closingLogo.offsetHeight + 80) : 220;
-                    const maxScroll = Math.max(0, container.scrollHeight - vh + closingHeight);
+                    // Medir el recorrido exacto del contenedor para que el logo quede perfectamente visible sin hueco inferior
+                    const maxScroll = Math.max(0, container.scrollHeight - vh + 30);
 
                     const translateYValue = -flowProgress * maxScroll;
                     container.style.setProperty('transform', `translate3d(0, ${translateYValue}px, 0)`, 'important');
@@ -3053,9 +3036,11 @@ function scrollToNextSection() {
             7.4 * vh,   // Sección 4 (Galería Comercial)
             8.4 * vh,   // Sección 5 (Portada Galería)
             9.4 * vh,   // Sección 6 (Catálogo — El Match)
-            14.2 * vh,  // Sección 7 (Pilar de Integridad)
-            17.4 * vh,  // Sección 8 (Idea Lab)
-            18.2 * vh,  // Sección 9 (ValorMáximoART)
+            14.2 * vh,  // Sección 7 Inicio (Pilar de Integridad: Inicio con cortina 100% abierta y pilares superiores)
+            16.0 * vh,  // Sección 7 Fondo (Primer clic en Sec 7: Desplaza al fondo revelando los 5 pilares completos)
+            17.4 * vh,  // Sección 8 Inicio (Idea Lab Inicio: Cortina 100% abierta con tarjetas superiores)
+            18.2 * vh,  // Sección 8 Fondo (Fondo de Idea Lab: Todos los procesos y tarjetas desplegados)
+            19.2 * vh,  // Sección 9 (ValorMáximoART: Clic desde el fondo de Idea Lab lleva a ValorMáximoART al 100%)
             0           // Volver al Inicio (Hero)
         ];
 

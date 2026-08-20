@@ -3541,13 +3541,12 @@ body {
         min-height: 100vh !important;
         height: 100vh !important;
         width: 100% !important;
-        clip-path: inset(50% 0 50% 0);
-        -webkit-clip-path: inset(50% 0 50% 0);
+        clip-path: none !important;
+        -webkit-clip-path: none !important;
         overflow: hidden !important;
         box-shadow: 0 -12px 36px rgba(0, 0, 0, 0.35) !important;
         z-index: 5 !important;
         background-color: #064E3B !important;
-        will-change: clip-path, transform;
     }
 
     #transicion-imagen .section-transition-picture,
@@ -3928,7 +3927,7 @@ body {
 
     /* Cierre con Logo ISO y Silk Shader en Modo Responsivo */
     .catalog-closing-glass {
-        margin: 2.5rem auto 3.5rem auto !important;
+        margin: 2rem auto 0 auto !important;
         max-width: 100% !important;
         width: 100% !important;
         position: relative !important;
@@ -3941,7 +3940,7 @@ body {
         box-shadow: none !important;
         overflow: visible !important;
         z-index: 50 !important;
-        padding-bottom: 2.5rem !important;
+        padding-bottom: 0 !important;
     }
 
     .iso-silk-wrapper {
@@ -3951,7 +3950,7 @@ body {
         display: flex !important;
         justify-content: center !important;
         align-items: center !important;
-        transform: translateY(-20px) !important;
+        transform: none !important;
         filter: drop-shadow(0 6px 20px rgba(0, 33, 23, 0.28)) !important;
         overflow: visible !important;
     }
