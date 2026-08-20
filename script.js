@@ -335,10 +335,24 @@ function initMatchCatalogCurtain() {
     const container = sec.querySelector('.catalog-grid-container');
     const scrollIndicator = document.getElementById('catalog-scroll-indicator');
 
-    // Estado para interpolación suave LERP (Exclusivo para modo responsive)
+    // Estado para interpolación suave LERP con Freno Inteligente (Exclusivo para modo responsive)
     let currentTranslateY = 0;
     let targetTranslateY = 0;
     let isLerpLoopRunning = false;
+    let isScrollingActive = false;
+    let scrollStopTimer = null;
+
+    function onScrollActivity() {
+        isScrollingActive = true;
+        clearTimeout(scrollStopTimer);
+        scrollStopTimer = setTimeout(() => {
+            isScrollingActive = false;
+        }, 90);
+    }
+
+    window.addEventListener('scroll', onScrollActivity, { passive: true });
+    window.addEventListener('touchend', () => { isScrollingActive = false; }, { passive: true });
+    window.addEventListener('touchcancel', () => { isScrollingActive = false; }, { passive: true });
 
     function lerpLoop() {
         if (window.innerWidth > 768) {
@@ -347,8 +361,14 @@ function initMatchCatalogCurtain() {
         }
 
         const diff = targetTranslateY - currentTranslateY;
+
+        // Freno Inteligente:
+        // - Mientras el dedo se mueve activamente: factor 0.02 (máxima suavidad sedosa y controlada)
+        // - Al detener el dedo o soltar la pantalla: freno de mano inmediato (0.30) para clavar la posición en seco
+        const factor = isScrollingActive ? 0.02 : 0.30;
+
         if (Math.abs(diff) > 0.15) {
-            currentTranslateY += diff * 0.03; // Factor de amortiguación sedosa y lenta (0.03)
+            currentTranslateY += diff * factor;
             if (container) {
                 container.style.setProperty('transform', `translate3d(0, ${currentTranslateY.toFixed(2)}px, 0)`, 'important');
             }
@@ -363,6 +383,7 @@ function initMatchCatalogCurtain() {
     }
 
     function requestSmoothUpdate() {
+        onScrollActivity();
         if (!isLerpLoopRunning) {
             isLerpLoopRunning = true;
             requestAnimationFrame(lerpLoop);
