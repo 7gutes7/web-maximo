@@ -335,6 +335,40 @@ function initMatchCatalogCurtain() {
     const container = sec.querySelector('.catalog-grid-container');
     const scrollIndicator = document.getElementById('catalog-scroll-indicator');
 
+    // Estado para interpolación suave LERP (Exclusivo para modo responsive)
+    let currentTranslateY = 0;
+    let targetTranslateY = 0;
+    let isLerpLoopRunning = false;
+
+    function lerpLoop() {
+        if (window.innerWidth > 768) {
+            isLerpLoopRunning = false;
+            return;
+        }
+
+        const diff = targetTranslateY - currentTranslateY;
+        if (Math.abs(diff) > 0.15) {
+            currentTranslateY += diff * 0.11; // Factor de amortiguación sedosa
+            if (container) {
+                container.style.setProperty('transform', `translate3d(0, ${currentTranslateY.toFixed(2)}px, 0)`, 'important');
+            }
+            requestAnimationFrame(lerpLoop);
+        } else {
+            currentTranslateY = targetTranslateY;
+            if (container) {
+                container.style.setProperty('transform', `translate3d(0, ${currentTranslateY.toFixed(2)}px, 0)`, 'important');
+            }
+            isLerpLoopRunning = false;
+        }
+    }
+
+    function requestSmoothUpdate() {
+        if (!isLerpLoopRunning) {
+            isLerpLoopRunning = true;
+            requestAnimationFrame(lerpLoop);
+        }
+    }
+
     function update() {
         const vh = window.innerHeight;
         const isMobile = window.innerWidth <= 768;
@@ -347,7 +381,8 @@ function initMatchCatalogCurtain() {
 
             if (container) {
                 if (activeScrolled <= 0) {
-                    container.style.setProperty('transform', 'translate3d(0, 0px, 0)', 'important');
+                    targetTranslateY = 0;
+                    requestSmoothUpdate();
                 } else {
                     const totalTravel = 3.8 * vh;
                     const flowProgress = Math.min(1, activeScrolled / totalTravel);
@@ -355,8 +390,8 @@ function initMatchCatalogCurtain() {
                     // Medir el recorrido exacto del contenedor para que el logo quede perfectamente visible sin hueco inferior
                     const maxScroll = Math.max(0, container.scrollHeight - vh + 30);
 
-                    const translateYValue = -flowProgress * maxScroll;
-                    container.style.setProperty('transform', `translate3d(0, ${translateYValue}px, 0)`, 'important');
+                    targetTranslateY = -flowProgress * maxScroll;
+                    requestSmoothUpdate();
                 }
             }
 
@@ -421,7 +456,7 @@ function initMatchCatalogCurtain() {
 
                 // Ocultar un poco antes de llegar a la Sección 6 (200px antes) hasta 80px antes del final
                 const inCatalogResponsive = currentScroll >= (startPxMobile - 200) && currentScroll < (endPxMobile - 80);
-                const isLastSection = currentScroll >= 44.2 * vh;
+                const isLastSection = currentScroll >= 19.0 * vh;
                 globalScrollBtn.classList.toggle('hidden', inCatalogResponsive || isLastSection);
             } else {
                 const wrapper = document.querySelector('.curtain-wrapper');
@@ -1581,7 +1616,7 @@ const propuestasUbicaciones = {
     'FELIPE VILLANUEVA': ['Gemini_Generated_Image_p5qgngp5qgngp5qg.png', 'Gemini_Generated_Image_xb5426xb5426xb54.png'],
     'HIDALGO': ['portada.jpeg', 'Place_office_furniture_in_room_202608140136.jpeg', 'Place_office_furniture_in_room_202608140136 (1).jpeg', 'Place_small_nail_salon_202608140137.jpeg', 'Gemini_Generated_Image_2xmr5x2xmr5x2xmr.png', 'Gemini_Generated_Image_8hffm68hffm68hff.png', 'Gemini_Generated_Image_j54df0j54df0j54d.png'],
     'PASEO CENTRAL': ['Gemini_Generated_Image_3lnq523lnq523lnq.png', 'Gemini_Generated_Image_vc968vc968vc968v.png'],
-    'PINO SUAREZ': ['Gemini_Generated_Image_cvnvsxcvnvsxcvnv.jpeg', 'Gemini_Generated_Image_93s1o893s1o893s1.jpeg', 'Gemini_Generated_Image_diqfiddiqfiddiqf.jpeg', 'Gemini_Generated_Image_q2iqipq2iqipq2iq.jpeg', 'Gemini_Generated_Image_8tjv708tjv708tjv.png'],
+    'PINO SUAREZ': ['Gemini_Generated_Image_cvnvsxcvnvsxcvnv.png', 'Gemini_Generated_Image_93s1o893s1o893s1.png', 'Gemini_Generated_Image_diqfiddiqfiddiqf.png', 'Gemini_Generated_Image_q2iqipq2iqipq2iq.png', 'Gemini_Generated_Image_8tjv708tjv708tjv.png'],
     'VILLADA': ['Gemini_Generated_Image_4kfmf04kfmf04kfm.png', 'Gemini_Generated_Image_3qjd683qjd683qjd.png', 'Gemini_Generated_Image_852hny852hny852h.png', 'Gemini_Generated_Image_civu6ncivu6ncivu.png', 'Gemini_Generated_Image_g65ulyg65ulyg65u.png', 'Gemini_Generated_Image_nbrtn2nbrtn2nbrt.png', 'Gemini_Generated_Image_oa2gtooa2gtooa2g.png'],
     'riva palacio': ['PHOTO-2026-05-16-16-46-53.jpg', 'PHOTO-2026-05-16-16-46-53 2.jpg', 'PHOTO-2026-05-16-16-46-53 4.jpg', 'PHOTO-2026-05-16-16-46-53 7.jpg', 'PHOTO-2026-05-16-16-46-53 8.jpg']
 };
@@ -2549,8 +2584,8 @@ const fichasInmuebles = {
     'venustiano-carranza': {
         titulo: 'Venustiano Carranza',
         fotos: [
-            'galeria/unniplaza.jpg',
-            'galeria comercial/Riva Palacio/portada tarjeta.png',
+            'galeria comercial/Venustiano Carranza/portada.png',
+            'galeria comercial/Venustiano Carranza/captura-local.png',
         ],
         tabla: [
             { concepto: 'Metros cuadrados', valor: '660 m² total' },
@@ -2978,23 +3013,51 @@ function handleDrawerSubmit(event) {
     }, 800);
 }
 
+// Desplazamiento animado suave y robusto para navegadores móviles (evita cortes en transiciones y contenedores sticky)
+function smoothScrollToPosition(targetPosition, duration = 850) {
+    suppressSnapTemporarily();
+    const startPosition = window.scrollY || window.pageYOffset;
+    const distance = targetPosition - startPosition;
+    if (Math.abs(distance) < 2) return;
+
+    let startTime = null;
+
+    function step(currentTime) {
+        if (!startTime) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        const progress = Math.min(timeElapsed / duration, 1);
+
+        // Easing cúbico ultra fluido
+        const ease = progress < 0.5
+            ? 4 * progress * progress * progress
+            : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+        window.scrollTo(0, Math.round(startPosition + distance * ease));
+
+        if (timeElapsed < duration) {
+            requestAnimationFrame(step);
+        } else {
+            window.scrollTo(0, Math.round(targetPosition));
+        }
+    }
+
+    requestAnimationFrame(step);
+}
+
 // Navegación del menú superior hacia hitos de la línea de tiempo (expresados en vh)
 function scrollToTimelineSection(event, vh) {
     if (event) event.preventDefault();
     let targetVh = vh;
     if (window.innerWidth <= 768) {
         if (vh === 9.4) {
-            const secMatch = document.getElementById('el-match');
-            if (secMatch) {
-                suppressSnapTemporarily();
-                window.scrollTo({ top: secMatch.offsetTop, behavior: 'smooth' });
-                return;
-            }
-            targetVh = 9.4;
+            targetVh = 9.4;   // Catálogo (El Match)
+        } else if (vh === 19.2 || vh === 20.4) {
+            targetVh = 17.4;  // Idea Lab en móvil
+        } else if (vh === 16.3 || vh === 17.2) {
+            targetVh = 14.2;  // Integridad en móvil
+        } else if (vh === 2.0) {
+            targetVh = 4.2;   // Casos de Éxito en móvil
         }
-        else if (vh === 19.2) targetVh = 41.5;
-        else if (vh === 16.3) targetVh = 36.5;
-        else if (vh === 2.0) targetVh = 5.2;
     } else {
         if (vh === 19.2) targetVh = 23.0;
         else if (vh === 16.3) targetVh = 20.4;
@@ -3003,13 +3066,13 @@ function scrollToTimelineSection(event, vh) {
     const target = targetVh * window.innerHeight;
     const lenis = window.lenis;
     suppressSnapTemporarily();
-    if (lenis) {
+    if (lenis && window.innerWidth > 768) {
         lenis.scrollTo(target, {
             duration: 2.2,
             easing: (t) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t
         });
     } else {
-        window.scrollTo({ top: target, behavior: 'smooth' });
+        smoothScrollToPosition(target, 900);
     }
 }
 
@@ -3027,35 +3090,29 @@ function scrollToNextSection() {
     const isMobile = window.innerWidth <= 768;
 
     if (isMobile) {
-        // Hitos de navegación suave responsiva calibrados con la línea de tiempo de cortinas
+        // Hitos de navegación suave responsiva calibrados con la línea de tiempo de cortinas completas
         const mobileTargets = [
-            1.0 * vh,   // Sección 2 Inicio (El Diferenciador Absoluto: Cortina 100% abierta con tarjetas superiores)
-            2.8 * vh,   // Sección 2 Fondo (1ra Imagen: Fondo de Sec 2 con tarjetas Contratos, Gestión, Mantenimiento, Acondicionamiento)
-            4.2 * vh,   // Sección 3 Inicio (2da Imagen: Casos de Éxito / Portafolio de Proyectos 100% desplegado en pantalla con Enigma Room, La Dueña, B Clinic)
+            1.0 * vh,   // Sección 2 Inicio (El Diferenciador Absoluto: Cortina 100% abierta)
+            2.8 * vh,   // Sección 2 Fondo (Tarjetas Contratos, Gestión, Mantenimiento, Acondicionamiento)
+            4.2 * vh,   // Sección 3 Inicio (Casos de Éxito / Portafolio 100% desplegado)
             6.0 * vh,   // Sección 3 Fondo (Scroll completo por las tarjetas de proyectos)
-            7.4 * vh,   // Sección 4 (Galería Comercial)
-            8.4 * vh,   // Sección 5 (Portada Galería)
-            9.4 * vh,   // Sección 6 (Catálogo — El Match)
-            14.2 * vh,  // Sección 7 Inicio (Pilar de Integridad: Inicio con cortina 100% abierta y pilares superiores)
-            16.0 * vh,  // Sección 7 Fondo (Primer clic en Sec 7: Desplaza al fondo revelando los 5 pilares completos)
-            17.4 * vh,  // Sección 8 Inicio (Idea Lab Inicio: Cortina 100% abierta con tarjetas superiores)
-            18.2 * vh,  // Sección 8 Fondo (Fondo de Idea Lab: Todos los procesos y tarjetas desplegados)
-            19.2 * vh,  // Sección 9 (ValorMáximoART: Clic desde el fondo de Idea Lab lleva a ValorMáximoART al 100%)
+            7.4 * vh,   // Sección 4 (Galería Comercial 100% visible)
+            8.4 * vh,   // Sección 5 (Portada Galería 100% visible)
+            9.4 * vh,   // Sección 6 Inicio (Catálogo — El Match: Primeras fichas)
+            11.3 * vh,  // Sección 6 Mitad (Desfile intermedio de fichas)
+            13.2 * vh,  // Sección 6 Fondo (Logo ISO y Cierre de Catálogo)
+            14.2 * vh,  // Sección 7 Inicio (Pilar de Integridad 100% abierta)
+            16.0 * vh,  // Sección 7 Fondo (Todos los 5 pilares completos)
+            17.4 * vh,  // Sección 8 Inicio (Idea Lab 100% abierta)
+            18.2 * vh,  // Sección 8 Fondo (Procesos Idea Lab completos)
+            19.2 * vh,  // Sección 9 (ValorMáximoART 100% desplegado y Footer)
             0           // Volver al Inicio (Hero)
         ];
 
         let nextTarget = mobileTargets.find(t => t > scrollY + 40);
         if (nextTarget === undefined) nextTarget = 0;
 
-        const lenis = window.lenis;
-        if (lenis) {
-            lenis.scrollTo(nextTarget, {
-                duration: 1.4,
-                easing: (t) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t
-            });
-        } else {
-            window.scrollTo({ top: nextTarget, behavior: 'smooth' });
-        }
+        smoothScrollToPosition(nextTarget, 900);
         return;
     }
 
