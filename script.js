@@ -1838,7 +1838,9 @@ function initPropuestasHoverPause() {
 // FICHA DETALLADA DEL INMUEBLE (Modal: Desfile de Fotos + Tabla Técnica)
 // ============================================================================
 // Cada clave corresponde al atributo data-ficha de las tarjetas del catálogo.
-const fichasInmuebles = {
+window.fichasInmuebles = window.fichasInmuebles || {};
+const fichasInmuebles = window.fichasInmuebles;
+const defaultFichasStatic = {
     'riva-palacio': {
         titulo: 'Riva Palacio',
         ubicacion: {
@@ -2515,6 +2517,8 @@ const fichasInmuebles = {
         },
     },
 };
+
+Object.assign(window.fichasInmuebles, defaultFichasStatic, window.fichasInmuebles);
 
 let fichaRAF = null;
 let fichaOffset = 0;

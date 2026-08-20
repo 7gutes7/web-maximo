@@ -1,0 +1,2338 @@
+[
+  {
+    "id": "riva-palacio",
+    "order": 1,
+    "active": true,
+    "titulo": "Riva Palacio",
+    "subtitulo": "Back Shops",
+    "badgeText": "11 DISPONIBLES",
+    "badgeType": "badge-open",
+    "descripcion": "Maximizar la ocupación atrayendo oficinas y consultorios con modelos de atención especializada, aprovechando la ubicación del inmueble en una zona de alta actividad comercial para fortalecer su competitividad, rentabilidad y permanencia de los arrendatarios.",
+    "perfilLabel": "Perfil Empresarial",
+    "perfilTexto": "Mentalidad inversora. Alta tolerancia al riesgo.",
+    "portada": "galeria comercial/Riva Palacio/portada tarjeta.png",
+    "ubicacion": {
+      "embed": "https://maps.google.com/maps?q=19.2928195,-99.6557402&z=17&ie=UTF8&iwloc=&output=embed",
+      "link": "https://maps.app.goo.gl/VjfTWGnuPBXwjuLr8"
+    },
+    "fotos": [
+      "galeria comercial/Riva Palacio/portada tarjeta.png",
+      "galeria comercial/Riva Palacio/PHOTO-2026-05-16-16-46-53.jpg",
+      "galeria comercial/Riva Palacio/PHOTO-2026-05-16-16-46-53 2.jpg",
+      "galeria comercial/Riva Palacio/PHOTO-2026-05-16-16-46-53 3.jpg",
+      "galeria comercial/Riva Palacio/PHOTO-2026-05-16-16-46-53 4.jpg",
+      "galeria comercial/Riva Palacio/PHOTO-2026-05-16-16-46-53 5.jpg",
+      "galeria comercial/Riva Palacio/PHOTO-2026-05-16-16-46-53 6.jpg",
+      "galeria comercial/Riva Palacio/PHOTO-2026-05-16-16-46-53 7.jpg",
+      "galeria comercial/Riva Palacio/PHOTO-2026-05-16-16-46-53 9.jpg",
+      "galeria comercial/Riva Palacio/PHOTO-2026-05-16-16-46-53 10.jpg",
+      "galeria comercial/Riva Palacio/PHOTO-2026-05-16-16-46-53 11.jpg",
+      "galeria comercial/Riva Palacio/PHOTO-2026-05-16-16-46-53 12.jpg"
+    ],
+    "tabla": [
+      {
+        "concepto": "Metros cuadrados",
+        "valor": "1,230.12 m² total"
+      },
+      {
+        "concepto": "Precio por m²",
+        "valor": "$380.00 – $542.00"
+      },
+      {
+        "concepto": "Locales disponibles",
+        "valor": "11"
+      },
+      {
+        "concepto": "Niveles",
+        "valor": "PB y Planta Alta"
+      },
+      {
+        "concepto": "Acceso",
+        "valor": "24h, discreto"
+      }
+    ],
+    "encabezadosLocales": [
+      "NO. LOCAL",
+      "INQUILINO / GIRO COMERCIAL",
+      "SUPERFICIE (m²)",
+      "PRECIO POR m²",
+      "NOTAS / ESTATUS"
+    ],
+    "locales": [
+      {
+        "no": "1 PB",
+        "giro": "Churrería Porfirio",
+        "superficie": "82.60",
+        "precio": "$423.00",
+        "notas": "Rentado"
+      },
+      {
+        "no": "2 PB",
+        "giro": "Busher's",
+        "superficie": "35.00",
+        "precio": "$453.85",
+        "notas": "Rentado"
+      },
+      {
+        "no": "3 PB",
+        "giro": "DISPONIBLE",
+        "superficie": "62.79",
+        "precio": "$450.00",
+        "notas": "Excelente ubicación (Disponible)"
+      },
+      {
+        "no": "4 PB",
+        "giro": "AT&T RP",
+        "superficie": "60.69",
+        "precio": "$542.00",
+        "notas": "Rentado"
+      },
+      {
+        "no": "5 PB",
+        "giro": "DISPONIBLE",
+        "superficie": "58.53",
+        "precio": "$450.00",
+        "notas": "Excelente ubicación (Disponible)"
+      },
+      {
+        "no": "6 PB",
+        "giro": "DISPONIBLE",
+        "superficie": "56.49",
+        "precio": "$450.00",
+        "notas": "Excelente ubicación (Disponible)"
+      },
+      {
+        "no": "7 PB",
+        "giro": "DISPONIBLE",
+        "superficie": "54.15",
+        "precio": "$450.00",
+        "notas": "Excelente ubicación (Disponible)"
+      },
+      {
+        "no": "8 PB",
+        "giro": "DISPONIBLE",
+        "superficie": "179.42",
+        "precio": "$450.00",
+        "notas": "Amplio espacio PB (Disponible)"
+      },
+      {
+        "no": "9 PA",
+        "giro": "DISPONIBLE",
+        "superficie": "76.68",
+        "precio": "$380.00",
+        "notas": "Planta Alta (Disponible)"
+      },
+      {
+        "no": "10 PA",
+        "giro": "DISPONIBLE",
+        "superficie": "59.64",
+        "precio": "$380.00",
+        "notas": "Planta Alta (Disponible)"
+      },
+      {
+        "no": "11 PA",
+        "giro": "Oficinas Poder legislativo",
+        "superficie": "57.90",
+        "precio": "$473.70",
+        "notas": "Rentado"
+      },
+      {
+        "no": "12 PA",
+        "giro": "DISPONIBLE",
+        "superficie": "56.34",
+        "precio": "$380.00",
+        "notas": "Planta Alta (Disponible)"
+      },
+      {
+        "no": "13 PA",
+        "giro": "DISPONIBLE",
+        "superficie": "54.90",
+        "precio": "$380.00",
+        "notas": "Planta Alta (Disponible)"
+      },
+      {
+        "no": "14 PA",
+        "giro": "DISPONIBLE",
+        "superficie": "53.34",
+        "precio": "$380.00",
+        "notas": "Planta Alta (Disponible)"
+      },
+      {
+        "no": "15 PA",
+        "giro": "DISPONIBLE",
+        "superficie": "269.85",
+        "precio": "$380.00",
+        "notas": "Espacio más amplio PA (Disponible)"
+      }
+    ],
+    "datosGenerales": [
+      {
+        "concepto": "Porcentaje de Ocupación",
+        "valor": "27%"
+      },
+      {
+        "concepto": "Total de Locales",
+        "valor": "15"
+      },
+      {
+        "concepto": "Locales Disponibles",
+        "valor": "11"
+      },
+      {
+        "concepto": "Cuota de Mantenimiento",
+        "valor": "Mantenimiento del 15%"
+      },
+      {
+        "concepto": "Servicios",
+        "valor": "Servicios independientes"
+      },
+      {
+        "concepto": "Marcas Ancla y Actuales",
+        "valor": "Churrería Porfirio, Busher's, AT&T RP, Oficinas Poder Legislativo"
+      }
+    ]
+  },
+  {
+    "id": "sub-level",
+    "order": 2,
+    "active": true,
+    "titulo": "Paseo Central",
+    "subtitulo": "Anchors",
+    "badgeText": "12 DISPONIBLES",
+    "badgeType": "badge-open",
+    "descripcion": "La estrategia comercial se enfoca en atraer arrendatarios con propuestas de valor diferenciadas, mantener una mezcla equilibrada de giros y fortalecer el posicionamiento de la plaza como un destino comercial de alta calidad.",
+    "perfilLabel": "TENANT PROFILE",
+    "perfilTexto": "Operational focus. No client facing.",
+    "portada": "galeria comercial/Paseo Central/Portada.jpg",
+    "ubicacion": {
+      "embed": "https://maps.google.com/maps?q=19.2604988,-99.5771917&z=17&ie=UTF8&iwloc=&output=embed",
+      "link": "https://maps.app.goo.gl/PDCTTs4LSabGGwBL9"
+    },
+    "fotos": [
+      "galeria comercial/Paseo Central/Portada.jpg",
+      "galeria comercial/Paseo Central/PHOTO-2026-06-02-13-07-29.jpg",
+      "galeria comercial/Paseo Central/PHOTO-2026-06-02-13-07-29 2.jpg",
+      "galeria comercial/Paseo Central/PHOTO-2026-06-02-13-07-29 3.jpg",
+      "galeria comercial/Paseo Central/PHOTO-2026-06-02-13-07-29 4.jpg",
+      "galeria comercial/Paseo Central/PHOTO-2026-06-02-14-12-38.jpg"
+    ],
+    "tabla": [
+      {
+        "concepto": "Metros cuadrados",
+        "valor": "2,324.96 m² total"
+      },
+      {
+        "concepto": "Precio por m²",
+        "valor": "$380.00 – $450.00"
+      },
+      {
+        "concepto": "Locales disponibles",
+        "valor": "12"
+      }
+    ],
+    "encabezadosLocales": [
+      "NO. LOCAL",
+      "INQUILINO / GIRO COMERCIAL",
+      "SUPERFICIE (m²)",
+      "PRECIO POR m²",
+      "NOTAS / ESTATUS"
+    ],
+    "locales": [
+      {
+        "no": "1 PB",
+        "giro": "House roll",
+        "superficie": "61.95",
+        "precio": "$450.00",
+        "notas": "Rentado"
+      },
+      {
+        "no": "2 PB",
+        "giro": "Dolphy helados",
+        "superficie": "61.48",
+        "precio": "$450.00",
+        "notas": "Rentado"
+      },
+      {
+        "no": "3 PB",
+        "giro": "Clinica dental By Feliber",
+        "superficie": "48.53",
+        "precio": "$450.00",
+        "notas": "Rentado"
+      },
+      {
+        "no": "4 PB",
+        "giro": "Centro cambiario",
+        "superficie": "48.72",
+        "precio": "$450.00",
+        "notas": "Rentado"
+      },
+      {
+        "no": "5 PB",
+        "giro": "Gotcha",
+        "superficie": "59.44",
+        "precio": "$450.00",
+        "notas": "Rentado"
+      },
+      {
+        "no": "6 PB",
+        "giro": "Eva studio",
+        "superficie": "65.24",
+        "precio": "$450.00",
+        "notas": "Rentado"
+      },
+      {
+        "no": "7 PB",
+        "giro": "Cafetería Amore",
+        "superficie": "63.18",
+        "precio": "$450.00",
+        "notas": "Rentado"
+      },
+      {
+        "no": "8 PB",
+        "giro": "Eggstasy/Barrel House",
+        "superficie": "60.52",
+        "precio": "$450.00",
+        "notas": "Rentado"
+      },
+      {
+        "no": "9 PB",
+        "giro": "Estudio Erre",
+        "superficie": "60.52",
+        "precio": "$450.00",
+        "notas": "Rentado"
+      },
+      {
+        "no": "10 PB",
+        "giro": "B clinic",
+        "superficie": "60.52",
+        "precio": "$450.00",
+        "notas": "Rentado"
+      },
+      {
+        "no": "11 PB",
+        "giro": "Zalinda",
+        "superficie": "60.52",
+        "precio": "$450.00",
+        "notas": "Rentado"
+      },
+      {
+        "no": "12 PB",
+        "giro": "Mieli Canela",
+        "superficie": "60.52",
+        "precio": "$450.00",
+        "notas": "Rentado"
+      },
+      {
+        "no": "13 PB",
+        "giro": "Ludoteca",
+        "superficie": "60.45",
+        "precio": "$450.00",
+        "notas": "Rentado"
+      },
+      {
+        "no": "14 PB",
+        "giro": "Ludoteca",
+        "superficie": "51.87",
+        "precio": "$450.00",
+        "notas": "Rentado"
+      },
+      {
+        "no": "15 PB",
+        "giro": "Tacos Tijuas",
+        "superficie": "80.98",
+        "precio": "$450.00",
+        "notas": "Rentado"
+      },
+      {
+        "no": "16 PB",
+        "giro": "D uñas",
+        "superficie": "61.72",
+        "precio": "$450.00",
+        "notas": "Rentado"
+      },
+      {
+        "no": "17 PB",
+        "giro": "Saran Beauty",
+        "superficie": "62.26",
+        "precio": "$450.00",
+        "notas": "Rentado"
+      },
+      {
+        "no": "18 PB",
+        "giro": "Base Burguer",
+        "superficie": "54.58",
+        "precio": "$450.00",
+        "notas": "Rentado"
+      },
+      {
+        "no": "19 PB",
+        "giro": "Galletea Bakery",
+        "superficie": "38.79",
+        "precio": "$450.00",
+        "notas": "Rentado"
+      },
+      {
+        "no": "20 PB",
+        "giro": "Oficina Amore",
+        "superficie": "40.88",
+        "precio": "$450.00",
+        "notas": "Rentado"
+      },
+      {
+        "no": "21 PA",
+        "giro": "Bar Vizzio",
+        "superficie": "61.95",
+        "precio": "$380.00",
+        "notas": "Rentado"
+      },
+      {
+        "no": "22 PA",
+        "giro": "Bar Vizzio",
+        "superficie": "61.48",
+        "precio": "$380.00",
+        "notas": "Rentado"
+      },
+      {
+        "no": "23 PA",
+        "giro": "Bar Vizzio",
+        "superficie": "48.53",
+        "precio": "$380.00",
+        "notas": "Rentado"
+      },
+      {
+        "no": "24 PA",
+        "giro": "DISPONIBLE",
+        "superficie": "48.72",
+        "precio": "$380.00",
+        "notas": "Planta Alta (Disponible)"
+      },
+      {
+        "no": "25 PA",
+        "giro": "Barre studio",
+        "superficie": "59.44",
+        "precio": "$380.00",
+        "notas": "Rentado"
+      },
+      {
+        "no": "26 PA",
+        "giro": "DISPONIBLE",
+        "superficie": "65.24",
+        "precio": "$380.00",
+        "notas": "Planta Alta (Disponible)"
+      },
+      {
+        "no": "27 PA",
+        "giro": "DISPONIBLE",
+        "superficie": "63.88",
+        "precio": "$380.00",
+        "notas": "Planta Alta (Disponible)"
+      },
+      {
+        "no": "28 PA",
+        "giro": "DISPONIBLE",
+        "superficie": "60.84",
+        "precio": "$380.00",
+        "notas": "Planta Alta (Disponible)"
+      },
+      {
+        "no": "29 PA",
+        "giro": "DISPONIBLE",
+        "superficie": "60.84",
+        "precio": "$380.00",
+        "notas": "Planta Alta (Disponible)"
+      },
+      {
+        "no": "30 PA",
+        "giro": "DISPONIBLE",
+        "superficie": "60.84",
+        "precio": "$380.00",
+        "notas": "Planta Alta (Disponible)"
+      },
+      {
+        "no": "31 PA",
+        "giro": "DISPONIBLE",
+        "superficie": "60.84",
+        "precio": "$380.00",
+        "notas": "Planta Alta (Disponible)"
+      },
+      {
+        "no": "32 PA",
+        "giro": "Pilates reformer",
+        "superficie": "60.84",
+        "precio": "$380.00",
+        "notas": "Rentado"
+      },
+      {
+        "no": "33 PA",
+        "giro": "Pilates reformer",
+        "superficie": "65.20",
+        "precio": "$380.00",
+        "notas": "Rentado"
+      },
+      {
+        "no": "34 PA",
+        "giro": "DISPONIBLE",
+        "superficie": "53.39",
+        "precio": "$380.00",
+        "notas": "Planta Alta (Disponible)"
+      },
+      {
+        "no": "35 PA",
+        "giro": "Cycling Indoor",
+        "superficie": "80.06",
+        "precio": "$380.00",
+        "notas": "Rentado"
+      },
+      {
+        "no": "36 PA",
+        "giro": "Closet Athelier",
+        "superficie": "70.87",
+        "precio": "$380.00",
+        "notas": "Rentado"
+      },
+      {
+        "no": "37 PA",
+        "giro": "DISPONIBLE",
+        "superficie": "62.26",
+        "precio": "$380.00",
+        "notas": "Planta Alta (Disponible)"
+      },
+      {
+        "no": "38 PA",
+        "giro": "DISPONIBLE",
+        "superficie": "54.58",
+        "precio": "$380.00",
+        "notas": "Planta Alta (Disponible)"
+      },
+      {
+        "no": "39 PA",
+        "giro": "DISPONIBLE",
+        "superficie": "38.79",
+        "precio": "$380.00",
+        "notas": "Planta Alta (Disponible)"
+      },
+      {
+        "no": "40 PA",
+        "giro": "DISPONIBLE",
+        "superficie": "40.88",
+        "precio": "$380.00",
+        "notas": "Planta Alta (Disponible)"
+      }
+    ],
+    "datosGenerales": [
+      {
+        "concepto": "Porcentaje de Ocupación",
+        "valor": "69%"
+      },
+      {
+        "concepto": "Total de Locales",
+        "valor": "39"
+      },
+      {
+        "concepto": "Locales Disponibles",
+        "valor": "12"
+      },
+      {
+        "concepto": "Cuota de Mantenimiento",
+        "valor": "Mantenimiento del 10%"
+      },
+      {
+        "concepto": "Servicios",
+        "valor": "Servicios independientes."
+      }
+    ]
+  },
+  {
+    "id": "avenida-central",
+    "order": 3,
+    "active": true,
+    "titulo": "Plaza Independencia",
+    "subtitulo": "Anchors",
+    "badgeText": "5 DISPONIBLES",
+    "badgeType": "badge-open",
+    "descripcion": "Casa de estilo colonial, conservada en excelente estado sin modificaciones en su diseño original ni en su fachada. La propiedad alberga tres unidades habitacionales independientes, distribuidas en dos niveles. Cuenta con puertas y pisos de madera, dos cocinas, cuartos de servicio y un amplio patio con capacidad para estacionar entre seis y ocho vehículos. Las instalaciones hidráulicas y eléctricas se encuentran en óptimas condiciones, listas para su uso inmediato.",
+    "perfilLabel": "DELIVERY",
+    "perfilTexto": "Raw structural shell only.",
+    "portada": "galeria comercial/Plaza Independencia/portada.jpg",
+    "ubicacion": {
+      "embed": "https://maps.google.com/maps?q=19.2924242,-99.6461373&z=17&ie=UTF8&iwloc=&output=embed",
+      "link": "https://maps.app.goo.gl/pKZ3M5AkfUqT7GuP7"
+    },
+    "fotos": [
+      "galeria comercial/Plaza Independencia/portada.jpg",
+      "galeria comercial/Plaza Independencia/480666748_1015507253929811_5668436843392464801_n.jpg",
+      "galeria comercial/Plaza Independencia/481218425_1015507310596472_3066958348184234791_n.jpg",
+      "galeria comercial/Plaza Independencia/whATS.jpeg",
+      "galeria comercial/Plaza Independencia/WhatsApp Image 2026-08-12 at 4.04.36 PM.jpeg",
+      "galeria comercial/Plaza Independencia/WhatsApp Image 2026-08-12 at 4.04.36 PM (1).jpeg",
+      "galeria comercial/Plaza Independencia/WhatsApp Image 2026-08-12 at 4.04.36 PM (2).jpeg",
+      "galeria comercial/Plaza Independencia/WhatsApp Image 2026-08-12 at 4.04.37 PM.jpeg",
+      "galeria comercial/Plaza Independencia/WhatsApp Image 2026-08-12 at 4.04.37 PM (1).jpeg",
+      "galeria comercial/Plaza Independencia/WhatsApp Image 2026-08-12 at 4.04.37 PM (2).jpeg",
+      "galeria comercial/Plaza Independencia/WhatsApp Image 2026-08-12 at 4.04.37 PM (3).jpeg"
+    ],
+    "tabla": [
+      {
+        "concepto": "Metros cuadrados",
+        "valor": "1,017.76 m² total"
+      },
+      {
+        "concepto": "Precio por m²",
+        "valor": "$78.12 – $340.70"
+      },
+      {
+        "concepto": "Locales disponibles",
+        "valor": "5"
+      }
+    ],
+    "encabezadosLocales": [
+      "NO. LOCAL",
+      "INQUILINO / GIRO COMERCIAL",
+      "SUPERFICIE (m²)",
+      "PRECIO POR m²",
+      "ESTATUS"
+    ],
+    "locales": [
+      {
+        "no": "1, 2",
+        "giro": "La Dueña Vinos y Licores",
+        "superficie": "119.34",
+        "precio": "$340.70",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "3",
+        "giro": "La Chillaquileria",
+        "superficie": "65.02",
+        "precio": "$253.06",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "4",
+        "giro": "INTERCON",
+        "superficie": "65.02",
+        "precio": "$324.61",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "5",
+        "giro": "DISPONIBLE",
+        "superficie": "40",
+        "precio": "$300.00",
+        "estatus": "Disponible"
+      },
+      {
+        "no": "6, 7 P.A.",
+        "giro": "Autofinanciamiento Continental",
+        "superficie": "119.34",
+        "precio": "$254.03",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "8",
+        "giro": "DISPONIBLE",
+        "superficie": "65.02",
+        "precio": "$230.76",
+        "estatus": "Disponible"
+      },
+      {
+        "no": "9",
+        "giro": "DISPONIBLE",
+        "superficie": "65.02",
+        "precio": "$230.76",
+        "estatus": "Disponible"
+      },
+      {
+        "no": "10",
+        "giro": "DISPONIBLE",
+        "superficie": "64",
+        "precio": "$230.76",
+        "estatus": "Disponible"
+      },
+      {
+        "no": "OFICINA 1",
+        "giro": "Desarrollar-t",
+        "superficie": "160",
+        "precio": "$79.93",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "OFICINA 2",
+        "giro": "Securitas",
+        "superficie": "160",
+        "precio": "$87.03",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "OFICINA 3",
+        "giro": "DISPONIBLE",
+        "superficie": "160",
+        "precio": "$78.12",
+        "estatus": "Disponible"
+      }
+    ],
+    "datosGenerales": [
+      {
+        "concepto": "Porcentaje de Ocupación",
+        "valor": "55%"
+      },
+      {
+        "concepto": "Total de Locales",
+        "valor": "11"
+      },
+      {
+        "concepto": "Locales Disponibles",
+        "valor": "5"
+      },
+      {
+        "concepto": "Cuota de Mantenimiento",
+        "valor": "Mantenimiento del 10%"
+      },
+      {
+        "concepto": "Servicios",
+        "valor": "Servicios independientes."
+      }
+    ]
+  },
+  {
+    "id": "distrito-financiero",
+    "order": 4,
+    "active": true,
+    "titulo": "Pino Suárez",
+    "subtitulo": "Corporate Suite",
+    "badgeText": "5 DISPONIBLES",
+    "badgeType": "badge-open",
+    "descripcion": "Posicionar el inmueble como un desarrollo comercial y de servicios de referencia en la zona, capitalizando la presencia de establecimientos ancla y su ubicación sobre vialidades de alta circulación para impulsar la ocupación de los espacios disponibles con giros complementarios que generen valor agregado.",
+    "perfilLabel": "TENANT PROFILE",
+    "perfilTexto": "Financial & HQ Operations.",
+    "portada": "galeria comercial/Pino Suarez/portada.jpg",
+    "ubicacion": {
+      "embed": "https://maps.google.com/maps?q=Blvd.%20Pino%20Su%C3%A1rez%20191%2C%20La%20Purisima%2C%2052169%20San%20Jorge%20Pueblo%20Nuevo%2C%20M%C3%A9x.&z=16&ie=UTF8&iwloc=&output=embed",
+      "link": "https://share.google/p0vjn7LI2WKcU1CHl"
+    },
+    "fotos": [
+      "galeria comercial/Pino Suarez/portada.jpg",
+      "galeria comercial/Pino Suarez/PHOTO-2026-06-20-13-43-47.jpg",
+      "galeria comercial/Pino Suarez/PHOTO-2026-06-20-13-43-47 2.jpg",
+      "galeria comercial/Pino Suarez/PHOTO-2026-06-20-13-43-47 3.jpg",
+      "galeria comercial/Pino Suarez/PHOTO-2026-06-20-13-43-47 4.jpg",
+      "galeria comercial/Pino Suarez/PHOTO-2026-06-20-13-43-47 5.jpg",
+      "galeria comercial/Pino Suarez/PHOTO-2026-06-20-13-43-47 6.jpg",
+      "galeria comercial/Pino Suarez/PHOTO-2026-06-20-13-43-47 7.jpg",
+      "galeria comercial/Pino Suarez/PHOTO-2026-06-20-13-43-47 8.jpg",
+      "galeria comercial/Pino Suarez/PHOTO-2026-06-20-13-43-47 10.jpg",
+      "galeria comercial/Pino Suarez/PHOTO-2026-06-20-13-43-47 11.jpg"
+    ],
+    "tabla": [
+      {
+        "concepto": "Metros cuadrados",
+        "valor": "819.74 m² total"
+      },
+      {
+        "concepto": "Precio por m²",
+        "valor": "$380.00 – $450.00"
+      },
+      {
+        "concepto": "Locales disponibles",
+        "valor": "5"
+      }
+    ],
+    "encabezadosLocales": [
+      "NO. LOCAL",
+      "INQUILINO / GIRO COMERCIAL",
+      "SUPERFICIE (m²)",
+      "PRECIO POR m²",
+      "NOTAS / ESTATUS"
+    ],
+    "locales": [
+      {
+        "no": "1",
+        "giro": "OXXO PB",
+        "superficie": "235.76",
+        "precio": "$450.00",
+        "notas": "Rentado"
+      },
+      {
+        "no": "2",
+        "giro": "Su karne PB",
+        "superficie": "90.00",
+        "precio": "$450.00",
+        "notas": "Rentado"
+      },
+      {
+        "no": "3",
+        "giro": "Lumina Caf PB",
+        "superficie": "80.00",
+        "precio": "$450.00",
+        "notas": "Rentado"
+      },
+      {
+        "no": "4 PA",
+        "giro": "Dentistas PA",
+        "superficie": "60.00",
+        "precio": "$380.00",
+        "notas": "Rentado"
+      },
+      {
+        "no": "5 PA",
+        "giro": "DISPONIBLE",
+        "superficie": "65.10",
+        "precio": "$400.00",
+        "notas": "Planta Alta (Disponible)"
+      },
+      {
+        "no": "6 PA",
+        "giro": "DISPONIBLE",
+        "superficie": "53.12",
+        "precio": "$400.00",
+        "notas": "Planta Alta (Disponible)"
+      },
+      {
+        "no": "7 PA",
+        "giro": "DISPONIBLE",
+        "superficie": "74.66",
+        "precio": "$400.00",
+        "notas": "Planta Alta (Disponible)"
+      },
+      {
+        "no": "8 PA",
+        "giro": "DISPONIBLE",
+        "superficie": "79.50",
+        "precio": "$400.00",
+        "notas": "Planta Alta (Disponible)"
+      },
+      {
+        "no": "9 PA",
+        "giro": "DISPONIBLE",
+        "superficie": "81.60",
+        "precio": "$400.00",
+        "notas": "Planta Alta (Disponible)"
+      }
+    ],
+    "datosGenerales": [
+      {
+        "concepto": "Porcentaje de Ocupación",
+        "valor": "44%"
+      },
+      {
+        "concepto": "Total de Locales",
+        "valor": "9"
+      },
+      {
+        "concepto": "Locales Disponibles",
+        "valor": "5"
+      },
+      {
+        "concepto": "Cuota de Mantenimiento",
+        "valor": "Mantenimiento del 10%"
+      },
+      {
+        "concepto": "Servicios",
+        "valor": "Servicios independientes."
+      }
+    ]
+  },
+  {
+    "id": "paseo-artes",
+    "order": 5,
+    "active": true,
+    "titulo": "Edificio Hidalgo",
+    "subtitulo": "Flagship Store",
+    "badgeText": "2 DISPONIBLES",
+    "badgeType": "badge-open",
+    "descripcion": "Consolidar el inmueble como un edificio de uso mixto, orientado a integrar espacios comerciales, de almacenamiento y oficinas. Inmueble en venta.",
+    "perfilLabel": "TENANT PROFILE",
+    "perfilTexto": "Established Retail Flagship.",
+    "portada": "galeria comercial/Hidalgo/Portada.jpg",
+    "ubicacion": {
+      "embed": "https://maps.google.com/maps?q=19.2901326,-99.648684&z=17&ie=UTF8&iwloc=&output=embed",
+      "link": "https://maps.app.goo.gl/Kf5PNUQyApBnmFWH8"
+    },
+    "fotos": [
+      "galeria comercial/Hidalgo/Portada.jpg",
+      "galeria comercial/Hidalgo/PHOTO-2022-02-17-15-35-52.jpg",
+      "galeria comercial/Hidalgo/PHOTO-2022-02-17-15-35-54.jpg",
+      "galeria comercial/Hidalgo/PHOTO-2022-02-17-15-37-02.jpg",
+      "galeria comercial/Hidalgo/PHOTO-2025-05-02-16-55-07.jpg",
+      "galeria comercial/Hidalgo/PHOTO-2025-05-02-16-55-07 2.jpg",
+      "galeria comercial/Hidalgo/PHOTO-2025-05-02-16-55-07 3.jpg",
+      "galeria comercial/Hidalgo/PHOTO-2025-05-02-16-55-07 5.jpg",
+      "galeria comercial/Hidalgo/PHOTO-2025-05-02-16-55-07 6.jpg",
+      "galeria comercial/Hidalgo/PHOTO-2025-05-02-16-55-07 7.jpg",
+      "galeria comercial/Hidalgo/PHOTO-2025-05-02-16-55-07 8.jpg",
+      "galeria comercial/Hidalgo/PHOTO-2025-05-02-16-55-07 9.jpg"
+    ],
+    "tabla": [
+      {
+        "concepto": "Metros cuadrados",
+        "valor": "734.76 m² total"
+      },
+      {
+        "concepto": "Precio por m²",
+        "valor": "$83.07 – $150.90"
+      },
+      {
+        "concepto": "Locales disponibles",
+        "valor": "2"
+      }
+    ],
+    "encabezadosLocales": [
+      "NO. LOCAL",
+      "INQUILINO / GIRO COMERCIAL",
+      "SUPERFICIE (m²)",
+      "PRECIO POR m²",
+      "ESTATUS"
+    ],
+    "locales": [
+      {
+        "no": "1 PB",
+        "giro": "Crudalia los Primos",
+        "superficie": "120",
+        "precio": "$150.90",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "2 PB",
+        "giro": "Disponible",
+        "superficie": "130",
+        "precio": "$130.76",
+        "estatus": "Disponible"
+      },
+      {
+        "no": "3 PA",
+        "giro": "IMSS Bienestar",
+        "superficie": "242.38",
+        "precio": "$83.07",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "4 2do Nivel",
+        "giro": "Disponible",
+        "superficie": "242.38",
+        "precio": "$83.07",
+        "estatus": "Disponible"
+      }
+    ],
+    "datosGenerales": [
+      {
+        "concepto": "Porcentaje de Ocupación",
+        "valor": "50%"
+      },
+      {
+        "concepto": "Total de Locales",
+        "valor": "4"
+      },
+      {
+        "concepto": "Locales Disponibles",
+        "valor": "2"
+      },
+      {
+        "concepto": "Cuota de Mantenimiento",
+        "valor": "No aplica en estos locales."
+      },
+      {
+        "concepto": "Servicios",
+        "valor": "Servicios independientes."
+      },
+      {
+        "concepto": "Agua",
+        "valor": "Cuota fija."
+      }
+    ]
+  },
+  {
+    "id": "felipe-villanueva",
+    "order": 6,
+    "active": true,
+    "titulo": "Felipe Villanueva",
+    "subtitulo": "Culinary Hub",
+    "badgeText": "2 DISPONIBLES",
+    "badgeType": "badge-open",
+    "descripcion": "Consolidar el inmueble como un desarrollo de uso mixto, integrado por espacios comerciales, de servicios y oficinas, aprovechando su ubicación sobre vialidades con diferentes niveles de afluencia para atender diversos segmentos de mercado. Inmueble en venta.",
+    "perfilLabel": "DELIVERY",
+    "perfilTexto": "Semi-fitted food & beverage venue.",
+    "portada": "galeria comercial/Felipe Villanueva/portada.jpg",
+    "ubicacion": {
+      "embed": "https://maps.google.com/maps?q=Av.+Felipe+Villanueva,+Toluca,+M%C3%A9xico&z=17&ie=UTF8&iwloc=&output=embed",
+      "link": "https://maps.app.goo.gl/V5sN6x8PoFgWP7yaA"
+    },
+    "fotos": [
+      "galeria comercial/Felipe Villanueva/portada.jpg",
+      "galeria comercial/Felipe Villanueva/PHOTO-2022-02-17-15-00-08.jpg",
+      "galeria comercial/Felipe Villanueva/PHOTO-2022-02-17-15-00-09.jpg"
+    ],
+    "tabla": [
+      {
+        "concepto": "Metros cuadrados",
+        "valor": "890 m² total"
+      },
+      {
+        "concepto": "Precio por m²",
+        "valor": "$64.10 – $224.00"
+      },
+      {
+        "concepto": "Locales disponibles",
+        "valor": "2"
+      }
+    ],
+    "encabezadosLocales": [
+      "NO. LOCAL",
+      "INQUILINO / GIRO COMERCIAL",
+      "SUPERFICIE (m²)",
+      "PRECIO POR m²",
+      "ESTATUS"
+    ],
+    "locales": [
+      {
+        "no": "1",
+        "giro": "DISPONIBLE",
+        "superficie": "50",
+        "precio": "$224.00",
+        "estatus": "Disponible"
+      },
+      {
+        "no": "2",
+        "giro": "Estética Erick",
+        "superficie": "50",
+        "precio": "$224.00",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "EDIFICIO",
+        "giro": "ON Nutrición",
+        "superficie": "390",
+        "precio": "$64.10",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "3",
+        "giro": "DISPONIBLE",
+        "superficie": "200",
+        "precio": "$150.00",
+        "estatus": "Disponible"
+      },
+      {
+        "no": "4",
+        "giro": "VLM CONSULTING",
+        "superficie": "200",
+        "precio": "$69.58",
+        "estatus": "Rentado"
+      }
+    ],
+    "datosGenerales": [
+      {
+        "concepto": "Porcentaje de Ocupación",
+        "valor": "60%"
+      },
+      {
+        "concepto": "Total de Locales",
+        "valor": "5"
+      },
+      {
+        "concepto": "Locales Disponibles",
+        "valor": "2"
+      },
+      {
+        "concepto": "Cuota de Mantenimiento",
+        "valor": "No aplica en estos locales."
+      },
+      {
+        "concepto": "Servicios",
+        "valor": "Servicios independientes."
+      },
+      {
+        "concepto": "Agua",
+        "valor": "Cuota proporcional a los metros cuadrados arrendados."
+      }
+    ]
+  },
+  {
+    "id": "villada",
+    "order": 7,
+    "active": true,
+    "titulo": "Villada",
+    "subtitulo": "Uso Mixto & Residencial",
+    "badgeText": "3 DISPONIBLES",
+    "badgeType": "badge-open",
+    "descripcion": "La estrategia comercial se orienta a atraer proyectos que respeten las características históricas del inmueble y maximicen su potencial para usos corporativos, institucionales, turísticos o residenciales de alto nivel. *Inmueble en venta y renta*",
+    "perfilLabel": "DELIVERY",
+    "perfilTexto": "3 casas unificadas (1,000 m²).",
+    "portada": "galeria comercial/Villada/Portada.jpg",
+    "ubicacion": {
+      "embed": "https://maps.google.com/maps?q=19.2858101,-99.6586716&z=18&ie=UTF8&iwloc=&output=embed",
+      "link": "https://maps.app.goo.gl/8w1Gxck4gDtbMF3f6"
+    },
+    "fotos": [
+      "galeria comercial/Villada/Portada.jpg",
+      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 4.jpg",
+      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 6.jpg",
+      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 8.jpg",
+      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 11.jpg",
+      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 12.jpg",
+      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 13.jpg",
+      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 14.jpg",
+      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 16.jpg",
+      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 18.jpg",
+      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 22.jpg",
+      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 25.jpg",
+      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 34.jpg",
+      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 37.jpg",
+      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 42.jpg",
+      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 48.jpg",
+      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 56.jpg",
+      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 57.jpg"
+    ],
+    "tabla": [
+      {
+        "concepto": "Metros cuadrados",
+        "valor": "1,000 m² total"
+      },
+      {
+        "concepto": "Precio por m²",
+        "valor": "$200.00"
+      },
+      {
+        "concepto": "Espacios disponibles",
+        "valor": "3 (Casas)"
+      }
+    ],
+    "encabezadosLocales": [
+      "Descripción",
+      "Superficie (m²)",
+      "Precio por m²",
+      "Notas"
+    ],
+    "locales": [
+      {
+        "no": "Casa 1",
+        "superficie": "1000",
+        "precio": "$200.00",
+        "notas": "Disponible (Venta/Renta)"
+      },
+      {
+        "no": "Casa 2",
+        "superficie": "-",
+        "precio": "-",
+        "notas": "Disponible"
+      },
+      {
+        "no": "Casa 3",
+        "superficie": "-",
+        "precio": "-",
+        "notas": "Disponible"
+      }
+    ],
+    "notasPie": [
+      "*El inmueble consta de tres casas que suman un total de 1000 m2, para renta es necesario rentarlo en su totalidad",
+      "**Inmueble disponible para Venta/Renta"
+    ],
+    "datosGenerales": [
+      {
+        "concepto": "Porcentaje de Ocupación",
+        "valor": "0%"
+      },
+      {
+        "concepto": "Total de Espacios",
+        "valor": "3 (Casas)"
+      },
+      {
+        "concepto": "Espacios Disponibles",
+        "valor": "3"
+      },
+      {
+        "concepto": "Cuota de Mantenimiento",
+        "valor": "N/A"
+      },
+      {
+        "concepto": "Servicios",
+        "valor": "A confirmar"
+      }
+    ]
+  },
+  {
+    "id": "solidaridad-torres",
+    "order": 8,
+    "active": true,
+    "titulo": "Av. Solidaridad Torres",
+    "subtitulo": "Corredor Comercial & Servicios",
+    "badgeText": "1 DISPONIBLE",
+    "badgeType": "badge-open",
+    "descripcion": "Consolidarse como un punto comercial de alta visibilidad, orientado a la instalación de negocios de comercio y servicios que aprovechen el constante flujo vehicular de la zona, maximizando la ocupación y el valor comercial del inmueble.",
+    "perfilLabel": "TENANT PROFILE",
+    "perfilTexto": "Comercio, servicios & networking.",
+    "portada": "galeria comercial/Av. Solidaridad Torres/Portada.jpg",
+    "ubicacion": {
+      "embed": "https://maps.google.com/maps?q=19.2764472,-99.5883504&z=17&ie=UTF8&iwloc=&output=embed",
+      "link": "https://maps.app.goo.gl/BSP2bidQwm8uvUuTA"
+    },
+    "fotos": [
+      "galeria comercial/Av. Solidaridad Torres/Portada.jpg",
+      "galeria comercial/Av. Solidaridad Torres/PHOTO-2022-02-10-12-52-23.jpg"
+    ],
+    "tabla": [
+      {
+        "concepto": "Metros cuadrados",
+        "valor": "Consultar por local"
+      },
+      {
+        "concepto": "Precio por m²",
+        "valor": "$197.20 – $204.55"
+      },
+      {
+        "concepto": "Locales disponibles",
+        "valor": "1"
+      }
+    ],
+    "encabezadosLocales": [
+      "NO. LOCAL",
+      "INQUILINO / GIRO COMERCIAL",
+      "SUPERFICIE (m²)",
+      "PRECIO POR m²",
+      "ESTATUS"
+    ],
+    "locales": [
+      {
+        "no": "1 P.B.",
+        "giro": "Refaccionaria Automotriz",
+        "superficie": "78.22",
+        "precio": "$197.20",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "2 P.B.",
+        "giro": "Refaccionaria Automotriz",
+        "superficie": "75.55",
+        "precio": "$197.20",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "3 P.A.",
+        "giro": "Networking",
+        "superficie": "78.22",
+        "precio": "$204.55",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "4 P.A.",
+        "giro": "Disponible",
+        "superficie": "75.55",
+        "precio": "$204.55",
+        "estatus": "Disponible"
+      }
+    ],
+    "datosGenerales": [
+      {
+        "concepto": "Porcentaje de Ocupación",
+        "valor": "75%"
+      },
+      {
+        "concepto": "Total de Locales",
+        "valor": "4"
+      },
+      {
+        "concepto": "Locales Disponibles",
+        "valor": "1"
+      },
+      {
+        "concepto": "Cuota de Mantenimiento",
+        "valor": "No aplica en estos locales."
+      },
+      {
+        "concepto": "Servicios",
+        "valor": "Servicios independientes."
+      }
+    ]
+  },
+  {
+    "id": "plaza-ceboruco",
+    "order": 9,
+    "active": true,
+    "titulo": "Plaza Ceboruco",
+    "subtitulo": "Plaza Comercial 24/7",
+    "badgeText": "0 DISPONIBLES",
+    "badgeType": "badge-orange",
+    "descripcion": "Plaza comercial 24/7 con vigilancia y estacionamiento gratis. Mantener altos niveles de ocupación.",
+    "perfilLabel": "CARACTERÍSTICAS",
+    "perfilTexto": "Vigilancia 24/7 y Estacionamiento Gratuito.",
+    "portada": "galeria comercial/Plaza Ceboruco/portada.jpg",
+    "ubicacion": {
+      "embed": "https://maps.google.com/maps?q=Plaza+Ceboruco,+C.+Ceboruco+No.+2317,+San+Jorge+Pueblo+Nuevo,+Toluca&z=17&ie=UTF8&iwloc=&output=embed",
+      "link": "https://maps.app.goo.gl/9PJWnaDUk2TbnfR38?g_st=iw"
+    },
+    "fotos": [
+      "galeria comercial/Plaza Ceboruco/portada.jpg",
+      "galeria comercial/Plaza Ceboruco/images.jpeg",
+      "galeria comercial/Plaza Ceboruco/images (1).jpeg"
+    ],
+    "tabla": [
+      {
+        "concepto": "Metros cuadrados",
+        "valor": "Consultar por local"
+      },
+      {
+        "concepto": "Precio por m²",
+        "valor": "Consultar por local"
+      },
+      {
+        "concepto": "Locales disponibles",
+        "valor": "0"
+      }
+    ],
+    "encabezadosLocales": [
+      "No. Local",
+      "Inquilino",
+      "Superficie (m²)",
+      "Precio por m²",
+      "Estatus"
+    ],
+    "locales": [
+      {
+        "no": "1",
+        "giro": "Quick Training",
+        "superficie": "47.5",
+        "precio": "$252.07",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "2",
+        "giro": "Quick Training",
+        "superficie": "47.5",
+        "precio": "$252.07",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "3",
+        "giro": "Quick Training",
+        "superficie": "47.5",
+        "precio": "$252.07",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "4",
+        "giro": "Quick Training",
+        "superficie": "47.5",
+        "precio": "$252.07",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "5",
+        "giro": "Inmobiliaria",
+        "superficie": "47.5",
+        "precio": "$268.63",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "6",
+        "giro": "Oficina Administración",
+        "superficie": "47.5",
+        "precio": "$0.00",
+        "estatus": "Uso Interno"
+      },
+      {
+        "no": "7",
+        "giro": "Ludoteca",
+        "superficie": "47.5",
+        "precio": "$210.52",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "8",
+        "giro": "Ludoteca",
+        "superficie": "47.5",
+        "precio": "$210.52",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "9",
+        "giro": "Ludoteca",
+        "superficie": "47.5",
+        "precio": "$210.52",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "10",
+        "giro": "Ludoteca",
+        "superficie": "47.5",
+        "precio": "$210.52",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "12",
+        "giro": "Independiente",
+        "superficie": "49.22",
+        "precio": "N/A",
+        "estatus": "NO ESTA EN RENTA"
+      },
+      {
+        "no": "13",
+        "giro": "Enigma Rooms",
+        "superficie": "194.72",
+        "precio": "$121.13",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "14",
+        "giro": "Enigma Rooms",
+        "superficie": "82.96",
+        "precio": "$121.13",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "15",
+        "giro": "Banco Azteca",
+        "superficie": "175.2",
+        "precio": "$171.04",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "16",
+        "giro": "MMA Box",
+        "superficie": "54.89",
+        "precio": "$133.54",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "17",
+        "giro": "MMA Box",
+        "superficie": "53.61",
+        "precio": "$133.54",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "18",
+        "giro": "Tratamientos corporales",
+        "superficie": "52.68",
+        "precio": "$227.79",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "19",
+        "giro": "CASH",
+        "superficie": "51.4",
+        "precio": "$242.21",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "20",
+        "giro": "Clinica de Especialidades Veterinarias",
+        "superficie": "51.2",
+        "precio": "$214.84",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "21",
+        "giro": "Consultorio Dental",
+        "superficie": "57.75",
+        "precio": "$220.95",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "22",
+        "giro": "SPA",
+        "superficie": "74.85",
+        "precio": "$193.65",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "23",
+        "giro": "Royal Prestige",
+        "superficie": "50.2",
+        "precio": "$220.00",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "24",
+        "giro": "AT&T Ceboruco",
+        "superficie": "50",
+        "precio": "$623.00",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "25",
+        "giro": "Oh lala! Café",
+        "superficie": "90",
+        "precio": "$209.81",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "26",
+        "giro": "Quick Training",
+        "superficie": "63",
+        "precio": "$252.07",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "27",
+        "giro": "Quick Training",
+        "superficie": "50.9",
+        "precio": "$252.07",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "28",
+        "giro": "Multiusos",
+        "superficie": "52.54",
+        "precio": "$278.12",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "29",
+        "giro": "Multiusos",
+        "superficie": "52.54",
+        "precio": "$278.12",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "30",
+        "giro": "Lavandería",
+        "superficie": "52.54",
+        "precio": "$381.69",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "31",
+        "giro": "Clinica de Especialidades Veterinarias",
+        "superficie": "52.54",
+        "precio": "$370.00",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "32",
+        "giro": "Dental Tot",
+        "superficie": "52.54",
+        "precio": "$351.18",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "33",
+        "giro": "Panadería Brito",
+        "superficie": "52.54",
+        "precio": "$232.23",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "34",
+        "giro": "Panadería Brito",
+        "superficie": "76.64",
+        "precio": "$232.23",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "35",
+        "giro": "OXXO",
+        "superficie": "195.87",
+        "precio": "$201.58",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "36",
+        "giro": "Auto Lavado",
+        "superficie": "N/D",
+        "precio": "N/D",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "37",
+        "giro": "Eccelenzza",
+        "superficie": "35",
+        "precio": "$113.54",
+        "estatus": "Rentado"
+      }
+    ],
+    "datosGenerales": [
+      {
+        "concepto": "Porcentaje de Ocupación",
+        "valor": "100%"
+      },
+      {
+        "concepto": "Total de Locales",
+        "valor": "37"
+      },
+      {
+        "concepto": "Locales Disponibles",
+        "valor": "0"
+      },
+      {
+        "concepto": "Cuota de Mantenimiento",
+        "valor": "Mantenimiento del 10%"
+      },
+      {
+        "concepto": "Servicios",
+        "valor": "Servicios independientes"
+      }
+    ]
+  },
+  {
+    "id": "av-lerdo",
+    "order": 10,
+    "active": true,
+    "titulo": "Av. Lerdo",
+    "subtitulo": "Comercial & Servicios Cotidianos",
+    "badgeText": "0 DISPONIBLES",
+    "badgeType": "badge-orange",
+    "descripcion": "Enfocado en satisfacer necesidades cotidianas y complementar la oferta de consumo de la zona.",
+    "perfilLabel": "TENANT MIX",
+    "perfilTexto": "Farmacia Guadalajara, Vinos & Restaurantes.",
+    "portada": "galeria comercial/Av. Lerdo/portada.jpg",
+    "ubicacion": {
+      "embed": "https://maps.google.com/maps?q=19.2891636,-99.6750109&z=17&ie=UTF8&iwloc=&output=embed",
+      "link": "https://www.google.com/maps/@19.2891636,-99.6750109,3a,75y,315.46h,89.04t/data=!3m7!1e1!3m5!1sEQ7-u32vuokeq5ON-BKU8w!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D0.9579892092320392%26panoid%3DEQ7-u32vuokeq5ON-BKU8w%26yaw%3D315.45845042167434!7i16384!8i8192?hl=es&entry=ttu&g_ep=EgoyMDI2MDgxMC4wIKXMDSoASAFQAw%3D%3D"
+    },
+    "fotos": [
+      "galeria comercial/Av. Lerdo/portada.jpg",
+      "galeria comercial/Av. Lerdo/PHOTO-2022-02-17-15-01-46.jpg",
+      "galeria comercial/Av. Lerdo/PHOTO-2022-02-17-15-01-47.jpg",
+      "galeria comercial/Av. Lerdo/PHOTO-2022-02-17-15-01-47 2.jpg",
+      "galeria comercial/Av. Lerdo/PHOTO-2022-02-17-15-01-48.jpg"
+    ],
+    "tabla": [
+      {
+        "concepto": "Metros cuadrados",
+        "valor": "Consultar por local"
+      },
+      {
+        "concepto": "Precio por m²",
+        "valor": "$169.36 – $213.30"
+      },
+      {
+        "concepto": "Locales disponibles",
+        "valor": "0"
+      }
+    ],
+    "encabezadosLocales": [
+      "NO. LOCAL",
+      "INQUILINO / GIRO COMERCIAL",
+      "SUPERFICIE (m²)",
+      "PRECIO POR m²",
+      "ESTATUS"
+    ],
+    "locales": [
+      {
+        "no": "Local 1",
+        "giro": "Farmacia Guadalajara Suc 2385",
+        "superficie": "330.31",
+        "precio": "$169.36",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "Local 2",
+        "giro": "La Dueña Vinos y Licores",
+        "superficie": "89.13",
+        "precio": "$213.30",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "Local 3",
+        "giro": "Restaurant Bar",
+        "superficie": "85.47",
+        "precio": "$173.36",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "Local 4",
+        "giro": "Restaurant Bar",
+        "superficie": "81.81",
+        "precio": "$173.36",
+        "estatus": "Rentado"
+      }
+    ],
+    "datosGenerales": [
+      {
+        "concepto": "Porcentaje de Ocupación",
+        "valor": "100%"
+      },
+      {
+        "concepto": "Total de Locales",
+        "valor": "4"
+      },
+      {
+        "concepto": "Locales Disponibles",
+        "valor": "0"
+      },
+      {
+        "concepto": "Cuota de Mantenimiento",
+        "valor": "No aplica en estos locales."
+      },
+      {
+        "concepto": "Servicios",
+        "valor": "Servicios independientes."
+      },
+      {
+        "concepto": "Agua",
+        "valor": "Agua por cuota fija."
+      }
+    ]
+  },
+  {
+    "id": "benito-juarez",
+    "order": 11,
+    "active": true,
+    "titulo": "Benito Juárez",
+    "subtitulo": "Comercio & Servicios Diversificados",
+    "badgeText": "0 DISPONIBLES",
+    "badgeType": "badge-orange",
+    "descripcion": "Mantener una oferta comercial diversificada mediante la integración de negocios de comercio y servicios. Inmueble en venta.",
+    "perfilLabel": "ESTATUS DE VENTA",
+    "perfilTexto": "100% Ocupado / Disponible para Venta.",
+    "portada": "galeria comercial/Benito Juarez/portada.jpg",
+    "ubicacion": {
+      "embed": "https://maps.google.com/maps?q=19.2803625,-99.6538905&z=18&ie=UTF8&iwloc=&output=embed",
+      "link": "https://maps.app.goo.gl/pmdogp2UFdozHDNz8"
+    },
+    "fotos": [
+      "galeria comercial/Benito Juarez/portada.jpg",
+      "galeria comercial/Benito Juarez/PHOTO-2021-07-12-15-32-50.jpg",
+      "galeria comercial/Benito Juarez/PHOTO-2021-07-12-15-32-51.jpg",
+      "galeria comercial/Benito Juarez/PHOTO-2021-07-12-15-32-51 2.jpg",
+      "galeria comercial/Benito Juarez/PHOTO-2021-07-12-15-32-52.jpg",
+      "galeria comercial/Benito Juarez/PHOTO-2021-07-12-15-32-52 2.jpg",
+      "galeria comercial/Benito Juarez/PHOTO-2021-07-12-15-32-53.jpg",
+      "galeria comercial/Benito Juarez/PHOTO-2021-07-12-15-32-54.jpg",
+      "galeria comercial/Benito Juarez/PHOTO-2026-05-08-11-07-26.jpg",
+      "galeria comercial/Benito Juarez/PHOTO-2026-05-08-20-39-06.jpg",
+      "galeria comercial/Benito Juarez/PHOTO-2026-05-08-20-39-06 3.jpg"
+    ],
+    "tabla": [
+      {
+        "concepto": "Metros cuadrados",
+        "valor": "320 m² total"
+      },
+      {
+        "concepto": "Precio por m²",
+        "valor": "$120.90 – $210.00"
+      },
+      {
+        "concepto": "Locales disponibles",
+        "valor": "0"
+      }
+    ],
+    "encabezadosLocales": [
+      "NO. LOCAL",
+      "INQUILINO / GIRO COMERCIAL",
+      "SUPERFICIE (m²)",
+      "PRECIO POR m²",
+      "ESTATUS"
+    ],
+    "locales": [
+      {
+        "no": "1",
+        "giro": "Magic",
+        "superficie": "270",
+        "precio": "$120.90",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "2",
+        "giro": "SPA",
+        "superficie": "50",
+        "precio": "$210.00",
+        "estatus": "Rentado"
+      }
+    ],
+    "datosGenerales": [
+      {
+        "concepto": "Porcentaje de Ocupación",
+        "valor": "100%"
+      },
+      {
+        "concepto": "Total de Locales",
+        "valor": "2"
+      },
+      {
+        "concepto": "Locales Disponibles",
+        "valor": "0"
+      },
+      {
+        "concepto": "Cuota de Mantenimiento",
+        "valor": "No aplica en estos locales."
+      },
+      {
+        "concepto": "Servicios",
+        "valor": "Servicios independientes."
+      },
+      {
+        "concepto": "Agua",
+        "valor": "Cuota proporcional."
+      }
+    ]
+  },
+  {
+    "id": "plaza-rancho-el-meson-ii",
+    "order": 12,
+    "active": true,
+    "titulo": "Plaza Rancho El Mesón II",
+    "subtitulo": "Centro Comercial & Lifestyle",
+    "badgeText": "0 DISPONIBLES",
+    "badgeType": "badge-orange",
+    "descripcion": "Consolidar la plaza como un centro comercial de referencia para la zona de Calimaya, ofreciendo una mezcla estratégica de comercios, restaurantes y servicios.",
+    "perfilLabel": "TENANT MIX",
+    "perfilTexto": "Farmacia Guadalajara, Bistro Jaime Mena & Comex.",
+    "portada": "galeria comercial/Plaza rancho el meson II/portada.jpg",
+    "ubicacion": {
+      "embed": "https://maps.google.com/maps?q=Plaza+Comercial+El+Meson+2,+Av.+Calimaya,+Rancho+El+Meson,+M%C3%A9x.&ftid=0x85cd89879a895cd9:0xf78972e90cf1c343&z=17&ie=UTF8&iwloc=&output=embed",
+      "link": "https://maps.app.goo.gl/THzrzkqntGPwdr94A?g_st=iw"
+    },
+    "fotos": [
+      "galeria comercial/Plaza rancho el meson II/portada.jpg",
+      "galeria comercial/Plaza rancho el meson II/PHOTO-2026-07-09-15-28-43 2.jpg",
+      "galeria comercial/Plaza rancho el meson II/PHOTO-2026-07-09-15-28-43 3.jpg",
+      "galeria comercial/Plaza rancho el meson II/PHOTO-2026-07-09-15-28-43 4.jpg",
+      "galeria comercial/Plaza rancho el meson II/PHOTO-2026-07-09-15-28-43 5.jpg",
+      "galeria comercial/Plaza rancho el meson II/PHOTO-2026-07-09-15-28-43 6.jpg",
+      "galeria comercial/Plaza rancho el meson II/PHOTO-2026-07-09-15-28-43 7.jpg"
+    ],
+    "tabla": [
+      {
+        "concepto": "Metros cuadrados",
+        "valor": "Consultar por local"
+      },
+      {
+        "concepto": "Precio por m²",
+        "valor": "$177.22 – $693.00"
+      },
+      {
+        "concepto": "Locales disponibles",
+        "valor": "0"
+      }
+    ],
+    "encabezadosLocales": [
+      "NO. LOCAL",
+      "INQUILINO / GIRO COMERCIAL",
+      "SUPERFICIE (m²)",
+      "PRECIO POR m²",
+      "ESTATUS"
+    ],
+    "locales": [
+      {
+        "no": "A",
+        "giro": "Kayla",
+        "superficie": "82.55",
+        "precio": "$413.02",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "B",
+        "giro": "Antojera",
+        "superficie": "82.55",
+        "precio": "$277.71",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "C",
+        "giro": "Servicios Medicos Amanta",
+        "superficie": "82.55",
+        "precio": "$445.37",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "D",
+        "giro": "Salón de belleza",
+        "superficie": "82.55",
+        "precio": "$480.99",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "E",
+        "giro": "OLEA-G",
+        "superficie": "85.2",
+        "precio": "$418.25",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "F",
+        "giro": "Rosa de Sarn",
+        "superficie": "82",
+        "precio": "$318.80",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "G",
+        "giro": "La Central",
+        "superficie": "82",
+        "precio": "$429.75",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "H",
+        "giro": "Academia Sastre Manantial",
+        "superficie": "82",
+        "precio": "$429.03",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "I",
+        "giro": "Comex",
+        "superficie": "85.2",
+        "precio": "$351.28",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "J",
+        "giro": "Restaurante Bistro by Jaime Mena",
+        "superficie": "82",
+        "precio": "$254.71",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "K",
+        "giro": "Restaurante Bistro by Jaime Mena",
+        "superficie": "82",
+        "precio": "$254.71",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "L",
+        "giro": "Clinica Dental LEIA",
+        "superficie": "64.04",
+        "precio": "$693.00",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "M",
+        "giro": "Farmacia Guadalajara",
+        "superficie": "338.5",
+        "precio": "$177.22",
+        "estatus": "Rentado"
+      }
+    ],
+    "datosGenerales": [
+      {
+        "concepto": "Porcentaje de Ocupación",
+        "valor": "100%"
+      },
+      {
+        "concepto": "Total de Locales",
+        "valor": "13"
+      },
+      {
+        "concepto": "Locales Disponibles",
+        "valor": "0"
+      },
+      {
+        "concepto": "Cuota de Mantenimiento",
+        "valor": "Mantenimiento del 15%"
+      },
+      {
+        "concepto": "Servicios",
+        "valor": "Servicios independientes."
+      }
+    ]
+  },
+  {
+    "id": "unni-plaza",
+    "order": 13,
+    "active": true,
+    "titulo": "Unni Plaza",
+    "subtitulo": "Comercial, Educación & Alimentos",
+    "badgeText": "0 DISPONIBLES",
+    "badgeType": "badge-orange",
+    "descripcion": "Mantener una ocupación del 100% mediante una mezcla equilibrada de comercios, servicios, educación y alimentos, fomentando la permanencia de arrendatarios.",
+    "perfilLabel": "TENANT MIX",
+    "perfilTexto": "Universidad UEEM, Farmacia Guadalajara & SUMO Buffet.",
+    "portada": "galeria comercial/Unni Plaza/portada.jpg",
+    "ubicacion": {
+      "embed": "https://maps.google.com/maps?q=19.2883287,-99.6399426&z=17&ie=UTF8&iwloc=&output=embed",
+      "link": "https://maps.app.goo.gl/T5gHbpbgCHFEaaLX7"
+    },
+    "fotos": [
+      "galeria comercial/Unni Plaza/portada.jpg",
+      "galeria comercial/Unni Plaza/PHOTO-2022-04-04-17-12-59.jpg",
+      "galeria/unniplaza.jpg"
+    ],
+    "tabla": [
+      {
+        "concepto": "Metros cuadrados",
+        "valor": "2,066.32 m² total"
+      },
+      {
+        "concepto": "Precio por m²",
+        "valor": "$30.23 – $337.44"
+      },
+      {
+        "concepto": "Locales disponibles",
+        "valor": "0"
+      }
+    ],
+    "encabezadosLocales": [
+      "No. Local",
+      "Inquilino",
+      "Superficie (m²)",
+      "Precio por m²",
+      "Estatus"
+    ],
+    "locales": [
+      {
+        "no": "1 PB",
+        "giro": "Karcher",
+        "superficie": "105.7",
+        "precio": "$337.44",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "2 PB",
+        "giro": "Farmacia Guadalajara suc 2033",
+        "superficie": "100",
+        "precio": "$256.98",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "3 PB",
+        "giro": "Farmacia Guadalajara suc 2033",
+        "superficie": "100",
+        "precio": "$256.98",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "4 PB",
+        "giro": "Farmacia Guadalajara suc 2033",
+        "superficie": "100",
+        "precio": "$256.98",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "5 N1",
+        "giro": "Universidad UEEM",
+        "superficie": "236.05",
+        "precio": "$108.29",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "N2",
+        "giro": "Universidad UEEM",
+        "superficie": "554.4",
+        "precio": "$108.29",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "6 Y 9 N1",
+        "giro": "SUMO Buffet",
+        "superficie": "215.64",
+        "precio": "$317.59",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "7 N1",
+        "giro": "PAULASH/STUDIO",
+        "superficie": "48.24",
+        "precio": "$288.90",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "8 N1",
+        "giro": "El sabor del mar",
+        "superficie": "46.29",
+        "precio": "$313.24",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "Sótano Estac.",
+        "giro": "Unni Garage",
+        "superficie": "560",
+        "precio": "$30.23",
+        "estatus": "Rentado"
+      }
+    ],
+    "datosGenerales": [
+      {
+        "concepto": "Porcentaje de Ocupación",
+        "valor": "100%"
+      },
+      {
+        "concepto": "Total de Locales",
+        "valor": "10"
+      },
+      {
+        "concepto": "Locales Disponibles",
+        "valor": "0"
+      },
+      {
+        "concepto": "Cuota de Mantenimiento",
+        "valor": "Mantenimiento del 10%"
+      },
+      {
+        "concepto": "Servicios",
+        "valor": "Servicios independientes"
+      }
+    ]
+  },
+  {
+    "id": "venustiano-carranza",
+    "order": 14,
+    "active": true,
+    "titulo": "Venustiano Carranza",
+    "subtitulo": "Comercial & Entretenimiento",
+    "badgeText": "0 DISPONIBLES",
+    "badgeType": "badge-orange",
+    "descripcion": "La estrategia comercial se orienta a mantener una ocupación del 100%, promoviendo la permanencia de arrendatarios con operaciones consolidadas.",
+    "perfilLabel": "TENANT MIX",
+    "perfilTexto": "Mambo Café, La Dueña Vinos & Llantera.",
+    "portada": "galeria comercial/Venustiano Carranza/portada.png",
+    "ubicacion": {
+      "embed": "https://maps.google.com/maps?q=Calle+Gral.+Venustiano+Carranza+20+Pte+Toluca&z=17&ie=UTF8&iwloc=&output=embed",
+      "link": "https://maps.app.goo.gl/Zfq76o8JoJtTrVr88?g_st=iw"
+    },
+    "fotos": [
+      "galeria comercial/Venustiano Carranza/portada.png",
+      "galeria comercial/Venustiano Carranza/captura-local.png"
+    ],
+    "tabla": [
+      {
+        "concepto": "Metros cuadrados",
+        "valor": "660 m² total"
+      },
+      {
+        "concepto": "Precio por m²",
+        "valor": "$168.72 – $194.70"
+      },
+      {
+        "concepto": "Locales disponibles",
+        "valor": "0"
+      }
+    ],
+    "encabezadosLocales": [
+      "No. Local",
+      "Inquilino",
+      "Superficie (m²)",
+      "Precio por m²",
+      "Estatus"
+    ],
+    "locales": [
+      {
+        "no": "1",
+        "giro": "SexShop",
+        "superficie": "110",
+        "precio": "$175.00",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "2",
+        "giro": "Llantera",
+        "superficie": "110",
+        "precio": "$168.72",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "3",
+        "giro": "La Dueña Vinos y Licores",
+        "superficie": "110",
+        "precio": "$168.72",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "4, 5, 2006",
+        "giro": "Mambo café",
+        "superficie": "330",
+        "precio": "$194.70",
+        "estatus": "Rentado"
+      }
+    ],
+    "datosGenerales": [
+      {
+        "concepto": "Porcentaje de Ocupación",
+        "valor": "100%"
+      },
+      {
+        "concepto": "Total de Locales",
+        "valor": "6"
+      },
+      {
+        "concepto": "Locales Disponibles",
+        "valor": "0"
+      },
+      {
+        "concepto": "Cuota de Mantenimiento",
+        "valor": "No aplica en estos locales."
+      },
+      {
+        "concepto": "Servicios",
+        "valor": "Servicios independientes."
+      },
+      {
+        "concepto": "Agua",
+        "valor": "Cuota proporcional."
+      }
+    ]
+  },
+  {
+    "id": "wenceslao-labra",
+    "order": 15,
+    "active": true,
+    "titulo": "Wenceslao Labra",
+    "subtitulo": "Comercio & Servicios Automotrices",
+    "badgeText": "0 DISPONIBLES",
+    "badgeType": "badge-orange",
+    "descripcion": "La estrategia comercial se enfoca en mantener una ocupación del 100% con arrendatarios de operaciones consolidadas.",
+    "perfilLabel": "TENANT MIX",
+    "perfilTexto": "OXXO, Refaccionaria Diesel & Check Point.",
+    "portada": "galeria/unniplaza.jpg",
+    "ubicacion": {
+      "embed": "https://maps.google.com/maps?q=19.27267,-99.6394822&z=17&ie=UTF8&iwloc=&output=embed",
+      "link": "https://www.google.com/maps/place/OXXO+WENCESLAO+LABRA/@19.27267,-99.6394822,3a,75y,290.72h,90t/data=!3m8!1e1!3m5!1sUFNipTqNqL1t-65qQbcnQQ!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D0%26panoid%3DUFNipTqNqL1t-65qQbcnQQ%26yaw%3D290.71848!7i16384!8i8192!5s0x85cd89841c162231:0xb2e0a4202deed12b!4m14!1m7!3m6!1s0x85cd8986a7089a77:0xc5240244557bf8f9!2sOXXO+WENCESLAO+LABRA!8m2!3d19.2727933!4d-99.6398654!16s%2Fg%2F11g8p90_tf!3m5!1s0x85cd8986a7089a77:0xc5240244557bf8f9!8m2!3d19.2727933!4d-99.6398654!16s%2Fg%2F11g8p90_tf?hl=es&entry=ttu&g_ep=EgoyMDI2MDgxMC4wIKXMDSoASAFQAw%3D%3D"
+    },
+    "fotos": [
+      "galeria/unniplaza.jpg",
+      "galeria comercial/Riva Palacio/portada tarjeta.png"
+    ],
+    "tabla": [
+      {
+        "concepto": "Metros cuadrados",
+        "valor": "885.37 m² total"
+      },
+      {
+        "concepto": "Precio por m²",
+        "valor": "$47.61 – $148.20"
+      },
+      {
+        "concepto": "Locales disponibles",
+        "valor": "0"
+      }
+    ],
+    "encabezadosLocales": [
+      "No. Local",
+      "Inquilino",
+      "Superficie (m²)",
+      "Precio por m²",
+      "Estatus"
+    ],
+    "locales": [
+      {
+        "no": "1",
+        "giro": "Refaccionaria Diesel",
+        "superficie": "88.59",
+        "precio": "$148.20",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "2",
+        "giro": "Refaccionaria Diesel",
+        "superficie": "88.59",
+        "precio": "$148.20",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "3",
+        "giro": "OXXO",
+        "superficie": "288.19",
+        "precio": "$135.45",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "4",
+        "giro": "Check point",
+        "superficie": "420",
+        "precio": "$47.61",
+        "estatus": "Rentado"
+      }
+    ],
+    "datosGenerales": [
+      {
+        "concepto": "Porcentaje de Ocupación",
+        "valor": "100%"
+      },
+      {
+        "concepto": "Total de Locales",
+        "valor": "4"
+      },
+      {
+        "concepto": "Locales Disponibles",
+        "valor": "0"
+      },
+      {
+        "concepto": "Cuota de Mantenimiento",
+        "valor": "No aplica en estos locales."
+      },
+      {
+        "concepto": "Servicios",
+        "valor": "Servicios independientes."
+      },
+      {
+        "concepto": "Agua",
+        "valor": "Cuota proporcional."
+      }
+    ]
+  },
+  {
+    "id": "brigida-garcia",
+    "order": 16,
+    "active": true,
+    "titulo": "Brígida García",
+    "subtitulo": "Comercial & Salud",
+    "badgeText": "0 DISPONIBLES",
+    "badgeType": "badge-orange",
+    "descripcion": "Mantener una ocupación estable mediante la conservación de arrendatarios con operaciones sólidas y la comercialización estratégica de los espacios.",
+    "perfilLabel": "TENANT PROFILE",
+    "perfilTexto": "Farmacia Similares & CARFAGO.",
+    "portada": "galeria/unniplaza.jpg",
+    "ubicacion": {
+      "embed": "https://maps.google.com/maps?q=19.2697308,-99.640952&z=17&ie=UTF8&iwloc=&output=embed",
+      "link": "https://maps.app.goo.gl/V62wxoPD8bd9NuWX8"
+    },
+    "fotos": [
+      "galeria/unniplaza.jpg",
+      "galeria comercial/Riva Palacio/portada tarjeta.png"
+    ],
+    "tabla": [
+      {
+        "concepto": "Metros cuadrados",
+        "valor": "161.28 m² total"
+      },
+      {
+        "concepto": "Precio por m²",
+        "valor": "$200.00 – $443.00"
+      },
+      {
+        "concepto": "Locales disponibles",
+        "valor": "0"
+      }
+    ],
+    "encabezadosLocales": [
+      "NO. LOCAL",
+      "INQUILINO / GIRO COMERCIAL",
+      "SUPERFICIE (m²)",
+      "PRECIO POR m²",
+      "ESTATUS"
+    ],
+    "locales": [
+      {
+        "no": "1",
+        "giro": "Farmacia Similares",
+        "superficie": "81.66",
+        "precio": "$443.00",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "2",
+        "giro": "CARFAGO",
+        "superficie": "79.62",
+        "precio": "$200.00",
+        "estatus": "Rentado"
+      }
+    ],
+    "datosGenerales": [
+      {
+        "concepto": "Porcentaje de Ocupación",
+        "valor": "100%"
+      },
+      {
+        "concepto": "Total de Locales",
+        "valor": "2"
+      },
+      {
+        "concepto": "Locales Disponibles",
+        "valor": "0"
+      },
+      {
+        "concepto": "Cuota de Mantenimiento",
+        "valor": "No aplica en estos locales."
+      },
+      {
+        "concepto": "Servicios",
+        "valor": "Servicios independientes."
+      },
+      {
+        "concepto": "Agua",
+        "valor": "Cuota proporcional."
+      }
+    ]
+  }
+]
