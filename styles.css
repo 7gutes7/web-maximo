@@ -3335,7 +3335,6 @@ body {
     #valormaximoart {
         position: -webkit-sticky !important;
         position: sticky !important;
-        top: 0 !important;
         margin-top: 0 !important;
         min-height: 100vh !important;
         height: auto !important;
@@ -3349,10 +3348,10 @@ body {
         align-items: center !important;
         box-sizing: border-box !important;
         box-shadow: 0 -12px 36px rgba(0, 0, 0, 0.35) !important;
-        will-change: transform;
     }
 
     #inicio {
+        top: 0 !important;
         z-index: 1 !important;
         background-color: #064E3B !important;
         height: 100vh !important;
@@ -3395,21 +3394,9 @@ body {
     }
 
     #esencia {
-        position: relative !important;
-        top: auto !important;
-        margin-top: 0 !important;
-        min-height: 100vh !important;
-        height: auto !important;
-        width: 100% !important;
-        clip-path: none !important;
-        -webkit-clip-path: none !important;
-        overflow: visible !important;
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: flex-start !important;
-        align-items: center !important;
-        box-sizing: border-box !important;
-        box-shadow: 0 -12px 36px rgba(0, 0, 0, 0.35) !important;
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        top: calc(100vh - 100%) !important;
         z-index: 2 !important;
         background-color: #0b0f19 !important;
     }
@@ -3434,21 +3421,9 @@ body {
     }
 
     #casos-exito {
-        position: relative !important;
-        top: auto !important;
-        margin-top: 0 !important;
-        min-height: 100vh !important;
-        height: auto !important;
-        width: 100% !important;
-        clip-path: none !important;
-        -webkit-clip-path: none !important;
-        overflow: visible !important;
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: flex-start !important;
-        align-items: center !important;
-        box-sizing: border-box !important;
-        box-shadow: 0 -12px 36px rgba(0, 0, 0, 0.35) !important;
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        top: calc(100vh - 100%) !important;
         z-index: 3 !important;
         background-color: #064E3B !important;
     }
@@ -3525,17 +3500,19 @@ body {
     }
 
     #galeria-comercial {
-        position: relative !important;
-        top: auto !important;
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        top: 0 !important;
         min-height: 100vh !important;
-        height: auto !important;
+        height: 100vh !important;
         z-index: 4 !important;
         background-color: #064E3B !important;
     }
 
     #transicion-imagen {
-        position: relative !important;
-        top: auto !important;
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        top: 0 !important;
         margin-top: 0 !important;
         min-height: 100vh !important;
         height: 100vh !important;
@@ -3564,8 +3541,9 @@ body {
     }
 
     #el-match {
-        position: relative !important;
-        top: auto !important;
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        top: calc(100vh - 100%) !important;
         margin-top: 0 !important;
         min-height: 100vh !important;
         height: auto !important;
@@ -3601,8 +3579,9 @@ body {
     }
 
     #pilar-integridad {
-        position: relative !important;
-        top: auto !important;
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        top: calc(100vh - 100%) !important;
         margin-top: 0 !important;
         min-height: 100vh !important;
         height: auto !important;
@@ -3649,8 +3628,9 @@ body {
     }
 
     #idea-lab {
-        position: relative !important;
-        top: auto !important;
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        top: calc(100vh - 100%) !important;
         margin-top: 0 !important;
         min-height: 100vh !important;
         height: auto !important;
@@ -3703,10 +3683,11 @@ body {
     }
 
     #valormaximoart {
-        position: relative !important;
-        top: auto !important;
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        top: 0 !important;
         min-height: 100vh !important;
-        height: auto !important;
+        height: 100vh !important;
         z-index: 9 !important;
         background-color: #0b0f19 !important;
         display: flex !important;
@@ -3715,6 +3696,7 @@ body {
         align-items: center !important;
         padding-top: 70px !important;
         box-sizing: border-box !important;
+        box-shadow: 0 -12px 36px rgba(0, 0, 0, 0.35) !important;
     }
 
     #valormaximoart .vmart-center-group {
