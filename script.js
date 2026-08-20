@@ -3304,11 +3304,12 @@ function initDrawerFloatingLines() {
     };
 }
 
-// 00. Pantalla de Precarga Prémium (Logo ISO - Fondo Verde Oscuro #064E3B)
+// 00. Pantalla de Precarga Prémium Sincronizada con el Video del Hero (Logo ISO - Fondo Verde Oscuro #064E3B)
 function initPreloader() {
     const overlay = document.getElementById('vm-preloader-overlay');
     const progressFill = document.getElementById('preloader-progress-fill');
     const percentageText = document.getElementById('preloader-percentage');
+    const heroVideo = document.getElementById('hero-video');
     if (!overlay) return;
 
     // Detener scroll de Lenis durante la precarga
@@ -3317,9 +3318,18 @@ function initPreloader() {
     }
 
     let isFinished = false;
+    let currentProgress = 0;
+    let progressAnimId = null;
+
     function finishPreloader() {
         if (isFinished) return;
         isFinished = true;
+        if (progressAnimId) cancelAnimationFrame(progressAnimId);
+
+        // Asegurar que el video empiece a reproducirse de inmediato
+        if (heroVideo) {
+            heroVideo.play().catch(() => {});
+        }
 
         if (progressFill) progressFill.style.width = '100%';
         if (percentageText) percentageText.textContent = '100%';
@@ -3331,28 +3341,71 @@ function initPreloader() {
             }
             setTimeout(() => {
                 overlay.style.display = 'none';
-            }, 450);
-        }, 100);
+            }, 500);
+        }, 150);
     }
 
-    // Progreso ultra rápido y fluido de precarga (~400ms para no penalizar el LCP)
-    const startTime = performance.now();
-    const duration = 400;
+    // Monitorear y forzar precarga inmediata del video Hero
+    let isVideoReady = false;
+    if (heroVideo) {
+        heroVideo.preload = 'auto';
 
-    function step(now) {
-        const elapsed = now - startTime;
-        const progress = Math.min(100, Math.round((elapsed / duration) * 100));
+        function onVideoReady() {
+            if (isVideoReady) return;
+            isVideoReady = true;
+            heroVideo.play().catch(() => {});
+        }
 
-        if (progressFill) progressFill.style.width = `${progress}%`;
-        if (percentageText) percentageText.textContent = `${progress}%`;
-
-        if (progress < 100) {
-            requestAnimationFrame(step);
+        if (heroVideo.readyState >= 3 || heroVideo.currentTime > 0) {
+            onVideoReady();
         } else {
+            heroVideo.addEventListener('canplay', onVideoReady, { once: true });
+            heroVideo.addEventListener('canplaythrough', onVideoReady, { once: true });
+            heroVideo.addEventListener('loadeddata', onVideoReady, { once: true });
+            heroVideo.addEventListener('playing', onVideoReady, { once: true });
+            heroVideo.load();
+        }
+    } else {
+        isVideoReady = true;
+    }
+
+    // Animación de progreso visual sincronizada
+    const startTime = performance.now();
+    const minTime = 800; // Tiempo mínimo de marca elegante (800ms)
+
+    function updateProgress(now) {
+        if (isFinished) return;
+        const elapsed = now - startTime;
+
+        if (!isVideoReady) {
+            // Mientras el video termina de bufferizarse, la barra avanza con elegancia hasta 85%
+            const target = Math.min(85, Math.round((elapsed / 2200) * 85));
+            currentProgress += (target - currentProgress) * 0.12;
+        } else {
+            // En cuanto el video está listo y se cumplió el tiempo mínimo, acelera suavemente al 100%
+            const target = elapsed >= minTime ? 100 : Math.round((elapsed / minTime) * 100);
+            currentProgress += (target - currentProgress) * 0.28;
+            if (currentProgress >= 98.5 && elapsed >= minTime) {
+                currentProgress = 100;
+            }
+        }
+
+        const displayProgress = Math.min(100, Math.round(currentProgress));
+        if (progressFill) progressFill.style.width = `${displayProgress}%`;
+        if (percentageText) percentageText.textContent = `${displayProgress}%`;
+
+        if (displayProgress >= 100 && isVideoReady && elapsed >= minTime) {
             finishPreloader();
+        } else {
+            progressAnimId = requestAnimationFrame(updateProgress);
         }
     }
 
-    requestAnimationFrame(step);
-    setTimeout(finishPreloader, 600);
+    progressAnimId = requestAnimationFrame(updateProgress);
+
+    // Timeout de seguridad máximo (3.2s) para no retener la pantalla en conexiones muy lentas
+    setTimeout(() => {
+        isVideoReady = true;
+        finishPreloader();
+    }, 3200);
 }
