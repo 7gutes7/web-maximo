@@ -348,7 +348,7 @@ function initMatchCatalogCurtain() {
 
         const diff = targetTranslateY - currentTranslateY;
         if (Math.abs(diff) > 0.15) {
-            currentTranslateY += diff * 0.11; // Factor de amortiguación sedosa
+            currentTranslateY += diff * 0.03; // Factor de amortiguación sedosa y lenta (0.03)
             if (container) {
                 container.style.setProperty('transform', `translate3d(0, ${currentTranslateY.toFixed(2)}px, 0)`, 'important');
             }
