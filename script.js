@@ -352,10 +352,10 @@ function initMatchCatalogCurtain() {
                     const totalTravel = 3.8 * vh;
                     const flowProgress = Math.min(1, activeScrolled / totalTravel);
 
-                    // Medir el recorrido exacto del contenedor y reducir la velocidad a la mitad (multiplicador 0.5) en responsive
+                    // Medir el recorrido exacto del contenedor para que el logo quede perfectamente visible sin hueco inferior
                     const maxScroll = Math.max(0, container.scrollHeight - vh + 30);
 
-                    const translateYValue = -flowProgress * maxScroll * 0.5;
+                    const translateYValue = -flowProgress * maxScroll;
                     container.style.setProperty('transform', `translate3d(0, ${translateYValue}px, 0)`, 'important');
                 }
             }
