@@ -3460,7 +3460,7 @@ body {
         display: flex !important;
         flex-direction: column !important;
         justify-content: flex-start !important;
-        align-items: center !important;
+        align-items: flex-start !important;
         box-sizing: border-box !important;
         box-shadow: 0 -12px 36px rgba(0, 0, 0, 0.35) !important;
         z-index: 3 !important;
@@ -3480,8 +3480,8 @@ body {
         display: flex !important;
         flex-direction: column !important;
         justify-content: flex-start !important;
-        align-items: center !important;
-        text-align: center !important;
+        align-items: flex-start !important;
+        text-align: left !important;
         box-sizing: border-box !important;
         transform: none !important;
     }
@@ -3525,7 +3525,8 @@ body {
 
     #casos-exito .portfolio-left-col {
         width: 100% !important;
-        text-align: center !important;
+        text-align: left !important;
+        align-items: flex-start !important;
         margin-bottom: 2rem !important;
     }
 
@@ -3834,7 +3835,6 @@ body {
         right: auto !important;
     }
 
-    #casos-exito .portfolio-left-col,
     #el-match .catalog-left-col,
     #el-match .catalog-header-floating,
     #el-match .catalog-right-col,
