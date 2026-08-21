@@ -65,33 +65,44 @@ const CatalogService = {
      * e intenta sincronizar en segundo plano.
      */
     async init() {
-        // 1. Carga instantánea desde caché local (0ms)
+        // 1. Carga instantánea desde caché local (0ms de latencia)
         const cached = this.loadFromCache();
         if (cached && cached.length) {
             this.items = this.sortItems(cached);
             this.syncFichasInmuebles(cached);
+            this.render();
         }
 
-        // 2. Sincronización en segundo plano (Fetch a JSON o Supabase)
+        // 2. Sincronización en segundo plano con backend remoto (si Supabase está configurado)
         try {
-            const freshData = await this.fetchRemoteData();
-            if (freshData && freshData.length) {
-                const hasChanged = JSON.stringify(freshData) !== JSON.stringify(this.items);
-                this.items = this.sortItems(freshData);
-                this.saveToCache(freshData);
-                this.syncFichasInmuebles(freshData);
+            const remoteData = await this.fetchRemoteData();
+            if (remoteData && remoteData.length) {
+                const hasChanged = JSON.stringify(remoteData) !== JSON.stringify(this.items);
+                this.items = this.sortItems(remoteData);
+                this.saveToCache(remoteData);
+                this.syncFichasInmuebles(remoteData);
 
                 if (hasChanged) {
                     this.render();
                 }
+                return;
             }
         } catch (err) {
-            console.warn("[CatalogService] Modo offline / fallback activo:", err);
-            if (!this.items.length) {
+            console.warn("[CatalogService] Sincronización remota no disponible:", err);
+        }
+
+        // 3. Fallback inicial: SOLO si NO había nada en caché local
+        if (!this.items || !this.items.length) {
+            try {
                 const fallback = await this.fetchFallbackJSON();
-                this.items = this.sortItems(fallback);
-                this.syncFichasInmuebles(fallback);
-                this.render();
+                if (fallback && fallback.length) {
+                    this.items = this.sortItems(fallback);
+                    this.saveToCache(fallback);
+                    this.syncFichasInmuebles(fallback);
+                    this.render();
+                }
+            } catch (e) {
+                console.error("[CatalogService] Error cargando data/catalogo.json:", e);
             }
         }
     },
@@ -121,7 +132,7 @@ const CatalogService = {
 
     async fetchRemoteData() {
         const cfg = window.VALOR_MAXIMO_CONFIG;
-        if (cfg.supabaseUrl && cfg.supabaseAnonKey && window.supabase) {
+        if (cfg && cfg.supabaseUrl && cfg.supabaseAnonKey && window.supabase) {
             const client = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey);
             const { data, error } = await client
                 .from("inmuebles")
@@ -153,7 +164,7 @@ const CatalogService = {
                 }));
             }
         }
-        return await this.fetchFallbackJSON();
+        return null;
     },
 
     /**
