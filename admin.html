@@ -510,8 +510,17 @@
                         </div>
                     </div>
 
-                    <div class="form-divider">
+                    <div class="form-divider" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
                         <span>📸 Fotos & Portada</span>
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                            <button type="button" class="btn btn-outline btn-sm" style="color:var(--brand-emerald); border-color:rgba(16, 185, 129, 0.4);" onclick="document.getElementById('manual-photos-input').click()" title="Seleccionar fotos JPG, PNG o WEBP desde tu equipo">
+                                <span>📸 Seleccionar Fotos desde tu Equipo</span>
+                            </button>
+                            <button type="button" class="btn btn-outline btn-sm" style="color:#EF4444; border-color:rgba(239,68,68,0.3);" onclick="clearAllPhotos()" title="Limpiar todas las fotos">
+                                <span>🗑️ Limpiar Fotos</span>
+                            </button>
+                        </div>
+                        <input type="file" id="manual-photos-input" accept="image/png, image/jpeg, image/webp, image/svg+xml, image/gif" multiple style="display:none;" onchange="handleManualPhotosUpload(event)">
                     </div>
 
                     <div class="form-group">
@@ -534,7 +543,7 @@
                         </label>
                         <div id="photos-grid-preview" class="photos-grid-preview">
                             <div style="grid-column: 1/-1; font-size:0.75rem; color:var(--text-muted); text-align:center; padding:1rem; border:1px dashed var(--border-color); border-radius:6px;">
-                                Arrastra un PDF o Word abajo para extraer automáticamente todas sus fotos aquí.
+                                Haz clic en "📸 Seleccionar Fotos desde tu Equipo", arrastra imágenes aquí o sube un PDF abajo.
                             </div>
                         </div>
                     </div>
@@ -909,6 +918,49 @@
 
         
         
+        
+        // --- CARGA MANUAL DE FOTOGRAFÍAS DESDE EL EQUIPO ---
+        function handleManualPhotosUpload(e) {
+            const files = Array.from(e.target.files || []);
+            if (!files.length) return;
+            processImageFiles(files);
+            e.target.value = ''; // Reset para permitir subir las mismas fotos si se desea
+        }
+
+        function processImageFiles(files) {
+            const imageFiles = files.filter(f => f.type.startsWith('image/'));
+            if (!imageFiles.length) {
+                alert('Por favor selecciona archivos de imagen válidos (JPG, PNG, WEBP).');
+                return;
+            }
+
+            showToast('Cargando ' + imageFiles.length + ' fotos...');
+            let loadedCount = 0;
+            const newPhotos = [];
+
+            imageFiles.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    newPhotos.push(evt.target.result);
+                    loadedCount++;
+                    if (loadedCount === imageFiles.length) {
+                        addPhotosToForm(newPhotos);
+                        showToast('✅ ¡' + newPhotos.length + ' fotos agregadas exitosamente!');
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function clearAllPhotos() {
+            if (confirm('¿Deseas eliminar todas las fotos de este inmueble?')) {
+                document.getElementById('prop-fotos').value = '';
+                document.getElementById('prop-portada').value = '';
+                renderVisualPhotoGallery();
+                showToast('Galería de fotos vaciada');
+            }
+        }
+
         // --- GESTOR VISUAL DE FOTOGRAFÍAS ---
         function renderVisualPhotoGallery() {
             const fotosText = document.getElementById('prop-fotos').value.trim();
@@ -1068,6 +1120,36 @@
 
         // Configuración de Drag & Drop para el Dropzone
         window.addEventListener('DOMContentLoaded', () => {
+            
+            // Drag & Drop directo para imágenes sobre la galería de fotos
+            const photosBox = document.getElementById('photos-grid-preview');
+            if (photosBox) {
+                ['dragenter', 'dragover'].forEach(eventName => {
+                    photosBox.addEventListener(eventName, (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        photosBox.style.borderColor = 'var(--brand-emerald)';
+                    }, false);
+                });
+
+                ['dragleave', 'drop'].forEach(eventName => {
+                    photosBox.addEventListener(eventName, (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        photosBox.style.borderColor = 'var(--border-color)';
+                    }, false);
+                });
+
+                photosBox.addEventListener('drop', (e) => {
+                    const dt = e.dataTransfer;
+                    const files = Array.from(dt.files || []);
+                    const imageFiles = files.filter(f => f.type.startsWith('image/'));
+                    if (imageFiles.length) {
+                        processImageFiles(imageFiles);
+                    }
+                }, false);
+            }
+
             const dropzone = document.getElementById('dropzone-box');
             if (!dropzone) return;
 

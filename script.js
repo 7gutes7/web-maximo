@@ -85,7 +85,7 @@ function initCurtainEdgeProximitySnap() {
         // 01. Sección 2 (#esencia) - Cortina Vertical
         { name: 'esencia', type: 'vertical', startVh: 0.15, endVh: 1.0 },
         // 02. Sección 3 (#casos-exito) - Cortina Horizontal (entra desde la derecha)
-        { name: 'casos-exito', type: 'horizontal', startVh: 2.0, endVh: 5.0 },
+        { name: 'casos-exito', type: 'horizontal', startVh: 2.0, endVh: 3.0 },
         // 03. Sección 4 (#galeria-comercial) - Cortina Vertical
         { name: 'galeria', type: 'vertical', startVh: 6.0, endVh: 6.9 },
         // 04. Sección 5 (#transicion-imagen) - Cortina 2 Fases
@@ -1233,6 +1233,12 @@ function initHorizontalCurtainReveals() {
 
                 const translateYValue = -flowProgress * maxScroll;
                 rightCol.style.transform = `translate3d(0, ${translateYValue}px, 0)`;
+
+            const scrollIndicator = document.getElementById('casos-exito-scroll-indicator');
+            if (scrollIndicator) {
+                const isVisible = progress >= 0.15 && activeScrolled < 180;
+                scrollIndicator.classList.toggle('hidden', !isVisible);
+            }
             }
 
             cards.forEach(card => card.classList.add('active'));
@@ -2926,7 +2932,7 @@ function scrollToTimelineSection(event, vh) {
         } else if (vh === 16.3 || vh === 17.2) {
             const sec = document.getElementById('pilar-integridad');
             target = sec ? sec.offsetTop : 11.0 * window.innerHeight;
-        } else if (vh === 2.0) {
+        } else if (vh === 2.0 || vh === 3.0) {
             const sec = document.getElementById('casos-exito');
             target = sec ? sec.offsetTop : 4.2 * window.innerHeight;
         } else {
@@ -2938,7 +2944,8 @@ function scrollToTimelineSection(event, vh) {
     }
 
     let targetVh = vh;
-    if (vh === 19.2) targetVh = 23.0;
+    if (vh === 2.0) targetVh = 3.0;
+    else if (vh === 19.2) targetVh = 23.0;
     else if (vh === 16.3) targetVh = 20.4;
     else if (vh === 22.8) targetVh = 26.7;
 
@@ -3001,7 +3008,7 @@ function scrollToNextSection() {
     // Lista ordenada de los puntos clave de scroll en la línea de tiempo de cortinas (Escritorio)
     const desktopTargets = [
         1.0 * vh,   // Sección 2 (El Diferenciador Absoluto)
-        2.0 * vh,   // Sección 3 (Casos de Éxito)
+        3.0 * vh,   // Sección 3 (Casos de Éxito: Despliegue de los 3 primeros contenedores)
         6.0 * vh,   // Sección 4 (Galería Comercial)
         6.9 * vh,   // Sección 5 (Transición de Imagen)
         9.4 * vh,   // Sección 6 (Catálogo — El Match: Inmediatamente tras cortina)
