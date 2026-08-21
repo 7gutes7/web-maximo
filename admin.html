@@ -7,6 +7,10 @@
     <link rel="icon" type="image/svg+xml" href="valorISO.svg">
     <link rel="stylesheet" href="fonts/local-fonts.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Motores de Importación de Documentos -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mammoth@1.6.0/mammoth.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <style>
         :root {
             --bg-dark: #070a12;
@@ -222,6 +226,89 @@
         .locales-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin-bottom: 0.75rem; }
         .locales-table th { text-align: left; padding: 0.5rem; color: var(--text-muted); border-bottom: 1px solid var(--border-color); font-size: 0.72rem; }
         .locales-table td { padding: 0.4rem; }
+        
+        /* Estilos de la Galería Visual de Fotos */
+        .photos-grid-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            max-height: 220px;
+            overflow-y: auto;
+        }
+        .photo-thumb-card {
+            position: relative;
+            aspect-ratio: 4 / 3;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            background: #000;
+            transition: all 0.2s ease;
+        }
+        .photo-thumb-card.is-portada {
+            border: 2px solid var(--brand-emerald);
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+        }
+        .photo-thumb-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .photo-thumb-badge {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            background: var(--brand-emerald);
+            color: #000;
+            font-size: 0.6rem;
+            font-weight: 800;
+            padding: 2px 5px;
+            border-radius: 3px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .photo-thumb-actions {
+            position: absolute;
+            bottom: 4px;
+            right: 4px;
+            display: flex;
+            gap: 3px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        .photo-thumb-card:hover .photo-thumb-actions {
+            opacity: 1;
+        }
+        .photo-btn {
+            background: rgba(15, 22, 36, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            width: 22px;
+            height: 22px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+        }
+        .photo-btn:hover {
+            background: var(--brand-emerald);
+            color: #000;
+            border-color: var(--brand-emerald);
+        }
+        .photo-btn.del:hover {
+            background: #EF4444;
+            color: #fff;
+            border-color: #EF4444;
+        }
+
         .locales-table input {
             width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 4px; color: #fff; padding: 0.35rem 0.5rem; font-size: 0.8rem;
         }
@@ -231,6 +318,60 @@
         .badge-orange {
             background: rgba(217, 119, 6, 0.15); color: #F59E0B; border: 1px solid #F59E0B; font-size: 0.65rem; font-weight: 700; padding: 0.25rem 0.5rem; border-radius: 4px;
         }
+
+        /* Estilos del Importador de Documentos */
+        .import-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        .import-dropzone {
+            border: 2px dashed rgba(16, 185, 129, 0.35);
+            background: rgba(6, 78, 59, 0.12);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+        .import-dropzone:hover, .import-dropzone.dragover {
+            border-color: var(--brand-emerald);
+            background: rgba(6, 78, 59, 0.25);
+        }
+        .import-dropzone-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+            display: block;
+        }
+        .import-dropzone-text {
+            font-size: 0.82rem;
+            color: var(--text-main);
+            font-weight: 500;
+        }
+        .import-dropzone-hint {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            margin-top: 0.2rem;
+        }
+        .table-actions-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .table-count-badge {
+            font-size: 0.75rem;
+            color: var(--brand-emerald);
+            background: rgba(16, 185, 129, 0.15);
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
         .toast {
             position: fixed; bottom: 2rem; right: 2rem; background: #064E3B; color: #fff; padding: 1rem 1.5rem; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); display: flex; align-items: center; font-size: 0.9rem; font-weight: 500; transform: translateY(100px); opacity: 0; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); z-index: 2000;
         }
@@ -379,8 +520,23 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Galería de Fotos del Modal (1 URL por línea)</label>
-                        <textarea id="prop-fotos" class="form-textarea" rows="4" placeholder="galeria comercial/Riva Palacio/portada tarjeta.png&#10;galeria comercial/Riva Palacio/PHOTO-2026-05-16-16-46-53.jpg"></textarea>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                            <label class="form-label" style="margin-bottom:0;">Galería de Fotos del Modal (1 URL o Imagen por línea)</label>
+                            <span id="photos-count-badge" class="table-count-badge">0 fotos</span>
+                        </div>
+                        <textarea id="prop-fotos" class="form-textarea" rows="3" oninput="renderVisualPhotoGallery()" placeholder="galeria comercial/Riva Palacio/portada tarjeta.png&#10;galeria comercial/Riva Palacio/PHOTO-2026-05-16-16-46-53.jpg"></textarea>
+                    </div>
+
+                    <!-- Previsualización Visual Interactiva de Fotos Extraídas / Cargadas -->
+                    <div class="form-group">
+                        <label class="form-label" style="font-size:0.75rem; color:var(--text-muted);">
+                            🖼️ Previsualización de Fotos (Pasa el cursor para fijar como Portada o eliminar):
+                        </label>
+                        <div id="photos-grid-preview" class="photos-grid-preview">
+                            <div style="grid-column: 1/-1; font-size:0.75rem; color:var(--text-muted); text-align:center; padding:1rem; border:1px dashed var(--border-color); border-radius:6px;">
+                                Arrastra un PDF o Word abajo para extraer automáticamente todas sus fotos aquí.
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-divider">
@@ -398,9 +554,46 @@
                         </div>
                     </div>
 
-                    <div class="form-divider">
-                        <span>🏢 Tabla de Locales Disponibles</span>
-                        <button type="button" class="btn btn-outline btn-sm" onclick="addLocalRow()">+ Agregar Local</button>
+                    <div class="form-divider" style="flex-direction: column; align-items: stretch; gap: 0.75rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                            <span>🏢 Tabla de Locales y Espacios</span>
+                            <span id="locales-counter" class="table-count-badge">0 locales</span>
+                        </div>
+
+                        <!-- Barra de Herramientas de Carga y Gestión -->
+                        <div class="table-actions-bar">
+                            <div class="import-toolbar">
+                                <!-- Botón individual original MANTENIDO -->
+                                <button type="button" class="btn btn-outline btn-sm" onclick="addLocalRow()">
+                                    <span>+ Agregar 1 Local</span>
+                                </button>
+                                
+                                <!-- Botones de Importación Rápida -->
+                                <button type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('import-file-input').click()">
+                                    <span>📄 Cargar Excel / PDF / Word</span>
+                                </button>
+                                <button type="button" class="btn btn-outline btn-sm" onclick="openPasteModal()">
+                                    <span>📋 Pegar Celdas</span>
+                                </button>
+                                <button type="button" class="btn btn-outline btn-sm" onclick="downloadExcelTemplate()" title="Descargar plantilla de Excel pre-llenada">
+                                    <span>📥 Plantilla Excel</span>
+                                </button>
+                            </div>
+                            
+                            <div>
+                                <button type="button" class="btn btn-outline btn-sm" style="color:#EF4444; border-color:rgba(239,68,68,0.3);" onclick="clearLocalesTable()" title="Limpiar todas las filas de la tabla">
+                                    <span>🗑️ Limpiar</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Dropzone para arrastrar y soltar archivos -->
+                        <div class="import-dropzone" id="dropzone-box" onclick="document.getElementById('import-file-input').click()">
+                            <span class="import-dropzone-icon">📁</span>
+                            <div class="import-dropzone-text">Arrastra aquí tu archivo <strong>PDF (.pdf)</strong>, <strong>Excel (.xlsx)</strong> o <strong>Word (.docx)</strong></div>
+                            <div class="import-dropzone-hint">El sistema extraerá automáticamente <strong>todas las fotos del inmueble</strong> y <strong>la tabla de locales</strong> en segundos.</div>
+                        </div>
+                        <input type="file" id="import-file-input" accept=".xlsx, .xls, .csv, .docx, .pdf" style="display:none;" onchange="handleFileImport(event)">
                     </div>
 
                     <table class="locales-table">
@@ -430,6 +623,35 @@
     </div>
 
     
+
+    <!-- MODAL PARA PEGAR CELDAS DE EXCEL / CSV DIRECTO -->
+    <div id="paste-modal" class="modal-overlay">
+        <div class="modal-container" style="max-width: 580px;">
+            <div class="modal-header">
+                <h2 class="modal-title">📋 Pegar Celdas desde Excel o Portapapeles</h2>
+                <button onclick="closePasteModal()" style="background:none; border:none; color:#fff; font-size:1.5rem; cursor:pointer;">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem;">
+                    Copia una o varias filas de tu Excel (<strong>Ctrl + C</strong>) y pégalas aquí directamente (<strong>Ctrl + V</strong>):
+                </p>
+                <div class="form-group">
+                    <textarea id="paste-textarea" class="form-textarea" rows="8" placeholder="1 PB	House roll	61.95	$450.00	Rentado&#10;2 PB	Dolphy	61.48	$450.00	Rentado&#10;3 PB	DISPONIBLE	48.53	$450.00	Disponible"></textarea>
+                </div>
+                <div style="display:flex; align-items:center; gap:0.5rem; margin-top:0.5rem;">
+                    <input type="checkbox" id="paste-replace-check" style="accent-color:var(--brand-emerald); cursor:pointer;">
+                    <label for="paste-replace-check" style="font-size:0.8rem; color:var(--text-main); cursor:pointer;">Reemplazar tabla actual (desmarcar para agregar al final)</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" onclick="closePasteModal()">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="processPastedText()">
+                    📥 Procesar e Importar Locales
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- MODAL PARA CAMBIAR CONTRASEÑA -->
     <div id="password-modal" class="modal-overlay">
         <div class="modal-container" style="max-width: 440px;">
@@ -646,6 +868,7 @@
             document.getElementById("prop-id").value = "";
             document.getElementById("locales-tbody").innerHTML = "";
             addLocalRow();
+            updateLocalesCounter();
             document.getElementById("property-modal").classList.add("active");
         }
 
@@ -664,6 +887,7 @@
             document.getElementById("prop-perfil-texto").value = prop.perfilTexto || "";
             document.getElementById("prop-portada").value = prop.portada || "";
             document.getElementById("prop-fotos").value = (prop.fotos || []).join("\n");
+            renderVisualPhotoGallery();
             document.getElementById("prop-map-link").value = (prop.ubicacion && prop.ubicacion.link) ? prop.ubicacion.link : "";
             document.getElementById("prop-map-embed").value = (prop.ubicacion && prop.ubicacion.embed) ? prop.ubicacion.embed : "";
 
@@ -675,11 +899,468 @@
                 addLocalRow();
             }
 
+            updateLocalesCounter();
             document.getElementById("property-modal").classList.add("active");
         }
 
         function closePropertyModal() {
             document.getElementById("property-modal").classList.remove("active");
+        }
+
+        
+        
+        // --- GESTOR VISUAL DE FOTOGRAFÍAS ---
+        function renderVisualPhotoGallery() {
+            const fotosText = document.getElementById('prop-fotos').value.trim();
+            const portadaInput = document.getElementById('prop-portada');
+            const portadaUrl = portadaInput.value.trim();
+            const container = document.getElementById('photos-grid-preview');
+            const badge = document.getElementById('photos-count-badge');
+
+            if (!container) return;
+            container.innerHTML = '';
+
+            let photos = fotosText ? fotosText.split('\n').map(s => s.trim()).filter(Boolean) : [];
+            if (portadaUrl && !photos.includes(portadaUrl)) {
+                photos.unshift(portadaUrl);
+            }
+
+            if (badge) badge.textContent = photos.length + (photos.length === 1 ? ' foto' : ' fotos');
+
+            if (!photos.length) {
+                container.innerHTML = '<div style="grid-column: 1/-1; font-size:0.75rem; color:var(--text-muted); text-align:center; padding:1rem; border:1px dashed var(--border-color); border-radius:6px;">No hay fotos cargadas. Arrastra un PDF/Word o escribe las URLs arriba.</div>';
+                return;
+            }
+
+            photos.forEach((url, idx) => {
+                const isPortada = (url === portadaUrl) || (!portadaUrl && idx === 0);
+                const card = document.createElement('div');
+                card.className = 'photo-thumb-card' + (isPortada ? ' is-portada' : '');
+                
+                card.innerHTML = 
+                    '<img src="' + url + '" class="photo-thumb-img" alt="Foto ' + (idx + 1) + '" onerror="this.src=\'valorISO.svg\'">' +
+                    (isPortada ? '<span class="photo-thumb-badge">Portada</span>' : '') +
+                    '<div class="photo-thumb-actions">' +
+                        (!isPortada ? '<button type="button" class="photo-btn" onclick="setPhotoAsPortada(' + idx + ')" title="Hacer Portada">★</button>' : '') +
+                        '<button type="button" class="photo-btn del" onclick="removePhotoFromGallery(' + idx + ')" title="Eliminar Foto">&times;</button>' +
+                    '</div>';
+                
+                container.appendChild(card);
+            });
+        }
+
+        function setPhotoAsPortada(idx) {
+            const fotosText = document.getElementById('prop-fotos').value.trim();
+            const photos = fotosText ? fotosText.split('\n').map(s => s.trim()).filter(Boolean) : [];
+            if (photos[idx]) {
+                document.getElementById('prop-portada').value = photos[idx];
+                renderVisualPhotoGallery();
+                showToast('⭐ Foto de portada actualizada');
+            }
+        }
+
+        function removePhotoFromGallery(idx) {
+            const fotosText = document.getElementById('prop-fotos').value.trim();
+            let photos = fotosText ? fotosText.split('\n').map(s => s.trim()).filter(Boolean) : [];
+            const removed = photos.splice(idx, 1);
+            
+            document.getElementById('prop-fotos').value = photos.join('\n');
+            if (document.getElementById('prop-portada').value === (removed[0] || '')) {
+                document.getElementById('prop-portada').value = photos[0] || '';
+            }
+            renderVisualPhotoGallery();
+            showToast('Foto eliminada');
+        }
+
+        function addPhotosToForm(newPhotos = []) {
+            if (!newPhotos || !newPhotos.length) return;
+            const existingText = document.getElementById('prop-fotos').value.trim();
+            const existing = existingText ? existingText.split('\n').map(s => s.trim()).filter(Boolean) : [];
+            
+            newPhotos.forEach(p => {
+                if (!existing.includes(p)) existing.push(p);
+            });
+
+            document.getElementById('prop-fotos').value = existing.join('\n');
+            if (!document.getElementById('prop-portada').value && existing.length) {
+                document.getElementById('prop-portada').value = existing[0];
+            }
+            renderVisualPhotoGallery();
+        }
+
+        // --- EXTRACTOR DE FOTOS DESDE PDF ---
+        async function extractImagesFromPdf(pdf) {
+            const images = [];
+            for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                try {
+                    const page = await pdf.getPage(pageNum);
+                    const opList = await page.getOperatorList();
+                    const imageNames = [];
+
+                    for (let i = 0; i < opList.fnArray.length; i++) {
+                        const fn = opList.fnArray[i];
+                        if (fn === pdfjsLib.OPS.paintImageXObject || fn === pdfjsLib.OPS.paintInlineImageXObject) {
+                            const imgName = opList.argsArray[i][0];
+                            if (imgName && !imageNames.includes(imgName)) {
+                                imageNames.push(imgName);
+                            }
+                        }
+                    }
+
+                    // Intentar extraer imágenes nativas de alta resolución
+                    for (const imgName of imageNames) {
+                        try {
+                            let imgObj = null;
+                            if (page.objs && page.objs.has(imgName)) {
+                                imgObj = page.objs.get(imgName);
+                            } else if (page.commonObjs && page.commonObjs.has(imgName)) {
+                                imgObj = page.commonObjs.get(imgName);
+                            }
+
+                            if (imgObj && imgObj.width >= 120 && imgObj.height >= 120) {
+                                const canvas = document.createElement('canvas');
+                                canvas.width = imgObj.width;
+                                canvas.height = imgObj.height;
+                                const ctx = canvas.getContext('2d');
+
+                                if (imgObj.data) {
+                                    const imgData = ctx.createImageData(imgObj.width, imgObj.height);
+                                    if (imgObj.data.length === imgObj.width * imgObj.height * 4) {
+                                        imgData.data.set(imgObj.data);
+                                    } else if (imgObj.data.length === imgObj.width * imgObj.height * 3) {
+                                        for (let j = 0, k = 0; j < imgObj.data.length; j += 3, k += 4) {
+                                            imgData.data[k] = imgObj.data[j];
+                                            imgData.data[k + 1] = imgObj.data[j + 1];
+                                            imgData.data[k + 2] = imgObj.data[j + 2];
+                                            imgData.data[k + 3] = 255;
+                                        }
+                                    }
+                                    ctx.putImageData(imgData, 0, 0);
+                                    images.push(canvas.toDataURL('image/jpeg', 0.88));
+                                }
+                            }
+                        } catch (err) {
+                            console.warn('No se pudo extraer objeto de imagen:', err);
+                        }
+                    }
+
+                    // Si no hubo imágenes incrustadas grandes, renderizar la diapositiva/página completa en alta resolución
+                    if (!images.length || images.length < pageNum) {
+                        const viewport = page.getViewport({ scale: 1.5 });
+                        const canvas = document.createElement('canvas');
+                        canvas.width = viewport.width;
+                        canvas.height = viewport.height;
+                        const ctx = canvas.getContext('2d');
+                        await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+                        images.push(canvas.toDataURL('image/jpeg', 0.88));
+                    }
+                } catch(e) {
+                    console.warn('Error procesando página PDF ' + pageNum, e);
+                }
+            }
+            return images;
+        }
+
+        // Configurar PDF.js worker
+        if (window.pdfjsLib) {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        }
+
+        // Configuración de Drag & Drop para el Dropzone
+        window.addEventListener('DOMContentLoaded', () => {
+            const dropzone = document.getElementById('dropzone-box');
+            if (!dropzone) return;
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropzone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dropzone.classList.add('dragover');
+                }, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropzone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dropzone.classList.remove('dragover');
+                }, false);
+            });
+
+            dropzone.addEventListener('drop', (e) => {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                if (files && files.length) {
+                    processImportFile(files[0]);
+                }
+            }, false);
+        });
+
+        function updateLocalesCounter() {
+            const rows = document.querySelectorAll('#locales-tbody tr');
+            const counter = document.getElementById('locales-counter');
+            if (counter) {
+                counter.textContent = rows.length + (rows.length === 1 ? ' local' : ' locales');
+            }
+        }
+
+        function clearLocalesTable() {
+            if (confirm('¿Estás seguro de que deseas limpiar todas las filas de la tabla de locales?')) {
+                document.getElementById('locales-tbody').innerHTML = '';
+                addLocalRow();
+                updateLocalesCounter();
+                showToast('Tabla de locales reiniciada');
+            }
+        }
+
+        function openPasteModal() {
+            document.getElementById('paste-textarea').value = '';
+            document.getElementById('paste-replace-check').checked = false;
+            document.getElementById('paste-modal').classList.add('active');
+            setTimeout(() => document.getElementById('paste-textarea').focus(), 150);
+        }
+
+        function closePasteModal() {
+            document.getElementById('paste-modal').classList.remove('active');
+        }
+
+        function handleFileImport(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            processImportFile(file);
+            e.target.value = ''; // Reset input para permitir recargar el mismo archivo
+        }
+
+        function processImportFile(file) {
+            const ext = file.name.split('.').pop().toLowerCase();
+            showToast('Procesando archivo ' + file.name + '...');
+
+            if (ext === 'xlsx' || ext === 'xls' || ext === 'csv') {
+                parseExcelFile(file);
+            } else if (ext === 'docx') {
+                parseDocxFile(file);
+            } else if (ext === 'pdf') {
+                parsePdfFile(file);
+            } else {
+                alert('Formato no soportado. Por favor sube un archivo Excel (.xlsx, .csv), Word (.docx) o PDF.');
+            }
+        }
+
+        function parseExcelFile(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const matrix = XLSX.utils.sheet_to_json(firstSheet, { header: 1, defval: '' });
+                    applyMatrixToLocalesTable(matrix);
+                } catch(err) {
+                    alert('Error al procesar el archivo Excel: ' + err.message);
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+                function parseDocxFile(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const extractedImages = [];
+                mammoth.convertToHtml({ arrayBuffer: e.target.result }, {
+                    convertImage: mammoth.images.imgElement(function(image) {
+                        return image.read("base64").then(function(imageBuffer) {
+                            const dataUrl = "data:" + image.contentType + ";base64," + imageBuffer;
+                            extractedImages.push(dataUrl);
+                            return { src: dataUrl };
+                        });
+                    })
+                })
+                .then(function(result) {
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = result.value;
+                    const tables = tempDiv.querySelectorAll('table');
+                    
+                    if (tables.length) {
+                        const matrix = [];
+                        tables[0].querySelectorAll('tr').forEach(tr => {
+                            const row = [];
+                            tr.querySelectorAll('td, th').forEach(cell => row.push(cell.innerText.trim()));
+                            if (row.length) matrix.push(row);
+                        });
+                        applyMatrixToLocalesTable(matrix);
+                    }
+
+                    if (extractedImages.length) {
+                        addPhotosToForm(extractedImages);
+                        showToast('✅ ¡' + extractedImages.length + ' fotos extraídas del archivo Word!');
+                    }
+                })
+                .catch(err => alert('Error al leer el archivo Word: ' + err.message));
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        async function parsePdfFile(file) {
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                try {
+                    const typedarray = new Uint8Array(e.target.result);
+                    const pdf = await pdfjsLib.getDocument(typedarray).promise;
+                    
+                    // 1. Extraer texto y tablas de locales
+                    let fullText = '';
+                    for (let i = 1; i <= pdf.numPages; i++) {
+                        const page = await pdf.getPage(i);
+                        const textContent = await page.getTextContent();
+                        
+                        const lineMap = {};
+                        textContent.items.forEach(item => {
+                            const y = Math.round(item.transform[5] / 4) * 4;
+                            if (!lineMap[y]) lineMap[y] = [];
+                            lineMap[y].push({ x: item.transform[4], str: item.str });
+                        });
+                        const sortedYs = Object.keys(lineMap).sort((a, b) => b - a);
+                        sortedYs.forEach(y => {
+                            const lineItems = lineMap[y].sort((a, b) => a.x - b.x);
+                            const lineStr = lineItems.map(it => it.str.trim()).filter(Boolean).join('\t');
+                            if (lineStr) fullText += lineStr + '\n';
+                        });
+                    }
+                    if (fullText.trim()) {
+                        parseAndApplyText(fullText);
+                    }
+
+                    // 2. Extraer automáticamente todas las fotos incrustadas del PDF
+                    const extractedPhotos = await extractImagesFromPdf(pdf);
+                    if (extractedPhotos.length) {
+                        addPhotosToForm(extractedPhotos);
+                        showToast('✅ ¡' + extractedPhotos.length + ' fotos extraídas automáticamente del PDF!');
+                    }
+                } catch(err) {
+                    alert('Error al leer el PDF: ' + err.message);
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function processPastedText() {
+            const text = document.getElementById('paste-textarea').value.trim();
+            if (!text) {
+                alert('Por favor pega el contenido copiado de tu Excel.');
+                return;
+            }
+            const replaceCurrent = document.getElementById('paste-replace-check').checked;
+            parseAndApplyText(text, replaceCurrent);
+            closePasteModal();
+        }
+
+        function parseAndApplyText(text, replaceCurrent = false) {
+            const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+            const matrix = lines.map(l => {
+                if (l.includes('\t')) return l.split('\t');
+                if (l.includes(',')) return l.split(',');
+                if (l.includes(';')) return l.split(';');
+                return l.split(/\s{2,}/); // 2 o más espacios
+            });
+            applyMatrixToLocalesTable(matrix, replaceCurrent);
+        }
+
+        function normalizeHeader(str) {
+            return String(str || '')
+                .toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .trim();
+        }
+
+        function applyMatrixToLocalesTable(matrix, replaceCurrent = true) {
+            if (!matrix || !matrix.length) {
+                alert('No se encontraron datos tabulares.');
+                return;
+            }
+
+            // Identificar encabezados si existen
+            let headerRowIdx = -1;
+            let noIdx = 0, giroIdx = 1, supIdx = 2, precioIdx = 3;
+
+            for (let r = 0; r < Math.min(5, matrix.length); r++) {
+                const row = matrix[r].map(normalizeHeader);
+                let foundNo = -1, foundGiro = -1, foundSup = -1, foundPrecio = -1;
+
+                row.forEach((col, idx) => {
+                    if (/(giro|inquilino|marca|arrendatario|comercio|concepto|nombre|uso)/i.test(col)) {
+                        foundGiro = idx;
+                    } else if (/(sup|superficie|m2|m²|area|metros|dimension)/i.test(col)) {
+                        foundSup = idx;
+                    } else if (/(precio|renta|costo|importe|tarifa|monto)/i.test(col)) {
+                        foundPrecio = idx;
+                    } else if (/(^|\s|\.|\/)(no|num|numero|local|lote|unidad|espacio)(\s|\.|\/|$)/i.test(col) || col === 'no' || col === 'local' || col === 'no.') {
+                        foundNo = idx;
+                    }
+                });
+
+                if (foundGiro >= 0 || (foundNo >= 0 && foundSup >= 0)) {
+                    headerRowIdx = r;
+                    if (foundNo >= 0) noIdx = foundNo;
+                    if (foundGiro >= 0) giroIdx = foundGiro;
+                    if (foundSup >= 0) supIdx = foundSup;
+                    if (foundPrecio >= 0) precioIdx = foundPrecio;
+                    break;
+                }
+            }
+
+            const dataRows = (headerRowIdx >= 0) ? matrix.slice(headerRowIdx + 1) : matrix;
+            const validLocales = [];
+
+            dataRows.forEach(row => {
+                if (!row || !row.length) return;
+                const noVal = String(row[noIdx] !== undefined ? row[noIdx] : '').trim();
+                const giroVal = String(row[giroIdx] !== undefined ? row[giroIdx] : '').trim();
+                const supVal = String(row[supIdx] !== undefined ? row[supIdx] : '').trim();
+                const precioVal = String(row[precioIdx] !== undefined ? row[precioIdx] : '').trim();
+
+                // Ignorar filas totalmente vacías o de totales
+                if (!noVal && !giroVal && !supVal) return;
+                if (noVal.toLowerCase().includes('total') || giroVal.toLowerCase().includes('total') || supVal.toLowerCase().includes('total')) return;
+                if (!noVal && !giroVal) return;
+
+                validLocales.push({
+                    no: noVal,
+                    giro: giroVal,
+                    superficie: supVal,
+                    precio: precioVal
+                });
+            });
+
+            if (!validLocales.length) {
+                alert('No se pudieron extraer locales válidos del archivo.');
+                return;
+            }
+
+            const tbody = document.getElementById('locales-tbody');
+            if (replaceCurrent) {
+                tbody.innerHTML = '';
+            }
+
+            validLocales.forEach(loc => addLocalRow(loc));
+            updateLocalesCounter();
+            showToast('✅ ¡' + validLocales.length + ' locales importados exitosamente!');
+        }
+
+        function downloadExcelTemplate() {
+            const templateData = [
+                ["NO. LOCAL", "INQUILINO / GIRO COMERCIAL", "SUPERFICIE (m²)", "PRECIO POR m²", "NOTAS / ESTATUS"],
+                ["1 PB", "House Roll", "61.95", "$450.00", "Rentado"],
+                ["2 PB", "Helados Dolphy", "61.48", "$450.00", "Rentado"],
+                ["3 PB", "Clínica Dental", "48.53", "$450.00", "Rentado"],
+                ["4 PB", "DISPONIBLE", "50.00", "$450.00", "Disponible"],
+                ["5 PB", "DISPONIBLE", "65.20", "$450.00", "Disponible"]
+            ];
+            const ws = XLSX.utils.aoa_to_sheet(templateData);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Locales");
+            XLSX.writeFile(wb, "plantilla_locales_valormaximo.xlsx");
+            showToast('📥 Plantilla de Excel descargada');
         }
 
         function addLocalRow(loc = {}) {
@@ -690,8 +1371,9 @@
                 '<td><input type="text" class="loc-giro" value="' + (loc.giro || "") + '" placeholder="Ej. Café / DISPONIBLE"></td>' +
                 '<td><input type="text" class="loc-sup" value="' + (loc.superficie || "") + '" placeholder="Ej. 65.00"></td>' +
                 '<td><input type="text" class="loc-precio" value="' + (loc.precio || "") + '" placeholder="Ej. $450.00"></td>' +
-                '<td><button type="button" class="btn btn-danger btn-sm" onclick="this.closest(\'tr\').remove()">&times;</button></td>';
+                '<td><button type="button" class="btn btn-danger btn-sm" onclick="this.closest(\'tr\').remove(); updateLocalesCounter();">&times;</button></td>';
             tbody.appendChild(tr);
+            updateLocalesCounter();
         }
 
         function handleSaveProperty(e) {
