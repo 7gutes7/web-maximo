@@ -3462,9 +3462,10 @@ body {
         justify-content: flex-start !important;
         align-items: flex-start !important;
         box-sizing: border-box !important;
-        box-shadow: 0 -12px 36px rgba(0, 0, 0, 0.35) !important;
+        box-shadow: none !important;
         z-index: 3 !important;
-        background-color: #064E3B !important;
+        background: transparent !important;
+        background-color: transparent !important;
     }
 
     #casos-exito .portfolio-container {
@@ -3484,21 +3485,31 @@ body {
         text-align: left !important;
         box-sizing: border-box !important;
         transform: none !important;
+        background: transparent !important;
     }
 
     #casos-exito .portfolio-video-bg {
         position: sticky !important;
         top: 0 !important;
         left: 0 !important;
+        right: 0 !important;
+        bottom: auto !important;
         width: 100% !important;
+        width: 100vw !important;
         height: 100vh !important;
         height: calc(var(--vh, 1vh) * 100) !important;
         min-height: 100vh !important;
+        margin: 0 !important;
         margin-bottom: -100vh !important;
+        padding: 0 !important;
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
         overflow: hidden !important;
         z-index: 1 !important;
         display: block !important;
         pointer-events: none !important;
+        background: transparent !important;
     }
 
     #casos-exito .portfolio-video-bg video {
@@ -3512,6 +3523,7 @@ body {
         min-height: 100% !important;
         object-fit: cover !important;
         object-position: center center !important;
+        border-radius: 0 !important;
     }
 
     #casos-exito .portfolio-video-overlay {
@@ -3520,7 +3532,7 @@ body {
         width: 100% !important;
         height: 100% !important;
         z-index: 1 !important;
-        background: linear-gradient(180deg, rgba(6, 78, 59, 0.70) 0%, rgba(6, 78, 59, 0.35) 45%, rgba(6, 78, 59, 0.75) 100%) !important;
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0.40) 0%, rgba(0, 0, 0, 0.20) 45%, rgba(0, 0, 0, 0.50) 100%) !important;
     }
 
     #casos-exito .portfolio-left-col {
