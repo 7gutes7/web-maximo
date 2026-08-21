@@ -286,7 +286,13 @@
             background: rgba(15, 22, 36, 0.95);
         }
         .modal-title { font-family: var(--font-serif); font-size: 1.35rem; color: #ffffff; }
-        .modal-body { padding: 1.75rem; overflow-y: auto; flex: 1; }
+        .modal-body { padding: 1.75rem; overflow-y: auto; flex: 1; scroll-behavior: smooth; }
+        .modal-body::-webkit-scrollbar { width: 8px; }
+        .modal-body::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.3); border-radius: 4px; }
+        .modal-body::-webkit-scrollbar-thumb { background: var(--brand-emerald); border-radius: 4px; }
+        .modal-nav-tabs { display: flex; gap: 0.5rem; padding: 0.6rem 1.75rem; background: rgba(12, 18, 30, 0.98); border-bottom: 1px solid var(--border-color); }
+        .modal-nav-tab { padding: 0.3rem 0.75rem; font-size: 0.76rem; font-weight: 600; border-radius: 6px; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-muted); cursor: pointer; transition: all 0.2s ease; }
+        .modal-nav-tab:hover { background: rgba(16, 185, 129, 0.2); color: #10B981; border-color: rgba(16, 185, 129, 0.4); }
         .modal-footer {
             padding: 1.25rem 1.75rem;
             border-top: 1px solid var(--border-color);
@@ -628,9 +634,17 @@
                 <button onclick="closePropertyModal()" style="background:none; border:none; color:#fff; font-size:1.5rem; cursor:pointer;">&times;</button>
             </div>
 
+            <div class="modal-nav-tabs">
+                <button type="button" class="modal-nav-tab" onclick="document.getElementById('sec-info-general').scrollIntoView({behavior:'smooth'})">📋 Datos Generales</button>
+                <button type="button" class="modal-nav-tab" onclick="document.getElementById('sec-fotos').scrollIntoView({behavior:'smooth'})">📸 Fotos & Portada</button>
+                <button type="button" class="modal-nav-tab" onclick="document.getElementById('sec-mapa').scrollIntoView({behavior:'smooth'})">📍 Ubicación y Mapa</button>
+                <button type="button" class="modal-nav-tab" onclick="document.getElementById('sec-locales').scrollIntoView({behavior:'smooth'})">🏢 Tabla de Locales</button>
+            </div>
+
             <div class="modal-body">
                 <form id="property-form" onsubmit="handleSaveProperty(event)">
                     <input type="hidden" id="prop-id">
+                    <div id="sec-info-general"></div>
 
                     <div class="form-row">
                         <div class="form-group">
@@ -645,14 +659,15 @@
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label class="form-label">Texto del Badge *</label>
-                            <input type="text" id="prop-badge-text" class="form-input" placeholder="Ej. 11 DISPONIBLES o 100% RENTADO" required>
+                            <label class="form-label">Texto del Badge * <span style="font-size:0.75rem; color:var(--brand-emerald); font-weight:normal;">(Calculado automáticamente)</span></label>
+                            <input type="text" id="prop-badge-text" class="form-input" placeholder="Calculando..." readonly style="background: rgba(16, 185, 129, 0.08); border-color: rgba(16, 185, 129, 0.4); color: #10B981; font-weight: 700; cursor: not-allowed; user-select: none;">
+                            <input type="hidden" id="prop-badge-type" value="badge-open">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Estilo del Badge</label>
-                            <select id="prop-badge-type" class="form-select">
-                                <option value="badge-open">Verde (Espacios Disponibles)</option>
-                                <option value="badge-orange">Naranja (100% Ocupado / 0 Disponibles)</option>
+                            <label class="form-label">Estado de la Ficha en el Sitio Web *</label>
+                            <select id="prop-active" class="form-select" style="font-weight: 600;">
+                                <option value="true">🟢 Activa (Visible en el sitio web)</option>
+                                <option value="false">⚪ Inactiva (Oculta del sitio web)</option>
                             </select>
                         </div>
                     </div>
@@ -673,7 +688,7 @@
                         </div>
                     </div>
 
-                    <div class="form-divider" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+                    <div id="sec-fotos" class="form-divider" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
                         <span>📸 Fotos & Portada</span>
                         <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
                             <button type="button" class="btn btn-outline btn-sm" style="color:var(--brand-emerald); border-color:rgba(16, 185, 129, 0.4);" onclick="document.getElementById('manual-photos-input').click()" title="Seleccionar fotos JPG, PNG o WEBP desde tu equipo">
@@ -711,7 +726,7 @@
                         </div>
                     </div>
 
-                    <div class="form-divider">
+                    <div id="sec-mapa" class="form-divider">
                         <span>📍 Ubicación y Google Maps</span>
                     </div>
 
@@ -738,7 +753,7 @@
                         <iframe id="admin-map-preview-iframe" src="" style="width: 100%; height: 190px; border: 0; border-radius: 6px; background: #000;" allowfullscreen="" loading="lazy"></iframe>
                     </div>
 
-                    <div class="form-divider" style="flex-direction: column; align-items: stretch; gap: 0.75rem;">
+                    <div id="sec-locales" class="form-divider" style="flex-direction: column; align-items: stretch; gap: 0.75rem;">
                         <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
                             <span>🏢 Tabla de Locales y Espacios</span>
                             <span id="locales-counter" class="table-count-badge">0 locales</span>
@@ -874,7 +889,7 @@
         <span id="toast-msg">Cambios guardados con éxito</span>
     </div>
 
-    <script src="js/catalog-service.js?v=1.0"></script>
+    <script src="js/catalog-service.js?v=200.0"></script>
     <script>
         let propertiesData = [];
 
@@ -1014,10 +1029,18 @@
 
             items.forEach((item) => {
                 const card = document.createElement("div");
-                card.className = "property-card";
+                const isInactive = item.active === false;
+                card.className = "property-card" + (isInactive ? " property-card-inactive" : "");
+                if (isInactive) card.style.opacity = "0.75";
+
+                const activePill = isInactive 
+                    ? '<span style="display:inline-block; font-size:0.65rem; padding:0.15rem 0.45rem; border-radius:4px; background:rgba(239, 68, 68, 0.2); color:#FCA5A5; border:1px solid rgba(239, 68, 68, 0.4); margin-bottom:0.35rem; font-weight:600;">⚪ OCULTA EN WEB</span>' 
+                    : '<span style="display:inline-block; font-size:0.65rem; padding:0.15rem 0.45rem; border-radius:4px; background:rgba(16, 185, 129, 0.15); color:#6EE7B7; border:1px solid rgba(16, 185, 129, 0.3); margin-bottom:0.35rem; font-weight:600;">🟢 VISIBLE EN WEB</span>';
+
                 card.innerHTML = 
                     '<img src="' + item.portada + '" alt="' + item.titulo + '" class="property-card-cover" onerror="this.src=\'galeria/unniplaza.jpg\'">' +
                     '<div class="property-card-body">' +
+                        activePill +
                         '<div class="property-header">' +
                             '<div>' +
                                 '<h3 class="property-title">' + item.titulo + '</h3>' +
@@ -1198,6 +1221,8 @@
             document.getElementById("modal-heading").textContent = "Nuevo Inmueble";
             document.getElementById("property-form").reset();
             document.getElementById("prop-id").value = "";
+            const activeSelect = document.getElementById("prop-active");
+            if (activeSelect) activeSelect.value = "true";
             document.getElementById("locales-tbody").innerHTML = "";
             addLocalRow();
             updateLocalesCounter();
@@ -1211,6 +1236,8 @@
 
             document.getElementById("modal-heading").textContent = "Editar: " + prop.titulo;
             document.getElementById("prop-id").value = prop.id;
+            const activeSelect = document.getElementById("prop-active");
+            if (activeSelect) activeSelect.value = prop.active !== false ? "true" : "false";
             document.getElementById("prop-titulo").value = prop.titulo || "";
             document.getElementById("prop-subtitulo").value = prop.subtitulo || "";
             document.getElementById("prop-badge-text").value = prop.badgeText || "";
@@ -1504,10 +1531,11 @@
         });
 
         
-        // --- CÁLCULO AUTOMÁTICO DE DISPONIBLES Y ESTILO DE BADGE ---
+        // --- CÁLCULO AUTOMÁTICO DE DISPONIBILIDAD DESDE LA TABLA (ESTRICTAMENTE READONLY) ---
         function updateBadgeFromLocalesTable() {
             const tbody = document.getElementById("locales-tbody");
             let disponiblesCount = 0;
+
             if (tbody) {
                 const rows = tbody.querySelectorAll("tr");
                 rows.forEach(row => {
@@ -1520,23 +1548,36 @@
             }
 
             const badgeTextInput = document.getElementById("prop-badge-text");
+            const badgeTypeSelect = document.getElementById("prop-badge-type");
+
             let badgeText = "";
             let badgeType = "badge-orange";
 
             if (disponiblesCount === 0) {
                 badgeText = "0 DISPONIBLES";
-                badgeType = "badge-orange"; // Naranja por default si es 0 disponibles
+                badgeType = "badge-orange";
             } else if (disponiblesCount === 1) {
                 badgeText = "1 DISPONIBLE";
-                badgeType = "badge-open";   // Verde por default si es 1 o más disponibles
+                badgeType = "badge-open";
             } else {
                 badgeText = `${disponiblesCount} DISPONIBLES`;
-                badgeType = "badge-open";   // Verde por default si es 1 o más disponibles
+                badgeType = "badge-open";
             }
 
             if (badgeTextInput) {
                 badgeTextInput.value = badgeText;
-                badgeTextInput.dataset.badgeType = badgeType;
+                if (badgeType === 'badge-open') {
+                    badgeTextInput.style.color = '#10B981';
+                    badgeTextInput.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+                    badgeTextInput.style.background = 'rgba(16, 185, 129, 0.08)';
+                } else {
+                    badgeTextInput.style.color = '#F59E0B';
+                    badgeTextInput.style.borderColor = 'rgba(245, 158, 11, 0.4)';
+                    badgeTextInput.style.background = 'rgba(245, 158, 11, 0.08)';
+                }
+            }
+            if (badgeTypeSelect) {
+                badgeTypeSelect.value = badgeType;
             }
 
             return { badgeText, badgeType, disponiblesCount };
@@ -1814,12 +1855,13 @@
             const tr = document.createElement("tr");
             tr.innerHTML = 
                 '<td><input type="text" class="loc-no" value="' + (loc.no || "") + '" placeholder="Ej. 1 PB"></td>' +
-                '<td><input type="text" class="loc-giro" value="' + (loc.giro || "") + '" placeholder="Ej. Café / DISPONIBLE"></td>' +
+                '<td><input type="text" class="loc-giro" value="' + (loc.giro || "") + '" placeholder="Ej. Café / DISPONIBLE" oninput="updateBadgeFromLocalesTable()"></td>' +
                 '<td><input type="text" class="loc-sup" value="' + (loc.superficie || "") + '" placeholder="Ej. 65.00"></td>' +
                 '<td><input type="text" class="loc-precio" value="' + (loc.precio || "") + '" placeholder="Ej. $450.00"></td>' +
-                '<td><button type="button" class="btn btn-danger btn-sm" onclick="this.closest(\'tr\').remove(); updateLocalesCounter();">&times;</button></td>';
+                '<td><button type="button" class="btn btn-danger btn-sm" onclick="this.closest(\'tr\').remove(); updateLocalesCounter(); updateBadgeFromLocalesTable();">&times;</button></td>';
             tbody.appendChild(tr);
             updateLocalesCounter();
+            updateBadgeFromLocalesTable();
         }
 
         function handleSaveProperty(e) {
@@ -1843,10 +1885,12 @@
                 .map(s => s.trim())
                 .filter(Boolean);
 
+            const activeVal = document.getElementById("prop-active") ? (document.getElementById("prop-active").value === "true") : true;
+
             const newProp = {
                 id,
                 order: propertiesData.length + 1,
-                active: true,
+                active: activeVal,
                 titulo: document.getElementById("prop-titulo").value.trim(),
                 subtitulo: document.getElementById("prop-subtitulo").value.trim(),
                 badgeText: (updateBadgeFromLocalesTable().badgeText),

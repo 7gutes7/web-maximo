@@ -10,7 +10,7 @@ window.VALOR_MAXIMO_CONFIG = window.VALOR_MAXIMO_CONFIG || {
 };
 
 const CatalogService = {
-    cacheKey: "vm_catalog_cache_v1",
+    cacheKey: "vm_catalog_cache_v3",
     items: [],
 
     /**
