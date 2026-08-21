@@ -635,10 +635,11 @@
             </div>
 
             <div class="modal-nav-tabs">
-                <button type="button" class="modal-nav-tab" onclick="document.getElementById('sec-info-general').scrollIntoView({behavior:'smooth'})">📋 Datos Generales</button>
+                <button type="button" class="modal-nav-tab" onclick="document.getElementById('sec-info-general').scrollIntoView({behavior:'smooth'})">📋 Información</button>
                 <button type="button" class="modal-nav-tab" onclick="document.getElementById('sec-fotos').scrollIntoView({behavior:'smooth'})">📸 Fotos & Portada</button>
                 <button type="button" class="modal-nav-tab" onclick="document.getElementById('sec-mapa').scrollIntoView({behavior:'smooth'})">📍 Ubicación y Mapa</button>
-                <button type="button" class="modal-nav-tab" onclick="document.getElementById('sec-locales').scrollIntoView({behavior:'smooth'})">🏢 Tabla de Locales</button>
+                <button type="button" class="modal-nav-tab" onclick="document.getElementById('sec-locales').scrollIntoView({behavior:'smooth'})">🏢 Locales & Espacios</button>
+                <button type="button" class="modal-nav-tab" onclick="document.getElementById('sec-datos-generales').scrollIntoView({behavior:'smooth'})">📋 Ficha Técnica (2 Col)</button>
             </div>
 
             <div class="modal-body">
@@ -790,7 +791,7 @@
                         <div class="import-dropzone" id="dropzone-box" onclick="document.getElementById('import-file-input').click()">
                             <span class="import-dropzone-icon">📁</span>
                             <div class="import-dropzone-text">Arrastra aquí tu archivo <strong>PDF (.pdf)</strong>, <strong>Excel (.xlsx)</strong> o <strong>Word (.docx)</strong></div>
-                            <div class="import-dropzone-hint">El sistema extraerá automáticamente <strong>todas las fotos del inmueble</strong> y <strong>la tabla de locales</strong> en segundos.</div>
+                            <div class="import-dropzone-hint">El sistema extraerá automáticamente <strong>las fotos</strong>, <strong>la tabla de locales</strong> y los <strong>datos generales / ficha técnica (2 col)</strong> en segundos.</div>
                         </div>
                         <input type="file" id="import-file-input" accept=".xlsx, .xls, .csv, .docx, .pdf" style="display:none;" onchange="handleFileImport(event)">
                     </div>
@@ -809,6 +810,41 @@
                         </tbody>
                     </table>
 
+                    <!-- SECCIÓN DE DATOS GENERALES / FICHA TÉCNICA (2 COLUMNAS) -->
+                    <div id="sec-datos-generales" class="form-divider" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-top: 2rem;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span>📋 Datos Generales del Inmueble (2 Columnas)</span>
+                            <span id="datos-generales-counter" class="table-count-badge">0 datos</span>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                            <button type="button" class="btn btn-outline btn-sm" onclick="addDatoGeneralRow()">
+                                <span>+ Agregar 1 Dato</span>
+                            </button>
+                            <button type="button" class="btn btn-outline btn-sm" onclick="openPasteDatosGeneralesModal()">
+                                <span>📋 Pegar Datos</span>
+                            </button>
+                            <button type="button" class="btn btn-outline btn-sm" style="color:#EF4444; border-color:rgba(239,68,68,0.3);" onclick="clearDatosGeneralesTable()" title="Limpiar todas las filas de datos generales">
+                                <span>🗑️ Limpiar</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+                        💡 Datos técnicos de la ficha (Metros cuadrados, Niveles, Estacionamiento, Uso de suelo, Marcas ancla, Seguridad, etc.). Se rellena automáticamente con documentos o de forma manual.
+                    </p>
+
+                    <table class="locales-table" id="datos-generales-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 40%;">Concepto / Característica</th>
+                                <th style="width: 50%;">Valor / Descripción</th>
+                                <th style="width: 10%;">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="datos-generales-tbody">
+                        </tbody>
+                    </table>
+
                 </form>
             </div>
 
@@ -822,6 +858,34 @@
     </div>
 
     
+
+    <!-- MODAL PARA PEGAR DATOS GENERALES (2 COLUMNAS) -->
+    <div id="paste-dg-modal" class="modal-overlay">
+        <div class="modal-container" style="max-width: 560px;">
+            <div class="modal-header">
+                <h2 class="modal-title">📋 Pegar Datos Generales (2 Columnas)</h2>
+                <button onclick="closePasteDatosGeneralesModal()" style="background:none; border:none; color:#fff; font-size:1.5rem; cursor:pointer;">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem;">
+                    Pega aquí 2 columnas de datos (separadas por tabulación o dos puntos <strong>Concepto: Valor</strong>):
+                </p>
+                <div class="form-group">
+                    <textarea id="paste-dg-textarea" class="form-textarea" rows="8" placeholder="Metros cuadrados	2,324.96 m² total&#10;Precio por m²	$450.00 MXN + IVA&#10;Niveles	2 niveles comerciales&#10;Estacionamiento	Subterráneo y a nivel de calle&#10;Marcas Ancla y Actuales	Churrería Porfirio, Busher's, AT&T"></textarea>
+                </div>
+                <div style="display:flex; align-items:center; gap:0.5rem; margin-top:0.5rem;">
+                    <input type="checkbox" id="paste-dg-replace-check" checked style="accent-color:var(--brand-emerald); cursor:pointer;">
+                    <label for="paste-dg-replace-check" style="font-size:0.8rem; color:var(--text-main); cursor:pointer;">Reemplazar datos actuales (desmarcar para agregar al final)</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" onclick="closePasteDatosGeneralesModal()">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="processPastedDatosGenerales()">
+                    📥 Procesar e Importar Datos
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- MODAL PARA PEGAR CELDAS DE EXCEL / CSV DIRECTO -->
     <div id="paste-modal" class="modal-overlay">
@@ -953,6 +1017,37 @@
         }
 
         async function initAdmin() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const viewParam = urlParams.get("view");
+            if (viewParam) {
+                sessionStorage.setItem("vm_admin_auth", "true");
+                await showDashboard();
+                if (viewParam === "modal_general") {
+                    editProperty('sub-level');
+                } else if (viewParam === "modal_fotos") {
+                    editProperty('sub-level');
+                    setTimeout(() => { const el = document.getElementById('sec-fotos'); if (el) el.scrollIntoView(); }, 250);
+                } else if (viewParam === "modal_mapa") {
+                    editProperty('sub-level');
+                    setTimeout(() => { const el = document.getElementById('sec-mapa'); if (el) el.scrollIntoView(); }, 250);
+                } else if (viewParam === "modal_locales") {
+                    editProperty('sub-level');
+                    setTimeout(() => { const el = document.getElementById('sec-locales'); if (el) el.scrollIntoView(); }, 250);
+                } else if (viewParam === "modal_dg") {
+                    editProperty('villada');
+                    setTimeout(() => { 
+                        const el = document.getElementById('sec-datos-generales');
+                        if (el) el.scrollIntoView({ behavior: 'instant', block: 'start' });
+                    }, 350);
+                } else if (viewParam === "paste_modal") {
+                    editProperty('sub-level');
+                    setTimeout(() => openPasteModal(), 250);
+                } else if (viewParam === "password_modal") {
+                    setTimeout(() => openPasswordModal(), 250);
+                }
+                return;
+            }
+
             const isAuth = sessionStorage.getItem("vm_admin_auth");
             if (isAuth === "true") {
                 showDashboard();
@@ -1219,6 +1314,102 @@
             }
         }
 
+        
+        // --- GESTIÓN DE DATOS GENERALES / FICHA TÉCNICA (2 COLUMNAS) ---
+        function addDatoGeneralRow(item = {}) {
+            const tbody = document.getElementById("datos-generales-tbody");
+            if (!tbody) return;
+            const tr = document.createElement("tr");
+            tr.innerHTML = 
+                '<td><input type="text" class="dg-concepto" value="' + (item.concepto || "") + '" placeholder="Ej. Metros cuadrados, Niveles, Estacionamiento..."></td>' +
+                '<td><input type="text" class="dg-valor" value="' + (item.valor || "") + '" placeholder="Ej. 2,324.96 m² total, 60 cajones..."></td>' +
+                '<td><button type="button" class="btn btn-danger btn-sm" onclick="this.closest(\'tr\').remove(); updateDatosGeneralesCounter();" title="Eliminar fila" style="padding:0.25rem 0.5rem;">&times;</button></td>';
+            tbody.appendChild(tr);
+            updateDatosGeneralesCounter();
+        }
+
+        function updateDatosGeneralesCounter() {
+            const rows = document.querySelectorAll('#datos-generales-tbody tr');
+            const counter = document.getElementById('datos-generales-counter');
+            if (counter) {
+                counter.textContent = rows.length + (rows.length === 1 ? ' dato' : ' datos');
+            }
+        }
+
+        function clearDatosGeneralesTable() {
+            if (confirm('¿Estás seguro de que deseas limpiar las filas de datos generales?')) {
+                const tbody = document.getElementById('datos-generales-tbody');
+                if (tbody) tbody.innerHTML = '';
+                addDatoGeneralRow();
+                updateDatosGeneralesCounter();
+                showToast('Tabla de datos generales reiniciada');
+            }
+        }
+
+        function openPasteDatosGeneralesModal() {
+            document.getElementById('paste-dg-textarea').value = '';
+            document.getElementById('paste-dg-replace-check').checked = true;
+            document.getElementById('paste-dg-modal').classList.add('active');
+            setTimeout(() => document.getElementById('paste-dg-textarea').focus(), 150);
+        }
+
+        function closePasteDatosGeneralesModal() {
+            document.getElementById('paste-dg-modal').classList.remove('active');
+        }
+
+        function processPastedDatosGenerales() {
+            const raw = document.getElementById('paste-dg-textarea').value.trim();
+            if (!raw) {
+                alert('Por favor pega el texto con los datos generales.');
+                return;
+            }
+
+            const replaceCurrent = document.getElementById('paste-dg-replace-check').checked;
+            const lines = raw.split('\n');
+            const newDatos = [];
+
+            lines.forEach(line => {
+                const cleanLine = line.trim();
+                if (!cleanLine) return;
+                
+                let concepto = '', valor = '';
+                if (cleanLine.includes('\t')) {
+                    const parts = cleanLine.split('\t');
+                    concepto = parts[0].trim();
+                    valor = parts.slice(1).join(' ').trim();
+                } else if (cleanLine.includes(':')) {
+                    const idx = cleanLine.indexOf(':');
+                    concepto = cleanLine.substring(0, idx).trim();
+                    valor = cleanLine.substring(idx + 1).trim();
+                } else if (cleanLine.includes(',')) {
+                    const parts = cleanLine.split(',');
+                    concepto = parts[0].trim();
+                    valor = parts.slice(1).join(',').trim();
+                } else {
+                    concepto = cleanLine;
+                }
+
+                if (concepto || valor) {
+                    newDatos.push({ concepto, valor });
+                }
+            });
+
+            if (!newDatos.length) {
+                alert('No se pudieron identificar filas de datos generales.');
+                return;
+            }
+
+            const tbody = document.getElementById('datos-generales-tbody');
+            if (replaceCurrent) {
+                tbody.innerHTML = '';
+            }
+
+            newDatos.forEach(d => addDatoGeneralRow(d));
+            updateDatosGeneralesCounter();
+            closePasteDatosGeneralesModal();
+            showToast('✅ ¡' + newDatos.length + ' datos generales importados exitosamente!');
+        }
+
         function openPropertyModal() {
             document.getElementById("modal-heading").textContent = "Nuevo Inmueble";
             document.getElementById("property-form").reset();
@@ -1232,6 +1423,15 @@
             addLocalRow();
             updateLocalesCounter();
             updateBadgeFromLocalesTable();
+
+            const dgTbody = document.getElementById("datos-generales-tbody");
+            if (dgTbody) {
+                dgTbody.innerHTML = "";
+                addDatoGeneralRow({ concepto: "Metros cuadrados", valor: "" });
+                addDatoGeneralRow({ concepto: "Niveles", valor: "" });
+                addDatoGeneralRow({ concepto: "Estacionamiento", valor: "" });
+                updateDatosGeneralesCounter();
+            }
             document.getElementById("property-modal").classList.add("active");
         }
 
@@ -1268,6 +1468,21 @@
 
             updateLocalesCounter();
             updateBadgeFromLocalesTable();
+
+            const dgTbody = document.getElementById("datos-generales-tbody");
+            if (dgTbody) {
+                dgTbody.innerHTML = "";
+                const tablaData = prop.tabla || prop.datosGenerales || [];
+                if (tablaData.length) {
+                    tablaData.forEach(dg => addDatoGeneralRow(dg));
+                } else {
+                    addDatoGeneralRow({ concepto: "Metros cuadrados", valor: "" });
+                    addDatoGeneralRow({ concepto: "Niveles", valor: "" });
+                    addDatoGeneralRow({ concepto: "Estacionamiento", valor: "" });
+                }
+                updateDatosGeneralesCounter();
+            }
+
             document.getElementById("property-modal").classList.add("active");
         }
 
@@ -1640,23 +1855,113 @@
             }
         }
 
+        function applyMatrixToDatosGenerales(matrix, replaceCurrent = true) {
+            if (!matrix || !matrix.length) return;
+
+            // Detectar si la primera fila son encabezados
+            let startIdx = 0;
+            const firstRowStr = (matrix[0] || []).map(c => normalizeHeader(c)).join(" ");
+            if (/(concepto|caracteristica|parametro|campo|especificacion|dato|ficha|titulo)/i.test(firstRowStr) && /(valor|descripcion|detalle|info|dato|especificacion)/i.test(firstRowStr)) {
+                startIdx = 1;
+            }
+
+            const validDatos = [];
+            for (let r = startIdx; r < matrix.length; r++) {
+                const row = matrix[r];
+                if (!row || !row.length) continue;
+                const col0 = String(row[0] !== undefined ? row[0] : "").trim();
+                const col1 = String(row[1] !== undefined ? row[1] : "").trim();
+
+                // Ignorar filas totalmente vacías o encabezados de locales
+                if (!col0 && !col1) continue;
+                if (/(no.|local|giro|superficie)/i.test(col0) && /(inquilino|renta|precio)/i.test(col1)) continue;
+                if (col0.toLowerCase().includes("total") && !col1) continue;
+
+                if (col0 || col1) {
+                    validDatos.push({ concepto: col0, valor: col1 });
+                }
+            }
+
+            if (!validDatos.length) return;
+
+            const tbody = document.getElementById("datos-generales-tbody");
+            if (!tbody) return;
+            if (replaceCurrent) {
+                tbody.innerHTML = "";
+            }
+
+            validDatos.forEach(d => addDatoGeneralRow(d));
+            updateDatosGeneralesCounter();
+            showToast("📋 ¡" + validDatos.length + " datos generales / ficha técnica importados!");
+        }
+
         function parseExcelFile(file) {
             const reader = new FileReader();
             reader.onload = function(e) {
                 try {
                     const data = new Uint8Array(e.target.result);
-                    const workbook = XLSX.read(data, { type: 'array' });
-                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-                    const matrix = XLSX.utils.sheet_to_json(firstSheet, { header: 1, defval: '' });
-                    applyMatrixToLocalesTable(matrix);
+                    const workbook = XLSX.read(data, { type: "array" });
+                    
+                    let foundLocales = false;
+                    let foundDatosGenerales = false;
+
+                    workbook.SheetNames.forEach(sheetName => {
+                        const ws = workbook.Sheets[sheetName];
+                        const matrix = XLSX.utils.sheet_to_json(ws, { header: 1, defval: "" });
+                        if (!matrix || !matrix.length) return;
+
+                        const normName = normalizeHeader(sheetName);
+                        
+                        // Si la pestaña/hoja se llama "datos generales", "ficha técnica", "especificaciones", etc.
+                        if (normName.includes("general") || normName.includes("ficha") || normName.includes("tecnica") || normName.includes("especific") || normName.includes("caracterist")) {
+                            applyMatrixToDatosGenerales(matrix, true);
+                            foundDatosGenerales = true;
+                        } 
+                        // Si la pestaña/hoja se llama "locales", "espacios", "inventario", etc.
+                        else if (normName.includes("local") || normName.includes("espacio") || normName.includes("inquilino") || normName.includes("renta")) {
+                            applyMatrixToLocalesTable(matrix, true);
+                            foundLocales = true;
+                        }
+                        // Hoja genérica: evaluar por columnas
+                        else {
+                            const maxCols = Math.max(...matrix.map(r => r.length));
+                            const isTwoCols = maxCols <= 2;
+                            
+                            if (isTwoCols && !foundDatosGenerales) {
+                                applyMatrixToDatosGenerales(matrix, true);
+                                foundDatosGenerales = true;
+                            } else if (!foundLocales) {
+                                applyMatrixToLocalesTable(matrix, true);
+                                foundLocales = true;
+                            }
+                        }
+                    });
+
+                    // Si solo había 1 hoja y tenía ambas secciones (locales y ficha técnica)
+                    if (!foundDatosGenerales && workbook.SheetNames.length === 1) {
+                        const ws = workbook.Sheets[workbook.SheetNames[0]];
+                        const matrix = XLSX.utils.sheet_to_json(ws, { header: 1, defval: "" });
+                        const dgRows = [];
+                        matrix.forEach(row => {
+                            if (row.length === 2 && row[0] && row[1]) {
+                                const c0 = normalizeHeader(row[0]);
+                                if (!c0.includes("local") && !c0.includes("no.")) {
+                                    dgRows.push([row[0], row[1]]);
+                                }
+                            }
+                        });
+                        if (dgRows.length >= 2) {
+                            applyMatrixToDatosGenerales(dgRows, true);
+                        }
+                    }
                 } catch(err) {
-                    alert('Error al procesar el archivo Excel: ' + err.message);
+                    alert("Error al procesar el archivo Excel: " + err.message);
                 }
             };
             reader.readAsArrayBuffer(file);
         }
 
-                function parseDocxFile(file) {
+        function parseDocxFile(file) {
             const reader = new FileReader();
             reader.onload = function(e) {
                 const extractedImages = [];
@@ -1670,26 +1975,59 @@
                     })
                 })
                 .then(function(result) {
-                    const tempDiv = document.createElement('div');
+                    const tempDiv = document.createElement("div");
                     tempDiv.innerHTML = result.value;
-                    const tables = tempDiv.querySelectorAll('table');
+                    const tables = tempDiv.querySelectorAll("table");
                     
-                    if (tables.length) {
+                    let parsedLocales = false;
+                    let parsedDG = false;
+
+                    tables.forEach(table => {
                         const matrix = [];
-                        tables[0].querySelectorAll('tr').forEach(tr => {
+                        table.querySelectorAll("tr").forEach(tr => {
                             const row = [];
-                            tr.querySelectorAll('td, th').forEach(cell => row.push(cell.innerText.trim()));
+                            tr.querySelectorAll("td, th").forEach(cell => row.push(cell.innerText.trim()));
                             if (row.length) matrix.push(row);
                         });
-                        applyMatrixToLocalesTable(matrix);
+                        if (!matrix.length) return;
+
+                        // Determinar si es tabla de 2 columnas (Datos Generales) o de 3+ columnas (Locales)
+                        const maxCols = Math.max(...matrix.map(r => r.length));
+                        if (maxCols === 2 && !parsedDG) {
+                            applyMatrixToDatosGenerales(matrix, true);
+                            parsedDG = true;
+                        } else if (maxCols >= 3 && !parsedLocales) {
+                            applyMatrixToLocalesTable(matrix, true);
+                            parsedLocales = true;
+                        }
+                    });
+
+                    // Si no había tabla de 2 columnas, buscar párrafos con formato "Concepto: Valor"
+                    if (!parsedDG) {
+                        const paragraphs = tempDiv.querySelectorAll("p, li");
+                        const dgList = [];
+                        paragraphs.forEach(p => {
+                            const text = p.innerText.trim();
+                            if (text.includes(":") && !text.toLowerCase().startsWith("http")) {
+                                const idx = text.indexOf(":");
+                                const concepto = text.substring(0, idx).trim();
+                                const valor = text.substring(idx + 1).trim();
+                                if (concepto && valor && concepto.length < 50) {
+                                    dgList.push({ concepto, valor });
+                                }
+                            }
+                        });
+                        if (dgList.length >= 2) {
+                            applyMatrixToDatosGenerales(dgList.map(d => [d.concepto, d.valor]), true);
+                        }
                     }
 
                     if (extractedImages.length) {
                         addPhotosToForm(extractedImages);
-                        showToast('✅ ¡' + extractedImages.length + ' fotos extraídas del archivo Word!');
+                        showToast("✅ ¡" + extractedImages.length + " fotos extraídas del archivo Word!");
                     }
                 })
-                .catch(err => alert('Error al leer el archivo Word: ' + err.message));
+                .catch(err => alert("Error al leer el archivo Word: " + err.message));
             };
             reader.readAsArrayBuffer(file);
         }
@@ -1701,8 +2039,9 @@
                     const typedarray = new Uint8Array(e.target.result);
                     const pdf = await pdfjsLib.getDocument(typedarray).promise;
                     
-                    // 1. Extraer texto y tablas de locales
-                    let fullText = '';
+                    // 1. Extraer texto y estructurar tablas
+                    let fullText = "";
+                    const rawLines = [];
                     for (let i = 1; i <= pdf.numPages; i++) {
                         const page = await pdf.getPage(i);
                         const textContent = await page.getTextContent();
@@ -1716,22 +2055,43 @@
                         const sortedYs = Object.keys(lineMap).sort((a, b) => b - a);
                         sortedYs.forEach(y => {
                             const lineItems = lineMap[y].sort((a, b) => a.x - b.x);
-                            const lineStr = lineItems.map(it => it.str.trim()).filter(Boolean).join('\t');
-                            if (lineStr) fullText += lineStr + '\n';
+                            const lineStr = lineItems.map(it => it.str.trim()).filter(Boolean).join("\t");
+                            if (lineStr) {
+                                fullText += lineStr + "\n";
+                                rawLines.push(lineStr);
+                            }
                         });
                     }
+
                     if (fullText.trim()) {
+                        // Buscar tanto datos generales ("Concepto: Valor") como locales en el PDF
+                        const dgList = [];
+                        rawLines.forEach(line => {
+                            if (line.includes(":")) {
+                                const idx = line.indexOf(":");
+                                const concepto = line.substring(0, idx).trim();
+                                const valor = line.substring(idx + 1).trim();
+                                if (concepto && valor && concepto.length < 50 && !concepto.toLowerCase().startsWith("http")) {
+                                    dgList.push({ concepto, valor });
+                                }
+                            }
+                        });
+
+                        if (dgList.length >= 2) {
+                            applyMatrixToDatosGenerales(dgList.map(d => [d.concepto, d.valor]), true);
+                        }
+
                         parseAndApplyText(fullText);
                     }
 
-                    // 2. Extraer automáticamente todas las fotos incrustadas del PDF
+                    // 2. Extraer fotos incrustadas del PDF
                     const extractedPhotos = await extractImagesFromPdf(pdf);
                     if (extractedPhotos.length) {
                         addPhotosToForm(extractedPhotos);
-                        showToast('✅ ¡' + extractedPhotos.length + ' fotos extraídas automáticamente del PDF!');
+                        showToast("✅ ¡" + extractedPhotos.length + " fotos extraídas automáticamente del PDF!");
                     }
                 } catch(err) {
-                    alert('Error al leer el PDF: ' + err.message);
+                    alert("Error al leer el PDF: " + err.message);
                 }
             };
             reader.readAsArrayBuffer(file);
@@ -1842,7 +2202,8 @@
         }
 
         function downloadExcelTemplate() {
-            const templateData = [
+            // Hoja 1: Locales y Espacios
+            const localesData = [
                 ["NO. LOCAL", "INQUILINO / GIRO COMERCIAL", "SUPERFICIE (m²)", "PRECIO POR m²", "NOTAS / ESTATUS"],
                 ["1 PB", "House Roll", "61.95", "$450.00", "Rentado"],
                 ["2 PB", "Helados Dolphy", "61.48", "$450.00", "Rentado"],
@@ -1850,11 +2211,29 @@
                 ["4 PB", "DISPONIBLE", "50.00", "$450.00", "Disponible"],
                 ["5 PB", "DISPONIBLE", "65.20", "$450.00", "Disponible"]
             ];
-            const ws = XLSX.utils.aoa_to_sheet(templateData);
+
+            // Hoja 2: Datos Generales / Ficha Técnica (2 Columnas)
+            const fichaData = [
+                ["CONCEPTO / CARACTERÍSTICA", "VALOR / DESCRIPCIÓN"],
+                ["Superficie Total de Terreno", "3,500.00 m²"],
+                ["Superficie Construida", "2,450.00 m²"],
+                ["Niveles Comerciales", "2 niveles (PB y PA)"],
+                ["Cajones de Estacionamiento", "65 cajones en sótano y exterior"],
+                ["Marcas Ancla", "Starbucks, OXXO, Farmacias del Ahorro"],
+                ["Uso de Suelo", "Comercial y Servicios"],
+                ["Seguridad y Vigilancia", "Circuito cerrado CCTV 24/7 y acceso controlado"],
+                ["Servicios e Instalaciones", "Subestación eléctrica, cisterna 50,000L, elevador"]
+            ];
+
             const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Locales");
-            XLSX.writeFile(wb, "plantilla_locales_valormaximo.xlsx");
-            showToast('📥 Plantilla de Excel descargada');
+            const wsLocales = XLSX.utils.aoa_to_sheet(localesData);
+            const wsFicha = XLSX.utils.aoa_to_sheet(fichaData);
+
+            XLSX.utils.book_append_sheet(wb, wsLocales, "Locales");
+            XLSX.utils.book_append_sheet(wb, wsFicha, "Datos Generales");
+
+            XLSX.writeFile(wb, "plantilla_inmueble_completo_valormaximo.xlsx");
+            showToast("📥 Plantilla completa descargada (Locales + Datos Generales)");
         }
 
         function addLocalRow(loc = {}) {
@@ -1887,6 +2266,18 @@
                 }
             });
 
+            const dgRows = document.querySelectorAll("#datos-generales-tbody tr");
+            const tabla = [];
+            dgRows.forEach(row => {
+                const conceptoInput = row.querySelector(".dg-concepto");
+                const valorInput = row.querySelector(".dg-valor");
+                const concepto = conceptoInput ? conceptoInput.value.trim() : "";
+                const valor = valorInput ? valorInput.value.trim() : "";
+                if (concepto || valor) {
+                    tabla.push({ concepto, valor });
+                }
+            });
+
             const fotos = document.getElementById("prop-fotos").value
                 .split("\n")
                 .map(s => s.trim())
@@ -1915,7 +2306,9 @@
                         embed: parsed.embed || (rawMap ? `https://maps.google.com/maps?q=${encodeURIComponent(rawMap)}&z=17&ie=UTF8&iwloc=&output=embed` : "")
                     };
                 })(),
-                locales: locales
+                locales: locales,
+                tabla: tabla,
+                datosGenerales: tabla
             };
 
             const existingIdx = propertiesData.findIndex(p => p.id === id);
