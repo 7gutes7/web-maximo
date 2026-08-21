@@ -14,12 +14,6 @@ const CatalogService = {
     items: [],
 
     /**
-     * Inicializa el servicio, carga desde caché o JSON maestro,
-     * e intenta sincronizar en segundo plano.
-     */
-    async init() {
-        // 1. Carga instantánea desde caché local (0ms)
-        const cached = this.    /**
      * Ordena los inmuebles automáticamente:
      * 1. Riva Palacio siempre primero.
      * 2. De mayor a menor disponibilidad de locales.
@@ -32,7 +26,8 @@ const CatalogService = {
             const locales = item.locales || [];
             return locales.filter(loc => 
                 (loc.giro || '').toUpperCase().includes('DISPONIBLE') || 
-                (loc.notas || '').toUpperCase().includes('DISPONIBLE')
+                (loc.notas || '').toUpperCase().includes('DISPONIBLE') ||
+                (loc.estatus || '').toUpperCase().includes('DISPONIBLE')
             ).length;
         };
 
@@ -65,7 +60,13 @@ const CatalogService = {
         });
     },
 
-    loadFromCache();
+    /**
+     * Inicializa el servicio, carga desde caché o JSON maestro,
+     * e intenta sincronizar en segundo plano.
+     */
+    async init() {
+        // 1. Carga instantánea desde caché local (0ms)
+        const cached = this.loadFromCache();
         if (cached && cached.length) {
             this.items = this.sortItems(cached);
             this.syncFichasInmuebles(cached);
@@ -93,52 +94,6 @@ const CatalogService = {
                 this.render();
             }
         }
-    },
-
-        /**
-     * Ordena los inmuebles automáticamente:
-     * 1. Riva Palacio siempre primero.
-     * 2. De mayor a menor disponibilidad de locales.
-     * 3. Reforzado por número total de locales (de más a menos).
-     */
-    sortItems(items) {
-        if (!items || !items.length) return items || [];
-
-        const getDispCount = (item) => {
-            const locales = item.locales || [];
-            return locales.filter(loc => 
-                (loc.giro || '').toUpperCase().includes('DISPONIBLE') || 
-                (loc.notas || '').toUpperCase().includes('DISPONIBLE')
-            ).length;
-        };
-
-        const isRiva = (item) => {
-            const idStr = String(item.id || '').toLowerCase();
-            const titleStr = String(item.titulo || '').toLowerCase();
-            return idStr.includes('riva') || titleStr.includes('riva');
-        };
-
-        return [...items].sort((a, b) => {
-            const aRiva = isRiva(a);
-            const bRiva = isRiva(b);
-
-            if (aRiva && !bRiva) return -1;
-            if (!aRiva && bRiva) return 1;
-
-            const aDisp = getDispCount(a);
-            const bDisp = getDispCount(b);
-            if (bDisp !== aDisp) {
-                return bDisp - aDisp;
-            }
-
-            const aTotal = (a.locales || []).length;
-            const bTotal = (b.locales || []).length;
-            if (bTotal !== aTotal) {
-                return bTotal - aTotal;
-            }
-
-            return (a.order || 0) - (b.order || 0);
-        });
     },
 
     loadFromCache() {
@@ -239,7 +194,9 @@ const CatalogService = {
         // Fragmento para máximo rendimiento de renderizado en DOM
         const fragment = document.createDocumentFragment();
 
-        this.items.forEach(item => {
+        const sortedItems = this.sortItems(this.items || []);
+
+        sortedItems.forEach(item => {
             if (item.active === false) return;
 
             const card = document.createElement("div");
@@ -256,7 +213,7 @@ const CatalogService = {
             ` : "";
 
             card.innerHTML = `
-                <img src="${item.portada}" alt="${item.titulo}" class="catalog-img" onclick="openFichaModal(this)" style="cursor:pointer;" loading="lazy" decoding="async">
+                <img src="${encodeURI(item.portada || 'galeria comercial/Hidalgo/Portada.jpg')}" onerror="this.onerror=null; this.src='galeria%20comercial/Hidalgo/Portada.jpg';" alt="${item.titulo}" class="catalog-img" onclick="openFichaModal(this)" style="cursor:pointer;" loading="lazy" decoding="async">
                 <div class="catalog-content">
                     <div class="catalog-meta">
                         <div>
