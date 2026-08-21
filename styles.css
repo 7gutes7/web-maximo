@@ -3487,16 +3487,16 @@ body {
     }
 
     #casos-exito .portfolio-video-bg {
-        position: sticky !important;
+        position: absolute !important;
+        inset: 0 !important;
         top: 0 !important;
         left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
         width: 100% !important;
-        width: 100vw !important;
-        height: 100vh !important;
-        height: calc(var(--vh, 1vh) * 100) !important;
-        min-height: 100vh !important;
+        height: 100% !important;
+        min-height: 100% !important;
         margin: 0 !important;
-        margin-bottom: -100vh !important;
         padding: 0 !important;
         border: none !important;
         border-radius: 0 !important;
@@ -3505,20 +3505,20 @@ body {
         z-index: 1 !important;
         display: block !important;
         pointer-events: none !important;
-        background: #064E3B !important;
+        background: transparent !important;
     }
 
     #casos-exito .portfolio-video-bg video {
         position: absolute !important;
-        top: 50% !important;
-        left: 50% !important;
-        transform: translate(-50%, -50%) !important;
+        top: 0 !important;
+        left: 0 !important;
         width: 100% !important;
         height: 100% !important;
         min-width: 100% !important;
         min-height: 100% !important;
         object-fit: cover !important;
         object-position: center center !important;
+        transform: none !important;
         border-radius: 0 !important;
     }
 
@@ -3528,7 +3528,7 @@ body {
         width: 100% !important;
         height: 100% !important;
         z-index: 1 !important;
-        background: linear-gradient(180deg, rgba(6, 78, 59, 0.70) 0%, rgba(6, 78, 59, 0.35) 45%, rgba(6, 78, 59, 0.75) 100%) !important;
+        background: rgba(0, 0, 0, 0.45) !important;
     }
 
     #casos-exito .portfolio-left-col {
