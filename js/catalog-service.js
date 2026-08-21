@@ -119,8 +119,25 @@ const CatalogService = {
     saveToCache(data) {
         try {
             localStorage.setItem(this.cacheKey, JSON.stringify(data));
-        } catch (e) {
-            // Quota exceeded o modo privado
+        } catch (e) {}
+
+        // Sincronización automática con el servidor del dominio (Hostinger / Apache PHP)
+        this.saveToServer(data);
+    },
+
+    async saveToServer(data) {
+        try {
+            const res = await fetch("save_catalog.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+            if (res.ok) {
+                const resJson = await res.json();
+                console.log("[CatalogService] Guardado en servidor exitoso:", resJson);
+            }
+        } catch (err) {
+            console.warn("[CatalogService] Servidor estático sin PHP o sin permisos:", err);
         }
     },
 
