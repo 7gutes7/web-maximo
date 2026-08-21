@@ -1072,19 +1072,21 @@
         }
 
         
-        // --- PARSER DE UBICACIÓN GOOGLE MAPS DE ALTA PRECISIÓN ---
-        function parseGoogleMapsInput(input, fallbackEmbed = '') {
-            if (!input) return { link: '', embed: fallbackEmbed };
+        // --- PARSER DE UBICACIÓN GOOGLE MAPS DE ALTA PRECISIÓN Y LIVE PREVIEW ---
+        let currentModalFallbackEmbed = '';
 
-            let clean = input.trim();
+        function parseGoogleMapsInput(input, fallbackEmbed = '') {
+            const currentFallback = fallbackEmbed || currentModalFallbackEmbed || '';
+            if (!input && !currentFallback) return { link: '', embed: '' };
+
+            let clean = (input || '').trim();
             if (clean.includes('<iframe')) {
                 const srcMatch = clean.match(/src=["']([^"']+)["']/i);
                 if (srcMatch) clean = srcMatch[1];
             }
 
             let link = clean;
-            let embed = fallbackEmbed;
-
+            let embed = currentFallback;
             let lat = null, lng = null, queryText = null;
 
             // 1. Coordenadas de PIN exacto en Google Maps (!3d...!4d... o !8m2!3d...!4d...)
@@ -1099,9 +1101,10 @@
                 }
             }
 
-            // 2. Parámetros q=lat,lng en URL
+            // 2. Parámetros q=lat,lng en URL o en el embed previo
             if (!lat || !lng) {
-                const qMatchCoords = clean.match(/[?&](?:q|query)=(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)/i);
+                const qMatchCoords = clean.match(/[?&](?:q|query)=(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)/i) ||
+                                     (currentFallback && currentFallback.match(/[?&](?:q|query)=(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)/i));
                 if (qMatchCoords) {
                     lat = qMatchCoords[1];
                     lng = qMatchCoords[2];
@@ -1126,11 +1129,34 @@
                 }
             }
 
-            // 5. Búsqueda por texto q=Nombre
+            // 5. Si viene de un link de lugar con nombre (/place/Nombre+Del+Lugar/...)
             if (!lat || !lng) {
+                const placeMatch = clean.match(/\/maps\/place\/([^\/@?]+)/i);
+                if (placeMatch) {
+                    queryText = decodeURIComponent(placeMatch[1].replace(/\+/g, ' '));
+                }
+            }
+
+            // 6. Búsqueda por texto q=Nombre
+            if (!lat && !lng && !queryText) {
                 const qMatchText = clean.match(/[?&](?:q|query)=([^&]+)/i);
-                if (qMatchText) {
-                    queryText = decodeURIComponent(qMatchText[1]);
+                if (qMatchText && !qMatchText[1].startsWith('http')) {
+                    queryText = decodeURIComponent(qMatchText[1].replace(/\+/g, ' '));
+                }
+            }
+
+            // 7. Enlaces cortos (maps.app.goo.gl) o texto plano
+            if (!lat && !lng && !queryText) {
+                if (clean.includes('maps.app.goo.gl') || clean.includes('goo.gl/maps') || clean.startsWith('http')) {
+                    if (currentFallback && currentFallback.includes('q=')) {
+                        embed = currentFallback;
+                    } else {
+                        const tituloInput = document.getElementById('prop-titulo');
+                        const titulo = tituloInput ? tituloInput.value.trim() : '';
+                        queryText = titulo ? `${titulo}, Toluca` : 'Toluca Estado de Mexico';
+                    }
+                } else if (clean.length > 2) {
+                    queryText = clean;
                 }
             }
 
@@ -1146,74 +1172,50 @@
                 }
             } else if (clean.includes('output=embed') || clean.includes('/embed')) {
                 embed = clean;
-            } else if (clean.startsWith('http')) {
-                embed = `https://maps.google.com/maps?q=${encodeURIComponent(clean)}&z=17&ie=UTF8&iwloc=&output=embed`;
+            } else if (!embed && currentFallback) {
+                embed = currentFallback;
             }
 
             return { link, embed, lat, lng };
         }
 
-        async function resolveShortMapLink(url) {
-            if (!url || (!url.includes('maps.app.goo.gl') && !url.includes('goo.gl/maps'))) return null;
-            try {
-                const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
-                const res = await fetch(proxyUrl);
-                if (res.ok) {
-                    const data = await res.json();
-                    if (data && data.status && data.status.url) {
-                        const parsed = parseGoogleMapsInput(data.status.url);
-                        if (parsed && parsed.embed) return parsed;
-                    }
-                }
-            } catch (e) {
-                console.warn('No se pudo expandir el enlace corto:', e);
-            }
-            return null;
-        }
-
-        let mapDebounceTimer = null;
-        function handleMapUrlInput(val) {
+        function handleMapUrlInput(val, explicitFallback = '') {
             const wrapper = document.getElementById("admin-map-preview-wrapper");
             const iframe = document.getElementById("admin-map-preview-iframe");
             const badge = document.getElementById("admin-map-status-badge");
 
-            if (!val || !val.trim()) {
-                if (wrapper) wrapper.style.display = "none";
-                if (iframe) iframe.src = "";
-                return;
+            if (explicitFallback) {
+                currentModalFallbackEmbed = explicitFallback;
             }
 
-            const parsed = parseGoogleMapsInput(val);
-            if (iframe) iframe.src = parsed.embed;
+            if (!val || !val.trim()) {
+                if (currentModalFallbackEmbed) {
+                    val = currentModalFallbackEmbed;
+                } else {
+                    if (wrapper) wrapper.style.display = "none";
+                    if (iframe) iframe.src = "";
+                    return;
+                }
+            }
+
+            const parsed = parseGoogleMapsInput(val, currentModalFallbackEmbed);
+            if (iframe && parsed.embed) {
+                iframe.src = parsed.embed;
+            }
             if (wrapper) wrapper.style.display = "block";
 
             if (parsed.lat && parsed.lng) {
                 if (badge) {
-                    badge.textContent = `📍 Coordenadas exactas: ${parsed.lat}, ${parsed.lng}`;
+                    badge.textContent = `📍 Coordenadas detectadas: ${parsed.lat}, ${parsed.lng}`;
                     badge.style.background = "rgba(16, 185, 129, 0.2)";
                     badge.style.color = "#10B981";
                 }
             } else {
                 if (badge) {
-                    badge.textContent = "🔍 Identificando ubicación...";
+                    badge.textContent = "🗺️ Ubicación comercial vinculada";
                     badge.style.background = "rgba(59, 130, 246, 0.2)";
                     badge.style.color = "#60A5FA";
                 }
-            }
-
-            if (val.includes('maps.app.goo.gl') || val.includes('goo.gl/maps')) {
-                clearTimeout(mapDebounceTimer);
-                mapDebounceTimer = setTimeout(async () => {
-                    const resolved = await resolveShortMapLink(val);
-                    if (resolved && resolved.embed && iframe) {
-                        iframe.src = resolved.embed;
-                        if (badge && resolved.lat && resolved.lng) {
-                            badge.textContent = `📍 Coordenadas exactas: ${resolved.lat}, ${resolved.lng}`;
-                            badge.style.background = "rgba(16, 185, 129, 0.2)";
-                            badge.style.color = "#10B981";
-                        }
-                    }
-                }, 350);
             }
         }
 
@@ -1221,6 +1223,9 @@
             document.getElementById("modal-heading").textContent = "Nuevo Inmueble";
             document.getElementById("property-form").reset();
             document.getElementById("prop-id").value = "";
+            currentModalFallbackEmbed = "";
+            document.getElementById("prop-map-link").value = "";
+            handleMapUrlInput("");
             const activeSelect = document.getElementById("prop-active");
             if (activeSelect) activeSelect.value = "true";
             document.getElementById("locales-tbody").innerHTML = "";
@@ -1247,9 +1252,11 @@
             document.getElementById("prop-portada").value = prop.portada || "";
             document.getElementById("prop-fotos").value = (prop.fotos || []).join("\n");
             renderVisualPhotoGallery();
-            const mapUrlVal = (prop.ubicacion && (prop.ubicacion.link || prop.ubicacion.embed)) ? (prop.ubicacion.link || prop.ubicacion.embed) : "";
-            document.getElementById("prop-map-link").value = mapUrlVal;
-            handleMapUrlInput(mapUrlVal);
+            const mapLink = prop.ubicacion ? (prop.ubicacion.link || "") : "";
+            const mapEmbed = prop.ubicacion ? (prop.ubicacion.embed || "") : "";
+            currentModalFallbackEmbed = mapEmbed;
+            document.getElementById("prop-map-link").value = mapLink || mapEmbed;
+            handleMapUrlInput(mapLink || mapEmbed, mapEmbed);
 
             const tbody = document.getElementById("locales-tbody");
             tbody.innerHTML = "";
