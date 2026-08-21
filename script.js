@@ -1187,6 +1187,7 @@ function initHorizontalCurtainReveals() {
     const leftCurtains = document.querySelectorAll('.section-curtain-left');
     const blurTextP = document.querySelector('.blur-text-element');
     const cards = document.querySelectorAll('.project-card-stagger');
+    const rightCol = sec.querySelector('.portfolio-right-col');
     const container = sec.querySelector('.portfolio-container');
 
     function update() {
@@ -1195,9 +1196,8 @@ function initHorizontalCurtainReveals() {
 
         if (isMobile) {
             // En móvil: Flujo continuo 1:1 integrado sin fronteras
-            if (container) {
-                container.style.transform = 'none';
-            }
+            if (container) container.style.transform = 'none';
+            if (rightCol) rightCol.style.transform = 'none';
             cards.forEach(card => card.classList.add('active'));
             if (blurTextP) blurTextP.classList.add('active');
         } else {
@@ -1207,7 +1207,7 @@ function initHorizontalCurtainReveals() {
             const scrolled = -rect.top;
 
             const startPx = 2 * vh;
-            const revealDistance = 3.0 * vh;
+            const revealDistance = 1.0 * vh;
             const progress = Math.min(1, Math.max(0, (scrolled - startPx) / revealDistance));
             const clipRight = Math.max(0, Math.min(100, 100 - progress * 100));
 
@@ -1215,34 +1215,27 @@ function initHorizontalCurtainReveals() {
                 section.style.setProperty('--curtain-right', `${clipRight}%`);
             });
 
-            if (container) {
-                if (progress < 1.0) {
-                    container.style.transform = `translate3d(0, 0px, 0)`;
-                } else {
-                    const activeStartPx = startPx + revealDistance;
-                    const activeScrolled = Math.max(0, scrolled - activeStartPx);
-                    const scrollTravel = 3.3 * vh;
-                    const flowProgress = Math.min(1, activeScrolled / scrollTravel);
-                    const maxScroll = Math.max(0, container.scrollHeight - vh + 100);
-
-                    const translateYValue = -flowProgress * maxScroll;
-                    container.style.transform = `translate3d(0, ${translateYValue}px, 0)`;
-                }
-            }
-
-            // Secuencia Timeline en vh acumulado (SÓLO para escritorio)
-            const progressTotal = scrolled / vh;
-            const baseVh = (startPx / vh) + 0.9; // ~5.7vh
-
             if (blurTextP) {
-                blurTextP.classList.toggle('active', progressTotal >= (baseVh - 0.2));
+                blurTextP.classList.toggle('active', progress >= 0.4);
             }
 
-            const cardThresholds = [baseVh + 0.3, baseVh + 1.0, baseVh + 1.7, baseVh + 2.4];
-            cards.forEach((card, index) => {
-                const threshold = cardThresholds[index] !== undefined ? cardThresholds[index] : (baseVh + 0.3 + index * 0.7);
-                card.classList.toggle('active', progressTotal >= threshold);
-            });
+            if (container) {
+                container.style.transform = `translate3d(0, 0px, 0)`;
+            }
+
+            if (rightCol) {
+                // Desfile vertical continuo de las 25 marcas de Casos de Éxito
+                const activeStartPx = startPx + revealDistance; // 3.0 * vh
+                const activeScrolled = Math.max(0, scrolled - activeStartPx);
+                const totalTravel = 3.0 * vh; // 3.0vh a 6.0vh
+                const flowProgress = Math.min(1, activeScrolled / totalTravel);
+                const maxScroll = Math.max(0, rightCol.scrollHeight - vh + 160);
+
+                const translateYValue = -flowProgress * maxScroll;
+                rightCol.style.transform = `translate3d(0, ${translateYValue}px, 0)`;
+            }
+
+            cards.forEach(card => card.classList.add('active'));
         }
     }
 
