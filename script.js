@@ -1,3 +1,103 @@
+
+// --- PARSER DE UBICACIÓN GOOGLE MAPS DE ALTA PRECISIÓN ---
+function parseGoogleMapsInput(input, fallbackEmbed = '') {
+    if (!input) return { link: '', embed: fallbackEmbed };
+
+    let clean = input.trim();
+    if (clean.includes('<iframe')) {
+        const srcMatch = clean.match(/src=["']([^"']+)["']/i);
+        if (srcMatch) clean = srcMatch[1];
+    }
+
+    let link = clean;
+    let embed = fallbackEmbed;
+
+    let lat = null, lng = null, queryText = null;
+
+    // 1. Coordenadas de PIN exacto en Google Maps (!3d...!4d... o !8m2!3d...!4d...)
+    const pinMatch3d4d = clean.match(/!(?:8m2!)?3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/) || clean.match(/!2d(-?\d+\.\d+)!3d(-?\d+\.\d+)/);
+    if (pinMatch3d4d) {
+        if (clean.includes('!2d') && clean.indexOf('!2d') < clean.indexOf('!3d')) {
+            lng = pinMatch3d4d[1];
+            lat = pinMatch3d4d[2];
+        } else {
+            lat = pinMatch3d4d[1];
+            lng = pinMatch3d4d[2];
+        }
+    }
+
+    // 2. Parámetros q=lat,lng en URL
+    if (!lat || !lng) {
+        const qMatchCoords = clean.match(/[?&](?:q|query)=(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)/i);
+        if (qMatchCoords) {
+            lat = qMatchCoords[1];
+            lng = qMatchCoords[2];
+        }
+    }
+
+    // 3. Coordenadas de cámara @lat,lng
+    if (!lat || !lng) {
+        const atMatch = clean.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+        if (atMatch) {
+            lat = atMatch[1];
+            lng = atMatch[2];
+        }
+    }
+
+    // 4. Coordenadas puras escritas a mano
+    if (!lat || !lng) {
+        const rawCoordsMatch = clean.match(/^\s*(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)\s*$/);
+        if (rawCoordsMatch) {
+            lat = rawCoordsMatch[1];
+            lng = rawCoordsMatch[2];
+        }
+    }
+
+    // 5. Búsqueda por texto q=Nombre
+    if (!lat || !lng) {
+        const qMatchText = clean.match(/[?&](?:q|query)=([^&]+)/i);
+        if (qMatchText) {
+            queryText = decodeURIComponent(qMatchText[1]);
+        }
+    }
+
+    if (lat && lng) {
+        embed = `https://maps.google.com/maps?q=${lat},${lng}&z=17&ie=UTF8&iwloc=&output=embed`;
+        if (!link.startsWith('http')) {
+            link = `https://www.google.com/maps?q=${lat},${lng}`;
+        }
+    } else if (queryText) {
+        embed = `https://maps.google.com/maps?q=${encodeURIComponent(queryText)}&z=17&ie=UTF8&iwloc=&output=embed`;
+        if (!link.startsWith('http')) {
+            link = `https://www.google.com/maps?q=${encodeURIComponent(queryText)}`;
+        }
+    } else if (clean.includes('output=embed') || clean.includes('/embed')) {
+        embed = clean;
+    } else if (clean.startsWith('http')) {
+        embed = `https://maps.google.com/maps?q=${encodeURIComponent(clean)}&z=17&ie=UTF8&iwloc=&output=embed`;
+    }
+
+    return { link, embed, lat, lng };
+}
+
+async function resolveShortMapLink(url) {
+    if (!url || (!url.includes('maps.app.goo.gl') && !url.includes('goo.gl/maps'))) return null;
+    try {
+        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+        const res = await fetch(proxyUrl);
+        if (res.ok) {
+            const data = await res.json();
+            if (data && data.status && data.status.url) {
+                const parsed = parseGoogleMapsInput(data.status.url);
+                if (parsed && parsed.embed) return parsed;
+            }
+        }
+    } catch (e) {
+        console.warn('No se pudo expandir el enlace corto:', e);
+    }
+    return null;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // Cada inicializador corre aislado: si uno lanza una excepción (p. ej. sin WebGL),
     // los demás deben continuar funcionando.
@@ -2590,22 +2690,26 @@ function openFichaModal(el) {
     // Ubicación
     const ubicacionTitle = document.getElementById('ficha-ubicacion-title');
     const ubicacionBox = document.getElementById('ficha-ubicacion');
-    if (ficha && ficha.ubicacion) {
+    if (ficha && ficha.ubicacion && (ficha.ubicacion.link || ficha.ubicacion.embed)) {
         ubicacionTitle.style.display = '';
         ubicacionBox.style.display = '';
         const iframe = ubicacionBox.querySelector('iframe');
         const link = ubicacionBox.querySelector('.ficha-ubicacion-link');
 
-        let embedUrl = ficha.ubicacion.embed;
-        if (ficha.ubicacion.link && ficha.ubicacion.link.includes('@')) {
-            const match = ficha.ubicacion.link.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
-            if (match) {
-                embedUrl = `https://maps.google.com/maps?q=${match[1]},${match[2]}&z=17&ie=UTF8&iwloc=&output=embed`;
-            }
-        }
+        const rawLink = ficha.ubicacion.link || '';
+        const rawEmbed = ficha.ubicacion.embed || '';
+        const parsed = parseGoogleMapsInput(rawLink || rawEmbed, rawEmbed);
 
-        if (iframe) iframe.src = embedUrl;
-        if (link) link.href = ficha.ubicacion.link;
+        if (iframe) iframe.src = parsed.embed;
+        if (link) link.href = rawLink || parsed.link;
+
+        if (rawLink && (rawLink.includes('maps.app.goo.gl') || rawLink.includes('goo.gl/maps'))) {
+            resolveShortMapLink(rawLink).then(resolved => {
+                if (resolved && resolved.embed && iframe) {
+                    iframe.src = resolved.embed;
+                }
+            });
+        }
     } else {
         ubicacionTitle.style.display = 'none';
         ubicacionBox.style.display = 'none';

@@ -19,9 +19,55 @@ const CatalogService = {
      */
     async init() {
         // 1. Carga instantánea desde caché local (0ms)
-        const cached = this.loadFromCache();
+        const cached = this.    /**
+     * Ordena los inmuebles automáticamente:
+     * 1. Riva Palacio siempre primero.
+     * 2. De mayor a menor disponibilidad de locales.
+     * 3. Reforzado por número total de locales (de más a menos).
+     */
+    sortItems(items) {
+        if (!items || !items.length) return items || [];
+
+        const getDispCount = (item) => {
+            const locales = item.locales || [];
+            return locales.filter(loc => 
+                (loc.giro || '').toUpperCase().includes('DISPONIBLE') || 
+                (loc.notas || '').toUpperCase().includes('DISPONIBLE')
+            ).length;
+        };
+
+        const isRiva = (item) => {
+            const idStr = String(item.id || '').toLowerCase();
+            const titleStr = String(item.titulo || '').toLowerCase();
+            return idStr.includes('riva') || titleStr.includes('riva');
+        };
+
+        return [...items].sort((a, b) => {
+            const aRiva = isRiva(a);
+            const bRiva = isRiva(b);
+
+            if (aRiva && !bRiva) return -1;
+            if (!aRiva && bRiva) return 1;
+
+            const aDisp = getDispCount(a);
+            const bDisp = getDispCount(b);
+            if (bDisp !== aDisp) {
+                return bDisp - aDisp;
+            }
+
+            const aTotal = (a.locales || []).length;
+            const bTotal = (b.locales || []).length;
+            if (bTotal !== aTotal) {
+                return bTotal - aTotal;
+            }
+
+            return (a.order || 0) - (b.order || 0);
+        });
+    },
+
+    loadFromCache();
         if (cached && cached.length) {
-            this.items = cached;
+            this.items = this.sortItems(cached);
             this.syncFichasInmuebles(cached);
         }
 
@@ -30,7 +76,7 @@ const CatalogService = {
             const freshData = await this.fetchRemoteData();
             if (freshData && freshData.length) {
                 const hasChanged = JSON.stringify(freshData) !== JSON.stringify(this.items);
-                this.items = freshData;
+                this.items = this.sortItems(freshData);
                 this.saveToCache(freshData);
                 this.syncFichasInmuebles(freshData);
 
@@ -42,11 +88,57 @@ const CatalogService = {
             console.warn("[CatalogService] Modo offline / fallback activo:", err);
             if (!this.items.length) {
                 const fallback = await this.fetchFallbackJSON();
-                this.items = fallback;
+                this.items = this.sortItems(fallback);
                 this.syncFichasInmuebles(fallback);
                 this.render();
             }
         }
+    },
+
+        /**
+     * Ordena los inmuebles automáticamente:
+     * 1. Riva Palacio siempre primero.
+     * 2. De mayor a menor disponibilidad de locales.
+     * 3. Reforzado por número total de locales (de más a menos).
+     */
+    sortItems(items) {
+        if (!items || !items.length) return items || [];
+
+        const getDispCount = (item) => {
+            const locales = item.locales || [];
+            return locales.filter(loc => 
+                (loc.giro || '').toUpperCase().includes('DISPONIBLE') || 
+                (loc.notas || '').toUpperCase().includes('DISPONIBLE')
+            ).length;
+        };
+
+        const isRiva = (item) => {
+            const idStr = String(item.id || '').toLowerCase();
+            const titleStr = String(item.titulo || '').toLowerCase();
+            return idStr.includes('riva') || titleStr.includes('riva');
+        };
+
+        return [...items].sort((a, b) => {
+            const aRiva = isRiva(a);
+            const bRiva = isRiva(b);
+
+            if (aRiva && !bRiva) return -1;
+            if (!aRiva && bRiva) return 1;
+
+            const aDisp = getDispCount(a);
+            const bDisp = getDispCount(b);
+            if (bDisp !== aDisp) {
+                return bDisp - aDisp;
+            }
+
+            const aTotal = (a.locales || []).length;
+            const bTotal = (b.locales || []).length;
+            if (bTotal !== aTotal) {
+                return bTotal - aTotal;
+            }
+
+            return (a.order || 0) - (b.order || 0);
+        });
     },
 
     loadFromCache() {

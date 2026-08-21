@@ -7,6 +7,90 @@
     <link rel="icon" type="image/svg+xml" href="valorISO.svg">
     <link rel="stylesheet" href="fonts/local-fonts.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // --- DRIFTWALL 3D BACKGROUND ENGINE (VALOR MÁXIMO ART) ---
+        function initDriftWall() {
+            const plane = document.getElementById('drift-wall-plane');
+            if (!plane) return;
+
+            const artPhotos = [
+                'valormaximoART/0c1d194ed76fada0705204fc96bce180.jpg',
+                'valormaximoART/0f9bae2c281d0acad623fe111ef13bc4.jpg',
+                'valormaximoART/107b322401fcfc81014054b902fa4301.jpg',
+                'valormaximoART/22e013e74f92ff56814c0523b9d8ea19.jpg',
+                'valormaximoART/52e4285a050dd168c90a3df236ebedfa.jpg',
+                'valormaximoART/76c339f1cb04a378b73d3c2df9a91bcd.jpg',
+                'valormaximoART/8388d28c9479d74bc7172d828307dd08.jpg',
+                'valormaximoART/9ff09c1156962c15f65e8bb85240ec2e.jpg',
+                'valormaximoART/bc0f4db2dcbac1c04d826ad395dbe506.jpg',
+                'valormaximoART/d399b1a5bfab57de3bbba91441225b04.jpg',
+                'valormaximoART/eba9a04b15690ef7ce28d9cf02c50485.jpg'
+            ];
+
+            const numColumns = 5;
+            const tileHeight = 145;
+            const gap = 18;
+            const itemFullHeight = tileHeight + gap;
+
+            const columnsData = [];
+            plane.innerHTML = '';
+
+            for (let c = 0; c < numColumns; c++) {
+                const colEl = document.createElement('div');
+                colEl.className = 'drift-wall-column';
+
+                // Repetir y mezclar fotos para cada columna
+                const colPhotos = [...artPhotos, ...artPhotos];
+
+                colPhotos.forEach(src => {
+                    const tile = document.createElement('div');
+                    tile.className = 'drift-wall-tile';
+                    const img = document.createElement('img');
+                    img.src = src;
+                    img.loading = 'lazy';
+                    img.alt = 'Valor Máximo Art';
+                    tile.appendChild(img);
+                    colEl.appendChild(tile);
+                });
+
+                plane.appendChild(colEl);
+
+                // Variación de velocidad entre columnas (base ~42px/s)
+                const colVariance = ((c % 2 === 0) ? 1 : -0.8) * (0.2 + (c * 0.12));
+                const speed = 42 * (1 + colVariance * 0.45);
+
+                columnsData.push({
+                    el: colEl,
+                    y: c * -70,
+                    speed: speed,
+                    totalHeight: (colPhotos.length / 2) * itemFullHeight
+                });
+            }
+
+            let lastTime = performance.now();
+            function animateDrift(now) {
+                const delta = Math.min((now - lastTime) / 1000, 0.1);
+                lastTime = now;
+
+                columnsData.forEach(col => {
+                    col.y -= col.speed * delta; // Dirección UP (Hacia arriba)
+                    if (col.y <= -col.totalHeight) {
+                        col.y += col.totalHeight;
+                    }
+                    col.el.style.transform = `translate3d(0, ${col.y.toFixed(2)}px, 0)`;
+                });
+
+                requestAnimationFrame(animateDrift);
+            }
+
+            requestAnimationFrame(animateDrift);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initDriftWall();
+        });
+
+    </script>
     <!-- Motores de Importación de Documentos -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mammoth@1.6.0/mammoth.browser.min.js"></script>
@@ -377,9 +461,88 @@
         }
         .toast.show { transform: translateY(0); opacity: 1; }
         @media (max-width: 768px) { .form-row { grid-template-columns: 1fr; } .admin-main { padding: 1rem; } }
+    
+        /* --- DRIFTWALL 3D ART BACKGROUND STYLES --- */
+        .drift-wall-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 0;
+            background: #060010;
+        }
+        .drift-wall-overlay {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, rgba(6, 0, 16, 0.45) 0%, rgba(6, 0, 16, 0.88) 100%);
+            z-index: 2;
+            pointer-events: none;
+        }
+        .drift-wall-viewport {
+            position: absolute;
+            inset: -30% -20%;
+            perspective: 1200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            pointer-events: none;
+            mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+        }
+        .drift-wall-plane {
+            display: flex;
+            gap: 18px;
+            transform: rotateX(16deg) rotateY(-14deg) translateZ(0px);
+            transform-style: preserve-3d;
+            will-change: transform;
+            pointer-events: none;
+        }
+        .drift-wall-column {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            will-change: transform;
+            pointer-events: none;
+        }
+        .drift-wall-tile {
+            width: 220px;
+            height: 145px;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 14px 35px rgba(0, 0, 0, 0.65);
+            flex-shrink: 0;
+            pointer-events: none;
+            user-select: none;
+            background: #0d1320;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .drift-wall-tile img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            pointer-events: none;
+            filter: brightness(0.85) contrast(1.05);
+            transition: opacity 0.3s ease;
+        }
+        .login-wrapper { position: relative; z-index: 10; }
+        .admin-nav { z-index: 100; position: relative; }
+
     </style>
 </head>
 <body>
+    <!-- DRIFTWALL 3D BACKGROUND (Valor Máximo Art) -->
+    <div id="drift-wall-bg" class="drift-wall-container">
+        <div class="drift-wall-overlay"></div>
+        <div class="drift-wall-viewport">
+            <div class="drift-wall-plane" id="drift-wall-plane"></div>
+        </div>
+    </div>
+
     <header class="admin-nav">
         <a href="#" class="admin-logo-group">
             <img src="valorISO.svg" alt="Valor Máximo" class="admin-logo-img">
@@ -552,15 +715,27 @@
                         <span>📍 Ubicación y Google Maps</span>
                     </div>
 
-                    <div class="form-row">
+                    <div class="form-row" style="grid-template-columns: 1fr;">
                         <div class="form-group">
-                            <label class="form-label">Enlace de Google Maps</label>
-                            <input type="text" id="prop-map-link" class="form-input" placeholder="https://maps.app.goo.gl/...">
+                            <label class="form-label">Ubicación Google Maps (Enlace / URL de Maps)</label>
+                            <input type="text" id="prop-map-link" class="form-input" placeholder="Pega aquí el enlace de Google Maps (ej. https://maps.app.goo.gl/... o https://www.google.com/maps/place/...)" oninput="handleMapUrlInput(this.value)">
+                            <small style="color: var(--text-muted); font-size: 0.76rem; margin-top: 0.35rem; display: block;">
+                                💡 Pega solo un enlace de Google Maps. El sistema detectará automáticamente las coordenadas exactas y generará el mapa con precisión.
+                            </small>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">Iframe Embed URL de Maps</label>
-                            <input type="text" id="prop-map-embed" class="form-input" placeholder="https://maps.google.com/maps?q=...&output=embed">
+                    </div>
+
+                    <!-- Previsualización en Tiempo Real del Mapa -->
+                    <div id="admin-map-preview-wrapper" style="margin-top: 0.5rem; margin-bottom: 1.25rem; display: none; background: rgba(10, 15, 24, 0.7); border: 1px solid var(--border-color); border-radius: 10px; padding: 0.85rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <span style="font-size: 0.78rem; font-weight: 600; color: var(--brand-emerald); display: flex; align-items: center; gap: 0.35rem;">
+                                🗺️ Mapa de la Ficha (Vista Previa)
+                            </span>
+                            <span id="admin-map-status-badge" style="font-size: 0.7rem; font-weight: 600; padding: 0.2rem 0.5rem; border-radius: 4px; background: rgba(16, 185, 129, 0.2); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.3);">
+                                Ubicación Exacta Detectada
+                            </span>
                         </div>
+                        <iframe id="admin-map-preview-iframe" src="" style="width: 100%; height: 190px; border: 0; border-radius: 6px; background: #000;" allowfullscreen="" loading="lazy"></iframe>
                     </div>
 
                     <div class="form-divider" style="flex-direction: column; align-items: stretch; gap: 0.75rem;">
@@ -776,6 +951,7 @@
             document.getElementById("dashboard-view").style.display = "none";
             document.getElementById("btn-logout").style.display = "none";
             const btnPass = document.getElementById("btn-change-pass"); if (btnPass) btnPass.style.display = "none";
+            const wall = document.getElementById("drift-wall-bg"); if (wall) wall.style.display = "block";
         }
 
         async function showDashboard() {
@@ -783,9 +959,10 @@
             document.getElementById("dashboard-view").style.display = "block";
             document.getElementById("btn-logout").style.display = "inline-flex";
             const btnPass = document.getElementById("btn-change-pass"); if (btnPass) btnPass.style.display = "inline-flex";
+            const wall = document.getElementById("drift-wall-bg"); if (wall) wall.style.display = "none";
 
             await CatalogService.init();
-            propertiesData = CatalogService.items || [];
+            propertiesData = CatalogService.sortItems(CatalogService.items || []);
             renderAdminCards(propertiesData);
             updateStats();
         }
@@ -871,6 +1048,152 @@
             renderAdminCards(filtered);
         }
 
+        
+        // --- PARSER DE UBICACIÓN GOOGLE MAPS DE ALTA PRECISIÓN ---
+        function parseGoogleMapsInput(input, fallbackEmbed = '') {
+            if (!input) return { link: '', embed: fallbackEmbed };
+
+            let clean = input.trim();
+            if (clean.includes('<iframe')) {
+                const srcMatch = clean.match(/src=["']([^"']+)["']/i);
+                if (srcMatch) clean = srcMatch[1];
+            }
+
+            let link = clean;
+            let embed = fallbackEmbed;
+
+            let lat = null, lng = null, queryText = null;
+
+            // 1. Coordenadas de PIN exacto en Google Maps (!3d...!4d... o !8m2!3d...!4d...)
+            const pinMatch3d4d = clean.match(/!(?:8m2!)?3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/) || clean.match(/!2d(-?\d+\.\d+)!3d(-?\d+\.\d+)/);
+            if (pinMatch3d4d) {
+                if (clean.includes('!2d') && clean.indexOf('!2d') < clean.indexOf('!3d')) {
+                    lng = pinMatch3d4d[1];
+                    lat = pinMatch3d4d[2];
+                } else {
+                    lat = pinMatch3d4d[1];
+                    lng = pinMatch3d4d[2];
+                }
+            }
+
+            // 2. Parámetros q=lat,lng en URL
+            if (!lat || !lng) {
+                const qMatchCoords = clean.match(/[?&](?:q|query)=(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)/i);
+                if (qMatchCoords) {
+                    lat = qMatchCoords[1];
+                    lng = qMatchCoords[2];
+                }
+            }
+
+            // 3. Coordenadas de cámara @lat,lng
+            if (!lat || !lng) {
+                const atMatch = clean.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+                if (atMatch) {
+                    lat = atMatch[1];
+                    lng = atMatch[2];
+                }
+            }
+
+            // 4. Coordenadas puras escritas a mano (ej. "19.2928195, -99.6557402")
+            if (!lat || !lng) {
+                const rawCoordsMatch = clean.match(/^\s*(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)\s*$/);
+                if (rawCoordsMatch) {
+                    lat = rawCoordsMatch[1];
+                    lng = rawCoordsMatch[2];
+                }
+            }
+
+            // 5. Búsqueda por texto q=Nombre
+            if (!lat || !lng) {
+                const qMatchText = clean.match(/[?&](?:q|query)=([^&]+)/i);
+                if (qMatchText) {
+                    queryText = decodeURIComponent(qMatchText[1]);
+                }
+            }
+
+            if (lat && lng) {
+                embed = `https://maps.google.com/maps?q=${lat},${lng}&z=17&ie=UTF8&iwloc=&output=embed`;
+                if (!link.startsWith('http')) {
+                    link = `https://www.google.com/maps?q=${lat},${lng}`;
+                }
+            } else if (queryText) {
+                embed = `https://maps.google.com/maps?q=${encodeURIComponent(queryText)}&z=17&ie=UTF8&iwloc=&output=embed`;
+                if (!link.startsWith('http')) {
+                    link = `https://www.google.com/maps?q=${encodeURIComponent(queryText)}`;
+                }
+            } else if (clean.includes('output=embed') || clean.includes('/embed')) {
+                embed = clean;
+            } else if (clean.startsWith('http')) {
+                embed = `https://maps.google.com/maps?q=${encodeURIComponent(clean)}&z=17&ie=UTF8&iwloc=&output=embed`;
+            }
+
+            return { link, embed, lat, lng };
+        }
+
+        async function resolveShortMapLink(url) {
+            if (!url || (!url.includes('maps.app.goo.gl') && !url.includes('goo.gl/maps'))) return null;
+            try {
+                const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+                const res = await fetch(proxyUrl);
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && data.status && data.status.url) {
+                        const parsed = parseGoogleMapsInput(data.status.url);
+                        if (parsed && parsed.embed) return parsed;
+                    }
+                }
+            } catch (e) {
+                console.warn('No se pudo expandir el enlace corto:', e);
+            }
+            return null;
+        }
+
+        let mapDebounceTimer = null;
+        function handleMapUrlInput(val) {
+            const wrapper = document.getElementById("admin-map-preview-wrapper");
+            const iframe = document.getElementById("admin-map-preview-iframe");
+            const badge = document.getElementById("admin-map-status-badge");
+
+            if (!val || !val.trim()) {
+                if (wrapper) wrapper.style.display = "none";
+                if (iframe) iframe.src = "";
+                return;
+            }
+
+            const parsed = parseGoogleMapsInput(val);
+            if (iframe) iframe.src = parsed.embed;
+            if (wrapper) wrapper.style.display = "block";
+
+            if (parsed.lat && parsed.lng) {
+                if (badge) {
+                    badge.textContent = `📍 Coordenadas exactas: ${parsed.lat}, ${parsed.lng}`;
+                    badge.style.background = "rgba(16, 185, 129, 0.2)";
+                    badge.style.color = "#10B981";
+                }
+            } else {
+                if (badge) {
+                    badge.textContent = "🔍 Identificando ubicación...";
+                    badge.style.background = "rgba(59, 130, 246, 0.2)";
+                    badge.style.color = "#60A5FA";
+                }
+            }
+
+            if (val.includes('maps.app.goo.gl') || val.includes('goo.gl/maps')) {
+                clearTimeout(mapDebounceTimer);
+                mapDebounceTimer = setTimeout(async () => {
+                    const resolved = await resolveShortMapLink(val);
+                    if (resolved && resolved.embed && iframe) {
+                        iframe.src = resolved.embed;
+                        if (badge && resolved.lat && resolved.lng) {
+                            badge.textContent = `📍 Coordenadas exactas: ${resolved.lat}, ${resolved.lng}`;
+                            badge.style.background = "rgba(16, 185, 129, 0.2)";
+                            badge.style.color = "#10B981";
+                        }
+                    }
+                }, 350);
+            }
+        }
+
         function openPropertyModal() {
             document.getElementById("modal-heading").textContent = "Nuevo Inmueble";
             document.getElementById("property-form").reset();
@@ -878,6 +1201,7 @@
             document.getElementById("locales-tbody").innerHTML = "";
             addLocalRow();
             updateLocalesCounter();
+            updateBadgeFromLocalesTable();
             document.getElementById("property-modal").classList.add("active");
         }
 
@@ -890,15 +1214,15 @@
             document.getElementById("prop-titulo").value = prop.titulo || "";
             document.getElementById("prop-subtitulo").value = prop.subtitulo || "";
             document.getElementById("prop-badge-text").value = prop.badgeText || "";
-            document.getElementById("prop-badge-type").value = prop.badgeType || "badge-open";
             document.getElementById("prop-descripcion").value = prop.descripcion || "";
             document.getElementById("prop-perfil-label").value = prop.perfilLabel || "";
             document.getElementById("prop-perfil-texto").value = prop.perfilTexto || "";
             document.getElementById("prop-portada").value = prop.portada || "";
             document.getElementById("prop-fotos").value = (prop.fotos || []).join("\n");
             renderVisualPhotoGallery();
-            document.getElementById("prop-map-link").value = (prop.ubicacion && prop.ubicacion.link) ? prop.ubicacion.link : "";
-            document.getElementById("prop-map-embed").value = (prop.ubicacion && prop.ubicacion.embed) ? prop.ubicacion.embed : "";
+            const mapUrlVal = (prop.ubicacion && (prop.ubicacion.link || prop.ubicacion.embed)) ? (prop.ubicacion.link || prop.ubicacion.embed) : "";
+            document.getElementById("prop-map-link").value = mapUrlVal;
+            handleMapUrlInput(mapUrlVal);
 
             const tbody = document.getElementById("locales-tbody");
             tbody.innerHTML = "";
@@ -909,6 +1233,7 @@
             }
 
             updateLocalesCounter();
+            updateBadgeFromLocalesTable();
             document.getElementById("property-modal").classList.add("active");
         }
 
@@ -1177,6 +1502,45 @@
                 }
             }, false);
         });
+
+        
+        // --- CÁLCULO AUTOMÁTICO DE DISPONIBLES Y ESTILO DE BADGE ---
+        function updateBadgeFromLocalesTable() {
+            const tbody = document.getElementById("locales-tbody");
+            let disponiblesCount = 0;
+            if (tbody) {
+                const rows = tbody.querySelectorAll("tr");
+                rows.forEach(row => {
+                    const giroInput = row.querySelector(".loc-giro");
+                    const giroVal = giroInput ? giroInput.value.trim().toUpperCase() : "";
+                    if (giroVal.includes("DISPONIBLE")) {
+                        disponiblesCount++;
+                    }
+                });
+            }
+
+            const badgeTextInput = document.getElementById("prop-badge-text");
+            let badgeText = "";
+            let badgeType = "badge-orange";
+
+            if (disponiblesCount === 0) {
+                badgeText = "0 DISPONIBLES";
+                badgeType = "badge-orange"; // Naranja por default si es 0 disponibles
+            } else if (disponiblesCount === 1) {
+                badgeText = "1 DISPONIBLE";
+                badgeType = "badge-open";   // Verde por default si es 1 o más disponibles
+            } else {
+                badgeText = `${disponiblesCount} DISPONIBLES`;
+                badgeType = "badge-open";   // Verde por default si es 1 o más disponibles
+            }
+
+            if (badgeTextInput) {
+                badgeTextInput.value = badgeText;
+                badgeTextInput.dataset.badgeType = badgeType;
+            }
+
+            return { badgeText, badgeType, disponiblesCount };
+        }
 
         function updateLocalesCounter() {
             const rows = document.querySelectorAll('#locales-tbody tr');
@@ -1485,17 +1849,21 @@
                 active: true,
                 titulo: document.getElementById("prop-titulo").value.trim(),
                 subtitulo: document.getElementById("prop-subtitulo").value.trim(),
-                badgeText: document.getElementById("prop-badge-text").value.trim(),
-                badgeType: document.getElementById("prop-badge-type").value,
+                badgeText: (updateBadgeFromLocalesTable().badgeText),
+                badgeType: (updateBadgeFromLocalesTable().badgeType),
                 descripcion: document.getElementById("prop-descripcion").value.trim(),
                 perfilLabel: document.getElementById("prop-perfil-label").value.trim() || "Perfil Empresarial",
                 perfilTexto: document.getElementById("prop-perfil-texto").value.trim(),
                 portada: document.getElementById("prop-portada").value.trim(),
                 fotos: fotos.length ? fotos : [document.getElementById("prop-portada").value.trim()],
-                ubicacion: {
-                    link: document.getElementById("prop-map-link").value.trim(),
-                    embed: document.getElementById("prop-map-embed").value.trim()
-                },
+                ubicacion: (() => {
+                    const rawMap = document.getElementById("prop-map-link").value.trim();
+                    const parsed = parseGoogleMapsInput(rawMap);
+                    return {
+                        link: parsed.link || rawMap,
+                        embed: parsed.embed || (rawMap ? `https://maps.google.com/maps?q=${encodeURIComponent(rawMap)}&z=17&ie=UTF8&iwloc=&output=embed` : "")
+                    };
+                })(),
                 locales: locales
             };
 
@@ -1506,6 +1874,7 @@
                 propertiesData.push(newProp);
             }
 
+            propertiesData = CatalogService.sortItems(propertiesData);
             CatalogService.items = propertiesData;
             CatalogService.saveToCache(propertiesData);
             CatalogService.syncFichasInmuebles(propertiesData);
@@ -1519,7 +1888,8 @@
         function deleteProperty(id) {
             if (confirm("¿Estás seguro de eliminar este inmueble del catálogo?")) {
                 propertiesData = propertiesData.filter(p => p.id !== id);
-                CatalogService.items = propertiesData;
+                propertiesData = CatalogService.sortItems(propertiesData);
+            CatalogService.items = propertiesData;
                 CatalogService.saveToCache(propertiesData);
                 CatalogService.syncFichasInmuebles(propertiesData);
                 renderAdminCards(propertiesData);

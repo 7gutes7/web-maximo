@@ -833,110 +833,105 @@
     ]
   },
   {
-    "id": "paseo-artes",
+    "id": "villada",
     "order": 5,
     "active": true,
-    "titulo": "Edificio Hidalgo",
-    "subtitulo": "Flagship Store",
-    "badgeText": "2 DISPONIBLES",
+    "titulo": "Villada",
+    "subtitulo": "Uso Mixto & Residencial",
+    "badgeText": "3 DISPONIBLES",
     "badgeType": "badge-open",
-    "descripcion": "Consolidar el inmueble como un edificio de uso mixto, orientado a integrar espacios comerciales, de almacenamiento y oficinas. Inmueble en venta.",
-    "perfilLabel": "TENANT PROFILE",
-    "perfilTexto": "Established Retail Flagship.",
-    "portada": "galeria comercial/Hidalgo/Portada.jpg",
+    "descripcion": "La estrategia comercial se orienta a atraer proyectos que respeten las características históricas del inmueble y maximicen su potencial para usos corporativos, institucionales, turísticos o residenciales de alto nivel. *Inmueble en venta y renta*",
+    "perfilLabel": "DELIVERY",
+    "perfilTexto": "3 casas unificadas (1,000 m²).",
+    "portada": "galeria comercial/Villada/Portada.jpg",
     "ubicacion": {
-      "embed": "https://maps.google.com/maps?q=19.2901326,-99.648684&z=17&ie=UTF8&iwloc=&output=embed",
-      "link": "https://maps.app.goo.gl/Kf5PNUQyApBnmFWH8"
+      "embed": "https://maps.google.com/maps?q=19.2858101,-99.6586716&z=18&ie=UTF8&iwloc=&output=embed",
+      "link": "https://maps.app.goo.gl/8w1Gxck4gDtbMF3f6"
     },
     "fotos": [
-      "galeria comercial/Hidalgo/Portada.jpg",
-      "galeria comercial/Hidalgo/PHOTO-2022-02-17-15-35-52.jpg",
-      "galeria comercial/Hidalgo/PHOTO-2022-02-17-15-35-54.jpg",
-      "galeria comercial/Hidalgo/PHOTO-2022-02-17-15-37-02.jpg",
-      "galeria comercial/Hidalgo/PHOTO-2025-05-02-16-55-07.jpg",
-      "galeria comercial/Hidalgo/PHOTO-2025-05-02-16-55-07 2.jpg",
-      "galeria comercial/Hidalgo/PHOTO-2025-05-02-16-55-07 3.jpg",
-      "galeria comercial/Hidalgo/PHOTO-2025-05-02-16-55-07 5.jpg",
-      "galeria comercial/Hidalgo/PHOTO-2025-05-02-16-55-07 6.jpg",
-      "galeria comercial/Hidalgo/PHOTO-2025-05-02-16-55-07 7.jpg",
-      "galeria comercial/Hidalgo/PHOTO-2025-05-02-16-55-07 8.jpg",
-      "galeria comercial/Hidalgo/PHOTO-2025-05-02-16-55-07 9.jpg"
+      "galeria comercial/Villada/Portada.jpg",
+      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 4.jpg",
+      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 6.jpg",
+      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 8.jpg",
+      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 11.jpg",
+      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 12.jpg",
+      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 13.jpg",
+      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 14.jpg",
+      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 16.jpg",
+      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 18.jpg",
+      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 22.jpg",
+      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 25.jpg",
+      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 34.jpg",
+      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 37.jpg",
+      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 42.jpg",
+      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 48.jpg",
+      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 56.jpg",
+      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 57.jpg"
     ],
     "tabla": [
       {
         "concepto": "Metros cuadrados",
-        "valor": "734.76 m² total"
+        "valor": "1,000 m² total"
       },
       {
         "concepto": "Precio por m²",
-        "valor": "$83.07 – $150.90"
+        "valor": "$200.00"
       },
       {
-        "concepto": "Locales disponibles",
-        "valor": "2"
+        "concepto": "Espacios disponibles",
+        "valor": "3 (Casas)"
       }
     ],
     "encabezadosLocales": [
-      "NO. LOCAL",
-      "INQUILINO / GIRO COMERCIAL",
-      "SUPERFICIE (m²)",
-      "PRECIO POR m²",
-      "ESTATUS"
+      "Descripción",
+      "Superficie (m²)",
+      "Precio por m²",
+      "Notas"
     ],
     "locales": [
       {
-        "no": "1 PB",
-        "giro": "Crudalia los Primos",
-        "superficie": "120",
-        "precio": "$150.90",
-        "estatus": "Rentado"
+        "no": "Casa 1",
+        "superficie": "1000",
+        "precio": "$200.00",
+        "notas": "Disponible (Venta/Renta)"
       },
       {
-        "no": "2 PB",
-        "giro": "Disponible",
-        "superficie": "130",
-        "precio": "$130.76",
-        "estatus": "Disponible"
+        "no": "Casa 2",
+        "superficie": "-",
+        "precio": "-",
+        "notas": "Disponible"
       },
       {
-        "no": "3 PA",
-        "giro": "IMSS Bienestar",
-        "superficie": "242.38",
-        "precio": "$83.07",
-        "estatus": "Rentado"
-      },
-      {
-        "no": "4 2do Nivel",
-        "giro": "Disponible",
-        "superficie": "242.38",
-        "precio": "$83.07",
-        "estatus": "Disponible"
+        "no": "Casa 3",
+        "superficie": "-",
+        "precio": "-",
+        "notas": "Disponible"
       }
+    ],
+    "notasPie": [
+      "*El inmueble consta de tres casas que suman un total de 1000 m2, para renta es necesario rentarlo en su totalidad",
+      "**Inmueble disponible para Venta/Renta"
     ],
     "datosGenerales": [
       {
         "concepto": "Porcentaje de Ocupación",
-        "valor": "50%"
+        "valor": "0%"
       },
       {
-        "concepto": "Total de Locales",
-        "valor": "4"
+        "concepto": "Total de Espacios",
+        "valor": "3 (Casas)"
       },
       {
-        "concepto": "Locales Disponibles",
-        "valor": "2"
+        "concepto": "Espacios Disponibles",
+        "valor": "3"
       },
       {
         "concepto": "Cuota de Mantenimiento",
-        "valor": "No aplica en estos locales."
+        "valor": "N/A"
       },
       {
         "concepto": "Servicios",
-        "valor": "Servicios independientes."
-      },
-      {
-        "concepto": "Agua",
-        "valor": "Cuota fija."
+        "valor": "A confirmar"
       }
     ]
   },
@@ -1047,105 +1042,110 @@
     ]
   },
   {
-    "id": "villada",
+    "id": "paseo-artes",
     "order": 7,
     "active": true,
-    "titulo": "Villada",
-    "subtitulo": "Uso Mixto & Residencial",
-    "badgeText": "3 DISPONIBLES",
+    "titulo": "Edificio Hidalgo",
+    "subtitulo": "Flagship Store",
+    "badgeText": "2 DISPONIBLES",
     "badgeType": "badge-open",
-    "descripcion": "La estrategia comercial se orienta a atraer proyectos que respeten las características históricas del inmueble y maximicen su potencial para usos corporativos, institucionales, turísticos o residenciales de alto nivel. *Inmueble en venta y renta*",
-    "perfilLabel": "DELIVERY",
-    "perfilTexto": "3 casas unificadas (1,000 m²).",
-    "portada": "galeria comercial/Villada/Portada.jpg",
+    "descripcion": "Consolidar el inmueble como un edificio de uso mixto, orientado a integrar espacios comerciales, de almacenamiento y oficinas. Inmueble en venta.",
+    "perfilLabel": "TENANT PROFILE",
+    "perfilTexto": "Established Retail Flagship.",
+    "portada": "galeria comercial/Hidalgo/Portada.jpg",
     "ubicacion": {
-      "embed": "https://maps.google.com/maps?q=19.2858101,-99.6586716&z=18&ie=UTF8&iwloc=&output=embed",
-      "link": "https://maps.app.goo.gl/8w1Gxck4gDtbMF3f6"
+      "embed": "https://maps.google.com/maps?q=19.2901326,-99.648684&z=17&ie=UTF8&iwloc=&output=embed",
+      "link": "https://maps.app.goo.gl/Kf5PNUQyApBnmFWH8"
     },
     "fotos": [
-      "galeria comercial/Villada/Portada.jpg",
-      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 4.jpg",
-      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 6.jpg",
-      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 8.jpg",
-      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 11.jpg",
-      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 12.jpg",
-      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 13.jpg",
-      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 14.jpg",
-      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 16.jpg",
-      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 18.jpg",
-      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 22.jpg",
-      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 25.jpg",
-      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 34.jpg",
-      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 37.jpg",
-      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 42.jpg",
-      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 48.jpg",
-      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 56.jpg",
-      "galeria comercial/Villada/PHOTO-2025-03-21-17-56-31 57.jpg"
+      "galeria comercial/Hidalgo/Portada.jpg",
+      "galeria comercial/Hidalgo/PHOTO-2022-02-17-15-35-52.jpg",
+      "galeria comercial/Hidalgo/PHOTO-2022-02-17-15-35-54.jpg",
+      "galeria comercial/Hidalgo/PHOTO-2022-02-17-15-37-02.jpg",
+      "galeria comercial/Hidalgo/PHOTO-2025-05-02-16-55-07.jpg",
+      "galeria comercial/Hidalgo/PHOTO-2025-05-02-16-55-07 2.jpg",
+      "galeria comercial/Hidalgo/PHOTO-2025-05-02-16-55-07 3.jpg",
+      "galeria comercial/Hidalgo/PHOTO-2025-05-02-16-55-07 5.jpg",
+      "galeria comercial/Hidalgo/PHOTO-2025-05-02-16-55-07 6.jpg",
+      "galeria comercial/Hidalgo/PHOTO-2025-05-02-16-55-07 7.jpg",
+      "galeria comercial/Hidalgo/PHOTO-2025-05-02-16-55-07 8.jpg",
+      "galeria comercial/Hidalgo/PHOTO-2025-05-02-16-55-07 9.jpg"
     ],
     "tabla": [
       {
         "concepto": "Metros cuadrados",
-        "valor": "1,000 m² total"
+        "valor": "734.76 m² total"
       },
       {
         "concepto": "Precio por m²",
-        "valor": "$200.00"
+        "valor": "$83.07 – $150.90"
       },
       {
-        "concepto": "Espacios disponibles",
-        "valor": "3 (Casas)"
+        "concepto": "Locales disponibles",
+        "valor": "2"
       }
     ],
     "encabezadosLocales": [
-      "Descripción",
-      "Superficie (m²)",
-      "Precio por m²",
-      "Notas"
+      "NO. LOCAL",
+      "INQUILINO / GIRO COMERCIAL",
+      "SUPERFICIE (m²)",
+      "PRECIO POR m²",
+      "ESTATUS"
     ],
     "locales": [
       {
-        "no": "Casa 1",
-        "superficie": "1000",
-        "precio": "$200.00",
-        "notas": "Disponible (Venta/Renta)"
+        "no": "1 PB",
+        "giro": "Crudalia los Primos",
+        "superficie": "120",
+        "precio": "$150.90",
+        "estatus": "Rentado"
       },
       {
-        "no": "Casa 2",
-        "superficie": "-",
-        "precio": "-",
-        "notas": "Disponible"
+        "no": "2 PB",
+        "giro": "Disponible",
+        "superficie": "130",
+        "precio": "$130.76",
+        "estatus": "Disponible"
       },
       {
-        "no": "Casa 3",
-        "superficie": "-",
-        "precio": "-",
-        "notas": "Disponible"
+        "no": "3 PA",
+        "giro": "IMSS Bienestar",
+        "superficie": "242.38",
+        "precio": "$83.07",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "4 2do Nivel",
+        "giro": "Disponible",
+        "superficie": "242.38",
+        "precio": "$83.07",
+        "estatus": "Disponible"
       }
-    ],
-    "notasPie": [
-      "*El inmueble consta de tres casas que suman un total de 1000 m2, para renta es necesario rentarlo en su totalidad",
-      "**Inmueble disponible para Venta/Renta"
     ],
     "datosGenerales": [
       {
         "concepto": "Porcentaje de Ocupación",
-        "valor": "0%"
+        "valor": "50%"
       },
       {
-        "concepto": "Total de Espacios",
-        "valor": "3 (Casas)"
+        "concepto": "Total de Locales",
+        "valor": "4"
       },
       {
-        "concepto": "Espacios Disponibles",
-        "valor": "3"
+        "concepto": "Locales Disponibles",
+        "valor": "2"
       },
       {
         "concepto": "Cuota de Mantenimiento",
-        "valor": "N/A"
+        "valor": "No aplica en estos locales."
       },
       {
         "concepto": "Servicios",
-        "valor": "A confirmar"
+        "valor": "Servicios independientes."
+      },
+      {
+        "concepto": "Agua",
+        "valor": "Cuota fija."
       }
     ]
   },
@@ -1563,202 +1563,8 @@
     ]
   },
   {
-    "id": "av-lerdo",
-    "order": 10,
-    "active": true,
-    "titulo": "Av. Lerdo",
-    "subtitulo": "Comercial & Servicios Cotidianos",
-    "badgeText": "0 DISPONIBLES",
-    "badgeType": "badge-orange",
-    "descripcion": "Enfocado en satisfacer necesidades cotidianas y complementar la oferta de consumo de la zona.",
-    "perfilLabel": "TENANT MIX",
-    "perfilTexto": "Farmacia Guadalajara, Vinos & Restaurantes.",
-    "portada": "galeria comercial/Av. Lerdo/portada.jpg",
-    "ubicacion": {
-      "embed": "https://maps.google.com/maps?q=19.2891636,-99.6750109&z=17&ie=UTF8&iwloc=&output=embed",
-      "link": "https://www.google.com/maps/@19.2891636,-99.6750109,3a,75y,315.46h,89.04t/data=!3m7!1e1!3m5!1sEQ7-u32vuokeq5ON-BKU8w!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D0.9579892092320392%26panoid%3DEQ7-u32vuokeq5ON-BKU8w%26yaw%3D315.45845042167434!7i16384!8i8192?hl=es&entry=ttu&g_ep=EgoyMDI2MDgxMC4wIKXMDSoASAFQAw%3D%3D"
-    },
-    "fotos": [
-      "galeria comercial/Av. Lerdo/portada.jpg",
-      "galeria comercial/Av. Lerdo/PHOTO-2022-02-17-15-01-46.jpg",
-      "galeria comercial/Av. Lerdo/PHOTO-2022-02-17-15-01-47.jpg",
-      "galeria comercial/Av. Lerdo/PHOTO-2022-02-17-15-01-47 2.jpg",
-      "galeria comercial/Av. Lerdo/PHOTO-2022-02-17-15-01-48.jpg"
-    ],
-    "tabla": [
-      {
-        "concepto": "Metros cuadrados",
-        "valor": "Consultar por local"
-      },
-      {
-        "concepto": "Precio por m²",
-        "valor": "$169.36 – $213.30"
-      },
-      {
-        "concepto": "Locales disponibles",
-        "valor": "0"
-      }
-    ],
-    "encabezadosLocales": [
-      "NO. LOCAL",
-      "INQUILINO / GIRO COMERCIAL",
-      "SUPERFICIE (m²)",
-      "PRECIO POR m²",
-      "ESTATUS"
-    ],
-    "locales": [
-      {
-        "no": "Local 1",
-        "giro": "Farmacia Guadalajara Suc 2385",
-        "superficie": "330.31",
-        "precio": "$169.36",
-        "estatus": "Rentado"
-      },
-      {
-        "no": "Local 2",
-        "giro": "La Dueña Vinos y Licores",
-        "superficie": "89.13",
-        "precio": "$213.30",
-        "estatus": "Rentado"
-      },
-      {
-        "no": "Local 3",
-        "giro": "Restaurant Bar",
-        "superficie": "85.47",
-        "precio": "$173.36",
-        "estatus": "Rentado"
-      },
-      {
-        "no": "Local 4",
-        "giro": "Restaurant Bar",
-        "superficie": "81.81",
-        "precio": "$173.36",
-        "estatus": "Rentado"
-      }
-    ],
-    "datosGenerales": [
-      {
-        "concepto": "Porcentaje de Ocupación",
-        "valor": "100%"
-      },
-      {
-        "concepto": "Total de Locales",
-        "valor": "4"
-      },
-      {
-        "concepto": "Locales Disponibles",
-        "valor": "0"
-      },
-      {
-        "concepto": "Cuota de Mantenimiento",
-        "valor": "No aplica en estos locales."
-      },
-      {
-        "concepto": "Servicios",
-        "valor": "Servicios independientes."
-      },
-      {
-        "concepto": "Agua",
-        "valor": "Agua por cuota fija."
-      }
-    ]
-  },
-  {
-    "id": "benito-juarez",
-    "order": 11,
-    "active": true,
-    "titulo": "Benito Juárez",
-    "subtitulo": "Comercio & Servicios Diversificados",
-    "badgeText": "0 DISPONIBLES",
-    "badgeType": "badge-orange",
-    "descripcion": "Mantener una oferta comercial diversificada mediante la integración de negocios de comercio y servicios. Inmueble en venta.",
-    "perfilLabel": "ESTATUS DE VENTA",
-    "perfilTexto": "100% Ocupado / Disponible para Venta.",
-    "portada": "galeria comercial/Benito Juarez/portada.jpg",
-    "ubicacion": {
-      "embed": "https://maps.google.com/maps?q=19.2803625,-99.6538905&z=18&ie=UTF8&iwloc=&output=embed",
-      "link": "https://maps.app.goo.gl/pmdogp2UFdozHDNz8"
-    },
-    "fotos": [
-      "galeria comercial/Benito Juarez/portada.jpg",
-      "galeria comercial/Benito Juarez/PHOTO-2021-07-12-15-32-50.jpg",
-      "galeria comercial/Benito Juarez/PHOTO-2021-07-12-15-32-51.jpg",
-      "galeria comercial/Benito Juarez/PHOTO-2021-07-12-15-32-51 2.jpg",
-      "galeria comercial/Benito Juarez/PHOTO-2021-07-12-15-32-52.jpg",
-      "galeria comercial/Benito Juarez/PHOTO-2021-07-12-15-32-52 2.jpg",
-      "galeria comercial/Benito Juarez/PHOTO-2021-07-12-15-32-53.jpg",
-      "galeria comercial/Benito Juarez/PHOTO-2021-07-12-15-32-54.jpg",
-      "galeria comercial/Benito Juarez/PHOTO-2026-05-08-11-07-26.jpg",
-      "galeria comercial/Benito Juarez/PHOTO-2026-05-08-20-39-06.jpg",
-      "galeria comercial/Benito Juarez/PHOTO-2026-05-08-20-39-06 3.jpg"
-    ],
-    "tabla": [
-      {
-        "concepto": "Metros cuadrados",
-        "valor": "320 m² total"
-      },
-      {
-        "concepto": "Precio por m²",
-        "valor": "$120.90 – $210.00"
-      },
-      {
-        "concepto": "Locales disponibles",
-        "valor": "0"
-      }
-    ],
-    "encabezadosLocales": [
-      "NO. LOCAL",
-      "INQUILINO / GIRO COMERCIAL",
-      "SUPERFICIE (m²)",
-      "PRECIO POR m²",
-      "ESTATUS"
-    ],
-    "locales": [
-      {
-        "no": "1",
-        "giro": "Magic",
-        "superficie": "270",
-        "precio": "$120.90",
-        "estatus": "Rentado"
-      },
-      {
-        "no": "2",
-        "giro": "SPA",
-        "superficie": "50",
-        "precio": "$210.00",
-        "estatus": "Rentado"
-      }
-    ],
-    "datosGenerales": [
-      {
-        "concepto": "Porcentaje de Ocupación",
-        "valor": "100%"
-      },
-      {
-        "concepto": "Total de Locales",
-        "valor": "2"
-      },
-      {
-        "concepto": "Locales Disponibles",
-        "valor": "0"
-      },
-      {
-        "concepto": "Cuota de Mantenimiento",
-        "valor": "No aplica en estos locales."
-      },
-      {
-        "concepto": "Servicios",
-        "valor": "Servicios independientes."
-      },
-      {
-        "concepto": "Agua",
-        "valor": "Cuota proporcional."
-      }
-    ]
-  },
-  {
     "id": "plaza-rancho-el-meson-ii",
-    "order": 12,
+    "order": 10,
     "active": true,
     "titulo": "Plaza Rancho El Mesón II",
     "subtitulo": "Centro Comercial & Lifestyle",
@@ -1920,7 +1726,7 @@
   },
   {
     "id": "unni-plaza",
-    "order": 13,
+    "order": 11,
     "active": true,
     "titulo": "Unni Plaza",
     "subtitulo": "Comercial, Educación & Alimentos",
@@ -2056,8 +1862,109 @@
     ]
   },
   {
+    "id": "av-lerdo",
+    "order": 12,
+    "active": true,
+    "titulo": "Av. Lerdo",
+    "subtitulo": "Comercial & Servicios Cotidianos",
+    "badgeText": "0 DISPONIBLES",
+    "badgeType": "badge-orange",
+    "descripcion": "Enfocado en satisfacer necesidades cotidianas y complementar la oferta de consumo de la zona.",
+    "perfilLabel": "TENANT MIX",
+    "perfilTexto": "Farmacia Guadalajara, Vinos & Restaurantes.",
+    "portada": "galeria comercial/Av. Lerdo/portada.jpg",
+    "ubicacion": {
+      "embed": "https://maps.google.com/maps?q=19.2891636,-99.6750109&z=17&ie=UTF8&iwloc=&output=embed",
+      "link": "https://www.google.com/maps/@19.2891636,-99.6750109,3a,75y,315.46h,89.04t/data=!3m7!1e1!3m5!1sEQ7-u32vuokeq5ON-BKU8w!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D0.9579892092320392%26panoid%3DEQ7-u32vuokeq5ON-BKU8w%26yaw%3D315.45845042167434!7i16384!8i8192?hl=es&entry=ttu&g_ep=EgoyMDI2MDgxMC4wIKXMDSoASAFQAw%3D%3D"
+    },
+    "fotos": [
+      "galeria comercial/Av. Lerdo/portada.jpg",
+      "galeria comercial/Av. Lerdo/PHOTO-2022-02-17-15-01-46.jpg",
+      "galeria comercial/Av. Lerdo/PHOTO-2022-02-17-15-01-47.jpg",
+      "galeria comercial/Av. Lerdo/PHOTO-2022-02-17-15-01-47 2.jpg",
+      "galeria comercial/Av. Lerdo/PHOTO-2022-02-17-15-01-48.jpg"
+    ],
+    "tabla": [
+      {
+        "concepto": "Metros cuadrados",
+        "valor": "Consultar por local"
+      },
+      {
+        "concepto": "Precio por m²",
+        "valor": "$169.36 – $213.30"
+      },
+      {
+        "concepto": "Locales disponibles",
+        "valor": "0"
+      }
+    ],
+    "encabezadosLocales": [
+      "NO. LOCAL",
+      "INQUILINO / GIRO COMERCIAL",
+      "SUPERFICIE (m²)",
+      "PRECIO POR m²",
+      "ESTATUS"
+    ],
+    "locales": [
+      {
+        "no": "Local 1",
+        "giro": "Farmacia Guadalajara Suc 2385",
+        "superficie": "330.31",
+        "precio": "$169.36",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "Local 2",
+        "giro": "La Dueña Vinos y Licores",
+        "superficie": "89.13",
+        "precio": "$213.30",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "Local 3",
+        "giro": "Restaurant Bar",
+        "superficie": "85.47",
+        "precio": "$173.36",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "Local 4",
+        "giro": "Restaurant Bar",
+        "superficie": "81.81",
+        "precio": "$173.36",
+        "estatus": "Rentado"
+      }
+    ],
+    "datosGenerales": [
+      {
+        "concepto": "Porcentaje de Ocupación",
+        "valor": "100%"
+      },
+      {
+        "concepto": "Total de Locales",
+        "valor": "4"
+      },
+      {
+        "concepto": "Locales Disponibles",
+        "valor": "0"
+      },
+      {
+        "concepto": "Cuota de Mantenimiento",
+        "valor": "No aplica en estos locales."
+      },
+      {
+        "concepto": "Servicios",
+        "valor": "Servicios independientes."
+      },
+      {
+        "concepto": "Agua",
+        "valor": "Agua por cuota fija."
+      }
+    ]
+  },
+  {
     "id": "venustiano-carranza",
-    "order": 14,
+    "order": 13,
     "active": true,
     "titulo": "Venustiano Carranza",
     "subtitulo": "Comercial & Entretenimiento",
@@ -2155,7 +2062,7 @@
   },
   {
     "id": "wenceslao-labra",
-    "order": 15,
+    "order": 14,
     "active": true,
     "titulo": "Wenceslao Labra",
     "subtitulo": "Comercio & Servicios Automotrices",
@@ -2232,6 +2139,99 @@
       {
         "concepto": "Total de Locales",
         "valor": "4"
+      },
+      {
+        "concepto": "Locales Disponibles",
+        "valor": "0"
+      },
+      {
+        "concepto": "Cuota de Mantenimiento",
+        "valor": "No aplica en estos locales."
+      },
+      {
+        "concepto": "Servicios",
+        "valor": "Servicios independientes."
+      },
+      {
+        "concepto": "Agua",
+        "valor": "Cuota proporcional."
+      }
+    ]
+  },
+  {
+    "id": "benito-juarez",
+    "order": 15,
+    "active": true,
+    "titulo": "Benito Juárez",
+    "subtitulo": "Comercio & Servicios Diversificados",
+    "badgeText": "0 DISPONIBLES",
+    "badgeType": "badge-orange",
+    "descripcion": "Mantener una oferta comercial diversificada mediante la integración de negocios de comercio y servicios. Inmueble en venta.",
+    "perfilLabel": "ESTATUS DE VENTA",
+    "perfilTexto": "100% Ocupado / Disponible para Venta.",
+    "portada": "galeria comercial/Benito Juarez/portada.jpg",
+    "ubicacion": {
+      "embed": "https://maps.google.com/maps?q=19.2803625,-99.6538905&z=18&ie=UTF8&iwloc=&output=embed",
+      "link": "https://maps.app.goo.gl/pmdogp2UFdozHDNz8"
+    },
+    "fotos": [
+      "galeria comercial/Benito Juarez/portada.jpg",
+      "galeria comercial/Benito Juarez/PHOTO-2021-07-12-15-32-50.jpg",
+      "galeria comercial/Benito Juarez/PHOTO-2021-07-12-15-32-51.jpg",
+      "galeria comercial/Benito Juarez/PHOTO-2021-07-12-15-32-51 2.jpg",
+      "galeria comercial/Benito Juarez/PHOTO-2021-07-12-15-32-52.jpg",
+      "galeria comercial/Benito Juarez/PHOTO-2021-07-12-15-32-52 2.jpg",
+      "galeria comercial/Benito Juarez/PHOTO-2021-07-12-15-32-53.jpg",
+      "galeria comercial/Benito Juarez/PHOTO-2021-07-12-15-32-54.jpg",
+      "galeria comercial/Benito Juarez/PHOTO-2026-05-08-11-07-26.jpg",
+      "galeria comercial/Benito Juarez/PHOTO-2026-05-08-20-39-06.jpg",
+      "galeria comercial/Benito Juarez/PHOTO-2026-05-08-20-39-06 3.jpg"
+    ],
+    "tabla": [
+      {
+        "concepto": "Metros cuadrados",
+        "valor": "320 m² total"
+      },
+      {
+        "concepto": "Precio por m²",
+        "valor": "$120.90 – $210.00"
+      },
+      {
+        "concepto": "Locales disponibles",
+        "valor": "0"
+      }
+    ],
+    "encabezadosLocales": [
+      "NO. LOCAL",
+      "INQUILINO / GIRO COMERCIAL",
+      "SUPERFICIE (m²)",
+      "PRECIO POR m²",
+      "ESTATUS"
+    ],
+    "locales": [
+      {
+        "no": "1",
+        "giro": "Magic",
+        "superficie": "270",
+        "precio": "$120.90",
+        "estatus": "Rentado"
+      },
+      {
+        "no": "2",
+        "giro": "SPA",
+        "superficie": "50",
+        "precio": "$210.00",
+        "estatus": "Rentado"
+      }
+    ],
+    "datosGenerales": [
+      {
+        "concepto": "Porcentaje de Ocupación",
+        "valor": "100%"
+      },
+      {
+        "concepto": "Total de Locales",
+        "valor": "2"
       },
       {
         "concepto": "Locales Disponibles",
