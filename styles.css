@@ -678,7 +678,7 @@ body {
     z-index: 2;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    align-items: center;
+    align-items: start;
     gap: 4rem;
     width: 100%;
     height: 100vh;
@@ -687,33 +687,53 @@ body {
 
 /* Columna Izquierda */
 .portfolio-left-col {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    max-width: 520px;
-    z-index: 2;
+    height: 100vh !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    max-width: 520px !important;
+    z-index: 10 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    position: relative !important;
+    padding-left: 1.5rem;
 }
 
 .portfolio-badge {
-    background: rgba(199, 156, 71, 0.15);
-    color: #FFFFFF;
-    border: 1px solid rgba(199, 156, 71, 0.3);
-    margin-bottom: 1.25rem;
-    display: inline-block;
+    background: rgba(199, 156, 71, 0.25) !important;
+    color: #FFFFFF !important;
+    border: 1px solid rgba(199, 156, 71, 0.5) !important;
+    margin-bottom: 1.25rem !important;
+    display: inline-block !important;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
 .portfolio-title {
-    color: #FFFFFF;
-    margin-bottom: 1.25rem;
-    font-size: clamp(2.2rem, 3.8vw, 3.5rem);
-    line-height: 1.1;
+    color: #FFFFFF !important;
+    margin-bottom: 1.25rem !important;
+    font-size: clamp(2.2rem, 3.8vw, 3.5rem) !important;
+    line-height: 1.1 !important;
+    text-shadow: 0 4px 24px rgba(0, 0, 0, 0.7);
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
 }
 
 .portfolio-blur-p {
-    color: #bfc9c3;
-    font-size: 1.1rem;
-    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.95) !important;
+    font-size: 1.15rem !important;
+    line-height: 1.6 !important;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.7);
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+    visibility: visible !important;
+    display: block !important;
 }
 
 /* Columna Derecha */
@@ -761,7 +781,17 @@ body {
     font-size: 1.25rem;
     font-weight: 700;
     color: #B0F0D6;
-    margin-bottom: 0.35rem;
+    margin-bottom: 0.2rem;
+}
+
+.project-plaza {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #B0F0D6;
+    margin-bottom: 0.45rem;
+    letter-spacing: 0.03em;
+    opacity: 0.75;
+    display: block;
 }
 
 .project-description {
@@ -1273,6 +1303,9 @@ body {
     .portfolio-left-col,
     .portfolio-right-col {
         max-width: 100%;
+        height: auto !important;
+        min-height: auto !important;
+        padding-left: 0 !important;
     }
 }
 
@@ -3535,9 +3568,12 @@ body {
 
     #casos-exito .portfolio-left-col {
         width: 100% !important;
+        height: auto !important;
+        min-height: auto !important;
+        padding: 0 !important;
         text-align: left !important;
         align-items: flex-start !important;
-        margin-bottom: 2rem !important;
+        margin-bottom: 1.25rem !important;
     }
 
     #casos-exito .portfolio-right-col {

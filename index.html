@@ -10,7 +10,7 @@
     <link rel="icon" type="image/svg+xml"
         href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='96' fill='%23ffffff'/%3E%3Cg transform='translate(48, 48) scale(0.888)'%3E%3Cpolygon points='140.416 345.708 77.155 215.203 .354 215.203 99.537 419.815 140.416 345.708' fill='%23002117'/%3E%3Cpolygon points='327.987 328.627 391.248 459.132 468.048 459.132 368.866 254.52 327.987 328.627' fill='%23002117'/%3E%3Cpolygon points='419.993 .354 230.767 99.56 296.838 136.006 118.596 459.132 215.252 459.132 370.944 176.884 437.015 213.33 419.993 .354' fill='%23002117'/%3E%3C/g%3E%3C/svg%3E">
     <link rel="stylesheet" href="fonts/local-fonts.css">
-    <link rel="stylesheet" href="styles.css?v=116">
+    <link rel="stylesheet" href="styles.css?v=145">
     <link rel="preconnect" href="https://res.cloudinary.com" crossorigin>
     <link rel="preload" as="image" href="valorISO.svg">
     <link rel="preload" as="image" href="galeria 3/hidalgo.jpeg" fetchpriority="high">
@@ -147,14 +147,14 @@
 
         <!-- 04. Sección 3: Portafolio de Proyectos (Sticky Timeline & Blur Text Effect) -->
         <section class="section section-curtain-left dark-section" id="casos-exito">
-        <!-- Indicador Animado de Scroll en Casos de Éxito (Al costado derecho del 2do contenedor - Solo Desktop) -->
-        <div class="portfolio-scroll-indicator" id="casos-exito-scroll-indicator">
-            <span class="scroll-text">SCROLL</span>
-            <svg class="scroll-arrow-triangle" width="18" height="14" viewBox="0 0 24 16" fill="none"
-                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="3,3 21,3 12,13" />
-            </svg>
-        </div>
+            <!-- Indicador Animado de Scroll en Casos de Éxito (Al costado derecho del 2do contenedor - Solo Desktop) -->
+            <div class="portfolio-scroll-indicator" id="casos-exito-scroll-indicator">
+                <span class="scroll-text">SCROLL</span>
+                <svg class="scroll-arrow-triangle" width="18" height="14" viewBox="0 0 24 16" fill="none"
+                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="3,3 21,3 12,13" />
+                </svg>
+            </div>
             <div class="portfolio-video-bg">
                 <video autoplay loop muted playsinline webkit-playsinline preload="auto"
                     src="https://res.cloudinary.com/cci1klwx/video/upload/v1787068811/Clouds_passing_fast_vegetation.mp4"></video>
@@ -165,7 +165,7 @@
                 <div class="portfolio-left-col">
                     <span class="badge portfolio-badge">Casos de Éxito</span>
                     <h2 class="text-title portfolio-title">Portafolio de Proyectos</h2>
-                    <p class="text-muted blur-text-element portfolio-blur-p">
+                    <p class="portfolio-blur-p">
                         Marcas que han encontrado su hábitat ideal a través de nuestra plataforma de precisión.
                     </p>
                 </div>
@@ -176,6 +176,7 @@
                     <div class="project-card project-card-stagger">
                         <div class="project-card-content">
                             <h3 class="project-title">Enigma Room</h3>
+                            <span class="project-plaza">Plaza Ceboruco</span>
                             <p class="project-description">Experiencia inmersiva y entretenimiento temático en hub
                                 comercial de alto flujo.</p>
                         </div>
@@ -189,6 +190,7 @@
                     <div class="project-card project-card-stagger" style="position: relative;">
                         <div class="project-card-content">
                             <h3 class="project-title">Vinaterías La Dueña</h3>
+                            <span class="project-plaza">Plaza Independencia</span>
                             <p class="project-description">Boutique especializada en licores premium y etiqueta con
                                 ubicación AAA.</p>
                         </div>
@@ -202,6 +204,7 @@
                     <div class="project-card project-card-stagger">
                         <div class="project-card-content">
                             <h3 class="project-title">B Clinic</h3>
+                            <span class="project-plaza">Paseo Central</span>
                             <p class="project-description">Clínica estética y de bienestar con infraestructura técnica
                                 especializada.</p>
                         </div>
@@ -215,6 +218,7 @@
                     <div class="project-card project-card-stagger">
                         <div class="project-card-content">
                             <h3 class="project-title">Churrería Porfirio</h3>
+                            <span class="project-plaza">Riva Palacio</span>
                             <p class="project-description">Churrería tradicional mexicana con concepto de época; churros
                                 recién hechos, café de especialidad y chocolate caliente.</p>
                         </div>
@@ -224,10 +228,11 @@
                         </div>
                     </div>
 
-                    <!-- 5. Busher Cocoxtha -->
+                    <!-- 5. Busher Cocdril's -->
                     <div class="project-card project-card-stagger">
                         <div class="project-card-content">
-                            <h3 class="project-title">Busher Cocoxtha</h3>
+                            <h3 class="project-title">Busher Cocdril's</h3>
+                            <span class="project-plaza">Riva Palacio</span>
                             <p class="project-description">Franquicia de comida rápida especializada en alitas, boneless
                                 crujientes, hamburguesas y botanas con salsas exclusivas.</p>
                         </div>
@@ -241,6 +246,7 @@
                     <div class="project-card project-card-stagger">
                         <div class="project-card-content">
                             <h3 class="project-title">AT&T</h3>
+                            <span class="project-plaza">Riva Palacio</span>
                             <p class="project-description">Compañía global proveedora de telefonía móvil, planes de
                                 datos, smartphones y soluciones de conectividad.</p>
                         </div>
@@ -250,10 +256,11 @@
                         </div>
                     </div>
 
-                    <!-- 7. Quick Learning -->
+                    <!-- 7. Quick Training -->
                     <div class="project-card project-card-stagger">
                         <div class="project-card-content">
-                            <h3 class="project-title">Quick Learning</h3>
+                            <h3 class="project-title">Quick Training</h3>
+                            <span class="project-plaza">Plaza Ceboruco</span>
                             <p class="project-description">Centro de enseñanza del idioma inglés mediante un método
                                 conversacional acelerado, sin traducción ni tareas complejas.</p>
                         </div>
@@ -267,6 +274,7 @@
                     <div class="project-card project-card-stagger">
                         <div class="project-card-content">
                             <h3 class="project-title">Sumo Buffet</h3>
+                            <span class="project-plaza">Unni Plaza</span>
                             <p class="project-description">Restaurante bajo concepto all-you-can-eat con amplia barra de
                                 sushi, alitas, hamburguesas, costillas y coctelería.</p>
                         </div>
@@ -280,6 +288,7 @@
                     <div class="project-card project-card-stagger">
                         <div class="project-card-content">
                             <h3 class="project-title">UEEM</h3>
+                            <span class="project-plaza">Unni Plaza</span>
                             <p class="project-description">Oferta educativa que responde a las necesidades actuales
                                 del mercado
                                 laboral, con un enfoque práctico, cercano y humano.</p>
@@ -294,6 +303,7 @@
                     <div class="project-card project-card-stagger">
                         <div class="project-card-content">
                             <h3 class="project-title">Comex</h3>
+                            <span class="project-plaza">Plaza Rancho El Mesón II</span>
                             <p class="project-description">Marca líder en recubrimientos, impermeabilizantes, esmaltes,
                                 brochas y soluciones de color arquitectónicas.</p>
                         </div>
@@ -307,6 +317,7 @@
                     <div class="project-card project-card-stagger">
                         <div class="project-card-content">
                             <h3 class="project-title">Rosa de Sarón</h3>
+                            <span class="project-plaza">Plaza Rancho El Mesón II</span>
                             <p class="project-description">Pastelería fina artesanal especializada en pasteles de tres
                                 leches, repostería tradicional, pays y bocadillos para eventos.</p>
                         </div>
@@ -320,6 +331,7 @@
                     <div class="project-card project-card-stagger">
                         <div class="project-card-content">
                             <h3 class="project-title">Farmacias Guadalajara</h3>
+                            <span class="project-plaza">Unni Plaza</span>
                             <p class="project-description">Superfarmacia 24 horas con medicamentos de patente y
                                 genéricos, abarrotes, cuidado personal y servicios básicos.</p>
                         </div>
@@ -333,6 +345,7 @@
                     <div class="project-card project-card-stagger">
                         <div class="project-card-content">
                             <h3 class="project-title">Farmacias Similares</h3>
+                            <span class="project-plaza">Brígida García</span>
                             <p class="project-description">Cadena líder en medicamentos genéricos de calidad, productos
                                 para la salud y servicio de consulta médica adyacente.</p>
                         </div>
@@ -346,6 +359,7 @@
                     <div class="project-card project-card-stagger">
                         <div class="project-card-content">
                             <h3 class="project-title">Checkpoint</h3>
+                            <span class="project-plaza">Wenceslao Labra</span>
                             <p class="project-description">Espacio interactivo y gaming bar enfocado en consolas,
                                 torneos de esports, estaciones de juego, bebidas y snacks.</p>
                         </div>
@@ -359,6 +373,7 @@
                     <div class="project-card project-card-stagger">
                         <div class="project-card-content">
                             <h3 class="project-title">EggStacy</h3>
+                            <span class="project-plaza">Paseo Central</span>
                             <p class="project-description">Concepto gastronómico matutino centrado en desayunos gourmet,
                                 sándwiches brioche, café de especialidad y jugos.</p>
                         </div>
@@ -372,6 +387,7 @@
                     <div class="project-card project-card-stagger">
                         <div class="project-card-content">
                             <h3 class="project-title">Cafetería Alcenia</h3>
+                            <span class="project-plaza">Paseo Central</span>
                             <p class="project-description">Barra de café de especialidad, bebidas artesanales,
                                 repostería del día y opciones ligeras de desayuno.</p>
                         </div>
@@ -385,6 +401,7 @@
                     <div class="project-card project-card-stagger">
                         <div class="project-card-content">
                             <h3 class="project-title">OXXO</h3>
+                            <span class="project-plaza">Pino Suárez</span>
                             <p class="project-description">Cadena de conveniencia con productos de consumo diario,
                                 comida rápida, café Andatti y pago de servicios.</p>
                         </div>
@@ -398,6 +415,7 @@
                     <div class="project-card project-card-stagger">
                         <div class="project-card-content">
                             <h3 class="project-title">Mambo Café</h3>
+                            <span class="project-plaza">Venustiano Carranza</span>
                             <p class="project-description">Centro de entretenimiento y discoteca con música en vivo de
                                 ritmos latinos, pistas de baile y coctelería.</p>
                         </div>
@@ -411,6 +429,7 @@
                     <div class="project-card project-card-stagger">
                         <div class="project-card-content">
                             <h3 class="project-title">Bistro Calimaya</h3>
+                            <span class="project-plaza">Plaza Rancho El Mesón II</span>
                             <p class="project-description">Restaurante de cocina informal y de autor; sirve cortes,
                                 pastas, desayunos y menú a la carta.</p>
                         </div>
@@ -424,6 +443,7 @@
                     <div class="project-card project-card-stagger">
                         <div class="project-card-content">
                             <h3 class="project-title">La Central Vinos y Licores</h3>
+                            <span class="project-plaza">Plaza Rancho El Mesón II</span>
                             <p class="project-description">Distribuidora y boutique de licores nacionales e importados,
                                 vinos de mesa y cervezas artesanales.</p>
                         </div>
@@ -437,6 +457,7 @@
                     <div class="project-card project-card-stagger">
                         <div class="project-card-content">
                             <h3 class="project-title">LEÍA</h3>
+                            <span class="project-plaza">Plaza Rancho El Mesón II</span>
                             <p class="project-description">Espacio de moda, accesorios, complementos y artículos de
                                 tendencia seleccionados para el estilo de vida contemporáneo.</p>
                         </div>
@@ -450,6 +471,7 @@
                     <div class="project-card project-card-stagger">
                         <div class="project-card-content">
                             <h3 class="project-title">MAIA Barre</h3>
+                            <span class="project-plaza">Paseo Central</span>
                             <p class="project-description">Estudio fitness boutique enfocado en barre, combinando
                                 ballet, yoga y pilates para tonificación de bajo impacto.</p>
                         </div>
@@ -463,6 +485,7 @@
                     <div class="project-card project-card-stagger">
                         <div class="project-card-content">
                             <h3 class="project-title">Vizzio</h3>
+                            <span class="project-plaza">Paseo Central</span>
                             <p class="project-description">Óptica especializada en exámenes de la vista computarizados,
                                 armazones de diseñador, micas y lentes de contacto.</p>
                         </div>
@@ -476,6 +499,7 @@
                     <div class="project-card project-card-stagger">
                         <div class="project-card-content">
                             <h3 class="project-title">Helados Dolphy</h3>
+                            <span class="project-plaza">Paseo Central</span>
                             <p class="project-description">Franquicia mexicana de helados artesanales en base de agua y
                                 crema, paletas, esquimales y malteadas.</p>
                         </div>
@@ -489,6 +513,7 @@
                     <div class="project-card project-card-stagger">
                         <div class="project-card-content">
                             <h3 class="project-title">ONA Nutrición</h3>
+                            <span class="project-plaza">Felipe Villanueva</span>
                             <p class="project-description">Clínica de asesoría nutricional personalizada enfocada en
                                 hábitos sostenibles, control de peso y nutrición deportiva.</p>
                         </div>
