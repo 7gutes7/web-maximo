@@ -1,9 +1,9 @@
 
 // --- PARSER DE UBICACIÓN GOOGLE MAPS DE ALTA PRECISIÓN ---
 function parseGoogleMapsInput(input, fallbackEmbed = '') {
-    if (!input) return { link: '', embed: fallbackEmbed };
+    if (!input && !fallbackEmbed) return { link: '', embed: '' };
 
-    let clean = input.trim();
+    let clean = (input || '').trim();
     if (clean.includes('<iframe')) {
         const srcMatch = clean.match(/src=["']([^"']+)["']/i);
         if (srcMatch) clean = srcMatch[1];
@@ -26,9 +26,10 @@ function parseGoogleMapsInput(input, fallbackEmbed = '') {
         }
     }
 
-    // 2. Parámetros q=lat,lng en URL
+    // 2. Parámetros q=lat,lng en URL o en el embed previo
     if (!lat || !lng) {
-        const qMatchCoords = clean.match(/[?&](?:q|query)=(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)/i);
+        const qMatchCoords = clean.match(/[?&](?:q|query)=(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)/i) ||
+                             (fallbackEmbed && fallbackEmbed.match(/[?&](?:q|query)=(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)/i));
         if (qMatchCoords) {
             lat = qMatchCoords[1];
             lng = qMatchCoords[2];
@@ -53,11 +54,28 @@ function parseGoogleMapsInput(input, fallbackEmbed = '') {
         }
     }
 
-    // 5. Búsqueda por texto q=Nombre
+    // 5. Búsqueda por lugar /place/Nombre/
     if (!lat || !lng) {
+        const placeMatch = clean.match(/\/maps\/place\/([^\/@?]+)/i);
+        if (placeMatch) {
+            queryText = decodeURIComponent(placeMatch[1].replace(/\+/g, ' '));
+        }
+    }
+
+    // 6. Búsqueda por texto q=Nombre
+    if (!lat || !lng && !queryText) {
         const qMatchText = clean.match(/[?&](?:q|query)=([^&]+)/i);
-        if (qMatchText) {
-            queryText = decodeURIComponent(qMatchText[1]);
+        if (qMatchText && !qMatchText[1].startsWith('http')) {
+            queryText = decodeURIComponent(qMatchText[1].replace(/\+/g, ' '));
+        }
+    }
+
+    // 7. Enlaces cortos (maps.app.goo.gl, share.google, etc.)
+    if (!lat && !lng && !queryText) {
+        if (clean.includes('maps.app.goo.gl') || clean.includes('goo.gl/maps') || clean.includes('share.google')) {
+            if (fallbackEmbed && fallbackEmbed.includes('output=embed')) {
+                embed = fallbackEmbed;
+            }
         }
     }
 
@@ -73,7 +91,9 @@ function parseGoogleMapsInput(input, fallbackEmbed = '') {
         }
     } else if (clean.includes('output=embed') || clean.includes('/embed')) {
         embed = clean;
-    } else if (clean.startsWith('http')) {
+    } else if (fallbackEmbed) {
+        embed = fallbackEmbed;
+    } else if (clean.startsWith('http') && !clean.includes('maps.app.goo.gl') && !clean.includes('goo.gl/maps') && !clean.includes('share.google')) {
         embed = `https://maps.google.com/maps?q=${encodeURIComponent(clean)}&z=17&ie=UTF8&iwloc=&output=embed`;
     }
 
@@ -2698,12 +2718,19 @@ function openFichaModal(el) {
 
         const rawLink = ficha.ubicacion.link || '';
         const rawEmbed = ficha.ubicacion.embed || '';
-        const parsed = parseGoogleMapsInput(rawLink || rawEmbed, rawEmbed);
 
-        if (iframe) iframe.src = parsed.embed;
-        if (link) link.href = rawLink || parsed.link;
+        let targetEmbed = '';
+        if (rawEmbed && (rawEmbed.includes('output=embed') || rawEmbed.includes('/embed'))) {
+            targetEmbed = rawEmbed;
+        } else {
+            const parsed = parseGoogleMapsInput(rawEmbed || rawLink, rawEmbed);
+            targetEmbed = parsed.embed;
+        }
 
-        if (rawLink && (rawLink.includes('maps.app.goo.gl') || rawLink.includes('goo.gl/maps'))) {
+        if (iframe) iframe.src = targetEmbed || rawEmbed;
+        if (link) link.href = rawLink || targetEmbed;
+
+        if ((!targetEmbed || targetEmbed.includes('maps.app.goo.gl')) && rawLink && (rawLink.includes('maps.app.goo.gl') || rawLink.includes('goo.gl/maps') || rawLink.includes('share.google'))) {
             resolveShortMapLink(rawLink).then(resolved => {
                 if (resolved && resolved.embed && iframe) {
                     iframe.src = resolved.embed;
