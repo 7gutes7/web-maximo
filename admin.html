@@ -169,6 +169,34 @@
         .btn-danger { background: rgba(239, 68, 68, 0.15); color: #F87171; border-color: rgba(239, 68, 68, 0.3); }
         .btn-danger:hover { background: #EF4444; color: #ffffff; }
         .btn-sm { padding: 0.35rem 0.75rem; font-size: 0.78rem; }
+        .btn-save {
+            background: rgba(16, 185, 129, 0.15);
+            color: #6EE7B7;
+            border-color: rgba(16, 185, 129, 0.4);
+            font-weight: 700;
+        }
+        .btn-save:hover {
+            background: rgba(16, 185, 129, 0.3);
+            border-color: #10B981;
+            color: #ffffff;
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
+        }
+        .btn-save.btn-has-changes {
+            background: rgba(245, 158, 11, 0.2);
+            color: #FCD34D;
+            border-color: rgba(245, 158, 11, 0.6);
+            animation: pulse-save-glow 2s infinite ease-in-out;
+        }
+        .btn-save.btn-has-changes:hover {
+            background: rgba(245, 158, 11, 0.35);
+            border-color: #F59E0B;
+            color: #ffffff;
+            box-shadow: 0 0 14px rgba(245, 158, 11, 0.4);
+        }
+        @keyframes pulse-save-glow {
+            0%, 100% { box-shadow: 0 0 0 rgba(245, 158, 11, 0); }
+            50% { box-shadow: 0 0 10px rgba(245, 158, 11, 0.45); }
+        }
         .admin-main { max-width: 1300px; margin: 0 auto; padding: 2rem; width: 100%; flex: 1; }
         .login-wrapper { display: flex; justify-content: center; align-items: center; min-height: calc(100vh - 80px); padding: 1.5rem; }
         .login-card {
@@ -638,6 +666,9 @@
             <span class="admin-badge">CMS Catálogo</span>
         </a>
         <div class="nav-actions">
+            <button id="btn-save-changes" class="btn btn-save btn-sm" style="display:none;" onclick="handleSaveAllChanges()" title="Guardar todos los cambios del catálogo">
+                💾 <span>Guardar Cambios</span>
+            </button>
             <a href="index.html#el-match" target="_blank" class="btn btn-outline btn-sm">
                 <span>Ver Sitio Web</span> ↗
             </a>
@@ -1012,6 +1043,35 @@
     </div>
 
     <!-- MODAL PARA CAMBIAR CONTRASEÑA -->
+    <!-- MODAL CONFIRMACIÓN AL CERRAR SESIÓN SI HAY CAMBIOS -->
+    <div id="unsaved-modal" class="modal-overlay">
+        <div class="modal-container" style="max-width: 480px;">
+            <div class="modal-header">
+                <h2 class="modal-title">⚠️ Cambios sin guardar</h2>
+                <button onclick="closeUnsavedModal()" style="background:none; border:none; color:#fff; font-size:1.5rem; cursor:pointer;">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 1.5rem;">
+                <p style="color: var(--text-main); font-size: 0.95rem; line-height: 1.6; margin-bottom: 0.75rem;">
+                    Tienes modificaciones pendientes en el catálogo que no has guardado.
+                </p>
+                <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5;">
+                    ¿Deseas guardar los cambios antes de cerrar tu sesión de administrador?
+                </p>
+            </div>
+            <div class="modal-footer" style="display: flex; gap: 0.6rem; justify-content: flex-end; flex-wrap: wrap;">
+                <button type="button" class="btn btn-outline" onclick="closeUnsavedModal()">
+                    Cancelar
+                </button>
+                <button type="button" class="btn btn-danger" onclick="discardAndLogout()">
+                    Salir sin Guardar
+                </button>
+                <button type="button" class="btn btn-primary btn-save" onclick="saveAndLogout()">
+                    💾 Guardar y Salir
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div id="password-modal" class="modal-overlay">
         <div class="modal-container" style="max-width: 440px;">
             <div class="modal-header">
@@ -1052,6 +1112,95 @@
     <script src="js/catalog-service.js?v=200.0"></script>
     <script>
         let propertiesData = [];
+        let savedCatalogSnapshot = null;
+
+        function hasUnsavedChanges() {
+            if (savedCatalogSnapshot === null) return false;
+            try {
+                return JSON.stringify(propertiesData) !== savedCatalogSnapshot;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        function updateSaveButtonState() {
+            const btn = document.getElementById("btn-save-changes");
+            if (!btn) return;
+            const isDirty = hasUnsavedChanges();
+            if (isDirty) {
+                btn.classList.add("btn-has-changes");
+                btn.innerHTML = '💾 <span>Guardar Cambios <span style="display:inline-block; width:8px; height:8px; background:#F59E0B; border-radius:50%; margin-left:4px; vertical-align:middle; box-shadow:0 0 6px #F59E0B;"></span></span>';
+                btn.title = "Hay cambios pendientes por guardar";
+            } else {
+                btn.classList.remove("btn-has-changes");
+                btn.innerHTML = '💾 <span>Guardar Cambios</span>';
+                btn.title = "Todos los cambios están guardados";
+            }
+        }
+
+        async function handleSaveAllChanges(silent = false) {
+            try {
+                CatalogService.items = propertiesData;
+                CatalogService.saveToCache(propertiesData);
+                CatalogService.syncFichasInmuebles(propertiesData);
+                if (typeof CatalogService.saveToServer === "function") {
+                    await CatalogService.saveToServer(propertiesData);
+                }
+                savedCatalogSnapshot = JSON.stringify(propertiesData);
+                updateSaveButtonState();
+                if (!silent) {
+                    showToast("✅ ¡Todos los cambios han sido guardados correctamente!");
+                }
+                return true;
+            } catch (err) {
+                console.error("Error al guardar cambios:", err);
+                if (!silent) {
+                    showToast("❌ Error al guardar cambios.");
+                }
+                return false;
+            }
+        }
+
+        function openUnsavedModal() {
+            const m = document.getElementById("unsaved-modal");
+            if (m) m.classList.add("active");
+        }
+
+        function closeUnsavedModal() {
+            const m = document.getElementById("unsaved-modal");
+            if (m) m.classList.remove("active");
+        }
+
+        async function saveAndLogout() {
+            await handleSaveAllChanges(true);
+            closeUnsavedModal();
+            sessionStorage.removeItem("vm_admin_auth");
+            showLogin();
+            showToast("✅ Cambios guardados y sesión cerrada.");
+        }
+
+        function discardAndLogout() {
+            if (savedCatalogSnapshot) {
+                try {
+                    propertiesData = JSON.parse(savedCatalogSnapshot);
+                    CatalogService.items = propertiesData;
+                    CatalogService.saveToCache(propertiesData);
+                    CatalogService.syncFichasInmuebles(propertiesData);
+                } catch(e) {}
+            }
+            closeUnsavedModal();
+            sessionStorage.removeItem("vm_admin_auth");
+            showLogin();
+            showToast("Sesión cerrada sin guardar cambios.");
+        }
+
+        window.addEventListener("beforeunload", function (e) {
+            if (hasUnsavedChanges() && sessionStorage.getItem("vm_admin_auth") === "true") {
+                e.preventDefault();
+                e.returnValue = "";
+                return "";
+            }
+        });
 
         
         function getStoredPassword() {
@@ -1156,6 +1305,7 @@
             document.getElementById("login-view").style.display = "flex";
             document.getElementById("dashboard-view").style.display = "none";
             document.getElementById("btn-logout").style.display = "none";
+            const btnSave = document.getElementById("btn-save-changes"); if (btnSave) btnSave.style.display = "none";
             const btnPass = document.getElementById("btn-change-pass"); if (btnPass) btnPass.style.display = "none";
             const wall = document.getElementById("drift-wall-bg"); if (wall) wall.style.display = "block";
         }
@@ -1164,11 +1314,14 @@
             document.getElementById("login-view").style.display = "none";
             document.getElementById("dashboard-view").style.display = "block";
             document.getElementById("btn-logout").style.display = "inline-flex";
+            const btnSave = document.getElementById("btn-save-changes"); if (btnSave) btnSave.style.display = "inline-flex";
             const btnPass = document.getElementById("btn-change-pass"); if (btnPass) btnPass.style.display = "inline-flex";
             const wall = document.getElementById("drift-wall-bg"); if (wall) wall.style.display = "none";
 
             await CatalogService.init();
             propertiesData = CatalogService.sortItems(CatalogService.items || []);
+            savedCatalogSnapshot = JSON.stringify(propertiesData);
+            updateSaveButtonState();
             renderAdminCards(propertiesData);
             updateStats();
         }
@@ -1189,9 +1342,13 @@
         }
 
         function handleLogout() {
-            sessionStorage.removeItem("vm_admin_auth");
-            showLogin();
-            showToast("Sesión cerrada.");
+            if (hasUnsavedChanges()) {
+                openUnsavedModal();
+            } else {
+                sessionStorage.removeItem("vm_admin_auth");
+                showLogin();
+                showToast("Sesión cerrada.");
+            }
         }
 
         function updateStats() {
@@ -1383,6 +1540,7 @@
             CatalogService.items = propertiesData;
             CatalogService.saveToCache(propertiesData);
             CatalogService.syncFichasInmuebles(propertiesData);
+            updateSaveButtonState();
         }
 
         function filterProperties() {
@@ -2629,6 +2787,7 @@
             closePropertyModal();
             renderAdminCards(propertiesData);
             updateStats();
+            updateSaveButtonState();
             showToast("Inmueble guardado correctamente");
         }
 
@@ -2641,6 +2800,7 @@
                 CatalogService.syncFichasInmuebles(propertiesData);
                 renderAdminCards(propertiesData);
                 updateStats();
+                updateSaveButtonState();
                 showToast("Inmueble eliminado.");
             }
         }
@@ -2662,6 +2822,7 @@
                     CatalogService.syncFichasInmuebles(propertiesData);
                     renderAdminCards(propertiesData);
                     updateStats();
+                    updateSaveButtonState();
                     showToast("✅ ¡Catálogo importado exitosamente! (" + propertiesData.length + " inmuebles)");
                 } catch(err) {
                     alert("Error al procesar el archivo JSON: " + err.message);

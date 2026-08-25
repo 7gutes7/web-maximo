@@ -44,11 +44,10 @@ Al autenticarse, el sistema presenta el centro de mando general con el catálogo
 
 ### 3.1 Componentes de la Barra Superior
 - **Logotipo de Valor Máximo**: Identidad corporativa de la plataforma.
-- **`📤 Cargar Catálogo JSON`**: Permite restaurar o subir una copia de seguridad completa con todas las plazas en 1 solo clic.
-- **`📥 Descargar JSON`**: Descarga un respaldo integral del catálogo (`catalogo.json`).
-- **`+ Nuevo Inmueble`**: Abre el formulario en blanco para registrar una nueva propiedad comercial.
+- **`💾 Guardar Cambios`**: Botón con indicador visual inteligente (a la izquierda de "Ver Sitio Web") que persiste todas las modificaciones directamente al servidor y memoria caché.
+- **`Ver Sitio Web ↗`**: Enlace directo para abrir la vista pública del catálogo en una nueva pestaña.
 - **`🔑 Cambiar Contraseña`**: Abre la ventana de actualización de credenciales.
-- **`🚪 Salir`**: Cierra la sesión activa de forma segura.
+- **`🚪 Cerrar Sesión`**: Cierra la sesión activa con protección contra pérdida de datos: si existen cambios pendientes, el sistema preguntará si desea guardar antes de salir.
 
 ### 3.2 Métricas en Vivo
 - **Inmuebles Registrados**: Total de plazas dadas de alta en el sistema.
