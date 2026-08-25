@@ -222,11 +222,93 @@
             border: 1px solid var(--border-color);
             border-radius: 12px;
             overflow: hidden;
-            transition: transform 0.2s ease, border-color 0.2s ease;
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
             display: flex;
             flex-direction: column;
+            position: relative;
         }
         .property-card:hover { transform: translateY(-4px); border-color: rgba(255, 255, 255, 0.2); }
+        .property-card.dragging { opacity: 0.35; transform: scale(0.97); border: 2px dashed var(--brand-emerald); }
+        .property-card.drag-over { border-color: var(--brand-emerald); box-shadow: 0 0 20px rgba(16, 185, 129, 0.35); transform: scale(1.02); }
+        
+        .property-order-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0.85rem;
+            background: rgba(10, 16, 26, 0.95);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 2;
+        }
+        .property-order-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+        }
+        .order-drag-handle {
+            cursor: grab;
+            color: var(--text-muted);
+            font-size: 1.15rem;
+            letter-spacing: -2px;
+            user-select: none;
+            padding: 0 0.15rem;
+            transition: color 0.15s ease;
+        }
+        .order-drag-handle:hover { color: #fff; }
+        .order-drag-handle:active { cursor: grabbing; }
+        .order-number {
+            background: rgba(16, 185, 129, 0.18);
+            color: #6EE7B7;
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            padding: 0.15rem 0.55rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+        }
+        .property-order-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+        .btn-order-arrow {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            border-radius: 5px;
+            width: 26px;
+            height: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .btn-order-arrow:hover:not(:disabled) {
+            background: rgba(16, 185, 129, 0.25);
+            border-color: #10B981;
+            color: #fff;
+        }
+        .btn-order-arrow:disabled {
+            opacity: 0.25;
+            cursor: not-allowed;
+        }
+        .order-select {
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid var(--border-color);
+            color: #6EE7B7;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.2rem 0.45rem;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.15s ease;
+        }
+        .order-select:focus {
+            border-color: var(--brand-emerald);
+        }
         .property-card-cover { height: 180px; width: 100%; object-fit: cover; background: #000; }
         .property-card-body { padding: 1.25rem; display: flex; flex-direction: column; flex: 1; }
         .property-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; gap: 0.5rem; }
@@ -613,7 +695,17 @@
             <div class="search-box">
                 <input type="text" id="search-input" class="form-input" placeholder="🔍 Buscar por nombre, giro o descripción..." oninput="filterProperties()">
             </div>
-            <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
+            <div style="display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap;">
+                <div style="display:flex; align-items:center; gap:0.4rem; background:rgba(15,23,42,0.7); padding:0.35rem 0.75rem; border-radius:8px; border:1px solid var(--border-color);">
+                    <span style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">↕️ ORDEN:</span>
+                    <select id="sort-select" class="form-select" style="padding:0.25rem 0.5rem; font-size:0.78rem; width:auto; border-radius:6px; background:transparent; border:none; color:var(--brand-emerald); font-weight:700; cursor:pointer;" onchange="handleSortChange(this.value)">
+                        <option value="manual">🔀 Manual (Personalizado)</option>
+                        <option value="disponibilidad">🏬 Auto (Mayor Disponibilidad)</option>
+                        <option value="az">🔤 Alfabético (A - Z)</option>
+                        <option value="za">🔤 Alfabético (Z - A)</option>
+                        <option value="locales">🏢 Total de Locales</option>
+                    </select>
+                </div>
                 <button class="btn btn-outline" onclick="document.getElementById('import-json-input').click()" title="Cargar catálogo completo desde archivo JSON">
                     📤 Cargar Catálogo JSON
                 </button>
@@ -739,8 +831,8 @@
                         <div class="form-group">
                             <label class="form-label">Ubicación Google Maps (Enlace / URL de Maps)</label>
                             <input type="text" id="prop-map-link" class="form-input" placeholder="Pega aquí el enlace de Google Maps (ej. https://maps.app.goo.gl/... o https://www.google.com/maps/place/...)" oninput="handleMapUrlInput(this.value)">
-                            <small style="color: var(--text-muted); font-size: 0.76rem; margin-top: 0.35rem; display: block;">
-                                💡 Pega solo un enlace de Google Maps. El sistema detectará automáticamente las coordenadas exactas y generará el mapa con precisión.
+                            <small style="color: var(--text-muted); font-size: 0.76rem; margin-top: 0.35rem; display: block; line-height: 1.4;">
+                                💡 <strong>Tip:</strong> Puedes pegar el <strong>enlace completo de Google Maps</strong> (ej. <code>https://www.google.com/maps/place/...</code>), las <strong>coordenadas directas</strong> (ej. <code>19.27425, -99.66598</code>), o un <strong>enlace corto</strong>. El mapa se previsualizará de inmediato.
                             </small>
                         </div>
                     </div>
@@ -1117,6 +1209,9 @@
             document.getElementById("stat-available").textContent = available || 39;
         }
 
+        let currentSortMode = 'manual';
+        let draggedCardIndex = null;
+
         function renderAdminCards(items) {
             const container = document.getElementById("properties-container");
             container.innerHTML = "";
@@ -1126,17 +1221,43 @@
                 return;
             }
 
+            const total = propertiesData.length;
+
             items.forEach((item) => {
+                const realIndex = propertiesData.findIndex(p => p.id === item.id);
+                const posNumber = (realIndex >= 0 ? realIndex : items.indexOf(item)) + 1;
+
                 const card = document.createElement("div");
                 const isInactive = item.active === false;
                 card.className = "property-card" + (isInactive ? " property-card-inactive" : "");
+                card.setAttribute("draggable", "true");
+                card.dataset.id = item.id;
+                card.dataset.index = realIndex;
                 if (isInactive) card.style.opacity = "0.75";
+
+                let optionsHtml = '';
+                for (let i = 1; i <= total; i++) {
+                    optionsHtml += '<option value="' + i + '"' + (i === posNumber ? ' selected' : '') + '>' + i + '</option>';
+                }
 
                 const activePill = isInactive 
                     ? '<span style="display:inline-block; font-size:0.65rem; padding:0.15rem 0.45rem; border-radius:4px; background:rgba(239, 68, 68, 0.2); color:#FCA5A5; border:1px solid rgba(239, 68, 68, 0.4); margin-bottom:0.35rem; font-weight:600;">⚪ OCULTA EN WEB</span>' 
                     : '<span style="display:inline-block; font-size:0.65rem; padding:0.15rem 0.45rem; border-radius:4px; background:rgba(16, 185, 129, 0.15); color:#6EE7B7; border:1px solid rgba(16, 185, 129, 0.3); margin-bottom:0.35rem; font-weight:600;">🟢 VISIBLE EN WEB</span>';
 
                 card.innerHTML = 
+                    '<div class="property-order-bar">' +
+                        '<div class="property-order-badge">' +
+                            '<span class="order-drag-handle" title="Arrastra para reordenar">⋮⋮</span>' +
+                            '<span class="order-number">#' + posNumber + '</span>' +
+                        '</div>' +
+                        '<div class="property-order-actions">' +
+                            '<button type="button" class="btn-order-arrow" onclick="event.stopPropagation(); moveProperty(' + realIndex + ', ' + (realIndex - 1) + ')" ' + (realIndex === 0 ? 'disabled' : '') + ' title="Subir una posición">▲</button>' +
+                            '<button type="button" class="btn-order-arrow" onclick="event.stopPropagation(); moveProperty(' + realIndex + ', ' + (realIndex + 1) + ')" ' + (realIndex === total - 1 ? 'disabled' : '') + ' title="Bajar una posición">▼</button>' +
+                            '<select class="order-select" onclick="event.stopPropagation();" onchange="movePropertyTo(' + realIndex + ', parseInt(this.value, 10))" title="Cambiar posición directa">' +
+                                optionsHtml +
+                            '</select>' +
+                        '</div>' +
+                    '</div>' +
                     '<img src="' + item.portada + '" alt="' + item.titulo + '" class="property-card-cover" onerror="this.src=\'galeria/unniplaza.jpg\'">' +
                     '<div class="property-card-body">' +
                         activePill +
@@ -1156,8 +1277,112 @@
                             '</div>' +
                         '</div>' +
                     '</div>';
+
+                setupCardDragEvents(card, realIndex);
                 container.appendChild(card);
             });
+        }
+
+        function setupCardDragEvents(card, index) {
+            card.addEventListener('dragstart', (e) => {
+                draggedCardIndex = index;
+                card.classList.add('dragging');
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/plain', index);
+            });
+
+            card.addEventListener('dragend', () => {
+                card.classList.remove('dragging');
+                document.querySelectorAll('.property-card').forEach(c => c.classList.remove('drag-over'));
+            });
+
+            card.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+                card.classList.add('drag-over');
+            });
+
+            card.addEventListener('dragleave', () => {
+                card.classList.remove('drag-over');
+            });
+
+            card.addEventListener('drop', (e) => {
+                e.preventDefault();
+                card.classList.remove('drag-over');
+                const fromIdx = draggedCardIndex !== null ? draggedCardIndex : parseInt(e.dataTransfer.getData('text/plain'), 10);
+                const toIdx = index;
+                if (!isNaN(fromIdx) && fromIdx !== toIdx) {
+                    moveProperty(fromIdx, toIdx);
+                }
+            });
+        }
+
+        function moveProperty(fromIdx, toIdx) {
+            if (fromIdx < 0 || fromIdx >= propertiesData.length) return;
+            if (toIdx < 0 || toIdx >= propertiesData.length) return;
+
+            const movedItem = propertiesData.splice(fromIdx, 1)[0];
+            propertiesData.splice(toIdx, 0, movedItem);
+
+            const sortSelect = document.getElementById('sort-select');
+            if (sortSelect) sortSelect.value = 'manual';
+            currentSortMode = 'manual';
+
+            persistPropertiesOrder();
+            renderAdminCards(propertiesData);
+            showToast('📍 ' + movedItem.titulo + ' ahora está en la posición #' + (toIdx + 1));
+        }
+
+        function movePropertyTo(fromIdx, targetPos1Based) {
+            const toIdx = targetPos1Based - 1;
+            moveProperty(fromIdx, toIdx);
+        }
+
+        function handleSortChange(mode) {
+            currentSortMode = mode;
+            if (mode === 'manual') {
+                renderAdminCards(propertiesData);
+                return;
+            }
+
+            if (mode === 'disponibilidad') {
+                const getDispCount = (item) => (item.locales || []).filter(loc => 
+                    (loc.giro || '').toUpperCase().includes('DISPONIBLE') || 
+                    (loc.notas || '').toUpperCase().includes('DISPONIBLE') ||
+                    (loc.estatus || '').toUpperCase().includes('DISPONIBLE')
+                ).length;
+                const isRiva = (item) => String(item.id || '').toLowerCase().includes('riva') || String(item.titulo || '').toLowerCase().includes('riva');
+
+                propertiesData.sort((a, b) => {
+                    const aRiva = isRiva(a);
+                    const bRiva = isRiva(b);
+                    if (aRiva && !bRiva) return -1;
+                    if (!aRiva && bRiva) return 1;
+                    const aDisp = getDispCount(a);
+                    const bDisp = getDispCount(b);
+                    if (bDisp !== aDisp) return bDisp - aDisp;
+                    return (b.locales || []).length - (a.locales || []).length;
+                });
+            } else if (mode === 'az') {
+                propertiesData.sort((a, b) => (a.titulo || '').localeCompare(b.titulo || '', 'es', { sensitivity: 'base' }));
+            } else if (mode === 'za') {
+                propertiesData.sort((a, b) => (b.titulo || '').localeCompare(a.titulo || '', 'es', { sensitivity: 'base' }));
+            } else if (mode === 'locales') {
+                propertiesData.sort((a, b) => (b.locales || []).length - (a.locales || []).length);
+            }
+
+            persistPropertiesOrder();
+            renderAdminCards(propertiesData);
+            showToast('✨ Catálogo ordenado por ' + mode.toUpperCase());
+        }
+
+        function persistPropertiesOrder() {
+            propertiesData.forEach((p, idx) => {
+                p.order = idx + 1;
+            });
+            CatalogService.items = propertiesData;
+            CatalogService.saveToCache(propertiesData);
+            CatalogService.syncFichasInmuebles(propertiesData);
         }
 
         function filterProperties() {
@@ -1176,7 +1401,7 @@
 
         function parseGoogleMapsInput(input, fallbackEmbed = '') {
             const currentFallback = fallbackEmbed || currentModalFallbackEmbed || '';
-            if (!input && !currentFallback) return { link: '', embed: '' };
+            if (!input && !currentFallback) return { link: '', embed: '', lat: null, lng: null };
 
             let clean = (input || '').trim();
             if (clean.includes('<iframe')) {
@@ -1188,7 +1413,7 @@
             let embed = currentFallback;
             let lat = null, lng = null, queryText = null;
 
-            // 1. Coordenadas de PIN exacto en Google Maps (!3d...!4d... o !8m2!3d...!4d...)
+            // 1. Coordenadas de PIN exacto en Google Maps (!3d...!4d... o !8m2!3d...!4d... o !2d...!3d...)
             const pinMatch3d4d = clean.match(/!(?:8m2!)?3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/) || clean.match(/!2d(-?\d+\.\d+)!3d(-?\d+\.\d+)/);
             if (pinMatch3d4d) {
                 if (clean.includes('!2d') && clean.indexOf('!2d') < clean.indexOf('!3d')) {
@@ -1200,7 +1425,7 @@
                 }
             }
 
-            // 2. Parámetros q=lat,lng en URL o en el embed previo
+            // 2. Parámetros q=lat,lng en URL o en el fallback
             if (!lat || !lng) {
                 const qMatchCoords = clean.match(/[?&](?:q|query)=(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)/i) ||
                                      (currentFallback && currentFallback.match(/[?&](?:q|query)=(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)/i));
@@ -1219,9 +1444,9 @@
                 }
             }
 
-            // 4. Coordenadas puras escritas a mano (ej. "19.2928195, -99.6557402")
+            // 4. Coordenadas puras escritas a mano (ej. "19.2928195, -99.6557402" o "19.27425 -99.665985")
             if (!lat || !lng) {
-                const rawCoordsMatch = clean.match(/^\s*(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)\s*$/);
+                const rawCoordsMatch = clean.match(/^\s*(-?\d+\.\d+)\s*[,\s]\s*(-?\d+\.\d+)\s*$/);
                 if (rawCoordsMatch) {
                     lat = rawCoordsMatch[1];
                     lng = rawCoordsMatch[2];
@@ -1236,7 +1461,7 @@
                 }
             }
 
-            // 6. Búsqueda por texto q=Nombre
+            // 6. Búsqueda por texto q=Nombre (sin ser URL)
             if (!lat && !lng && !queryText) {
                 const qMatchText = clean.match(/[?&](?:q|query)=([^&]+)/i);
                 if (qMatchText && !qMatchText[1].startsWith('http')) {
@@ -1244,22 +1469,10 @@
                 }
             }
 
-            // 7. Enlaces cortos (maps.app.goo.gl) o texto plano
-            if (!lat && !lng && !queryText) {
-                if (clean.includes('maps.app.goo.gl') || clean.includes('goo.gl/maps') || clean.startsWith('http')) {
-                    if (currentFallback && currentFallback.includes('q=')) {
-                        embed = currentFallback;
-                    } else {
-                        const tituloInput = document.getElementById('prop-titulo');
-                        const titulo = tituloInput ? tituloInput.value.trim() : '';
-                        queryText = titulo ? `${titulo}, Toluca` : 'Toluca Estado de Mexico';
-                    }
-                } else if (clean.length > 2) {
-                    queryText = clean;
-                }
-            }
-
-            if (lat && lng) {
+            // 7. Generación del Embed
+            if (clean.includes('output=embed') || clean.includes('/embed')) {
+                embed = clean;
+            } else if (lat && lng) {
                 embed = `https://maps.google.com/maps?q=${lat},${lng}&z=17&ie=UTF8&iwloc=&output=embed`;
                 if (!link.startsWith('http')) {
                     link = `https://www.google.com/maps?q=${lat},${lng}`;
@@ -1269,13 +1482,63 @@
                 if (!link.startsWith('http')) {
                     link = `https://www.google.com/maps?q=${encodeURIComponent(queryText)}`;
                 }
-            } else if (clean.includes('output=embed') || clean.includes('/embed')) {
-                embed = clean;
-            } else if (!embed && currentFallback) {
+            } else if (currentFallback && (currentFallback.includes('output=embed') || currentFallback.includes('/embed'))) {
                 embed = currentFallback;
+            } else if (clean.startsWith('http') && (clean.includes('maps.app.goo.gl') || clean.includes('goo.gl/maps') || clean.includes('share.google'))) {
+                const titulo = (document.getElementById('prop-titulo') ? document.getElementById('prop-titulo').value.trim() : '');
+                const querySearch = titulo ? `${titulo}, Toluca` : 'Toluca, Estado de México';
+                embed = `https://maps.google.com/maps?q=${encodeURIComponent(querySearch)}&z=17&ie=UTF8&iwloc=&output=embed`;
+            } else if (clean.startsWith('http')) {
+                embed = `https://maps.google.com/maps?q=${encodeURIComponent(clean)}&z=17&ie=UTF8&iwloc=&output=embed`;
+            } else if (clean.length > 2) {
+                embed = `https://maps.google.com/maps?q=${encodeURIComponent(clean + ', Toluca')}&z=17&ie=UTF8&iwloc=&output=embed`;
             }
 
             return { link, embed, lat, lng };
+        }
+
+                async function resolveShortMapLink(url) {
+            if (!url || (!url.includes('maps.app.goo.gl') && !url.includes('goo.gl/maps') && !url.includes('share.google'))) return null;
+            
+            // 1. Intentar con el endpoint rápido local o el endpoint PHP en producción
+            try {
+                const localRes = await fetch(`/api/unshorten?url=${encodeURIComponent(url)}`);
+                if (localRes.ok) {
+                    const localData = await localRes.json();
+                    if (localData && localData.success && localData.resolvedUrl) {
+                        const parsed = parseGoogleMapsInput(localData.resolvedUrl);
+                        if (parsed && parsed.embed) return parsed;
+                    }
+                }
+            } catch (e) {}
+
+            try {
+                const phpRes = await fetch(`save_catalog.php?action=unshorten&url=${encodeURIComponent(url)}`);
+                if (phpRes.ok) {
+                    const phpData = await phpRes.json();
+                    if (phpData && phpData.success && phpData.resolvedUrl) {
+                        const parsed = parseGoogleMapsInput(phpData.resolvedUrl);
+                        if (parsed && parsed.embed) return parsed;
+                    }
+                }
+            } catch (e) {}
+
+            // 2. Fallback con unshorten.me
+            try {
+                const unshortenRes = await fetch(`https://unshorten.me/json/${encodeURIComponent(url)}`);
+                if (unshortenRes.ok) {
+                    const unshortenData = await unshortenRes.json();
+                    if (unshortenData && unshortenData.resolved_url) {
+                        const decodedUrl = decodeURIComponent(unshortenData.resolved_url);
+                        const parsed = parseGoogleMapsInput(decodedUrl);
+                        if (parsed && parsed.embed) return parsed;
+                    }
+                }
+            } catch (e) {
+                console.warn('Error resolviendo enlace corto de maps:', e);
+            }
+
+            return null;
         }
 
         function handleMapUrlInput(val, explicitFallback = '') {
@@ -1287,9 +1550,18 @@
                 currentModalFallbackEmbed = explicitFallback;
             }
 
-            if (!val || !val.trim()) {
+            const cleanVal = (val || '').trim();
+
+            if (!cleanVal) {
                 if (currentModalFallbackEmbed) {
-                    val = currentModalFallbackEmbed;
+                    if (iframe) iframe.src = currentModalFallbackEmbed;
+                    if (wrapper) wrapper.style.display = "block";
+                    if (badge) {
+                        badge.textContent = "🗺️ Ubicación vinculada";
+                        badge.style.background = "rgba(59, 130, 246, 0.2)";
+                        badge.style.color = "#60A5FA";
+                    }
+                    return;
                 } else {
                     if (wrapper) wrapper.style.display = "none";
                     if (iframe) iframe.src = "";
@@ -1297,7 +1569,7 @@
                 }
             }
 
-            const parsed = parseGoogleMapsInput(val, currentModalFallbackEmbed);
+            const parsed = parseGoogleMapsInput(cleanVal, currentModalFallbackEmbed);
             if (iframe && parsed.embed) {
                 iframe.src = parsed.embed;
             }
@@ -1305,11 +1577,28 @@
 
             if (parsed.lat && parsed.lng) {
                 if (badge) {
-                    badge.textContent = `📍 Coordenadas detectadas: ${parsed.lat}, ${parsed.lng}`;
+                    badge.textContent = `📍 Coordenadas Exactas: ${parsed.lat}, ${parsed.lng}`;
                     badge.style.background = "rgba(16, 185, 129, 0.2)";
                     badge.style.color = "#10B981";
                 }
-            } else {
+            } else if (cleanVal.includes('maps.app.goo.gl') || cleanVal.includes('goo.gl/maps') || cleanVal.includes('share.google')) {
+                if (badge) {
+                    badge.textContent = "⏳ Obteniendo ubicación exacta del enlace...";
+                    badge.style.background = "rgba(245, 158, 11, 0.2)";
+                    badge.style.color = "#F59E0B";
+                }
+                resolveShortMapLink(cleanVal).then(resolved => {
+                    if (resolved && resolved.embed) {
+                        currentModalFallbackEmbed = resolved.embed;
+                        if (iframe) iframe.src = resolved.embed;
+                        if (badge) {
+                            badge.textContent = (resolved.lat && resolved.lng) ? `📍 Coordenadas Exactas: ${resolved.lat}, ${resolved.lng}` : "📍 Ubicación Exacta Vinculada";
+                            badge.style.background = "rgba(16, 185, 129, 0.2)";
+                            badge.style.color = "#10B981";
+                        }
+                    }
+                });
+            } else if (parsed.embed) {
                 if (badge) {
                     badge.textContent = "🗺️ Ubicación comercial vinculada";
                     badge.style.background = "rgba(59, 130, 246, 0.2)";
@@ -2304,10 +2593,20 @@
                 fotos: fotos.length ? fotos : [document.getElementById("prop-portada").value.trim()],
                 ubicacion: (() => {
                     const rawMap = document.getElementById("prop-map-link").value.trim();
-                    const parsed = parseGoogleMapsInput(rawMap);
+                    const parsed = parseGoogleMapsInput(rawMap, currentModalFallbackEmbed);
+                    let finalEmbed = parsed.embed || currentModalFallbackEmbed;
+                    if (!finalEmbed && rawMap) {
+                        if (rawMap.includes('output=embed') || rawMap.includes('/embed')) {
+                            finalEmbed = rawMap;
+                        } else {
+                            const tituloInput = document.getElementById("prop-titulo");
+                            const tit = tituloInput ? tituloInput.value.trim() : "";
+                            finalEmbed = `https://maps.google.com/maps?q=${encodeURIComponent(tit ? tit + ', Toluca' : rawMap)}&z=17&ie=UTF8&iwloc=&output=embed`;
+                        }
+                    }
                     return {
                         link: parsed.link || rawMap,
-                        embed: parsed.embed || (rawMap ? `https://maps.google.com/maps?q=${encodeURIComponent(rawMap)}&z=17&ie=UTF8&iwloc=&output=embed` : "")
+                        embed: finalEmbed || ""
                     };
                 })(),
                 locales: locales,

@@ -9,6 +9,28 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
     exit;
 }
 
+// 1. Endpoint para desenredar enlaces cortos de Google Maps en el servidor
+if (isset($_GET["action"]) && $_GET["action"] === "unshorten" && !empty($_GET["url"])) {
+    $url = $_GET["url"];
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HEADER, true);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 6);
+    curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+    curl_exec($ch);
+    $finalUrl = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
+    curl_close($ch);
+
+    if ($finalUrl) {
+        echo json_encode(["success" => true, "resolvedUrl" => $finalUrl]);
+    } else {
+        echo json_encode(["success" => false, "error" => "No se pudo resolver la URL"]);
+    }
+    exit;
+}
+
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     http_response_code(405);
     echo json_encode(["success" => false, "error" => "Método no permitido. Use POST."]);
