@@ -1218,8 +1218,12 @@
             return null;
         }
 
+        const _VM_SALT = "VM_AUTH_TOKEN_KEY_2026_MAXIMO";
+        const _AUTH_KEY = "_vm_auth_sig";
+        const _DEFAULT_SIG = "6a41712c6feaf5e55e65a84ce656f756f7a5f32fe22fe35c7846b1b6b8d323b5";
+
         async function computeSHA256(text) {
-            const buffer = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+            const buffer = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(_VM_SALT + text + "_SECURE_VM"));
             return Array.from(new Uint8Array(buffer)).map(b => b.toString(16).padStart(2, "0")).join("");
         }
 
@@ -1269,18 +1273,28 @@
                 }
             }
 
-            // Fallback seguro con hash SHA-256
+            // Validación y actualización con hash criptográfico con salt
             const currentHash = await computeSHA256(currentPass);
-            const savedHash = localStorage.getItem("vm_admin_pass_hash") || "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9";
+            const savedHash = localStorage.getItem(_AUTH_KEY) || localStorage.getItem("vm_admin_pass_hash") || _DEFAULT_SIG;
             
-            if (currentHash !== savedHash) {
+            let isCurrentValid = (currentHash === savedHash);
+            if (!isCurrentValid) {
+                const legacyBuffer = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(currentPass));
+                const legacyHash = Array.from(new Uint8Array(legacyBuffer)).map(b => b.toString(16).padStart(2, "0")).join("");
+                if (legacyHash === savedHash) {
+                    isCurrentValid = true;
+                }
+            }
+
+            if (!isCurrentValid) {
                 errDiv.textContent = "La contraseña actual es incorrecta.";
                 errDiv.style.display = "block";
                 return;
             }
 
             const newHash = await computeSHA256(newPass);
-            localStorage.setItem("vm_admin_pass_hash", newHash);
+            localStorage.setItem(_AUTH_KEY, newHash);
+            localStorage.removeItem("vm_admin_pass_hash");
             closePasswordModal();
             showToast("¡Contraseña actualizada exitosamente!");
         }
@@ -1412,13 +1426,23 @@
                     return;
                 }
 
-                // Fallback seguro con Hash Criptográfico SHA-256 (nunca expone contraseña en código ni DOM)
+                // Verificación de credenciales con hash criptográfico con salt
                 const inputHash = await computeSHA256(pass);
-                const customHash = localStorage.getItem("vm_admin_pass_hash");
-                // Hash SHA-256 de "admin123" por defecto
-                const defaultHash = "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9";
+                const customHash = localStorage.getItem(_AUTH_KEY) || localStorage.getItem("vm_admin_pass_hash");
+                const targetHash = customHash || _DEFAULT_SIG;
 
-                if (inputHash === (customHash || defaultHash)) {
+                let isValid = (inputHash === targetHash);
+                if (!isValid && customHash) {
+                    const legacyBuffer = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(pass));
+                    const legacyHash = Array.from(new Uint8Array(legacyBuffer)).map(b => b.toString(16).padStart(2, "0")).join("");
+                    if (legacyHash === customHash) {
+                        isValid = true;
+                        localStorage.setItem(_AUTH_KEY, inputHash);
+                        localStorage.removeItem("vm_admin_pass_hash");
+                    }
+                }
+
+                if (isValid) {
                     sessionStorage.setItem("vm_admin_auth", "true");
                     showToast("¡Bienvenido al Panel de Valor Máximo!");
                     await showDashboard();
