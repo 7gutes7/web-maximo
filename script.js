@@ -1468,10 +1468,115 @@ function initRevealObserver() {
     });
 }
 
+// Función para poblar el selector de plazas con aquellas que tienen disponibilidad
+function populatePlazasSelect(selectedPlazaTitle = null) {
+    const select = document.getElementById('drawer-plaza');
+    if (!select) return;
+
+    let items = (window.CatalogService && window.CatalogService.items && window.CatalogService.items.length)
+        ? window.CatalogService.items
+        : null;
+
+    if (!items && window.fichasInmuebles) {
+        items = Object.keys(window.fichasInmuebles).map(k => ({
+            id: k,
+            titulo: window.fichasInmuebles[k].titulo,
+            locales: window.fichasInmuebles[k].locales || [],
+            badgeText: window.fichasInmuebles[k].badgeText || ""
+        }));
+    }
+
+    const lang = localStorage.getItem("vm_lang_pref") || "es";
+    const defaultLabel = lang === "en" 
+        ? "Any with availability..." 
+        : (lang === "zh" ? "任意有空置铺位项目..." : "Cualquiera con disponibilidad...");
+
+    // Filtrar únicamente las plazas que tienen locales disponibles (> 0)
+    let availablePlazas = [];
+    if (items && items.length) {
+        items.forEach(item => {
+            if (item.active === false) return;
+            const locales = item.locales || [];
+            const dispCount = locales.filter(loc => 
+                (loc.giro || "").toUpperCase().includes("DISPONIBLE") || 
+                (loc.notas || "").toUpperCase().includes("DISPONIBLE") ||
+                (loc.estatus || "").toUpperCase().includes("DISPONIBLE")
+            ).length;
+
+            const badgeMatch = (item.badgeText || "").match(/\d+/);
+            const badgeCount = badgeMatch ? parseInt(badgeMatch[0], 10) : 0;
+
+            const finalDisp = Math.max(dispCount, badgeCount);
+            if (finalDisp > 0) {
+                availablePlazas.push({
+                    id: item.id,
+                    titulo: item.titulo,
+                    disp: finalDisp
+                });
+            }
+        });
+    }
+
+    if (!availablePlazas.length) {
+        availablePlazas = [
+            { id: "riva-palacio", titulo: "Riva Palacio", disp: 11 },
+            { id: "sub-level", titulo: "Paseo Central", disp: 12 },
+            { id: "avenida-central", titulo: "Plaza Independencia", disp: 5 },
+            { id: "distrito-financiero", titulo: "Pino Suárez", disp: 5 },
+            { id: "villada", titulo: "Villada", disp: 3 },
+            { id: "felipe-villanueva", titulo: "Felipe Villanueva", disp: 2 },
+            { id: "paseo-artes", titulo: "Edificio Hidalgo", disp: 2 },
+            { id: "solidaridad-torres", titulo: "Av. Solidaridad Torres", disp: 1 }
+        ];
+    }
+
+    availablePlazas.sort((a, b) => {
+        const aRiva = (a.titulo || "").toLowerCase().includes("riva");
+        const bRiva = (b.titulo || "").toLowerCase().includes("riva");
+        if (aRiva && !bRiva) return -1;
+        if (!aRiva && bRiva) return 1;
+        return b.disp - a.disp;
+    });
+
+    let html = `<option value="${defaultLabel}">${defaultLabel}</option>`;
+    availablePlazas.forEach(p => {
+        const unitText = p.disp === 1 
+            ? (lang === "en" ? "1 available" : (lang === "zh" ? "1 席位可租" : "1 disponible"))
+            : (lang === "en" ? `${p.disp} available` : (lang === "zh" ? `${p.disp} 席位可租` : `${p.disp} disponibles`));
+        const optionLabel = `${p.titulo} (${unitText})`;
+        
+        const isSelected = selectedPlazaTitle && (
+            p.titulo.toLowerCase() === selectedPlazaTitle.toLowerCase() ||
+            selectedPlazaTitle.toLowerCase().includes(p.titulo.toLowerCase()) ||
+            p.id.toLowerCase() === selectedPlazaTitle.toLowerCase()
+        );
+        html += `<option value="${optionLabel}" ${isSelected ? "selected" : ""}>${optionLabel}</option>`;
+    });
+
+    select.innerHTML = html;
+}
+window.populatePlazasSelect = populatePlazasSelect;
+
 // 4. Modal / Drawer Get Qualified
-function openMatchDrawer() {
+function openMatchDrawer(plazaParam) {
     const drawer = document.getElementById('vm-drawer-overlay');
     if (!drawer) return;
+
+    let targetTitle = null;
+    if (typeof plazaParam === 'string') {
+        targetTitle = plazaParam;
+    } else if (plazaParam && plazaParam.target) {
+        const card = plazaParam.target.closest('.catalog-item');
+        if (card) targetTitle = card.querySelector('h3')?.textContent.trim();
+    } else if (plazaParam && typeof plazaParam.closest === 'function') {
+        const card = plazaParam.closest('.catalog-item');
+        if (card) targetTitle = card.querySelector('h3')?.textContent.trim();
+    }
+
+    if (typeof populatePlazasSelect === 'function') {
+        populatePlazasSelect(targetTitle);
+    }
+
     drawer.classList.add('active');
     document.body.style.overflow = 'hidden';
     if (window.lenis) window.lenis.stop();
@@ -3013,11 +3118,12 @@ async function handleDrawerSubmit(event) {
     const nombre = document.getElementById('drawer-nombre')?.value?.trim() || "No especificado";
     const telefono = document.getElementById('drawer-telefono')?.value?.trim() || "No especificado";
     const hora = document.getElementById('drawer-hora')?.value || "Cualquier hora";
+    const plaza = document.getElementById('drawer-plaza')?.value || "Cualquiera con disponibilidad";
     const metraje = document.getElementById('drawer-metraje')?.value?.trim() || "No especificado";
     const giro = document.getElementById('drawer-giro')?.value || "Todos";
     const mensaje = document.getElementById('drawer-mensaje')?.value?.trim() || "Sin mensaje adicional";
 
-    // 2. Enviar por correo electrónico a 7gutes7@gmail.com vía API FormSubmit
+    // 2. Enviar por correo electrónico a valormaximo67@gmail.com vía API FormSubmit
     try {
         await fetch("https://formsubmit.co/ajax/valormaximo67@gmail.com", {
             method: "POST",
@@ -3029,6 +3135,7 @@ async function handleDrawerSubmit(event) {
                 _subject: "🏛️ Nueva Solicitud de Cotización — Valor Máximo (" + nombre + ")",
                 "Nombre": nombre,
                 "Teléfono": telefono,
+                "Plaza de Interés": plaza,
                 "Hora de llamada preferida": hora,
                 "Metraje requerido (m²)": metraje,
                 "Giro Comercial": giro,
@@ -3045,6 +3152,7 @@ async function handleDrawerSubmit(event) {
     const waText = "👋 *Nueva Solicitud de Cotización — Valor Máximo*\n\n" +
         "👤 *Nombre:* " + nombre + "\n" +
         "📱 *Teléfono:* " + telefono + "\n" +
+        "🏛️ *Plaza de Interés:* " + plaza + "\n" +
         "⏰ *Hora de llamada:* " + hora + "\n" +
         "📐 *Metraje:* " + metraje + " m²\n" +
         "🏢 *Giro:* " + giro + "\n" +

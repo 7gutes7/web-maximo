@@ -281,7 +281,7 @@ const CatalogService = {
                     <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;"><span${descAttr}>${item.descripcion || ""}</span></p>
                     ${perfilHTML}
                     <div class="catalog-actions">
-                        <button onclick="openMatchDrawer()" class="btn btn-dark" data-i18n="catalog_btn_request">Solicitar Ficha Detallada</button>
+                        <button onclick="openMatchDrawer('${item.titulo.replace(/'/g, "\\\x27")}')" class="btn btn-dark" data-i18n="catalog_btn_request">Solicitar Ficha Detallada</button>
                         <button type="button" class="btn btn-details" onclick="openFichaModal(this)" data-i18n="catalog_btn_details">Detalles</button>
                     </div>
                 </div>
@@ -298,6 +298,10 @@ const CatalogService = {
         // Re-inicializar animaciones e IntersectionObserver
         if (typeof initSectionMatchCatalogObserver === "function") {
             initSectionMatchCatalogObserver();
+        }
+
+        if (typeof window.populatePlazasSelect === "function") {
+            window.populatePlazasSelect();
         }
 
         // Re-aplicar idioma activo inmediatamente tras renderizar

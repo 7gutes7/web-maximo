@@ -140,6 +140,7 @@ const VM_TRANSLATIONS = {
     "drawer_label_name": "¿Cómo debemos dirigirnos a usted?",
     "drawer_label_phone": "Teléfono",
     "drawer_label_time": "HORA DE LLAMADA",
+    "drawer_label_plaza": "PLAZA O INMUEBLE DE INTERÉS",
     "drawer_time_any": "Cualquier hora",
     "drawer_label_size": "Metraje Requerido (m²)",
     "drawer_label_category": "GIRO COMERCIAL",
@@ -323,6 +324,7 @@ const VM_TRANSLATIONS = {
     "drawer_label_name": "How should we address you?",
     "drawer_label_phone": "Phone Number",
     "drawer_label_time": "PREFERRED CALL TIME",
+    "drawer_label_plaza": "COMMERCIAL PROPERTY OF INTEREST",
     "drawer_time_any": "Any time",
     "drawer_label_size": "Required Area (sqm)",
     "drawer_label_category": "COMMERCIAL CATEGORY",
@@ -506,6 +508,7 @@ const VM_TRANSLATIONS = {
     "drawer_label_name": "请问如何尊称您？",
     "drawer_label_phone": "联系电话",
     "drawer_label_time": "期望通话时间",
+    "drawer_label_plaza": "意向商业广场 / 物业",
     "drawer_time_any": "任意时间",
     "drawer_label_size": "所需面积 (平方米)",
     "drawer_label_category": "商业业态",
@@ -851,7 +854,12 @@ function setLanguage(lang) {
     btn.textContent = dict["catalog_btn_details"] || "Detalles";
   });
 
-  // 6. If Ficha Modal is currently open, re-render its tables dynamically
+  // 6. Refresh plazas select in drawer
+  if (typeof window.populatePlazasSelect === "function") {
+    window.populatePlazasSelect();
+  }
+
+  // 7. If Ficha Modal is currently open, re-render its tables dynamically
   const modalOverlay = document.getElementById("ficha-modal-overlay");
   if (modalOverlay && modalOverlay.classList.contains("active") && window.lastOpenedFichaKey && window.openFichaModal) {
     window.openFichaModal(window.lastOpenedFichaKey);
