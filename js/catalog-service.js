@@ -206,6 +206,28 @@ const CatalogService = {
     },
 
     /**
+     * Mapa de equivalencias para claves de traducción en i18n
+     */
+    fichaI18nMap: {
+        "riva-palacio": 1,
+        "sub-level": 2,
+        "avenida-central": 3,
+        "distrito-financiero": 4,
+        "paseo-artes": 5,
+        "felipe-villanueva": 6,
+        "villada": 7,
+        "solidaridad-torres": 8,
+        "plaza-ceboruco": 9,
+        "av-lerdo": 10,
+        "benito-juarez": 11,
+        "plaza-rancho-el-meson-ii": 12,
+        "unni-plaza": 13,
+        "venustiano-carranza": 14,
+        "wenceslao-labra": 15,
+        "brigida-garcia": 16
+    },
+
+    /**
      * Renderiza las tarjetas del catálogo manteniendo los elementos fijos
      */
     render() {
@@ -224,7 +246,7 @@ const CatalogService = {
 
         const sortedItems = this.sortItems(this.items || []);
 
-        sortedItems.forEach(item => {
+        sortedItems.forEach((item, index) => {
             if (item.active === false) return;
 
             const card = document.createElement("div");
@@ -233,10 +255,16 @@ const CatalogService = {
             card.style.cursor = "pointer";
             card.setAttribute("onclick", "openFichaModal(this)");
 
+            const num = this.fichaI18nMap[item.id] || item.order || (index + 1);
+            const subAttr = num ? ` data-i18n="card_sub_${num}"` : "";
+            const descAttr = num ? ` data-i18n="card_desc_${num}"` : "";
+            const profTAttr = num ? ` data-i18n="card_prof_t_${num}"` : "";
+            const profVAttr = num ? ` data-i18n="card_prof_v_${num}"` : "";
+
             const perfilHTML = item.perfilTexto ? `
                 <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
-                    <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); text-align: left; display: block;">${item.perfilLabel || "Perfil Empresarial"}</span>
-                    <p style="font-size: 0.85rem; font-weight: 500; margin: 0.2rem 0 0 0; text-align: left;">${item.perfilTexto}</p>
+                    <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); text-align: left; display: block;"${profTAttr}>${item.perfilLabel || "Perfil Empresarial"}</span>
+                    <p style="font-size: 0.85rem; font-weight: 500; margin: 0.2rem 0 0 0; text-align: left;"${profVAttr}>${item.perfilTexto}</p>
                 </div>
             ` : "";
 
@@ -246,15 +274,15 @@ const CatalogService = {
                     <div class="catalog-meta">
                         <div>
                             <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">${item.titulo}</h3>
-                            <p class="font-serif" style="font-style: italic; color: var(--text-muted);">${item.subtitulo || ""}</p>
+                            <p class="font-serif" style="font-style: italic; color: var(--text-muted);"><span${subAttr}>${item.subtitulo || ""}</span></p>
                         </div>
                         <span class="badge ${item.badgeType || "badge-open"}" onclick="openFichaModal(this)" style="cursor:pointer;">${item.badgeText || "DISPONIBLE"}</span>
                     </div>
-                    <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">${item.descripcion || ""}</p>
+                    <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;"><span${descAttr}>${item.descripcion || ""}</span></p>
                     ${perfilHTML}
                     <div class="catalog-actions">
-                        <button onclick="openMatchDrawer()" class="btn btn-dark">Solicitar Ficha Detallada</button>
-                        <button type="button" class="btn btn-details" onclick="openFichaModal(this)">Detalles</button>
+                        <button onclick="openMatchDrawer()" class="btn btn-dark" data-i18n="catalog_btn_request">Solicitar Ficha Detallada</button>
+                        <button type="button" class="btn btn-details" onclick="openFichaModal(this)" data-i18n="catalog_btn_details">Detalles</button>
                     </div>
                 </div>
             `;
@@ -270,6 +298,14 @@ const CatalogService = {
         // Re-inicializar animaciones e IntersectionObserver
         if (typeof initSectionMatchCatalogObserver === "function") {
             initSectionMatchCatalogObserver();
+        }
+
+        // Re-aplicar idioma activo inmediatamente tras renderizar
+        const activeLang = localStorage.getItem("vm_lang_pref") || (window.currentLang || "es");
+        if (typeof window.applyLanguage === "function") {
+            window.applyLanguage(activeLang);
+        } else if (typeof window.setLanguage === "function") {
+            window.setLanguage(activeLang);
         }
     }
 };

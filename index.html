@@ -36,14 +36,33 @@
     <nav class="navbar" id="navbar">
         <div class="container">
             <ul class="nav-links">
-                <li><a href="#el-match" onclick="scrollToTimelineSection(event, 9.4)">Catálogo</a></li>
-                <li><a href="#idea-lab" onclick="scrollToTimelineSection(event, 19.2)">Idea Lab</a></li>
+                <li><a href="#el-match" onclick="scrollToTimelineSection(event, 9.4)" data-i18n="nav_catalogo">Catálogo</a></li>
+                <li><a href="#idea-lab" onclick="scrollToTimelineSection(event, 19.2)" data-i18n="nav_idea_lab">Idea Lab</a></li>
             </ul>
             <a href="#" class="logo" aria-label="Valor Máximo Inicio">
                 <img src="valorM01.svg" alt="Valor Máximo" class="logo-img" loading="lazy" decoding="async">
             </a>
             <div class="nav-actions">
-                <button onclick="openMatchDrawer()" class="btn btn-dark">COTIZACIONES</button>
+                <!-- Selector de Idioma (ES / EN / ZH) -->
+                <div class="lang-selector-dropdown" id="lang-selector">
+                    <button type="button" class="btn-lang-trigger" id="btn-lang-trigger" onclick="toggleLangDropdown(event)" aria-label="Cambiar idioma">
+                        <span class="lang-globe-icon">🌐</span>
+                        <span class="lang-current-label" id="lang-current-label">ES</span>
+                        <span class="lang-arrow">▾</span>
+                    </button>
+                    <div class="lang-dropdown-menu" id="lang-dropdown-menu">
+                        <button type="button" class="lang-opt active" onclick="setLanguage('es')">
+                            <span class="lang-flag">🇪🇸</span> Español (ES)
+                        </button>
+                        <button type="button" class="lang-opt" onclick="setLanguage('en')">
+                            <span class="lang-flag">🇺🇸</span> English (EN)
+                        </button>
+                        <button type="button" class="lang-opt" onclick="setLanguage('zh')">
+                            <span class="lang-flag">🇨🇳</span> 中文 (ZH)
+                        </button>
+                    </div>
+                </div>
+                <button onclick="openMatchDrawer()" class="btn btn-dark" data-i18n="nav_cotizaciones">COTIZACIONES</button>
             </div>
         </div>
     </nav>
@@ -70,10 +89,9 @@
                 <div class="hero-bottom-row-grid">
                     <!-- Derecha Inferior (Valor Inmobiliario + Conectando) -->
                     <div class="hero-right-bottom" style="margin-left: auto;">
-                        <h1 class="hero-title-right"><span style="display: block;">Valor</span><span
-                                style="display: block;">Inmobiliario</span></h1>
+                        <h1 class="hero-title-right"><span style="display: block;" data-i18n="hero_title_1">Valor</span><span style="display: block;" data-i18n="hero_title_2">Inmobiliario</span></h1>
                         <p class="hero-subtext hero-subtext-right">
-                            Conectando negocios en el lugar y momento correcto.
+                            <span data-i18n="hero_subtext">Conectando negocios en el lugar y momento correcto.</span>
                         </p>
                     </div>
                 </div>
@@ -87,21 +105,14 @@
                 <div class="grid grid-2 reveal">
                     <div>
                         <span class="badge"
-                            style="margin-bottom: 1rem; display: inline-block; color: #FFFFFF; border-color: rgba(255, 255, 255, 0.35); background: rgba(255, 255, 255, 0.12);">El
-                            Diferenciador
-                            Absoluto</span>
-                        <h2 class="text-title" style="margin-bottom: 1.5rem; color: #FFFFFF;">Socios de Valor
-                            <br>Aliados en el
-                            tiempo.
-                        </h2>
+                            style="margin-bottom: 1rem; display: inline-block; color: #FFFFFF; border-color: rgba(255, 255, 255, 0.35); background: rgba(255, 255, 255, 0.12);"><span data-i18n="sec2_badge">El Diferenciador Absoluto</span></span>
+                        <h2 class="text-title" style="margin-bottom: 1.5rem; color: #FFFFFF;" data-i18n="sec2_title">Socios de Valor <br>Aliados en el tiempo.</h2>
                         <p class="text-muted"
                             style="margin-bottom: 2rem; max-width: 400px; color: #FFFFFF; font-weight: 400;">
-                            En Valor Máximo, adoptamos un enfoque integral. Operamos como su brazo
-                            inmobiliario descentralizado, asegurando el rendimiento a largo plazo de su inversión.
+                            <span data-i18n="sec2_desc">En Valor Máximo, adoptamos un enfoque integral. Operamos como su brazo inmobiliario descentralizado, asegurando el rendimiento a largo plazo de su inversión.</span>
                         </p>
                         <button onclick="openPhilosophyDrawer(); return false;"
-                            class="btn btn-outline btn-outline-white" style="border-radius: 2px;">Conocer la
-                            filosofía</button>
+                            class="btn btn-outline btn-outline-white" style="border-radius: 2px;" data-i18n="sec2_btn_philosophy">Conocer la filosofía</button>
                     </div>
                     <div class="grid grid-2" style="gap: 1rem;">
                         <div class="feature-card">
@@ -109,18 +120,16 @@
                                 stroke-width="1.5">
                                 <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                            <h4 style="font-size: 1rem; margin-bottom: 0.5rem;">Contratos Sólidos</h4>
-                            <p class="text-muted" style="font-size: 0.85rem;">Estructuramos relaciones a largo plazo (1
-                                año+) para garantizar estabilidad operativa y retornos predecibles.</p>
+                            <h4 style="font-size: 1rem; margin-bottom: 0.5rem;" data-i18n="sec2_f1_title">Contratos Sólidos</h4>
+                            <p class="text-muted" style="font-size: 0.85rem;"><span data-i18n="sec2_f1_desc">Estructuramos relaciones a largo plazo (1 año+) para garantizar estabilidad operativa y retornos predecibles.</span></p>
                         </div>
                         <div class="feature-card">
                             <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="1.5">
                                 <path d="M12 4v16m8-8H4" />
                             </svg>
-                            <h4 style="font-size: 1rem; margin-bottom: 0.5rem;">Gestión Integral</h4>
-                            <p class="text-muted" style="font-size: 0.85rem;">Atención al cliente de primer nivel,
-                                gestión de recursos humanos y facturación sin fricciones.</p>
+                            <h4 style="font-size: 1rem; margin-bottom: 0.5rem;" data-i18n="sec2_f2_title">Gestión Integral</h4>
+                            <p class="text-muted" style="font-size: 0.85rem;"><span data-i18n="sec2_f2_desc">Atención al cliente de primer nivel, gestión de recursos humanos y facturación sin fricciones.</span></p>
                         </div>
                         <div class="feature-card">
                             <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -129,16 +138,14 @@
                                     d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                                 <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
-                            <h4 style="font-size: 1rem; margin-bottom: 0.5rem;">Mantenimiento Proactivo</h4>
-                            <p class="text-muted" style="font-size: 0.85rem;">Conservamos el valor del activo mediante
-                                protocolos de mantenimiento rigurosos e intervenciones precisas.</p>
+                            <h4 style="font-size: 1rem; margin-bottom: 0.5rem;" data-i18n="sec2_f3_title">Mantenimiento Proactivo</h4>
+                            <p class="text-muted" style="font-size: 0.85rem;"><span data-i18n="sec2_f3_desc">Conservamos el valor del activo mediante protocolos de mantenimiento rigurosos e intervenciones precisas.</span></p>
                         </div>
                         <div class="feature-card">
                             <span class="badge"
                                 style="font-size: 0.65rem; margin-bottom: 0.5rem; display: inline-block; border: none; background: rgba(255, 255, 255, 0.12); color: #FFFFFF;">PLUS</span>
-                            <h4 style="font-size: 1rem; margin-bottom: 0.5rem;">Acondicionamiento y Construcción</h4>
-                            <p class="text-muted" style="font-size: 0.85rem;">Soluciones llave en mano para adaptar el
-                                espacio exacto a las necesidades del emprendedor.</p>
+                            <h4 style="font-size: 1rem; margin-bottom: 0.5rem;" data-i18n="sec2_f4_title">Acondicionamiento y Construcción</h4>
+                            <p class="text-muted" style="font-size: 0.85rem;"><span data-i18n="sec2_f4_desc">Soluciones llave en mano para adaptar el espacio exacto a las necesidades del emprendedor.</span></p>
                         </div>
                     </div>
                 </div>
@@ -163,11 +170,9 @@
             <div class="container portfolio-container">
                 <!-- Columna Izquierda (Contenido Fijo y Centrado) -->
                 <div class="portfolio-left-col">
-                    <span class="badge portfolio-badge">Casos de Éxito</span>
-                    <h2 class="text-title portfolio-title">Portafolio de Proyectos</h2>
-                    <p class="portfolio-blur-p">
-                        Marcas que han encontrado su hábitat ideal a través de nuestra plataforma de precisión.
-                    </p>
+                    <span class="badge portfolio-badge" data-i18n="sec3_badge">Casos de Éxito</span>
+                    <h2 class="text-title portfolio-title" data-i18n="sec3_title">Portafolio de Proyectos</h2>
+                    <p class="portfolio-blur-p" data-i18n="sec3_subtext">Marcas que han encontrado su hábitat ideal a través de nuestra plataforma de precisión.</p>
                 </div>
 
                 <!-- Columna Derecha (Columna Vertical de Tarjetas de Proyectos) -->
@@ -177,8 +182,7 @@
                         <div class="project-card-content">
                             <h3 class="project-title">Churrería Porfirio</h3>
                             <span class="project-plaza">Riva Palacio</span>
-                            <p class="project-description">Churrería tradicional mexicana con concepto de época; churros
-                                recién hechos, café de especialidad y chocolate caliente.</p>
+                            <p class="project-description"><span data-i18n="proj_desc_1">Churrería tradicional mexicana con concepto de época; churros recién hechos, café de especialidad y chocolate caliente.</span></p>
                         </div>
                         <div class="project-img-holder">
                             <img src="CASOS DE EXITO/CHURRERIA PORFIRIO.png" alt="Churrería Porfirio"
@@ -191,8 +195,7 @@
                         <div class="project-card-content">
                             <h3 class="project-title">Busher Cocdril's</h3>
                             <span class="project-plaza">Riva Palacio</span>
-                            <p class="project-description">Franquicia de comida rápida especializada en alitas, boneless
-                                crujientes, hamburguesas y botanas con salsas exclusivas.</p>
+                            <p class="project-description"><span data-i18n="proj_desc_2">Franquicia de comida rápida especializada en alitas, boneless crujientes, hamburguesas y botanas con salsas exclusivas.</span></p>
                         </div>
                         <div class="project-img-holder">
                             <img src="CASOS DE EXITO/BUSHER.png" alt="Busher Cocdril's" class="project-card-img"
@@ -205,8 +208,7 @@
                         <div class="project-card-content">
                             <h3 class="project-title">AT&T</h3>
                             <span class="project-plaza">Riva Palacio / Ceboruco</span>
-                            <p class="project-description">Compañía global proveedora de telefonía móvil, planes de
-                                datos, smartphones y soluciones de conectividad.</p>
+                            <p class="project-description"><span data-i18n="proj_desc_3">Compañía global proveedora de telefonía móvil, planes de datos, smartphones y soluciones de conectividad.</span></p>
                         </div>
                         <div class="project-img-holder">
                             <img src="CASOS DE EXITO/AT&T.png" alt="AT&T" class="project-card-img" loading="lazy"
@@ -219,8 +221,7 @@
                         <div class="project-card-content">
                             <h3 class="project-title">Enigma Room</h3>
                             <span class="project-plaza">Plaza Ceboruco</span>
-                            <p class="project-description">Experiencia inmersiva y entretenimiento temático en hub
-                                comercial de alto flujo.</p>
+                            <p class="project-description"><span data-i18n="proj_desc_4">Experiencia inmersiva y entretenimiento temático en hub comercial de alto flujo.</span></p>
                         </div>
                         <div class="project-img-holder">
                             <img src="CASOS DE EXITO/ENIGMA ROOM.png" alt="Enigma Room" class="project-card-img"
@@ -233,8 +234,7 @@
                         <div class="project-card-content">
                             <h3 class="project-title">Quick Training</h3>
                             <span class="project-plaza">Plaza Ceboruco</span>
-                            <p class="project-description">Centro de enseñanza del idioma inglés mediante un método
-                                conversacional acelerado, sin traducción ni tareas complejas.</p>
+                            <p class="project-description"><span data-i18n="proj_desc_5">Centro de enseñanza del idioma inglés mediante un método conversacional acelerado, sin traducción ni tareas complejas.</span></p>
                         </div>
                         <div class="project-img-holder">
                             <img src="CASOS DE EXITO/QUICK TRAINING.png" alt="Quick Training" class="project-card-img"
@@ -247,8 +247,7 @@
                         <div class="project-card-content">
                             <h3 class="project-title">Sumo Buffet</h3>
                             <span class="project-plaza">Morelos</span>
-                            <p class="project-description">Restaurante bajo concepto all-you-can-eat con amplia barra de
-                                sushi, alitas, hamburguesas, costillas y coctelería.</p>
+                            <p class="project-description"><span data-i18n="proj_desc_6">Restaurante bajo concepto all-you-can-eat con amplia barra de sushi, alitas, hamburguesas, costillas y coctelería.</span></p>
                         </div>
                         <div class="project-img-holder">
                             <img src="CASOS DE EXITO/SUMO.png" alt="Sumo Buffet" class="project-card-img" loading="lazy"
@@ -261,8 +260,7 @@
                         <div class="project-card-content">
                             <h3 class="project-title">UEEM</h3>
                             <span class="project-plaza">Toluca</span>
-                            <p class="project-description">Oferta educativa que responde a las necesidades actuales
-                                del mercado laboral, con un enfoque práctico, cercano y humano.</p>
+                            <p class="project-description"><span data-i18n="proj_desc_7">Oferta educativa que responde a las necesidades actuales del mercado laboral, con un enfoque práctico, cercano y humano.</span></p>
                         </div>
                         <div class="project-img-holder">
                             <img src="CASOS DE EXITO/UEEM.jpg" alt="UEEM" class="project-card-img" loading="lazy"
@@ -275,8 +273,7 @@
                         <div class="project-card-content">
                             <h3 class="project-title">Comex</h3>
                             <span class="project-plaza">Rancho el Mesón</span>
-                            <p class="project-description">Marca líder en recubrimientos, impermeabilizantes, esmaltes,
-                                brochas y soluciones de color arquitectónicas.</p>
+                            <p class="project-description"><span data-i18n="proj_desc_8">Marca líder en recubrimientos, impermeabilizantes, esmaltes, brochas y soluciones de color arquitectónicas.</span></p>
                         </div>
                         <div class="project-img-holder">
                             <img src="CASOS DE EXITO/COMEX.png" alt="Comex" class="project-card-img" loading="lazy"
@@ -289,8 +286,7 @@
                         <div class="project-card-content">
                             <h3 class="project-title">Rosa de Sarón</h3>
                             <span class="project-plaza">Rancho el Mesón</span>
-                            <p class="project-description">Pastelería fina artesanal especializada en pasteles de tres
-                                leches, repostería tradicional, pays y bocadillos para eventos.</p>
+                            <p class="project-description"><span data-i18n="proj_desc_9">Pastelería fina artesanal especializada en pasteles de tres leches, repostería tradicional, pays y bocadillos para eventos.</span></p>
                         </div>
                         <div class="project-img-holder">
                             <img src="CASOS DE EXITO/LA ROSA DE SARON.png" alt="Rosa de Sarón" class="project-card-img"
@@ -303,8 +299,7 @@
                         <div class="project-card-content">
                             <h3 class="project-title">LEÍA</h3>
                             <span class="project-plaza">Calimaya</span>
-                            <p class="project-description">Espacio de moda, accesorios, complementos y artículos de
-                                tendencia seleccionados para el estilo de vida contemporáneo.</p>
+                            <p class="project-description"><span data-i18n="proj_desc_10">Espacio de moda, accesorios, complementos y artículos de tendencia seleccionados para el estilo de vida contemporáneo.</span></p>
                         </div>
                         <div class="project-img-holder">
                             <img src="CASOS DE EXITO/LEIA.png" alt="LEÍA" class="project-card-img" loading="lazy"
@@ -317,8 +312,7 @@
                         <div class="project-card-content">
                             <h3 class="project-title">Helados Dolphy</h3>
                             <span class="project-plaza">Paseo Central</span>
-                            <p class="project-description">Franquicia mexicana de helados artesanales en base de agua y
-                                crema, paletas, esquimales y malteadas.</p>
+                            <p class="project-description"><span data-i18n="proj_desc_11">Franquicia mexicana de helados artesanales en base de agua y crema, paletas, esquimales y malteadas.</span></p>
                         </div>
                         <div class="project-img-holder">
                             <img src="CASOS DE EXITO/DOLPHY.png" alt="Helados Dolphy" class="project-card-img"
@@ -331,8 +325,7 @@
                         <div class="project-card-content">
                             <h3 class="project-title">Cafetería Amore</h3>
                             <span class="project-plaza">Paseo Central</span>
-                            <p class="project-description">Barra de café de especialidad, bebidas artesanales,
-                                repostería del día y opciones ligeras de desayuno.</p>
+                            <p class="project-description"><span data-i18n="proj_desc_12">Barra de café de especialidad, bebidas artesanales, repostería del día y opciones ligeras de desayuno.</span></p>
                         </div>
                         <div class="project-img-holder">
                             <img src="CASOS DE EXITO/Cafeteria Amore.jpeg" alt="Cafetería Amore" class="project-card-img"
@@ -353,8 +346,8 @@
             <div class="image-trail-overlay" id="galeria-trail"></div>
             <div class="container galeria-container">
                 <div class="galeria-right-col">
-                    <span class="badge galeria-badge">Espacios Exclusivos</span>
-                    <h2 class="text-title galeria-title">Galería Comercial</h2>
+                    <span class="badge galeria-badge" data-i18n="galeria_badge">Espacios Exclusivos</span>
+                    <h2 class="text-title galeria-title" data-i18n="galeria_title">Galería Comercial</h2>
                 </div>
             </div>
         </section>
@@ -368,14 +361,15 @@
             </picture>
         </section>
 
-        <!-- 07. Sección 6: Catálogo de Inmuebles — El Match (Cortina 2 Fases z-index: 12 & Desfile de Tarjetas) -->
+        <!-- 07. Sección 6: <span data-i18n="catalog_title">Catálogo de Inmuebles</span> — El Match (Cortina 2 Fases z-index: 12 & Desfile de Tarjetas) -->
         <section class="section section-curtain-match" id="el-match">
             <div class="container catalog-grid-container">
                 <!-- Columna Izquierda (Fija, Centrada Verticalmente, Alineada al Margen Izquierdo) -->
                 <div class="catalog-left-col">
                     <div class="catalog-header-floating">
                         <h2 class="catalog-title-main font-serif"
-                            style="font-family: var(--font-serif); font-weight: 400; font-style: italic; font-size: clamp(2.6rem, 4vw, 3.6rem); line-height: 1.05; color: #064E3B; margin-bottom: 0.2rem; text-align: left;">
+                            style="font-family: var(--font-serif); font-weight: 400; font-style: italic; font-size: clamp(2.6rem, 4vw, 3.6rem); line-height: 1.05; color: #064E3B; margin-bottom: 0.2rem; text-align: left;"
+                            data-i18n="catalog_title">
                             Catálogo de Inmuebles
                         </h2>
                         <h2 class="catalog-title-sub"
@@ -384,9 +378,7 @@
                         </h2>
                         <p class="text-muted catalog-header-p"
                             style="font-family: var(--font-sans); max-width: 460px; font-size: 0.95rem; margin: 0; text-align: left; line-height: 1.6; color: #404944;">
-                            Diversificación en bienes raíces comerciales. Administramos más de 138 espacios en plazas
-                            prémium. No vendemos sueños: presentamos oportunidades en bruto para aquellos con mentalidad
-                            de inversión.
+                            <span data-i18n="catalog_desc">Diversificación en bienes raíces comerciales. Administramos más de 138 espacios en plazas prémium. No vendemos sueños: presentamos oportunidades en bruto para aquellos con mentalidad de inversión.</span>
                         </p>
                     </div>
                 </div>
@@ -420,10 +412,7 @@
                                     DISPONIBLES</span>
                             </div>
                             <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
-                                Maximizar la ocupación atrayendo oficinas y consultorios con modelos de atención
-                                especializada, aprovechando la ubicación del inmueble en una zona de alta actividad
-                                comercial para fortalecer su competitividad, rentabilidad y permanencia de los
-                                arrendatarios.
+                                <span data-i18n="card_desc_1">Maximizar la ocupación atrayendo oficinas y consultorios con modelos de atención especializada, aprovechando la ubicación del inmueble en una zona de alta actividad comercial para fortalecer su competitividad, rentabilidad y permanencia de los arrendatarios.</span>
                             </p>
                             <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
                                 <span
@@ -458,14 +447,11 @@
                                     12 DISPONIBLES</span>
                             </div>
                             <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
-                                La estrategia comercial se enfoca en atraer arrendatarios con propuestas de valor
-                                diferenciadas, mantener una mezcla equilibrada de giros y fortalecer el posicionamiento
-                                de la plaza como un destino comercial de alta calidad.
+                                <span data-i18n="card_desc_2">La estrategia comercial se enfoca en atraer arrendatarios con propuestas de valor diferenciadas, mantener una mezcla equilibrada de giros y fortalecer el posicionamiento de la plaza como un destino comercial de alta calidad.</span>
                             </p>
                             <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
                                 <span
-                                    style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">TENANT
-                                    PROFILE</span>
+                                    style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);"><span data-i18n="card_prof_t_2">TENANT PROFILE</span></span>
                                 <p style="font-size: 0.85rem; font-weight: 500;">Operational focus. No client facing.
                                 </p>
                             </div>
@@ -496,17 +482,12 @@
                                     DISPONIBLES</span>
                             </div>
                             <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
-                                Casa de estilo colonial, conservada en excelente estado sin modificaciones en su diseño
-                                original ni en su fachada. La propiedad alberga tres unidades habitacionales
-                                independientes, distribuidas en dos niveles. Cuenta con puertas y pisos de madera, dos
-                                cocinas, cuartos de servicio y un amplio patio con capacidad para estacionar entre seis
-                                y ocho vehículos. Las instalaciones hidráulicas y eléctricas se encuentran en óptimas
-                                condiciones, listas para su uso inmediato.
+                                <span data-i18n="card_desc_3">Casa de estilo colonial, conservada en excelente estado sin modificaciones en su diseño original ni en su fachada. La propiedad alberga tres unidades habitacionales independientes, distribuidas en dos niveles. Cuenta con puertas y pisos de madera, dos cocinas, cuartos de servicio y un amplio patio con capacidad para estacionar entre seis y ocho vehículos. Las instalaciones hidráulicas y eléctricas se encuentran en óptimas condiciones, listas para su uso inmediato.</span>
                             </p>
                             <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
                                 <span
                                     style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">DELIVERY</span>
-                                <p style="font-size: 0.85rem; font-weight: 500;">Raw structural shell only.</p>
+                                <p style="font-size: 0.85rem; font-weight: 500;"><span data-i18n="card_prof_v_3">Raw structural shell only.</span></p>
                             </div>
                             <div class="catalog-actions">
                                 <button onclick="openMatchDrawer()" class="btn btn-dark">Solicitar Ficha
@@ -528,22 +509,19 @@
                                     <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Pino
                                         Suárez</h3>
                                     <p class="font-serif" style="font-style: italic; color: var(--text-muted);">
-                                        Corporate Suite</p>
+                                        <span data-i18n="card_sub_4">Corporate Suite</span></p>
                                 </div>
                                 <span class="badge badge-open" onclick="openFichaModal(this)" style="cursor:pointer;">5
                                     DISPONIBLES</span>
                             </div>
                             <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
-                                Posicionar el inmueble como un desarrollo comercial y de servicios de referencia en la
-                                zona, capitalizando la presencia de establecimientos ancla y su ubicación sobre
-                                vialidades de alta circulación para impulsar la ocupación de los espacios disponibles
-                                con giros complementarios que generen valor agregado.
+                                <span data-i18n="card_desc_4">Posicionar el inmueble como un desarrollo comercial y de servicios de referencia en la zona, capitalizando la presencia de establecimientos ancla y su ubicación sobre vialidades de alta circulación para impulsar la ocupación de los espacios disponibles con giros complementarios que generen valor agregado.</span>
                             </p>
                             <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
                                 <span
                                     style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">TENANT
                                     PROFILE</span>
-                                <p style="font-size: 0.85rem; font-weight: 500;">Financial & HQ Operations.</p>
+                                <p style="font-size: 0.85rem; font-weight: 500;"><span data-i18n="card_prof_v_4">Financial & HQ Operations.</span></p>
                             </div>
                             <div class="catalog-actions">
                                 <button onclick="openMatchDrawer()" class="btn btn-dark">Solicitar Ficha
@@ -571,14 +549,13 @@
                                     DISPONIBLES</span>
                             </div>
                             <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
-                                Consolidar el inmueble como un edificio de uso mixto, orientado a integrar espacios
-                                comerciales, de almacenamiento y oficinas. Inmueble en venta.
+                                <span data-i18n="card_desc_5">Consolidar el inmueble como un edificio de uso mixto, orientado a integrar espacios comerciales, de almacenamiento y oficinas. Inmueble en venta.</span>
                             </p>
                             <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
                                 <span
                                     style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">TENANT
                                     PROFILE</span>
-                                <p style="font-size: 0.85rem; font-weight: 500;">Established Retail Flagship.</p>
+                                <p style="font-size: 0.85rem; font-weight: 500;"><span data-i18n="card_prof_v_5">Established Retail Flagship.</span></p>
                             </div>
                             <div class="catalog-actions">
                                 <button onclick="openMatchDrawer()" class="btn btn-dark">Solicitar Ficha
@@ -600,22 +577,18 @@
                                 <div>
                                     <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Felipe
                                         Villanueva</h3>
-                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">Culinary
-                                        Hub</p>
+                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);"><span data-i18n="card_sub_6">Culinary Hub</span></p>
                                 </div>
                                 <span class="badge badge-open" onclick="openFichaModal(this)" style="cursor:pointer;">2
                                     DISPONIBLES</span>
                             </div>
                             <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
-                                Consolidar el inmueble como un desarrollo de uso mixto, integrado por espacios
-                                comerciales, de servicios y oficinas, aprovechando su ubicación sobre vialidades con
-                                diferentes niveles de afluencia para atender diversos segmentos de mercado. Inmueble en
-                                venta.
+                                <span data-i18n="card_desc_6">Consolidar el inmueble como un desarrollo de uso mixto, integrado por espacios comerciales, de servicios y oficinas, aprovechando su ubicación sobre vialidades con diferentes niveles de afluencia para atender diversos segmentos de mercado. Inmueble en venta.</span>
                             </p>
                             <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
                                 <span
                                     style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">DELIVERY</span>
-                                <p style="font-size: 0.85rem; font-weight: 500;">Semi-fitted food & beverage venue.</p>
+                                <p style="font-size: 0.85rem; font-weight: 500;"><span data-i18n="card_prof_v_6">Semi-fitted food & beverage venue.</span></p>
                             </div>
                             <div class="catalog-actions">
                                 <button onclick="openMatchDrawer()" class="btn btn-dark">Solicitar Ficha
@@ -636,21 +609,18 @@
                                 <div>
                                     <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Villada
                                     </h3>
-                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">Uso
-                                        Mixto & Residencial</p>
+                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);"><span data-i18n="card_sub_7">Uso Mixto & Residencial</span></p>
                                 </div>
                                 <span class="badge badge-open" onclick="openFichaModal(this)" style="cursor:pointer;">3
                                     DISPONIBLES</span>
                             </div>
                             <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
-                                La estrategia comercial se orienta a atraer proyectos que respeten las características
-                                históricas del inmueble y maximicen su potencial para usos corporativos,
-                                institucionales, turísticos o residenciales de alto nivel. *Inmueble en venta y renta*
+                                <span data-i18n="card_desc_7">La estrategia comercial se orienta a atraer proyectos que respeten las características históricas del inmueble y maximicen su potencial para usos corporativos, institucionales, turísticos o residenciales de alto nivel. Inmueble en venta y renta.</span>
                             </p>
                             <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
                                 <span
                                     style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">DELIVERY</span>
-                                <p style="font-size: 0.85rem; font-weight: 500;">3 casas unificadas (1,000 m²).</p>
+                                <p style="font-size: 0.85rem; font-weight: 500;"><span data-i18n="card_prof_v_7">3 casas unificadas (1,000 m²).</span></p>
                             </div>
                             <div class="catalog-actions">
                                 <button onclick="openMatchDrawer()" class="btn btn-dark">Solicitar Ficha
@@ -672,22 +642,19 @@
                                 <div>
                                     <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Av.
                                         Solidaridad Torres</h3>
-                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">Corredor
-                                        Comercial & Servicios</p>
+                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);"><span data-i18n="card_sub_8">Corredor Comercial & Servicios</span></p>
                                 </div>
                                 <span class="badge badge-open" onclick="openFichaModal(this)" style="cursor:pointer;">1
                                     DISPONIBLE</span>
                             </div>
                             <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
-                                Consolidarse como un punto comercial de alta visibilidad, orientado a la instalación de
-                                negocios de comercio y servicios que aprovechen el constante flujo vehicular de la zona,
-                                maximizando la ocupación y el valor comercial del inmueble.
+                                <span data-i18n="card_desc_8">Consolidarse como un punto comercial de alta visibilidad, orientado a la instalación de negocios de comercio y servicios que aprovechen el constante flujo vehicular de la zona, maximizando la ocupación y el valor comercial del inmueble.</span>
                             </p>
                             <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
                                 <span
                                     style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">TENANT
                                     PROFILE</span>
-                                <p style="font-size: 0.85rem; font-weight: 500;">Comercio, servicios & networking.</p>
+                                <p style="font-size: 0.85rem; font-weight: 500;"><span data-i18n="card_prof_v_8">Comercio, servicios & networking.</span></p>
                             </div>
                             <div class="catalog-actions">
                                 <button onclick="openMatchDrawer()" class="btn btn-dark">Solicitar Ficha
@@ -708,22 +675,19 @@
                                 <div>
                                     <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Plaza
                                         Ceboruco</h3>
-                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">Plaza
-                                        Comercial 24/7</p>
+                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);"><span data-i18n="card_sub_9">Plaza Comercial 24/7</span></p>
                                 </div>
                                 <span class="badge badge-orange" onclick="openFichaModal(this)"
                                     style="cursor:pointer;">0
                                     DISPONIBLES</span>
                             </div>
                             <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
-                                Plaza comercial 24/7 con vigilancia y estacionamiento gratis. Mantener altos niveles de
-                                ocupación.
+                                <span data-i18n="card_desc_9">Plaza comercial 24/7 con vigilancia y estacionamiento gratis. Mantener altos niveles de ocupación.</span>
                             </p>
                             <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
                                 <span
                                     style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">CARACTERÍSTICAS</span>
-                                <p style="font-size: 0.85rem; font-weight: 500;">Vigilancia 24/7 y Estacionamiento
-                                    Gratuito.</p>
+                                <p style="font-size: 0.85rem; font-weight: 500;"><span data-i18n="card_prof_v_9">Vigilancia 24/7 y Estacionamiento Gratuito.</span></p>
                             </div>
                             <div class="catalog-actions">
                                 <button onclick="openMatchDrawer()" class="btn btn-dark">Solicitar Ficha
@@ -745,22 +709,20 @@
                                     <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Av. Lerdo
                                     </h3>
                                     <p class="font-serif" style="font-style: italic; color: var(--text-muted);">
-                                        Comercial & Servicios Cotidianos</p>
+                                        <span data-i18n="card_sub_10">Comercial & Servicios Cotidianos</span></p>
                                 </div>
                                 <span class="badge badge-orange" onclick="openFichaModal(this)"
                                     style="cursor:pointer;">0
                                     DISPONIBLES</span>
                             </div>
                             <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
-                                Enfocado en satisfacer necesidades cotidianas y complementar la oferta de consumo de la
-                                zona.
+                                <span data-i18n="card_desc_10">Enfocado en satisfacer necesidades cotidianas y complementar la oferta de consumo de la zona.</span>
                             </p>
                             <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
                                 <span
                                     style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">TENANT
                                     MIX</span>
-                                <p style="font-size: 0.85rem; font-weight: 500;">Farmacia Guadalajara, Vinos &
-                                    Restaurantes.</p>
+                                <p style="font-size: 0.85rem; font-weight: 500;"><span data-i18n="card_prof_v_10">Farmacia Guadalajara, Vinos & Restaurantes.</span></p>
                             </div>
                             <div class="catalog-actions">
                                 <button onclick="openMatchDrawer()" class="btn btn-dark">Solicitar Ficha
@@ -781,23 +743,20 @@
                                 <div>
                                     <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Benito
                                         Juárez</h3>
-                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">Comercio
-                                        & Servicios Diversificados</p>
+                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);"><span data-i18n="card_sub_11">Comercio & Servicios Diversificados</span></p>
                                 </div>
                                 <span class="badge badge-orange" onclick="openFichaModal(this)"
                                     style="cursor:pointer;">0
                                     DISPONIBLES</span>
                             </div>
                             <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
-                                Mantener una oferta comercial diversificada mediante la integración de negocios de
-                                comercio y servicios. Inmueble en venta.
+                                <span data-i18n="card_desc_11">Mantener una oferta comercial diversificada mediante la integración de negocios de comercio y servicios. Inmueble en venta.</span>
                             </p>
                             <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
                                 <span
                                     style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">ESTATUS
                                     DE VENTA</span>
-                                <p style="font-size: 0.85rem; font-weight: 500;">100% Ocupado / Disponible para Venta.
-                                </p>
+                                <p style="font-size: 0.85rem; font-weight: 500;"><span data-i18n="card_prof_v_11">100% Ocupado / Disponible para Venta.</span></p>
                             </div>
                             <div class="catalog-actions">
                                 <button onclick="openMatchDrawer()" class="btn btn-dark">Solicitar Ficha
@@ -820,23 +779,20 @@
                                 <div>
                                     <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Plaza
                                         Rancho El Mesón II</h3>
-                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">Centro
-                                        Comercial & Lifestyle</p>
+                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);"><span data-i18n="card_sub_12">Centro Comercial & Lifestyle</span></p>
                                 </div>
                                 <span class="badge badge-orange" onclick="openFichaModal(this)"
                                     style="cursor:pointer;">0
                                     DISPONIBLES</span>
                             </div>
                             <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
-                                Consolidar la plaza como un centro comercial de referencia para la zona de Calimaya,
-                                ofreciendo una mezcla estratégica de comercios, restaurantes y servicios.
+                                <span data-i18n="card_desc_12">Consolidar la plaza como un centro comercial de referencia para la zona de Calimaya, ofreciendo una mezcla estratégica de comercios, restaurantes y servicios.</span>
                             </p>
                             <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
                                 <span
                                     style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">TENANT
                                     MIX</span>
-                                <p style="font-size: 0.85rem; font-weight: 500;">Farmacia Guadalajara, Bistro Jaime Mena
-                                    & Comex.</p>
+                                <p style="font-size: 0.85rem; font-weight: 500;"><span data-i18n="card_prof_v_12">Farmacia Guadalajara, Bistro Jaime Mena & Comex.</span></p>
                             </div>
                             <div class="catalog-actions">
                                 <button onclick="openMatchDrawer()" class="btn btn-dark">Solicitar Ficha
@@ -858,22 +814,20 @@
                                     <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Unni Plaza
                                     </h3>
                                     <p class="font-serif" style="font-style: italic; color: var(--text-muted);">
-                                        Comercial, Educación & Alimentos</p>
+                                        <span data-i18n="card_sub_13">Comercial, Educación & Alimentos</span></p>
                                 </div>
                                 <span class="badge badge-orange" onclick="openFichaModal(this)"
                                     style="cursor:pointer;">0
                                     DISPONIBLES</span>
                             </div>
                             <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
-                                Mantener una ocupación del 100% mediante una mezcla equilibrada de comercios, servicios,
-                                educación y alimentos, fomentando la permanencia de arrendatarios.
+                                <span data-i18n="card_desc_13">Mantener una ocupación del 100% mediante una mezcla equilibrada de comercios, servicios, educación y alimentos, fomentando la permanencia de arrendatarios.</span>
                             </p>
                             <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
                                 <span
                                     style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">TENANT
                                     MIX</span>
-                                <p style="font-size: 0.85rem; font-weight: 500;">Universidad UEEM, Farmacia Guadalajara
-                                    & SUMO Buffet.</p>
+                                <p style="font-size: 0.85rem; font-weight: 500;"><span data-i18n="card_prof_v_13">Universidad UEEM, Farmacia Guadalajara & SUMO Buffet.</span></p>
                             </div>
                             <div class="catalog-actions">
                                 <button onclick="openMatchDrawer()" class="btn btn-dark">Solicitar Ficha
@@ -896,22 +850,20 @@
                                     <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Venustiano
                                         Carranza</h3>
                                     <p class="font-serif" style="font-style: italic; color: var(--text-muted);">
-                                        Comercial & Entretenimiento</p>
+                                        <span data-i18n="card_sub_14">Comercial & Entretenimiento</span></p>
                                 </div>
                                 <span class="badge badge-orange" onclick="openFichaModal(this)"
                                     style="cursor:pointer;">0
                                     DISPONIBLES</span>
                             </div>
                             <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
-                                La estrategia comercial se orienta a mantener una ocupación del 100%, promoviendo la
-                                permanencia de arrendatarios con operaciones consolidadas.
+                                <span data-i18n="card_desc_14">La estrategia comercial se orienta a mantener una ocupación del 100%, promoviendo la permanencia de arrendatarios con operaciones consolidadas.</span>
                             </p>
                             <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
                                 <span
                                     style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">TENANT
                                     MIX</span>
-                                <p style="font-size: 0.85rem; font-weight: 500;">Mambo Café, La Dueña Vinos & Llantera.
-                                </p>
+                                <p style="font-size: 0.85rem; font-weight: 500;"><span data-i18n="card_prof_v_14">Mambo Café, La Dueña Vinos & Llantera.</span></p>
                             </div>
                             <div class="catalog-actions">
                                 <button onclick="openMatchDrawer()" class="btn btn-dark">Solicitar Ficha
@@ -932,23 +884,20 @@
                                 <div>
                                     <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Wenceslao
                                         Labra</h3>
-                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);">Comercio
-                                        & Servicios Automotrices</p>
+                                    <p class="font-serif" style="font-style: italic; color: var(--text-muted);"><span data-i18n="card_sub_15">Comercio & Servicios Automotrices</span></p>
                                 </div>
                                 <span class="badge badge-orange" onclick="openFichaModal(this)"
                                     style="cursor:pointer;">0
                                     DISPONIBLES</span>
                             </div>
                             <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
-                                La estrategia comercial se enfoca en mantener una ocupación del 100% con arrendatarios
-                                de operaciones consolidadas.
+                                <span data-i18n="card_desc_15">La estrategia comercial se enfoca en mantener una ocupación del 100% con arrendatarios de operaciones consolidadas.</span>
                             </p>
                             <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
                                 <span
                                     style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">TENANT
                                     MIX</span>
-                                <p style="font-size: 0.85rem; font-weight: 500;">OXXO, Refaccionaria Diesel & Check
-                                    Point.</p>
+                                <p style="font-size: 0.85rem; font-weight: 500;"><span data-i18n="card_prof_v_15">OXXO, Refaccionaria Diesel & Check Point.</span></p>
                             </div>
                             <div class="catalog-actions">
                                 <button onclick="openMatchDrawer()" class="btn btn-dark">Solicitar Ficha
@@ -970,21 +919,20 @@
                                     <h3 class="font-serif" style="font-size: 1.5rem; margin-bottom: 0.25rem;">Brígida
                                         García</h3>
                                     <p class="font-serif" style="font-style: italic; color: var(--text-muted);">
-                                        Comercial & Salud</p>
+                                        <span data-i18n="card_sub_16">Comercial & Salud</span></p>
                                 </div>
                                 <span class="badge badge-orange" onclick="openFichaModal(this)"
                                     style="cursor:pointer;">0
                                     DISPONIBLES</span>
                             </div>
                             <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
-                                Mantener una ocupación estable mediante la conservación de arrendatarios con operaciones
-                                sólidas y la comercialización estratégica de los espacios.
+                                <span data-i18n="card_desc_16">Mantener una ocupación estable mediante la conservación de arrendatarios con operaciones sólidas y la comercialización estratégica de los espacios.</span>
                             </p>
                             <div style="border-top: 1px solid #eee; padding-top: 1rem; margin-bottom: 1rem;">
                                 <span
                                     style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">TENANT
                                     PROFILE</span>
-                                <p style="font-size: 0.85rem; font-weight: 500;">Farmacia Similares & CARFAGO.</p>
+                                <p style="font-size: 0.85rem; font-weight: 500;"><span data-i18n="card_prof_v_16">Farmacia Similares & CARFAGO.</span></p>
                             </div>
                             <div class="catalog-actions">
                                 <button onclick="openMatchDrawer()" class="btn btn-dark">Solicitar Ficha
@@ -1016,15 +964,12 @@
             <div class="container integridad-container">
                 <!-- Columna Izquierda (Título Editorial + Descripción + CTA) -->
                 <div class="integridad-left-col">
-                    <span class="badge integridad-badge">Pilar de Integridad</span>
-                    <h2 class="text-title integridad-title">Confianza construida<br>en absoluta discreción.</h2>
+                    <span class="badge integridad-badge" data-i18n="integ_badge">Pilar de Integridad</span>
+                    <h2 class="text-title integridad-title" data-i18n="integ_title">Confianza construida<br>en absoluta discreción.</h2>
                     <p class="text-muted integridad-desc">
-                        La integridad es el activo invisible detrás de cada operación.
-                        Confidencialidad, discreción, seguridad y confianza protegen
-                        cada cifra, cada nombre y cada estrategia de nuestros clientes.
+                        <span data-i18n="integ_desc">La integridad es el activo invisible detrás de cada operación. Confidencialidad, discreción, seguridad y confianza protegen cada cifra, cada nombre y cada estrategia de nuestros clientes.</span>
                     </p>
-                    <button onclick="openCompromisoDrawer(); return false;" class="btn btn-outline btn-outline-white"
-                        style="border-radius: 2px;">Nuestro compromiso</button>
+                    <button onclick="openCompromisoDrawer(); return false;" class="btn btn-outline btn-outline-white" style="border-radius: 2px;" data-i18n="integ_btn">Nuestro compromiso</button>
                 </div>
 
                 <!-- Columna Derecha (Pilares de Integridad) -->
@@ -1032,38 +977,36 @@
                     <!-- 1. Integridad -->
                     <div class="integridad-card integridad-card-stagger">
                         <div class="integridad-card-num">01</div>
-                        <h4>Integridad</h4>
-                        <p>Principios innegociables. Lo que prometemos se cumple y lo que se cumple se documenta.</p>
+                        <h4 data-i18n="integ_c1_t">Integridad</h4>
+                        <p><span data-i18n="integ_c1_d">Principios innegociables. Lo que prometemos se cumple y lo que se cumple se documenta.</span></p>
                     </div>
 
                     <!-- 2. Confidencialidad -->
                     <div class="integridad-card integridad-card-stagger">
                         <div class="integridad-card-num">02</div>
-                        <h4>Confidencialidad</h4>
-                        <p>Cada cifra, nombre y estrategia permanecen bajo estricto resguardo. Su información es un
-                            activo, no un dato.</p>
+                        <h4 data-i18n="integ_c2_t">Confidencialidad</h4>
+                        <p><span data-i18n="integ_c2_d">Cada cifra, nombre y estrategia permanecen bajo estricto resguardo. Su información es un activo, no un dato.</span></p>
                     </div>
 
                     <!-- 3. Discreción -->
                     <div class="integridad-card integridad-card-stagger">
                         <div class="integridad-card-num">03</div>
-                        <h4>Discreción</h4>
-                        <p>Operamos sin ruido. Las negociaciones sensibles se gestionan con reserva total y presencia
-                            invisible.</p>
+                        <h4 data-i18n="integ_c3_t">Discreción</h4>
+                        <p><span data-i18n="integ_c3_d">Operamos sin ruido. Las negociaciones sensibles se gestionan con reserva total y presencia invisible.</span></p>
                     </div>
 
                     <!-- 4. Seguridad -->
                     <div class="integridad-card integridad-card-stagger">
                         <div class="integridad-card-num">04</div>
-                        <h4>Seguridad</h4>
-                        <p>Resguardo documental y legal con protocolos rigurosos para proteger cada operación.</p>
+                        <h4 data-i18n="integ_c4_t">Seguridad</h4>
+                        <p><span data-i18n="integ_c4_d">Resguardo documental y legal con protocolos rigurosos para proteger cada operación.</span></p>
                     </div>
 
                     <!-- 5. Confianza -->
                     <div class="integridad-card integridad-card-stagger integridad-card-wide">
                         <div class="integridad-card-num">05</div>
-                        <h4>Confianza</h4>
-                        <p>Relaciones de largo plazo construidas sobre transparencia radical y resultados verificables.
+                        <h4 data-i18n="integ_c5_t">Confianza</h4>
+                        <p><span data-i18n="integ_c5_d">Relaciones de largo plazo construidas sobre transparencia radical y resultados verificables.</span>
                         </p>
                     </div>
                 </div>
@@ -1075,47 +1018,44 @@
             <div class="container idealab-container">
                 <!-- Columna Izquierda (Título Editorial + Procesos) -->
                 <div class="idealab-left-col">
-                    <span class="badge idealab-badge">Idea Lab</span>
-                    <h2 class="text-title idealab-title">El laboratorio<br>de ideas viables.</h2>
+                    <span class="badge idealab-badge" data-i18n="idealab_badge">Idea Lab</span>
+                    <h2 class="text-title idealab-title" data-i18n="idealab_title">El laboratorio<br>de ideas viables.</h2>
 
                     <!-- Procesos del Laboratorio -->
                     <div class="idealab-right-col">
                         <!-- 1. Brief de Ocupación -->
                         <div class="idealab-card idealab-card-stagger">
                             <div class="idealab-card-num">01</div>
-                            <h4>Brief de Ocupación</h4>
-                            <p>Convertimos tu concepto en requisitos medibles: metraje, giro, perfil de tenant y
-                                presupuesto operativo.</p>
+                            <h4 data-i18n="idealab_c1_t">Brief de Ocupación</h4>
+                            <p><span data-i18n="idealab_c1_d">Convertimos tu concepto en requisitos medibles: metraje, giro, perfil de tenant y presupuesto operativo.</span></p>
                         </div>
 
                         <!-- 2. Fittable Score -->
                         <div class="idealab-card idealab-card-stagger">
                             <div class="idealab-card-num">02</div>
-                            <h4>Fittable Score</h4>
-                            <p>Puntuación de compatibilidad entre tu idea y cada espacio disponible de nuestra red de
-                                plazas.</p>
+                            <h4 data-i18n="idealab_c2_t">Fittable Score</h4>
+                            <p><span data-i18n="idealab_c2_d">Puntuación de compatibilidad entre tu idea y cada espacio disponible de nuestra red de plazas.</span></p>
                         </div>
 
                         <!-- 3. Stress Test -->
                         <div class="idealab-card idealab-card-stagger">
                             <div class="idealab-card-num">03</div>
-                            <h4>Stress Test</h4>
-                            <p>Proyección de riesgo y punto de equilibrio por localización. Sin eufemismos, solo
-                                números.</p>
+                            <h4 data-i18n="idealab_c3_t">Stress Test</h4>
+                            <p><span data-i18n="idealab_c3_d">Proyección de riesgo y punto de equilibrio por localización. Sin eufemismos, solo números.</span></p>
                         </div>
 
                         <!-- 4. Match Report -->
                         <div class="idealab-card idealab-card-stagger">
                             <div class="idealab-card-num">04</div>
-                            <h4>Match Report</h4>
-                            <p>Dossier con los espacios de mejor ajuste y cifras crudas para tu toma de decisión.</p>
+                            <h4 data-i18n="idealab_c4_t">Match Report</h4>
+                            <p><span data-i18n="idealab_c4_d">Dossier con los espacios de mejor ajuste y cifras crudas para tu toma de decisión.</span></p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Columna Derecha: Visor de Fotos Estático con Flechas a los Lados -->
                 <div class="idealab-gallery-col">
-                    <div class="idealab-image-hint">Clic en la Imagen</div>
+                    <div class="idealab-image-hint" data-i18n="idealab_hint">Clic en la Imagen</div>
                     <div class="idealab-clean-viewer">
                         <button type="button" class="idealab-arrow-btn prev" onclick="moveIdeaLabSlide(-1)"
                             aria-label="Foto anterior">&larr;</button>
@@ -1247,18 +1187,22 @@
                 <div class="container footer-inner">
                     <div class="footer-brand">
                         <img src="valorM01.svg" alt="Valor Máximo" class="footer-logo" loading="lazy" decoding="async">
-                        <p class="footer-tagline">Real Estate de precisión. Conectamos al arrendador con el emprendedor
-                            en el lugar y momento correcto.</p>
+                        <p class="footer-tagline"><span data-i18n="footer_tagline">Real Estate de precisión. Conectamos al arrendador con el emprendedor en el lugar y momento correcto.</span></p>
                     </div>
                     <div class="footer-links">
-                        <a href="#inicio" onclick="scrollToTimelineSection(event, 0)">Inicio</a>
-                        <a href="#el-match" onclick="scrollToTimelineSection(event, 9.4)">Catálogo</a>
-                        <a href="#idea-lab" onclick="scrollToTimelineSection(event, 19.2)">Idea Lab</a>
-                        <a href="#" onclick="openMatchDrawer(); return false;">Cotizaciones</a>
+                        <a href="#inicio" onclick="scrollToTimelineSection(event, 0)" data-i18n="footer_home">Inicio</a>
+                        <a href="#el-match" onclick="scrollToTimelineSection(event, 9.4)" data-i18n="footer_catalog">Catálogo</a>
+                        <a href="#idea-lab" onclick="scrollToTimelineSection(event, 19.2)" data-i18n="footer_idealab">Idea Lab</a>
+                        <a href="#" onclick="openMatchDrawer(); return false;" data-i18n="footer_quotes">Cotizaciones</a>
                     </div>
                 </div>
                 <div class="container footer-legal">
-                    &copy; 2026 Valor Máximo. Todos los derechos reservados.
+                    <span>&copy; 2026 Valor Máximo. <span data-i18n="footer_rights">All rights reserved. Valor Máximo.</span></span>
+                    <span class="footer-legal-divider" style="opacity: 0.35;">•</span>
+                    <div class="footer-credit">
+                        <span>Diseñado por:</span>
+                        <img src="Vector%20Inside%20imagotipo.svg" alt="Vector Inside" class="footer-credit-logo" loading="lazy" decoding="async">
+                    </div>
                 </div>
             </footer>
         </section>
@@ -1282,7 +1226,7 @@
                 <!-- Top Actions: Pestañas de Modo + Botón Cerrar X -->
                 <div class="vm-drawer-header">
                     <div class="vm-drawer-tabs">
-                        <button type="button" class="drawer-tab-btn active" data-tab="formulario">FORMULARIO</button>
+                        <button type="button" class="drawer-tab-btn active" data-tab="formulario" data-i18n="drawer_tab_form">FORMULARIO</button>
                     </div>
                     <button type="button" class="vm-drawer-close" onclick="closeMatchDrawer()"
                         aria-label="Cerrar formulario">&times;</button>
@@ -1293,17 +1237,17 @@
                     <!-- Campo 1: Nombre / Cómo dirigirse -->
                     <div class="vm-form-field">
                         <input type="text" id="drawer-nombre" class="vm-input-line" placeholder=" " required />
-                        <label for="drawer-nombre" class="vm-input-label">¿Cómo debemos dirigirnos a usted?</label>
+                        <label for="drawer-nombre" class="vm-input-label" data-i18n="drawer_label_name">¿Cómo debemos dirigirnos a usted?</label>
                     </div>
 
                     <!-- Campo 2: Fila con Teléfono e Ingreso de Hora de Llamada -->
                     <div class="vm-form-row">
                         <div class="vm-form-field flex-2">
                             <input type="tel" id="drawer-telefono" class="vm-input-line" placeholder=" " required />
-                            <label for="drawer-telefono" class="vm-input-label">Teléfono</label>
+                            <label for="drawer-telefono" class="vm-input-label" data-i18n="drawer_label_phone">Teléfono</label>
                         </div>
                         <div class="vm-form-field flex-1" id="drawer-time-wrapper">
-                            <label class="vm-select-label">HORA DE LLAMADA</label>
+                            <label class="vm-select-label" data-i18n="drawer_label_time">HORA DE LLAMADA</label>
                             <select id="drawer-hora" class="vm-select-line">
                                 <option value="9:00–12:00">9:00–12:00</option>
                                 <option value="12:00–15:00">12:00–15:00</option>
@@ -1317,10 +1261,10 @@
                     <div class="vm-form-row">
                         <div class="vm-form-field flex-1">
                             <input type="text" id="drawer-metraje" class="vm-input-line" placeholder=" " />
-                            <label for="drawer-metraje" class="vm-input-label">Metraje Requerido (m²)</label>
+                            <label for="drawer-metraje" class="vm-input-label" data-i18n="drawer_label_size">Metraje Requerido (m²)</label>
                         </div>
                         <div class="vm-form-field flex-1">
-                            <label class="vm-select-label">GIRO COMERCIAL</label>
+                            <label class="vm-select-label" data-i18n="drawer_label_category">GIRO COMERCIAL</label>
                             <select id="drawer-giro" class="vm-select-line">
                                 <option value="todos">Todos los giros...</option>
                                 <option value="restaurante">Restaurante / Gastronomía</option>
@@ -1334,15 +1278,14 @@
                     <div class="vm-form-field">
                         <textarea id="drawer-mensaje" class="vm-input-line vm-textarea" placeholder=" "
                             rows="2"></textarea>
-                        <label for="drawer-mensaje" class="vm-input-label">Mensaje</label>
+                        <label for="drawer-mensaje" class="vm-input-label" data-i18n="drawer_label_msg">Mensaje</label>
                     </div>
 
                     <!-- Footer del Formulario: Botón Cream + Aviso Legal -->
                     <div class="vm-drawer-footer">
-                        <button type="submit" class="vm-btn-submit-cream" id="drawer-submit-btn">DEJA UNA
-                            SOLICITUD</button>
+                        <button type="submit" class="vm-btn-submit-cream" id="drawer-submit-btn" data-i18n="drawer_btn_submit">DEJA UNA SOLICITUD</button>
                         <div class="vm-drawer-disclaimer">
-                            AL HACER CLIC EN EL BOTÓN, ACEPTA LA POLÍTICA DE PRIVACIDAD.
+                            <span data-i18n="drawer_disclaimer">AL HACER CLIC EN EL BOTÓN, ACEPTA LA POLÍTICA DE PRIVACIDAD.</span>
                         </div>
                     </div>
                 </form>
@@ -1360,36 +1303,31 @@
             <div class="philosophy-container">
                 <!-- Parte Superior: Manifiesto -->
                 <div class="philosophy-header text-center">
-                    <span class="badge philosophy-badge">Manifiesto V2 — Valor Máximo</span>
-                    <h2 class="text-title philosophy-main-title">Filosofía y<br>Gestión de Crisis</h2>
+                    <span class="badge philosophy-badge" data-i18n="phil_badge">Manifiesto V2 — Valor Máximo</span>
+                    <h2 class="text-title philosophy-main-title" data-i18n="phil_title">Filosofía y<br>Gestión de Crisis</h2>
                     <p class="philosophy-subtitle">
-                        La excelencia no se define por lo que logras en un entorno normal. Se define en los momentos de
-                        crisis, donde lo predecible es ausente y lo impensable es inminente.
+                        <span data-i18n="phil_subtitle">La excelencia no se define por lo que logras en un entorno normal. Se define en los momentos de crisis, donde lo predecible es ausente y lo impensable es inminente.</span>
                     </p>
                 </div>
 
                 <!-- Parte Inferior: Autoridad Ejecutiva (CEO vs Operaciones) -->
                 <div class="philosophy-body-grid">
                     <div class="philosophy-body-left">
-                        <span class="philosophy-tag">| 10 Años de Precisión</span>
-                        <h3 class="philosophy-exec-title">AUTORIDAD<br>EJECUTIVA</h3>
+                        <span class="philosophy-tag" data-i18n="phil_tag">| 10 Años de Precisión</span>
+                        <h3 class="philosophy-exec-title" data-i18n="phil_exec_title">AUTORIDAD<br>EJECUTIVA</h3>
                     </div>
                     <div class="philosophy-body-right">
                         <p class="philosophy-body-desc">
-                            Un enfoque dual que separa radicalmente el trato humano de la disciplina implacable.
-                            Mientras la dirección general asegura el "human touch" y la planeación estratégica, nuestra
-                            unidad de operaciones ejecuta peritajes, negociaciones y cierres con precisión quirúrgica.
+                            <span data-i18n="phil_body_desc">Un enfoque dual que separa radicalmente el trato humano de la disciplina implacable. Mientras la dirección general asegura el "human touch" y la planeación estratégica, nuestra unidad de operaciones ejecuta peritajes, negociaciones y cierres con precisión quirúrgica.</span>
                         </p>
                         <div class="philosophy-roles-grid">
                             <div class="philosophy-role-card">
-                                <h4>CEO</h4>
-                                <p>Relaciones públicas de alto nivel, macroestrategia y alineación de intereses a largo
-                                    plazo.</p>
+                                <h4 data-i18n="phil_ceo_t">CEO</h4>
+                                <p><span data-i18n="phil_ceo_d">Relaciones públicas de alto nivel, macroestrategia y alineación de intereses a largo plazo.</span></p>
                             </div>
                             <div class="philosophy-role-card">
-                                <h4>OPERACIONES</h4>
-                                <p>Ejecución táctica implacable, mantenimiento continuo, y gestión inmediata de
-                                    arrendatarios.</p>
+                                <h4 data-i18n="phil_ops_t">OPERACIONES</h4>
+                                <p><span data-i18n="phil_ops_d">Ejecución táctica implacable, mantenimiento continuo, y gestión inmediata de arrendatarios.</span></p>
                             </div>
                         </div>
                     </div>
@@ -1409,41 +1347,32 @@
                 <!-- Parte Inferior: La confianza no se declara, se demuestra -->
                 <div class="philosophy-body-grid">
                     <div class="philosophy-body-left">
-                        <span class="philosophy-tag">| Criterio Rector</span>
-                        <h3 class="philosophy-exec-title">La confianza<br>no se declara:<br>se demuestra.</h3>
+                        <span class="philosophy-tag" data-i18n="comp_tag">| Criterio Rector</span>
+                        <h3 class="philosophy-exec-title" data-i18n="comp_title">La confianza<br>no se declara:<br>se demuestra.</h3>
                         <p class="philosophy-body-desc">
-                            Valor Máximo no se limita a afirmar que es una empresa confiable. Lo demuestra con
-                            información verificable, límites explícitos, tratamiento responsable de los datos,
-                            continuidad de la atención y transferencia humana en decisiones sensibles.
+                            <span data-i18n="comp_desc_1">Valor Máximo no se limita a afirmar que es una empresa confiable. Lo demuestra con información verificable, límites explícitos, tratamiento responsable de los datos, continuidad de la atención y transferencia humana en decisiones sensibles.</span>
                         </p>
                         <p class="philosophy-body-desc">
-                            La finalidad es orientar a prospectos, clientes, propietarios, inversionistas y aliados
-                            sobre
-                            cómo usamos la información, qué compromisos rigen la relación y qué pueden esperar
-                            después de compartir sus datos.
+                            <span data-i18n="comp_desc_2">La finalidad es orientar a prospectos, clientes, propietarios, inversionistas y aliados sobre cómo usamos la información, qué compromisos rigen la relación y qué pueden esperar después de compartir sus datos.</span>
                         </p>
                     </div>
                     <div class="philosophy-body-right">
                         <div class="philosophy-roles-grid">
                             <div class="philosophy-role-card">
-                                <h4>INFORMACIÓN PARA DECIDIR</h4>
-                                <p>Utilizamos la información compartida para orientar cada recomendación y definir el
-                                    contexto de tu decisión.</p>
+                                <h4 data-i18n="comp_c1_t">INFORMACIÓN PARA DECIDIR</h4>
+                                <p><span data-i18n="comp_c1_d">Utilizamos la información compartida para orientar cada recomendación y definir el contexto de tu decisión.</span></p>
                             </div>
                             <div class="philosophy-role-card">
-                                <h4>COMPROMISOS DE LA RELACIÓN</h4>
-                                <p>Confidencialidad, discreción y transparencia rigen cada interacción, de la primera
-                                    conversación al cierre.</p>
+                                <h4 data-i18n="comp_c2_t">COMPROMISOS DE LA RELACIÓN</h4>
+                                <p><span data-i18n="comp_c2_d">Confidencialidad, discreción y transparencia rigen cada interacción, de la primera conversación al cierre.</span></p>
                             </div>
                             <div class="philosophy-role-card">
-                                <h4>DATOS CON PROPÓSITO</h4>
-                                <p>Solo solicitamos la información necesaria y explicamos para qué sirve cada dato. Nada
-                                    se pide sin un fin claro.</p>
+                                <h4 data-i18n="comp_c3_t">DATOS CON PROPÓSITO</h4>
+                                <p><span data-i18n="comp_c3_d">Solo solicitamos la información necesaria y explicamos para qué sirve cada dato. Nada se pide sin un fin claro.</span></p>
                             </div>
                             <div class="philosophy-role-card">
-                                <h4>CRITERIO HUMANO EN LO SENSIBLE</h4>
-                                <p>La automatización asiste, pero las decisiones delicadas siempre pasan por una
-                                    transferencia humana.</p>
+                                <h4 data-i18n="comp_c4_t">CRITERIO HUMANO EN LO SENSIBLE</h4>
+                                <p><span data-i18n="comp_c4_d">La automatización asiste, pero las decisiones delicadas siempre pasan por una transferencia humana.</span></p>
                             </div>
                             <div class="philosophy-role-card">
                                 <h4>EVIDENCIAS VERIFICABLES</h4>
@@ -1501,7 +1430,7 @@
                 <div class="ficha-header-top">
                     <img src="valorISO.svg" alt="Valor Máximo ISO" class="ficha-iso-logo" loading="lazy"
                         decoding="async">
-                    <span class="badge philosophy-badge">Ficha Técnica</span>
+                    <span class="badge philosophy-badge" data-i18n="ficha_badge">Ficha Técnica</span>
                 </div>
                 <h2 class="text-title ficha-modal-title" id="ficha-modal-title">Felipe Villanueva</h2>
             </div>
@@ -1514,36 +1443,34 @@
 
                 <!-- Lado Derecho: Tabla Técnica -->
                 <div class="ficha-tech" data-lenis-prevent>
-                    <h3 class="ficha-tech-title">Datos del espacio</h3>
+                    <h3 class="ficha-tech-title" data-i18n="ficha_sec_space">Datos del espacio</h3>
                     <div class="ficha-table-wrapper" data-lenis-prevent>
                         <table class="ficha-table" id="ficha-table"></table>
                     </div>
 
-                    <h3 class="ficha-tech-title" id="ficha-general-title" style="margin-top:1.5rem;">Datos Generales
-                    </h3>
+                    <h3 class="ficha-tech-title" id="ficha-general-title" style="margin-top:1.5rem;" data-i18n="ficha_sec_general">Datos Generales</h3>
                     <div class="ficha-table-wrapper" data-lenis-prevent>
                         <table class="ficha-table" id="ficha-general-table"></table>
                     </div>
 
-                    <h3 class="ficha-tech-title" id="ficha-ubicacion-title" style="margin-top:1.5rem;">Ubicación</h3>
+                    <h3 class="ficha-tech-title" id="ficha-ubicacion-title" style="margin-top:1.5rem;" data-i18n="ficha_sec_loc">Ubicación</h3>
                     <div class="ficha-ubicacion" id="ficha-ubicacion">
                         <iframe
                             src="https://maps.google.com/maps?q=19.2928195,-99.6557402&z=17&ie=UTF8&iwloc=&output=embed"
                             width="100%" height="220" style="border:0;" allowfullscreen=""
                             referrerpolicy="no-referrer-when-downgrade" title="Ubicación de Riva Palacio"></iframe>
-                        <a class="ficha-ubicacion-link" href="https://maps.app.goo.gl/VjfTWGnuPBXwjuLr8" target="_blank"
-                            rel="noopener">Abrir en Google Maps</a>
+                        <a class="ficha-ubicacion-link" href="https://maps.app.goo.gl/VjfTWGnuPBXwjuLr8" target="_blank" rel="noopener" data-i18n="ficha_btn_maps">Abrir en Google Maps</a>
                     </div>
 
                     <div class="ficha-tech-note">
-                        <p>Los valores son de referencia y pueden variar según la negociación y el local
-                            seleccionado.</p>
+                        <p data-i18n="ficha_note">Los valores son de referencia y pueden variar según la negociación y el local seleccionado.</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <script src="js/i18n.js?v=201.0"></script>
     <script src="js/catalog-service.js?v=201.0" defer></script>
     <script src="main.js" defer></script>
     <script src="script.js?v=201.0" defer></script>

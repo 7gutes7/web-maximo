@@ -2669,30 +2669,35 @@ function openFichaModal(el) {
     const cardTitle = card ? (card.querySelector('h3') ? card.querySelector('h3').textContent.trim() : null) : null;
     document.getElementById('ficha-modal-title').textContent = (ficha && ficha.titulo) ? ficha.titulo : (cardTitle || 'Inmueble');
 
-    // Tabla técnica: si hay locales, muestra el detalle por local;
-    // en caso contrario, muestra la estructura con fila en blanco.
+    window.lastOpenedFichaKey = key;
+    const lang = localStorage.getItem("vm_lang_pref") || "es";
+    const tH = (h) => (window.translateTableHeader ? window.translateTableHeader(h, lang) : h);
+    const tC = (c) => (window.translateTableConcept ? window.translateTableConcept(c, lang) : c);
+    const tV = (v) => (window.translateTableValue ? window.translateTableValue(v, lang) : v);
+
+    // Tabla técnica: si hay locales, muestra el detalle por local
     const table = document.getElementById('ficha-table');
     if (ficha && ficha.locales && ficha.locales.length) {
-        const headers = ficha.encabezadosLocales || ['No. Local', 'Superficie (m²)', 'Precio por m²', 'Notas'];
-        const header = `<thead><tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr></thead>`;
+        const rawHeaders = ficha.encabezadosLocales || ['No. Local', 'Superficie (m²)', 'Precio por m²', 'Notas'];
+        const header = `<thead><tr>${rawHeaders.map(h => `<th>${tH(h)}</th>`).join('')}</tr></thead>`;
         const rows = ficha.locales.map(l => {
             if (ficha.encabezadosLocales && ficha.encabezadosLocales.length === 5) {
-                return `<tr><td>${l.no}</td><td>${l.giro || l.inquilino || ''}</td><td>${l.superficie}</td><td>${l.precio}</td><td>${l.estatus || l.notas || ''}</td></tr>`;
+                return `<tr><td>${l.no}</td><td>${tV(l.giro || l.inquilino || '')}</td><td>${l.superficie}</td><td>${l.precio}</td><td>${tV(l.estatus || l.notas || '')}</td></tr>`;
             }
             if (ficha.encabezadosLocales && ficha.encabezadosLocales.length === 3) {
                 return `<tr><td>${l.no}</td><td>${l.superficie}</td><td>${l.precio}</td></tr>`;
             }
             if (l.descripcion !== undefined) {
-                return `<tr><td>${l.no}</td><td>${l.descripcion}</td><td>${l.superficie}</td><td>${l.precio}</td></tr>`;
+                return `<tr><td>${l.no}</td><td>${tV(l.descripcion)}</td><td>${l.superficie}</td><td>${l.precio}</td></tr>`;
             }
-            return `<tr><td>${l.no}</td><td>${l.superficie}</td><td>${l.precio}</td><td>${l.notas || ''}</td></tr>`;
+            return `<tr><td>${l.no}</td><td>${l.superficie}</td><td>${l.precio}</td><td>${tV(l.notas || '')}</td></tr>`;
         }).join('');
         const footnoteRows = (ficha.notasPie && ficha.notasPie.length)
-            ? ficha.notasPie.map(note => `<tr><td colspan="${headers.length}" style="font-size:0.75rem; color:#555; font-style:italic; border-top: 1px dashed #ccc; padding: 0.6rem 0.5rem 0.3rem 0.5rem; line-height: 1.4; text-align: left;">${note}</td></tr>`).join('')
+            ? ficha.notasPie.map(note => `<tr><td colspan="${rawHeaders.length}" style="font-size:0.75rem; color:#555; font-style:italic; border-top: 1px dashed #ccc; padding: 0.6rem 0.5rem 0.3rem 0.5rem; line-height: 1.4; text-align: left;">${tV(note)}</td></tr>`).join('')
             : '';
         table.innerHTML = header + `<tbody>${rows}${footnoteRows}</tbody>`;
     } else {
-        table.innerHTML = '<thead><tr><th>No. Local</th><th>Superficie (m²)</th><th>Precio por m²</th><th>Notas</th></tr></thead><tbody><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody>';
+        table.innerHTML = `<thead><tr><th>${tH("No. Local")}</th><th>${tH("Superficie (m²)")}</th><th>${tH("Precio por m²")}</th><th>${tH("Notas")}</th></tr></thead><tbody><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody>`;
     }
 
     // Tabla Datos Generales
@@ -2700,11 +2705,11 @@ function openFichaModal(el) {
     const generalTitle = document.getElementById('ficha-general-title');
     generalTitle.style.display = '';
     if (ficha && ficha.datosGenerales && ficha.datosGenerales.length) {
-        const header = '<thead><tr><th>Concepto</th><th>Valor</th></tr></thead>';
-        const rows = ficha.datosGenerales.map(r => `<tr><td>${r.concepto}</td><td>${r.valor}</td></tr>`).join('');
+        const header = `<thead><tr><th>${tH("Concepto")}</th><th>${tH("Valor")}</th></tr></thead>`;
+        const rows = ficha.datosGenerales.map(r => `<tr><td>${tC(r.concepto)}</td><td>${tV(r.valor)}</td></tr>`).join('');
         generalTable.innerHTML = header + `<tbody>${rows}</tbody>`;
     } else {
-        generalTable.innerHTML = '<thead><tr><th>Concepto</th><th>Valor</th></tr></thead><tbody><tr><td>&nbsp;</td><td>&nbsp;</td></tr></tbody>';
+        generalTable.innerHTML = `<thead><tr><th>${tH("Concepto")}</th><th>${tH("Valor")}</th></tr></thead><tbody><tr><td>&nbsp;</td><td>&nbsp;</td></tr></tbody>`;
     }
 
     // Ubicación
