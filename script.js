@@ -2997,25 +2997,71 @@ function setDrawerMode(mode, btn) {
     if (submitBtn) submitBtn.textContent = mode === 'llamar' ? 'SOLICITAR LLAMADA' : 'DEJA UNA SOLICITUD';
 }
 
-function handleDrawerSubmit(event) {
+async function handleDrawerSubmit(event) {
     event.preventDefault();
     const btn = document.getElementById('drawer-submit-btn');
-    const original = btn.textContent;
-    btn.textContent = 'ENVIANDO SOLICITUD...';
+    const originalText = btn.textContent;
+    btn.textContent = "ENVIANDO A CORREO Y WHATSAPP...";
     btn.disabled = true;
+
+    // 1. Recopilar datos del formulario
+    const nombre = document.getElementById('drawer-nombre')?.value?.trim() || "No especificado";
+    const telefono = document.getElementById('drawer-telefono')?.value?.trim() || "No especificado";
+    const hora = document.getElementById('drawer-hora')?.value || "Cualquier hora";
+    const metraje = document.getElementById('drawer-metraje')?.value?.trim() || "No especificado";
+    const giro = document.getElementById('drawer-giro')?.value || "Todos";
+    const mensaje = document.getElementById('drawer-mensaje')?.value?.trim() || "Sin mensaje adicional";
+
+    // 2. Enviar por correo electrónico a 7gutes7@gmail.com vía API FormSubmit
+    try {
+        await fetch("https://formsubmit.co/ajax/valormaximo67@gmail.com", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify({
+                _subject: "🏛️ Nueva Solicitud de Cotización — Valor Máximo (" + nombre + ")",
+                "Nombre": nombre,
+                "Teléfono": telefono,
+                "Hora de llamada preferida": hora,
+                "Metraje requerido (m²)": metraje,
+                "Giro Comercial": giro,
+                "Mensaje": mensaje,
+                "_template": "table"
+            })
+        });
+        console.log("✓ Correo enviado exitosamente a valormaximo67@gmail.com");
+    } catch (mailErr) {
+        console.warn("Aviso en despacho de correo:", mailErr);
+    }
+
+    // 3. Formatear y abrir WhatsApp con mensaje estructurado a +52 7224737471
+    const waText = "👋 *Nueva Solicitud de Cotización — Valor Máximo*\n\n" +
+        "👤 *Nombre:* " + nombre + "\n" +
+        "📱 *Teléfono:* " + telefono + "\n" +
+        "⏰ *Hora de llamada:* " + hora + "\n" +
+        "📐 *Metraje:* " + metraje + " m²\n" +
+        "🏢 *Giro:* " + giro + "\n" +
+        "💬 *Mensaje:* " + mensaje;
+
+    const waUrl = "https://wa.me/527224737471?text=" + encodeURIComponent(waText);
+
+    btn.textContent = "✓ ENVIADO EXITOSAMENTE";
+    btn.style.background = "#2b6954";
+    btn.style.color = "#FFFFFF";
+
+    // Abrir WhatsApp en nueva pestaña
+    window.open(waUrl, "_blank");
+
     setTimeout(() => {
-        btn.textContent = '✓ SOLICITUD RECIBIDA';
-        btn.style.background = '#2b6954';
-        btn.style.color = '#FFFFFF';
-        setTimeout(() => {
-            closeMatchDrawer();
-            btn.textContent = original;
-            btn.disabled = false;
-            btn.style.background = '#eae6d8';
-            btn.style.color = '#064E3B';
-            document.getElementById('vm-drawer-form').reset();
-        }, 1200);
-    }, 800);
+        closeMatchDrawer();
+        btn.textContent = originalText;
+        btn.disabled = false;
+        btn.style.background = "#eae6d8";
+        btn.style.color = "#064E3B";
+        document.getElementById('vm-drawer-form')?.reset();
+    }, 1500);
 }
 
 // Desplazamiento animado suave y robusto para navegadores móviles (evita cortes en transiciones y contenedores sticky)
