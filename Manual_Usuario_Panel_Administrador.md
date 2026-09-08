@@ -1,23 +1,25 @@
 # VALOR MÁXIMO
 # MANUAL DE USUARIO & GUÍA OPERATIVA
 ## Panel de Administración del Catálogo Inmobiliario (CMS)
-*Versión 4.5 Oficial Definitiva | Con Capturas de Pantalla y Guía Operativa Completa*
+*Versión 5.0 Oficial Definitiva | Con Capturas de Pantalla y Guía Operativa Completa*
 
 ---
 
 ## 1. Introducción y Arquitectura del Sistema
 
-El **Panel de Administración** (`admin.html`) es el centro de mando integral para gestionar el catálogo de plazas y propiedades comerciales de **Valor Máximo**.
+El **Panel de Administración** (`admin.html`) es el centro de mando integral diseñado para gestionar el catálogo de plazas y propiedades comerciales de **Valor Máximo**.
 
-### Capacidades Principales:
-- **Gestión Visual de Catálogo**: Alta, edición modular, activación/ocultamiento y eliminación de inmuebles comerciales.
-- **Jerarquía Prioritaria Inteligente**: Posicionamiento automático permanente con **Plaza Riva Palacio siempre en el puesto #1**.
-- **Guardado y Publicación en Servidor en Tiempo Real**: Al guardar un inmueble, los cambios se escriben de inmediato en el servidor web (`save_catalog.php` / `data/catalogo.json`) y en la memoria local, reflejándose al instante para todos los visitantes en internet.
-- **Importación Automatizada Multi-Formato**: Lector de archivos **Excel (.xlsx, .csv)**, **Word (.docx)** y **PDF (.pdf)** que extrae en un solo paso fotos en alta resolución, inventario de locales y fichas técnicas de 2 columnas.
-- **Doble Esquema de Tablas**:
-  1. *Locales y Espacios (4 Columnas)*: `No. Local`, `Giro / Inquilino`, `Superficie m²`, `Precio`.
+### 🌟 Capacidades Principales:
+- **Gestión Visual Integral de Inmuebles**: Alta, edición modular en 5 pestañas, activación/ocultamiento con un clic y eliminación segura de propiedades.
+- **Jerarquía Prioritaria Inteligente**: Posicionamiento automático permanente con **Plaza Riva Palacio siempre en el puesto #1**, seguida de las plazas ordenadas de mayor a menor disponibilidad de locales.
+- **Guardado y Publicación en Servidor en Tiempo Real**: Al guardar un inmueble, los cambios se sincronizan de inmediato en el servidor web (`save_catalog.php` / `data/catalogo.json`) y en memoria caché local, reflejándose al instante para todos los visitantes en internet.
+- **Sistema de Internacionalización Dinámico (i18n)**: Todo el catálogo público y sus fichas técnicas se traducen automáticamente en **Español (ES)**, **Inglés (EN)** y **Chino Simplificado (ZH)**.
+- **Selector de Plazas con Disponibilidad en Formulario**: El formulario de cotizaciones públicas filtra y lista automáticamente solo las plazas que cuentan con locales vacantes (`DISPONIBLE > 0`), preseleccionando la plaza correspondiente al hacer clic en *"Solicitar Ficha Detallada"*.
+- **Importación Automatizada Multi-Formato**: Lector inteligente de archivos **Excel (.xlsx, .csv)**, **Word (.docx)** y **PDF (.pdf)** que extrae en un solo paso fotos en alta resolución, inventario de locales y fichas técnicas.
+- **Doble Esquema de Tablas Especializado**:
+  1. *Inventario de Locales (4 Columnas)*: `No. Local`, `Giro / Inquilino`, `Superficie (m²)`, `Precio`.
   2. *Datos Generales / Ficha Técnica (2 Columnas)*: `Concepto / Característica`, `Valor / Descripción`.
-- **Geolocalización Universal con Live Preview**: Conversión de cualquier enlace de Google Maps en un mapa interactivo satelital y urbano en vivo.
+- **Geolocalización Universal con Live Preview**: Conversión de cualquier enlace de Google Maps (enlace corto, URL completa, coordenadas o iframe) en un mapa interactivo satelital y urbano en vivo.
 - **Respaldos Instantáneos**: Botones dedicados para descargar (`📥 Descargar JSON`) y restaurar (`📤 Cargar Catálogo JSON`) toda la base de datos con 0ms de pérdida.
 
 ---
@@ -25,20 +27,24 @@ El **Panel de Administración** (`admin.html`) es el centro de mando integral pa
 ## 2. Acceso al Panel de Administración (Login & Seguridad)
 
 ### 2.1 Acceso al Sistema
-1. Abra su navegador web e ingrese a la dirección del panel (ejemplo: `https://valormaximo.com/admin.html` o `http://localhost:8085/admin.html` en local).
-2. La pantalla de acceso cuenta con un fondo interactivo 3D (*DriftWall*) compuesto por fotografías de la colección *Valor Máximo Art*.
-3. Ingrese las credenciales de acceso oficiales:
-   - **Correo Electrónico**: `admin@valormaximo.com`
-   - **Contraseña Inicial**: `admin123` *(o su clave personalizada)*
+1. Abra su navegador web e ingrese a la dirección del panel (ejemplo: `https://valormaximo.com/admin.html` o `http://localhost:8080/admin.html` en entorno local).
+2. La pantalla de acceso cuenta con un fondo interactivo 3D (*DriftWall*) compuesto por fotografías exclusivas de la colección *Valor Máximo Art*.
+3. Ingrese sus credenciales de acceso:
+   - **Correo Electrónico**: `admin@valormaximo.com` (o su usuario configurado).
+   - **Contraseña**: Clave de acceso administrativa.
 4. Pulse el botón **Iniciar Sesión**.
 
 ![Pantalla de Inicio de Sesión con Fondo 3D DriftWall](manual_assets/01_login_driftwall.png)
+
+### 2.2 Seguridad y Protección Criptográfica
+- La autenticación utiliza firmas criptográficas **SHA-256 enriquecidas con un Salt de aplicación** (`_VM_SALT`), garantizando que ninguna contraseña ni hash público sea visible o deducible desde el código fuente o herramientas de inspección del navegador.
+- En caso de contar con base de datos remota configurada, el sistema autentica de forma transparente contra **Supabase Auth**.
 
 ---
 
 ## 3. Dashboard Principal y Métricas en Vivo
 
-Al autenticarse, el sistema presenta el centro de mando general con el catálogo completo de inmuebles:
+Al autenticarse, el sistema presenta el centro de mando general con el catálogo completo de inmuebles y métricas en tiempo real:
 
 ![Dashboard Principal con Métricas en Vivo y Catálogo de Inmuebles](manual_assets/02_dashboard_overview.png)
 
@@ -46,7 +52,7 @@ Al autenticarse, el sistema presenta el centro de mando general con el catálogo
 - **Logotipo de Valor Máximo**: Identidad corporativa de la plataforma.
 - **`💾 Guardar Cambios`**: Botón con indicador visual inteligente (a la izquierda de "Ver Sitio Web") que persiste todas las modificaciones directamente al servidor y memoria caché.
 - **`Ver Sitio Web ↗`**: Enlace directo para abrir la vista pública del catálogo en una nueva pestaña.
-- **`🔑 Cambiar Contraseña`**: Abre la ventana de actualización de credenciales.
+- **`🔑 Cambiar Contraseña`**: Abre la ventana modal para actualizar las credenciales de forma segura.
 - **`🚪 Cerrar Sesión`**: Cierra la sesión activa con protección contra pérdida de datos: si existen cambios pendientes, el sistema preguntará si desea guardar antes de salir.
 
 ### 3.2 Métricas en Vivo
@@ -56,7 +62,7 @@ Al autenticarse, el sistema presenta el centro de mando general con el catálogo
 
 ### 3.3 Tarjetas del Catálogo
 - **Plaza Riva Palacio**: Fijada permanentemente en el puesto #1 del catálogo.
-- Cada tarjeta muestra: Foto de portada, título, dirección, estado (`🟢 Activa` o `⚪ Inactiva`), badge de disponibilidad (`X DISPONIBLES` en verde / `0 DISPONIBLES` en naranja), número de locales y metros cuadrados totales.
+- Cada tarjeta muestra: Foto de portada, título, dirección/subtítulo, estado (`🟢 Activa` o `⚪ Inactiva`), badge de disponibilidad (`X DISPONIBLES` en verde / `0 DISPONIBLES` en naranja), número de locales y metros cuadrados totales.
 - **Acciones en Tarjeta**:
   - **`✏️ Editar`**: Abre la ventana de configuración del inmueble.
   - **`👁️ Activar / Ocultar`**: Alterna la visibilidad pública con un solo clic.
@@ -70,15 +76,16 @@ Al hacer clic en **`+ Nuevo Inmueble`** o **`✏️ Editar`**, se abre la ventan
 
 ![Ventana Modal de Edición - Pestañas y Datos Básicos](manual_assets/03_modal_datos_basicos.png)
 
-### 4.1 Datos Básicos
+### 4.1 Pestaña 1: Datos Básicos
 - **Nombre del Inmueble**: Título comercial de la plaza (ej. *Plaza Riva Palacio*, *Paseo Central*).
-- **Subtítulo / Tipo**: Categoría comercial (ej. *Back Shops*, *Anchor*, *Strip Mall*).
-- **Estatus**: `🟢 Activa (Visible al público)` o `⚪ Inactiva (Borrador)`.
+- **Subtítulo / Tipo**: Categoría comercial (ej. *Back Shops*, *Anchors*, *Strip Mall*).
+- **Estatus de Visibilidad**: `🟢 Activa (Visible al público)` o `⚪ Inactiva (Borrador oculto)`.
 - **Estatus / Badge**:
   - *Automático*: Calculado en tiempo real según los locales vacantes en la tabla de locales.
   - *Personalizado*: Insignias como *100% Ocupado*, *Próxima Apertura*, *Preventa*.
 - **Tipo de Propiedad**: Plaza Comercial, Strip Mall, Centro Comercial, Local Individual, Nave / Bodega, Terreno Comercial.
-- **Descripción Comercial**: Resumen de atributos, flujos peatonales, vehiculares y ventajas comerciales.
+- **Descripción Comercial**: Resumen de atributos, vocación de mercado, flujos peatonales, vehiculares y ventajas comerciales.
+- **Perfil Empresarial**: Etiqueta y descripción del perfil de inversionista o arrendatario meta (ej. *Mentalidad inversora. Alta tolerancia al riesgo.*).
 
 ---
 
@@ -117,9 +124,9 @@ El sistema procesa el enlace y muestra inmediatamente el mapa interactivo sateli
 ### 7.1 Estructura Oficial de Columnas
 | No. Local | Giro / Inquilino | Superficie (m²) | Precio |
 | :--- | :--- | :--- | :--- |
-| **1 PB** | House Roll | 61.95 | $450.00 |
-| **2 PB** | Helados Dolphy | 61.48 | $450.00 |
-| **3 PB** | DISPONIBLE | 50.00 | $450.00 |
+| **1 PB** | Churrería Porfirio | 82.60 | $423.00 |
+| **2 PB** | Wingstop | 120.00 | $450.00 |
+| **3 PB** | DISPONIBLE | 65.00 | $380.00 |
 
 ### 7.2 Métodos de Captura
 - **`+ Agregar 1 Local`**: Añade una fila en blanco para captura manual.
@@ -133,7 +140,7 @@ El sistema procesa el enlace y muestra inmediatamente el mapa interactivo sateli
 
 ## 8. Datos Generales y Ficha Técnica (Tabla de 2 Columnas)
 
-Ubicada inmediatamente debajo de la tabla de locales. Permite registrar las especificaciones técnicas y operativas completas:
+Ubicada inmediatamente debajo de la tabla de locales. Permite registrar las especificaciones técnicas y operativas completas de la propiedad:
 
 ![Tabla de Datos Generales y Ficha Técnica (2 Columnas)](manual_assets/08_modal_ficha_tecnica.png)
 
@@ -144,7 +151,7 @@ Ubicada inmediatamente debajo de la tabla de locales. Permite registrar las espe
 | **Superficie Construida** | 2,450.00 m² |
 | **Niveles Comerciales** | 2 niveles (Planta Baja y Planta Alta) |
 | **Cajones de Estacionamiento** | 65 cajones en sótano y exterior |
-| **Marcas Ancla** | Starbucks, OXXO, Farmacias del Ahorro |
+| **Marcas Ancla** | Starbucks, OXXO, Farmacias Guadalajara |
 | **Uso de Suelo** | Comercial y Servicios |
 | **Seguridad y Vigilancia** | Circuito cerrado CCTV 24/7 y acceso controlado |
 | **Servicios e Instalaciones** | Subestación eléctrica, cisterna 50,000L, elevador |
@@ -158,7 +165,7 @@ Ubicada inmediatamente debajo de la tabla de locales. Permite registrar las espe
 
 ---
 
-## 9. Plantilla Oficial de Excel (Doble Pestaña) y Dropzone Multi-Formato
+## 9. Plantilla Oficial de Excel y Dropzone Multi-Formato
 
 Al pulsar el botón **`📥 Plantilla Excel`**, se descarga el archivo `plantilla_inmueble_completo_valormaximo.xlsx` estructurado en 2 hojas oficiales:
 1. **Hoja 1 (`Locales` - 4 Columnas)**: Formato para el desglose de espacios comerciales.
@@ -171,21 +178,39 @@ Al pulsar el botón **`📥 Plantilla Excel`**, se descarga el archivo `plantill
 
 ---
 
-## 10. Guardado, Publicación en Internet y Seguridad
+## 10. Integración con el Portal Web Público y Cotizaciones
 
-### 10.1 Doble Botón de Guardado
+### 10.1 Sincronización con el Selector de Plazas
+El catálogo público se comunica bidireccionalmente con el formulario de cotizaciones (*Motor de Búsqueda VM-01*):
+- El selector `<select id="drawer-plaza">` lista automáticamente **únicamente las plazas que tienen locales con estatus `DISPONIBLE`**.
+- Al hacer clic en el botón *"Solicitar Ficha Detallada"* de cualquier tarjeta, el modal de contacto se abre con dicha plaza preseleccionada automáticamente.
+
+### 10.2 Traducciones Multiidioma en Vivo (ES / EN / ZH)
+Cualquier cambio realizado en el panel se adapta al motor de traducción `i18n.js`:
+- El catálogo público traduce automáticamente títulos, descripciones, perfiles de arrendatario, insignias de disponibilidad y botones a **Inglés** y **Chino**.
+
+---
+
+## 11. Guardado, Respaldos y Seguridad
+
+### 11.1 Doble Botón de Guardado
 Para agilizar la captura, la ventana modal cuenta con dos botones de guardado:
-- **Botón Superior Fijo**: Ubicado en la cabecera modal (`💾 Guardar Inmueble`), siempre a la vista sin importar cuánto te desplaces.
+- **Botón Superior Fijo**: Ubicado en la cabecera modal (`💾 Guardar Inmueble`), siempre visible durante el desplazamiento.
 - **Botón Inferior**: Ubicado en el pie del formulario.
 
 Al pulsar cualquiera de los dos botones, los datos se consolidan, se guardan en el servidor de tu dominio vía `save_catalog.php` y se reflejan de inmediato en la web pública para todos los visitantes.
 
-### 10.2 Cambio de Contraseña de Administrador
+### 11.2 Cambio de Contraseña de Administrador
 ![Modal de Cambio de Contraseña](manual_assets/10_modal_cambiar_password.png)
 
 1. En la barra superior, pulse **`🔑 Cambiar Contraseña`**.
-2. Ingrese su nueva clave en el campo correspondiente y pulse **Guardar Contraseña**.
-3. La nueva credencial tendrá efecto inmediato.
+2. Ingrese su contraseña actual y la nueva clave en los campos correspondientes.
+3. Pulse **Guardar Contraseña**. La nueva credencial se protegerá con el salt criptográfico y tendrá efecto inmediato.
+
+### 11.3 Respaldos JSON
+- **`📥 Descargar JSON`**: Genera un archivo `.json` completo con todas las propiedades, fotos y tablas como respaldo de seguridad.
+- **`📤 Cargar Catálogo JSON`**: Restaura o migra la base de datos completa en 1 segundo.
 
 ---
-*Manual Oficial de Operación | Valor Máximo CMS v4.5 | Todos los derechos reservados*
+
+*Manual Oficial de Operación | Valor Máximo CMS v5.0 | Todos los derechos reservados*
