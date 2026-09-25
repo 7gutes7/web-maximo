@@ -153,6 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
     safeInit(initImageTrail);
     safeInit(initDrawerFloatingLines);
     safeInit(initIdeaLabGalleryScroll);
+    safeInit(initUrlFichaOpener);
 });
 
 // 0. Lenis — Smooth scroll con inercia (Escritorio) y Scroll Táctil Nativo a 120Hz Ultra Fluido (Móvil)
@@ -3088,6 +3089,42 @@ function closeFichaModal() {
 
 function closeFichaModalOnBackdrop(event) {
     if (event.target.id === 'ficha-modal-overlay') closeFichaModal();
+}
+
+function initUrlFichaOpener() {
+    try {
+        const urlParams = new URLSearchParams(window.location.search);
+        let fichaKey = urlParams.get('ficha') || urlParams.get('f') || urlParams.get('inmueble');
+        if (!fichaKey && window.location.hash) {
+            const hash = window.location.hash.replace(/^#/, '');
+            if (hash.startsWith('ficha=')) {
+                fichaKey = hash.replace('ficha=', '');
+            } else if (hash.startsWith('inmueble=')) {
+                fichaKey = hash.replace('inmueble=', '');
+            } else if (window.fichasInmuebles && window.fichasInmuebles[hash]) {
+                fichaKey = hash;
+            }
+        }
+        if (fichaKey) {
+            fichaKey = fichaKey.toLowerCase().trim();
+            const tryOpen = (attempts = 0) => {
+                if (window.fichasInmuebles && window.fichasInmuebles[fichaKey]) {
+                    const catalogSec = document.getElementById('catalogo');
+                    if (catalogSec) {
+                        catalogSec.scrollIntoView({ behavior: 'smooth' });
+                    }
+                    openFichaModal(fichaKey);
+                } else if (attempts < 15) {
+                    setTimeout(() => tryOpen(attempts + 1), 150);
+                } else {
+                    openFichaModal(fichaKey);
+                }
+            };
+            setTimeout(() => tryOpen(0), 400);
+        }
+    } catch (e) {
+        console.warn('[vm] initUrlFichaOpener error:', e);
+    }
 }
 
 document.addEventListener('keydown', e => {

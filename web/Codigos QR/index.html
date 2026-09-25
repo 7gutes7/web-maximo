@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Códigos QR Oficiales | Valor Máximo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --vm-green: #064E3B;
+            --vm-dark: #0f1f16;
+            --vm-cream: #F9F8F6;
+            --vm-gold: #c5a059;
+            --vm-gold-light: #e6ca85;
+            --vm-border: rgba(197, 160, 89, 0.25);
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+            background-color: #0b1610;
+            color: #f3f4f6;
+            padding: 2.5rem 1.5rem;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 3.5rem;
+            padding: 2rem 1rem;
+            background: linear-gradient(180deg, rgba(6, 78, 59, 0.35) 0%, rgba(11, 22, 16, 0.8) 100%);
+            border: 1px solid var(--vm-border);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+        }
+        .badge {
+            display: inline-block;
+            padding: 0.35rem 1rem;
+            background: rgba(197, 160, 89, 0.15);
+            color: var(--vm-gold-light);
+            border: 1px solid var(--vm-gold);
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+        h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.02em;
+        }
+        p.subtitle {
+            color: #9ca3af;
+            font-size: 1.05rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .section-title {
+            font-size: 1.3rem;
+            color: var(--vm-gold-light);
+            margin: 2rem 0 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 0.5rem;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.75rem;
+            margin-bottom: 3rem;
+        }
+        .card {
+            background: #122218;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--vm-gold);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+        }
+        .card.featured {
+            border-color: var(--vm-gold);
+            background: linear-gradient(135deg, #132b1f 0%, #102116 100%);
+        }
+        .qr-wrapper {
+            background: #ffffff;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1.25rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 200px;
+            height: 200px;
+        }
+        .qr-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+        .card-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 0.35rem;
+        }
+        .card-url {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            word-break: break-all;
+            margin-bottom: 1.25rem;
+            font-family: monospace;
+            background: rgba(0,0,0,0.25);
+            padding: 0.3rem 0.5rem;
+            border-radius: 4px;
+            width: 100%;
+        }
+        .actions {
+            display: flex;
+            gap: 0.5rem;
+            width: 100%;
+        }
+        .btn {
+            flex: 1;
+            padding: 0.6rem 0.8rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+        .btn-primary {
+            background: var(--vm-gold);
+            color: #0b1610;
+        }
+        .btn-primary:hover {
+            background: var(--vm-gold-light);
+        }
+        .btn-outline {
+            background: transparent;
+            color: #e5e7eb;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.1);
+            color: #ffffff;
+        }
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--vm-gold);
+            color: #0b1610;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+        .toast.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="badge">Activos Digitales</span>
+            <h1>Códigos QR • Valor Máximo</h1>
+            <p class="subtitle">Escanea directamente con la cámara de tu smartphone para abrir la portada del sitio o la ficha técnica correspondiente.</p>
+        </header>
+
+        <h2 class="section-title">🌐 Portal Web Principal (Hero)</h2>
+        <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));">
+            <div class="card featured">
+                <div class="qr-wrapper">
+                    <img src="QR Hero.svg" alt="QR Sitio Web Valor Máximo" />
+                </div>
+                <div class="card-title">Sitio Web Principal (Hero)</div>
+                <div class="card-url">https://valor-maximo.com/</div>
+                <div class="actions">
+                    <a href="QR Hero.png" download="QR Valor Maximo Web.png" class="btn btn-primary">Descargar PNG</a>
+                    <a href="QR Hero.svg" download="QR Valor Maximo Web.svg" class="btn btn-outline">SVG</a>
+                    <button class="btn btn-outline" onclick="copyUrl('https://valor-maximo.com/')">Copiar</button>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">📑 Fichas Técnicas del Catálogo</h2>
+        <div class="grid" id="catalog-qrs-grid"></div>
+    </div>
+
+    <div class="toast" id="toast">¡Enlace copiado al portapapeles!</div>
+
+    <script>
+        const catalogItems = [
+            { name: "QR Riva Palacio", file: "QR Riva Palacio", title: "Riva Palacio", key: "riva-palacio" },
+            { name: "QR Paseo Central", file: "QR Paseo Central", title: "Paseo Central", key: "sub-level" },
+            { name: "QR Plaza Independencia", file: "QR Plaza Independencia", title: "Plaza Independencia", key: "avenida-central" },
+            { name: "QR Pino Suarez", file: "QR Pino Suarez", title: "Pino Suárez", key: "distrito-financiero" },
+            { name: "QR Hidalgo", file: "QR Hidalgo", title: "Edificio Hidalgo", key: "paseo-artes" },
+            { name: "QR Felipe Villanueva", file: "QR Felipe Villanueva", title: "Felipe Villanueva", key: "felipe-villanueva" },
+            { name: "QR Villada", file: "QR Villada", title: "Villada", key: "villada" },
+            { name: "QR Solidaridad Torres", file: "QR Solidaridad Torres", title: "Av. Solidaridad Torres", key: "solidaridad-torres" },
+            { name: "QR Plaza Ceboruco", file: "QR Plaza Ceboruco", title: "Plaza Ceboruco", key: "plaza-ceboruco" },
+            { name: "QR Av Lerdo", file: "QR Av Lerdo", title: "Av. Lerdo", key: "av-lerdo" },
+            { name: "QR Benito Juarez", file: "QR Benito Juarez", title: "Benito Juárez", key: "benito-juarez" },
+            { name: "QR Rancho El Meson", file: "QR Rancho El Meson", title: "Plaza Rancho El Mesón II", key: "plaza-rancho-el-meson-ii" },
+            { name: "QR Unni Plaza", file: "QR Unni Plaza", title: "Unni Plaza", key: "unni-plaza" },
+            { name: "QR Venustiano Carranza", file: "QR Venustiano Carranza", title: "Venustiano Carranza", key: "venustiano-carranza" },
+            { name: "QR Wenceslao Labra", file: "QR Wenceslao Labra", title: "Wenceslao Labra", key: "wenceslao-labra" },
+            { name: "QR Brigida Garcia", file: "QR Brigida Garcia", title: "Brígida García", key: "brigida-garcia" }
+        ];
+
+        const grid = document.getElementById('catalog-qrs-grid');
+        catalogItems.forEach(item => {
+            const url = `https://valor-maximo.com/?ficha=${item.key}`;
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <div class="qr-wrapper">
+                    <img src="${item.file}.svg" alt="Código ${item.name}" loading="lazy" />
+                </div>
+                <div class="card-title">${item.title}</div>
+                <div class="card-url">${url}</div>
+                <div class="actions">
+                    <a href="${item.file}.png" download="${item.name}.png" class="btn btn-primary">Descargar PNG</a>
+                    <a href="${item.file}.svg" download="${item.name}.svg" class="btn btn-outline">SVG</a>
+                    <button class="btn btn-outline" onclick="copyUrl('${url}')">Copiar</button>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+
+        function copyUrl(url) {
+            navigator.clipboard.writeText(url).then(() => {
+                const toast = document.getElementById('toast');
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 2000);
+            });
+        }
+    </script>
+</body>
+</html>
