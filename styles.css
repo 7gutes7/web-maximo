@@ -4548,3 +4548,34 @@ body {
 .lang-flag {
     font-size: 0.95rem;
 }
+
+
+/* ==========================================================================
+   OPTIMIZACIÓN DE FLUIDEZ (sept 2026) — Scroll interno de fichas y modales
+   ========================================================================== */
+/* El scroll dentro de fichas y paneles no se "escapa" hacia la página al llegar al final */
+.ficha-tech,
+.philosophy-drawer-panel,
+.vm-drawer-right {
+    overscroll-behavior: contain;
+}
+
+/* Propuestas de uso (Idea Lab): si el contenido no cabe en pantallas bajas,
+   la ventana crece hasta 92vh y permite desplazarse en lugar de recortar */
+.propuestas-modal {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+}
+
+@media (min-width: 769px) {
+    .propuestas-modal {
+        height: auto;
+        min-height: 75vh;
+        max-height: 92vh;
+    }
+
+    .stack-wrapper {
+        height: clamp(220px, 44vh, 400px);
+    }
+}

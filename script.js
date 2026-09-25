@@ -118,6 +118,264 @@ async function resolveShortMapLink(url) {
     return null;
 }
 
+// ==========================================================================
+// 00a. MOTOR DE SCROLL UNIFICADO (optimización de fluidez)
+// Un solo ciclo por frame para todas las cortinas: se lee la posición una vez,
+// sin getBoundingClientRect() ni scrollHeight por frame (evita layouts forzados)
+// y sin registrar cada actualización dos veces (Lenis + scroll nativo).
+// ==========================================================================
+const VMScroll = (() => {
+    const subs = [];
+    const heightCache = new Map();
+    let wrapperTop = 0;
+    let scheduled = false;
+    let ro = null;
+
+    function measure() {
+        const w = document.querySelector('.curtain-wrapper');
+        wrapperTop = w ? (w.getBoundingClientRect().top + (window.scrollY || window.pageYOffset)) : 0;
+    }
+
+    function scrolled() {
+        return (window.scrollY || window.pageYOffset) - wrapperTop;
+    }
+
+    function top() {
+        return wrapperTop;
+    }
+
+    function run() {
+        scheduled = false;
+        for (let i = 0; i < subs.length; i++) {
+            try { subs[i](); } catch (err) { console.error('[vm] scroll update:', err); }
+        }
+    }
+
+    function schedule() {
+        if (scheduled) return;
+        scheduled = true;
+        requestAnimationFrame(run);
+    }
+
+    function subscribe(fn) {
+        subs.push(fn);
+    }
+
+    // Altura de contenido cacheada: se actualiza sola con ResizeObserver
+    // (que corre después del layout, así que no fuerza recálculos).
+    function height(el) {
+        if (!el) return 0;
+        let h = heightCache.get(el);
+        if (h === undefined) {
+            h = el.scrollHeight;
+            heightCache.set(el, h);
+            if ('ResizeObserver' in window) {
+                if (!ro) {
+                    ro = new ResizeObserver((entries) => {
+                        entries.forEach(en => heightCache.set(en.target, en.target.scrollHeight));
+                        schedule();
+                    });
+                }
+                ro.observe(el);
+            }
+        }
+        return h;
+    }
+
+    function invalidate() {
+        heightCache.forEach((_, el) => heightCache.set(el, el.scrollHeight));
+        measure();
+        schedule();
+    }
+
+    function init() {
+        measure();
+        if (window.lenis) {
+            // Lenis emite 'scroll' dentro de su propio requestAnimationFrame:
+            // las cortinas se actualizan en ese mismo frame, una sola vez.
+            window.lenis.on('scroll', run);
+        } else {
+            window.addEventListener('scroll', schedule, { passive: true });
+        }
+        window.addEventListener('resize', invalidate, { passive: true });
+        window.addEventListener('load', invalidate);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(invalidate).catch(() => {});
+    }
+
+    return { init, subscribe, scrolled, top, height, schedule };
+})();
+
+// ==========================================================================
+// 00b. CONTROL DE VIDEOS Y SHADERS POR VISIBILIDAD
+// Las secciones están apiladas con position: sticky, así que IntersectionObserver
+// las considera "visibles" siempre. Aquí la visibilidad se calcula con la misma
+// línea de tiempo de las cortinas:
+//   · arranca ~0.5 s ANTES de que la sección aparezca (según la velocidad del scroll)
+//   · se pausa 0.5 s DESPUÉS de que deja de verse
+// Los videos solo se pausan (no se descargan de nuevo), así que al regresar
+// reanudan al instante. Con una ficha o ventana abierta, todo el fondo se pausa.
+// ==========================================================================
+const VMMedia = (() => {
+    const LEAD_MS = 500;     // anticipación antes de entrar
+    const LINGER_MS = 500;   // tiempo extra después de salir
+    const items = [];
+    const OVERLAY_SELECTOR = '#ficha-modal-overlay, #propuestas-modal-overlay, #vm-drawer-overlay, #philosophy-drawer-overlay, #compromiso-drawer-overlay';
+
+    let suspended = false;
+    let lastY = null;
+    let lastT = 0;
+    let velocity = 0;        // px por ms (positivo = hacia abajo)
+    let settleTimer = null;
+    let mobileDirty = true;
+    let sectionRO = null;
+
+    // Rangos en móvil: las secciones se apilan en flujo normal (sticky). Cada una
+    // es visible desde que entra por abajo hasta que la siguiente la cubre.
+    function measureMobile() {
+        mobileDirty = false;
+        const wrapper = document.querySelector('.curtain-wrapper');
+        if (!wrapper) return;
+        const sections = Array.from(wrapper.children).filter(el => el.tagName === 'SECTION');
+        let y = VMScroll.top();
+        const tops = sections.map(sec => { const t = y; y += sec.offsetHeight; return t; });
+        items.forEach(it => {
+            const idx = sections.findIndex(sec => sec.id === it.sectionId);
+            if (idx < 0) { it.mobileRange = null; return; }
+            it.mobileRange = [tops[idx] - window.innerHeight, idx + 1 < tops.length ? tops[idx + 1] : Infinity];
+        });
+        if (!sectionRO && 'ResizeObserver' in window) {
+            sectionRO = new ResizeObserver(() => { mobileDirty = true; });
+            sections.forEach(sec => sectionRO.observe(sec));
+        }
+    }
+
+    function setWanted(it, want) {
+        if (want) {
+            if (it.offTimer) { clearTimeout(it.offTimer); it.offTimer = null; }
+            if (!it.active) { it.active = true; try { it.start(); } catch (e) { } }
+        } else if (it.active && !it.offTimer) {
+            it.offTimer = setTimeout(() => {
+                it.offTimer = null;
+                it.active = false;
+                try { it.stop(); } catch (e) { }
+            }, LINGER_MS);
+        }
+    }
+
+    function evaluate(v) {
+        if (suspended) return;
+        const vh = window.innerHeight;
+        const isMobile = window.innerWidth <= 768;
+        const y = window.scrollY || window.pageYOffset;
+        const ahead = y + v * LEAD_MS;
+        const lo = Math.min(y, ahead);
+        const hi = Math.max(y, ahead);
+        if (isMobile && mobileDirty) measureMobile();
+        const base = VMScroll.top();
+
+        items.forEach(it => {
+            let range = null;
+            if (isMobile) range = it.mobileRange;
+            else if (it.desktop) range = [base + it.desktop[0] * vh, base + it.desktop[1] * vh];
+            if (!range) return;
+            setWanted(it, hi >= range[0] && lo < range[1]);
+        });
+    }
+
+    function onScroll() {
+        const now = performance.now();
+        const y = window.scrollY || window.pageYOffset;
+        if (lastY !== null && now > lastT) {
+            const inst = (y - lastY) / (now - lastT);
+            velocity = velocity * 0.6 + inst * 0.4;
+        }
+        lastY = y;
+        lastT = now;
+        evaluate(velocity);
+        // Cuando el scroll se detiene, se reevalúa sin anticipación para no dejar
+        // encendido un video que solo se "predijo".
+        clearTimeout(settleTimer);
+        settleTimer = setTimeout(() => { velocity = 0; lastY = null; evaluate(0); }, 150);
+    }
+
+    function register(it) {
+        it.active = false;
+        it.offTimer = null;
+        items.push(it);
+        mobileDirty = true;
+        if (VMMedia.ready) {
+            evaluate(0);
+            if (!it.active) { try { it.stop(); } catch (e) { } }
+        }
+    }
+
+    function registerVideo(video, desktop, sectionId) {
+        if (!video) return;
+        video.preload = 'auto';
+        // El autoplay del HTML queda solo como respaldo si falla el JS: aquí el
+        // controlador decide cuándo reproducir.
+        video.autoplay = false;
+        const item = {
+            desktop,
+            sectionId,
+            start: () => { const p = video.play(); if (p && p.catch) p.catch(() => { }); },
+            stop: () => { video.pause(); }
+        };
+        // Si algo externo intenta reproducirlo fuera de su rango (autoplay tardío,
+        // precarga), se vuelve a pausar.
+        video.addEventListener('play', () => {
+            if (!item.active || suspended) video.pause();
+        });
+        register(item);
+    }
+
+    function setSuspended(value) {
+        if (value === suspended) return;
+        suspended = value;
+        if (suspended) {
+            clearTimeout(settleTimer);
+            items.forEach(it => {
+                if (it.offTimer) { clearTimeout(it.offTimer); it.offTimer = null; }
+                if (it.active) { it.active = false; try { it.stop(); } catch (e) { } }
+            });
+        } else {
+            evaluate(0);
+        }
+    }
+
+    function init() {
+        VMScroll.subscribe(onScroll);
+        window.addEventListener('resize', () => { mobileDirty = true; evaluate(0); }, { passive: true });
+        window.addEventListener('load', () => { mobileDirty = true; evaluate(0); });
+
+        // Pausar el fondo mientras haya una ficha, drawer o modal abierto
+        const overlays = document.querySelectorAll(OVERLAY_SELECTOR);
+        const syncOverlays = () => setSuspended(Array.from(overlays).some(o => o.classList.contains('active')));
+        if ('MutationObserver' in window) {
+            const mo = new MutationObserver(syncOverlays);
+            overlays.forEach(o => mo.observe(o, { attributes: true, attributeFilter: ['class'] }));
+        }
+
+        VMMedia.ready = true;
+        evaluate(0);
+        items.forEach(it => { if (!it.active) { try { it.stop(); } catch (e) { } } });
+    }
+
+    return { init, register, registerVideo, ready: false };
+})();
+
+// Pre-decodifica la portada del catálogo en tiempo ocioso para que la cortina
+// no se congele al revelarla por primera vez.
+function initPortadaPredecode() {
+    const img = document.querySelector('.section-transition-img');
+    if (!img || typeof img.decode !== 'function') return;
+    const run = () => img.decode().catch(() => { });
+    window.addEventListener('load', () => {
+        if ('requestIdleCallback' in window) requestIdleCallback(run, { timeout: 3000 });
+        else setTimeout(run, 1200);
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // Cada inicializador corre aislado: si uno lanza una excepción (p. ej. sin WebGL),
     // los demás deben continuar funcionando.
@@ -131,6 +389,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     safeInit(initPreloader);
     safeInit(initLenis);
+    safeInit(() => VMScroll.init());
     if (window.innerWidth > 768) {
         safeInit(initCurtainEdgeProximitySnap);
     }
@@ -154,6 +413,8 @@ document.addEventListener('DOMContentLoaded', () => {
     safeInit(initDrawerFloatingLines);
     safeInit(initIdeaLabGalleryScroll);
     safeInit(initUrlFichaOpener);
+    safeInit(initPortadaPredecode);
+    safeInit(() => VMMedia.init());
 });
 
 // 0. Lenis — Smooth scroll con inercia (Escritorio) y Scroll Táctil Nativo a 120Hz Ultra Fluido (Móvil)
@@ -185,106 +446,90 @@ function initLenis() {
     window.lenis = lenis;
 }
 
-// 0a. Snap Magnético Inteligente por Proximidad de Borde de Cortina (<= 150px de cualquier borde en Desktop)
+// 0a. Snap Magnético Suave (solo Desktop)
+// Completa una cortina cuando el visitante se DETIENE a <= 60px de su borde.
+// Galería → Portada → Catálogo (6.0–9.4vh) son cortinas contiguas: ahí no hay imán,
+// para que nadie quede "atrapado" antes del catálogo. Cualquier rueda, toque o
+// tecla cancela el snap al instante.
 function initCurtainEdgeProximitySnap() {
     if (window.innerWidth <= 768) return;
     const lenis = window.lenis;
-    const wrapper = document.querySelector('.curtain-wrapper');
-    if (!lenis || !wrapper) return;
+    if (!lenis || !document.querySelector('.curtain-wrapper')) return;
 
-    function isDrawerActive() {
-        const drawer = document.getElementById('vm-drawer-overlay');
-        return drawer && drawer.classList.contains('active');
-    }
+    const SNAP_EDGE_PX = 60;
+    const SNAP_DURATION = 0.8;
+    const IDLE_MS = 180;
 
-    let isSnapping = false;
-    let snapTimer = null;
-    let releaseTimer = null;
-
-    // Relación de todas las transiciones de cortina en Desktop y su orientación geométrica
     const transitions = [
-        // 01. Sección 2 (#esencia) - Cortina Vertical
         { name: 'esencia', type: 'vertical', startVh: 0.15, endVh: 1.0 },
-        // 02. Sección 3 (#casos-exito) - Cortina Horizontal (entra desde la derecha)
         { name: 'casos-exito', type: 'horizontal', startVh: 2.0, endVh: 3.0 },
-        // 03. Sección 4 (#galeria-comercial) - Cortina Vertical
-        { name: 'galeria', type: 'vertical', startVh: 6.0, endVh: 6.9 },
-        // 04. Sección 5 (#transicion-imagen) - Cortina 2 Fases
-        { name: 'transicion', type: 'vertical', startVh: 6.9, endVh: 8.2 },
-        // 05. Sección 6 (#el-match / Catálogo) - Cortina 2 Fases
-        { name: 'match', type: 'vertical', startVh: 8.2, endVh: 9.4 },
-        // 06. Sección 7 (#pilar-integridad) - Cortina Vertical
         { name: 'integridad', type: 'vertical', startVh: 17.2, endVh: 18.05 },
-        // 07. Sección 8 (#idea-lab) - Cortina Vertical
         { name: 'idealab', type: 'vertical', startVh: 20.4, endVh: 21.4 },
-        // 08. Sección 9 (#valormaximoart + Footer) - Cortina Vertical
         { name: 'vmart', type: 'vertical', startVh: 25.4, endVh: 26.7 }
     ];
 
-    function checkProximityAndSnap() {
-        if (window.innerWidth <= 768 || isSnapping || isDrawerActive()) return;
+    let isSnapping = false;
+    let idleTimer = null;
+    let releaseTimer = null;
+
+    function isOverlayActive() {
+        return !!document.querySelector('#vm-drawer-overlay.active, .philosophy-drawer-overlay.active, #propuestas-modal-overlay.active, #ficha-modal-overlay.active');
+    }
+
+    function cancelSnap() {
+        isSnapping = false;
+        clearTimeout(idleTimer);
+        clearTimeout(releaseTimer);
+    }
+    ['wheel', 'touchstart', 'keydown', 'mousedown'].forEach(evt => {
+        window.addEventListener(evt, cancelSnap, { passive: true });
+    });
+
+    function check() {
+        if (isSnapping || isOverlayActive()) return;
         if (window.__suppressSnapUntil && Date.now() < window.__suppressSnapUntil) return;
+        if (Math.abs(lenis.velocity || 0) > 0.5) {
+            idleTimer = setTimeout(check, IDLE_MS);
+            return;
+        }
 
         const vh = window.innerHeight;
         const vw = window.innerWidth;
-        const scrollY = window.scrollY;
+        const scrolled = VMScroll.scrolled();
 
         for (const t of transitions) {
             const startPx = t.startVh * vh;
             const endPx = t.endVh * vh;
-            const totalTravelPx = endPx - startPx;
+            if (scrolled < startPx || scrolled > endPx) continue;
 
-            // Comprobar si el scroll actual se encuentra en el rango de transición de esta cortina
-            if (scrollY >= startPx - 40 && scrollY <= endPx + 40) {
-                const progress = Math.min(1, Math.max(0, (scrollY - startPx) / totalTravelPx));
+            const progress = (scrolled - startPx) / (endPx - startPx);
+            const dimension = (t.type === 'horizontal') ? vw : vh;
+            const distanceToComplete = (1 - progress) * dimension;
+            const distanceToClose = progress * dimension;
 
-                // Dimensión de la ventana según el eje de la cortina (16:9)
-                const dimension = (t.type === 'horizontal') ? vw : vh;
+            let targetPx = null;
+            if (distanceToComplete > 0.5 && distanceToComplete <= SNAP_EDGE_PX) targetPx = endPx;
+            else if (distanceToClose > 0.5 && distanceToClose <= SNAP_EDGE_PX) targetPx = startPx;
 
-                // Distancia física del borde de la cortina a los bordes de la pantalla (en píxeles)
-                const distanceToComplete = (1 - progress) * dimension; // Píxeles restantes para abrirse al 100%
-                const distanceToClose = progress * dimension;          // Píxeles restantes para cerrarse al 0%
-
-                let targetPx = null;
-
-                // Regla de proximidad: la cortina se completará si la transición está a 150px o menos del borde
-                if (distanceToComplete <= 150 && distanceToComplete > 0.5) {
-                    targetPx = endPx; // A <= 150px de abrirse -> Snap hacia el 100%
-                } else if (distanceToClose <= 150 && distanceToClose > 0.5) {
-                    targetPx = startPx; // A <= 150px de cerrarse -> Snap hacia el 0%
-                }
-
-                if (targetPx !== null && Math.abs(scrollY - targetPx) > 6) {
-                    isSnapping = true;
-                    clearTimeout(releaseTimer);
-                    releaseTimer = setTimeout(() => { isSnapping = false; }, 2400);
-
-                    lenis.scrollTo(targetPx, {
-                        duration: 1.6,
-                        easing: (p) => Math.min(1, 1.001 - Math.pow(2, -10 * p)),
-                        onComplete: () => { isSnapping = false; }
-                    });
-                    return;
-                }
+            if (targetPx !== null && Math.abs(scrolled - targetPx) > 4) {
+                isSnapping = true;
+                clearTimeout(releaseTimer);
+                releaseTimer = setTimeout(() => { isSnapping = false; }, SNAP_DURATION * 1000 + 300);
+                lenis.scrollTo(VMScroll.top() + targetPx, {
+                    duration: SNAP_DURATION,
+                    easing: (p) => 1 - Math.pow(1 - p, 3),
+                    onComplete: () => { isSnapping = false; }
+                });
             }
-        }
-    }
-
-    function scheduleProximityCheck() {
-        if (window.innerWidth <= 768 || isSnapping || isDrawerActive()) return;
-
-        // Disparo si la inercia del scroll casi se detiene
-        if (lenis && !isNaN(lenis.velocity) && Math.abs(lenis.velocity) < 2) {
-            checkProximityAndSnap();
             return;
         }
-
-        clearTimeout(snapTimer);
-        snapTimer = setTimeout(checkProximityAndSnap, 130);
     }
 
-    lenis.on('scroll', scheduleProximityCheck);
-    window.addEventListener('scroll', scheduleProximityCheck, { passive: true });
+    lenis.on('scroll', () => {
+        if (isSnapping) return;
+        clearTimeout(idleTimer);
+        idleTimer = setTimeout(check, IDLE_MS);
+    });
 }
 
 // 0b. Curtain Reveal Vertical (Sección 2 sobre Hero)
@@ -305,8 +550,7 @@ function initCurtainReveals() {
         } else {
             const wrapper = document.querySelector('.curtain-wrapper');
             if (!wrapper) return;
-            const rect = wrapper.getBoundingClientRect();
-            const scrolled = -rect.top;
+            const scrolled = VMScroll.scrolled();
 
             // Cortina Sección 2 despliega de 0.15vh a 1.0vh
             const progress = Math.min(1, Math.max(0, (scrolled - 0.15 * vh) / (0.85 * vh)));
@@ -324,7 +568,7 @@ function initCurtainReveals() {
                     const activeScrolled = Math.max(0, scrolled - 1.0 * vh);
                     const totalActiveTravel = 2.6 * vh;
                     const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
-                    const maxScroll = Math.max(0, container.scrollHeight - vh + 80);
+                    const maxScroll = Math.max(0, VMScroll.height(container) - vh + 80);
 
                     const translateYValue = -flowProgress * maxScroll;
                     container.style.transform = `translate3d(0, ${translateYValue}px, 0)`;
@@ -334,11 +578,7 @@ function initCurtainReveals() {
         }
     }
 
-    const lenis = window.lenis;
-    if (lenis) {
-        lenis.on('scroll', update);
-    }
-    window.addEventListener('scroll', update, { passive: true });
+    VMScroll.subscribe(update);
     update();
 }
 
@@ -351,9 +591,8 @@ function initGaleriaCurtain() {
     const container = galeria.querySelector('.container');
 
     function update() {
-        const rect = wrapper.getBoundingClientRect();
         const vh = window.innerHeight;
-        const scrolled = -rect.top;
+        const scrolled = VMScroll.scrolled();
 
         // En modo responsivo (<= 768px), la velocidad de revelado de cortina Galería Comercial se suaviza a 1.8vh. En Desktop se extiende a 0.9vh.
         const startPxGaleria = (window.innerWidth <= 768) ? 10.2 * vh : 6 * vh;
@@ -372,7 +611,7 @@ function initGaleriaCurtain() {
                 const activeScrolled = Math.max(0, scrolled - activeStartGaleria);
                 const totalActiveTravel = 0.5 * vh;
                 const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
-                const maxScroll = Math.max(0, container.scrollHeight - vh + 50);
+                const maxScroll = Math.max(0, VMScroll.height(container) - vh + 50);
 
                 const translateYValue = -flowProgress * maxScroll;
                 container.style.transform = `translate3d(0, ${translateYValue}px, 0)`;
@@ -380,12 +619,7 @@ function initGaleriaCurtain() {
         }
     }
 
-    const lenis = window.lenis;
-    if (lenis) {
-        lenis.on('scroll', update);
-    } else {
-        window.addEventListener('scroll', update, { passive: true });
-    }
+    VMScroll.subscribe(update);
     update();
 }
 
@@ -397,9 +631,8 @@ function initTransitionCurtain() {
     if (!sec || !wrapper) return;
 
     function update() {
-        const rect = wrapper.getBoundingClientRect();
         const vh = window.innerHeight;
-        const scrolled = -rect.top;
+        const scrolled = VMScroll.scrolled();
 
         const startPxSec5 = 6.9 * vh;
         const revealDistanceSec5 = 1.0 * vh;
@@ -421,12 +654,7 @@ function initTransitionCurtain() {
         sec.style.webkitClipPath = clipPathValue;
     }
 
-    const lenis = window.lenis;
-    if (lenis) {
-        lenis.on('scroll', update);
-    } else {
-        window.addEventListener('scroll', update, { passive: true });
-    }
+    VMScroll.subscribe(update);
     update();
 }
 
@@ -460,8 +688,7 @@ function initMatchCatalogCurtain() {
         } else {
             const wrapper = document.querySelector('.curtain-wrapper');
             if (!wrapper) return;
-            const rect = wrapper.getBoundingClientRect();
-            const scrolled = -rect.top;
+            const scrolled = VMScroll.scrolled();
 
             const startPxSec6 = 8.2 * vh;
             const revealDistanceSec6 = 1.2 * vh;
@@ -490,7 +717,7 @@ function initMatchCatalogCurtain() {
                 const flowProgress = Math.min(1, flowScrolled / totalTravel);
 
                 // Cálculo dinámico en tiempo real de la altura de desfile de las tarjetas
-                const maxScroll = Math.max(0, rightCol.scrollHeight - vh + 60);
+                const maxScroll = Math.max(0, VMScroll.height(rightCol) - vh + 60);
                 const translateYValue = -flowProgress * maxScroll;
 
                 rightCol.style.transform = `translate3d(0, ${translateYValue}px, 0)`;
@@ -513,8 +740,7 @@ function initMatchCatalogCurtain() {
             } else {
                 const wrapper = document.querySelector('.curtain-wrapper');
                 if (wrapper) {
-                    const rect = wrapper.getBoundingClientRect();
-                    const scrolled = -rect.top;
+                    const scrolled = VMScroll.scrolled();
                     const isCurtainFlow = scrolled >= 8.2 * vh && scrolled < 9.4 * vh;
                     const isLastSection = scrolled >= 26.0 * vh;
                     globalScrollBtn.classList.toggle('hidden', isCurtainFlow || isLastSection);
@@ -523,12 +749,7 @@ function initMatchCatalogCurtain() {
         }
     }
 
-    const lenis = window.lenis;
-    if (lenis) {
-        lenis.on('scroll', update);
-    } else {
-        window.addEventListener('scroll', update, { passive: true });
-    }
+    VMScroll.subscribe(update);
     update();
 }
 
@@ -557,8 +778,7 @@ function initIntegrityCurtain() {
         } else {
             const wrapper = document.querySelector('.curtain-wrapper');
             if (!wrapper) return;
-            const rect = wrapper.getBoundingClientRect();
-            const scrolled = -rect.top;
+            const scrolled = VMScroll.scrolled();
 
             const startPxSec7 = 17.2 * vh;
             const progress = Math.min(1, Math.max(0, (scrolled - startPxSec7) / (0.85 * vh)));
@@ -582,7 +802,7 @@ function initIntegrityCurtain() {
                     const activeScrolled = Math.max(0, scrolled - activeStartSec7);
                     const totalActiveTravel = 2.35 * vh;
                     const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
-                    const maxScroll = Math.max(0, container.scrollHeight - vh + 80);
+                    const maxScroll = Math.max(0, VMScroll.height(container) - vh + 80);
 
                     const translateYValue = -flowProgress * maxScroll;
                     container.style.transform = `translate3d(0, ${translateYValue}px, 0)`;
@@ -599,11 +819,7 @@ function initIntegrityCurtain() {
         }
     }
 
-    const lenis = window.lenis;
-    if (lenis) {
-        lenis.on('scroll', update);
-    }
-    window.addEventListener('scroll', update, { passive: true });
+    VMScroll.subscribe(update);
     update();
 }
 
@@ -632,8 +848,7 @@ function initIdeaLabCurtain() {
         } else {
             const wrapper = document.querySelector('.curtain-wrapper');
             if (!wrapper) return;
-            const rect = wrapper.getBoundingClientRect();
-            const scrolled = -rect.top;
+            const scrolled = VMScroll.scrolled();
 
             const startPxSec8 = 20.4 * vh;
             const progress = Math.min(1, Math.max(0, (scrolled - startPxSec8) / (1.0 * vh)));
@@ -655,7 +870,7 @@ function initIdeaLabCurtain() {
                     const activeScrolled = Math.max(0, scrolled - activeStartSec8);
                     const totalActiveTravel = 4.0 * vh;
                     const flowProgress = Math.min(1, activeScrolled / totalActiveTravel);
-                    const maxScroll = Math.max(0, container.scrollHeight - vh);
+                    const maxScroll = Math.max(0, VMScroll.height(container) - vh);
 
                     const translateYValue = -flowProgress * maxScroll;
                     container.style.transform = `translate3d(0, ${translateYValue}px, 0)`;
@@ -670,11 +885,7 @@ function initIdeaLabCurtain() {
         }
     }
 
-    const lenis = window.lenis;
-    if (lenis) {
-        lenis.on('scroll', update);
-    }
-    window.addEventListener('scroll', update, { passive: true });
+    VMScroll.subscribe(update);
     update();
 }
 
@@ -696,8 +907,7 @@ function initVmartCurtain() {
         } else {
             const wrapper = document.querySelector('.curtain-wrapper');
             if (!wrapper) return;
-            const rect = wrapper.getBoundingClientRect();
-            const scrolled = -rect.top;
+            const scrolled = VMScroll.scrolled();
 
             const startPxSec9 = 25.4 * vh;
             const revealDistanceSec9 = 1.3 * vh;
@@ -707,82 +917,25 @@ function initVmartCurtain() {
         }
     }
 
-    const lenis = window.lenis;
-    if (lenis) {
-        lenis.on('scroll', update);
-    } else {
-        window.addEventListener('scroll', update, { passive: true });
-    }
+    VMScroll.subscribe(update);
     update();
 }
 
 // 0c1. Hero Video Observer (Pausa el video cuando no es visible en pantalla)
 function initHeroVideoObserver() {
-    const heroVideo = document.getElementById('hero-video');
-    const heroSection = document.getElementById('inicio');
-    if (!heroVideo || !heroSection) return;
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                if (heroVideo.paused) {
-                    heroVideo.play().catch(() => { });
-                }
-            } else {
-                if (!heroVideo.paused) {
-                    heroVideo.pause();
-                }
-            }
-        });
-    }, { threshold: 0.05 });
-
-    observer.observe(heroSection);
+    VMMedia.registerVideo(document.getElementById('hero-video'), [0, 1.0], 'inicio');
 }
 
 // 0c1b. Video Observer del Portafolio (Sección 3 - Pausa el video fuera de pantalla)
 function initPortfolioVideoObserver() {
-    const portfolioVideo = document.querySelector('.portfolio-video-bg video');
-    const section = document.getElementById('casos-exito');
-    if (!portfolioVideo || !section) return;
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                if (portfolioVideo.paused) {
-                    portfolioVideo.play().catch(() => { });
-                }
-            } else {
-                if (!portfolioVideo.paused) {
-                    portfolioVideo.pause();
-                }
-            }
-        });
-    }, { threshold: 0.05 });
-
-    observer.observe(section);
+    // Termina en 6.45vh (cortina de Galería a la mitad): dos videos decodificándose a la vez
+    // eran la causa del atasco en esta transición; la mitad que aún se ve queda en pausa.
+    VMMedia.registerVideo(document.querySelector('.portfolio-video-bg video'), [2.0, 6.45], 'casos-exito');
 }
 
 // 0c1c. Video Observer de la Galería Comercial (Sección 4 - Pausa el video fuera de pantalla)
 function initGaleriaVideoObserver() {
-    const galeriaVideo = document.querySelector('.galeria-video-bg video');
-    const section = document.getElementById('galeria-comercial');
-    if (!galeriaVideo || !section) return;
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                if (galeriaVideo.paused) {
-                    galeriaVideo.play().catch(() => { });
-                }
-            } else {
-                if (!galeriaVideo.paused) {
-                    galeriaVideo.pause();
-                }
-            }
-        });
-    }, { threshold: 0.05 });
-
-    observer.observe(section);
+    VMMedia.registerVideo(document.querySelector('.galeria-video-bg video'), [6.0, 7.9], 'galeria-comercial');
 }
 
 // 0g. Estela de Imágenes Pixelada (Pixelated Image Trail) — Sección 4: Galería Comercial
@@ -1033,7 +1186,8 @@ function initSilkBackground() {
     const isMobile = window.innerWidth <= 768;
     // Renderer transparente para que el fondo oscuro de #esencia se vea a través del patrón
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: !isMobile });
-    renderer.setPixelRatio(isMobile ? 1 : Math.min(window.devicePixelRatio, 2));
+    // Patrón de seda suave: a 1x se ve igual y renderiza 4 veces menos píxeles en pantallas Retina
+    renderer.setPixelRatio(1);
     renderer.setClearColor(0x000000, 0);
 
     const scene = new THREE.Scene();
@@ -1143,22 +1297,21 @@ function initSilkBackground() {
         renderer.render(scene, camera);
     }
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                if (!isSilkAnimating) {
-                    isSilkAnimating = true;
-                    clock.getDelta();
-                    animate();
-                }
-            } else {
-                isSilkAnimating = false;
-                if (animId) cancelAnimationFrame(animId);
+    VMMedia.register({
+        desktop: [0.15, 3.0],
+        sectionId: 'esencia',
+        start: () => {
+            if (!isSilkAnimating) {
+                isSilkAnimating = true;
+                clock.getDelta();
+                animate();
             }
-        });
-    }, { threshold: 0.01 });
-
-    observer.observe(container);
+        },
+        stop: () => {
+            isSilkAnimating = false;
+            if (animId) cancelAnimationFrame(animId);
+        }
+    });
 }
 
 // 0d2. Logo ISO Silk Shader (Efecto Silk Shader con Seda Verde #326d03 dentro del Isotipo)
@@ -1267,7 +1420,7 @@ function initIsoSilk() {
 
         let clock = new THREE.Clock();
         let animId = null;
-        let isIsoSilkAnimating = true;
+        let isIsoSilkAnimating = false;
 
         function animate() {
             if (!isIsoSilkAnimating) return;
@@ -1275,26 +1428,23 @@ function initIsoSilk() {
             uniforms.uTime.value += 0.1 * clock.getDelta();
             renderer.render(scene, camera);
         }
-        animate();
+        renderer.render(scene, camera); // primer cuadro estático
 
-        const secMatch = document.getElementById('el-match');
-        if (secMatch && 'IntersectionObserver' in window) {
-            const obs = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        if (!isIsoSilkAnimating) {
-                            isIsoSilkAnimating = true;
-                            clock.getDelta();
-                            animate();
-                        }
-                    } else {
-                        isIsoSilkAnimating = false;
-                        if (animId) cancelAnimationFrame(animId);
-                    }
-                });
-            }, { threshold: 0.01 });
-            obs.observe(secMatch);
-        }
+        VMMedia.register({
+            desktop: [8.2, 18.05],
+            sectionId: 'el-match',
+            start: () => {
+                if (!isIsoSilkAnimating) {
+                    isIsoSilkAnimating = true;
+                    clock.getDelta();
+                    animate();
+                }
+            },
+            stop: () => {
+                isIsoSilkAnimating = false;
+                if (animId) cancelAnimationFrame(animId);
+            }
+        });
     }
 
     start();
@@ -1324,8 +1474,7 @@ function initHorizontalCurtainReveals() {
         } else {
             const wrapper = document.querySelector('.curtain-wrapper');
             if (!wrapper) return;
-            const rect = wrapper.getBoundingClientRect();
-            const scrolled = -rect.top;
+            const scrolled = VMScroll.scrolled();
 
             const startPx = 2 * vh;
             const revealDistance = 1.0 * vh;
@@ -1350,7 +1499,7 @@ function initHorizontalCurtainReveals() {
                 const activeScrolled = Math.max(0, scrolled - activeStartPx);
                 const totalTravel = 3.0 * vh; // 3.0vh a 6.0vh
                 const flowProgress = Math.min(1, activeScrolled / totalTravel);
-                const maxScroll = Math.max(0, rightCol.scrollHeight - vh + 160);
+                const maxScroll = Math.max(0, VMScroll.height(rightCol) - vh + 160);
 
                 const translateYValue = -flowProgress * maxScroll;
                 rightCol.style.transform = `translate3d(0, ${translateYValue}px, 0)`;
@@ -1366,11 +1515,7 @@ function initHorizontalCurtainReveals() {
         }
     }
 
-    const lenis = window.lenis;
-    if (lenis) {
-        lenis.on('scroll', update);
-    }
-    window.addEventListener('scroll', update, { passive: true });
+    VMScroll.subscribe(update);
     update();
 }
 
@@ -1378,9 +1523,9 @@ function initHorizontalCurtainReveals() {
 function initScrollNavbar() {
     const navbar = document.getElementById('navbar');
     if (!navbar) return;
-    window.addEventListener('scroll', () => {
+    VMScroll.subscribe(() => {
         navbar.classList.toggle('scrolled', window.scrollY > 40);
-    }, { passive: true });
+    });
 }
 
 // 2. Transición Blur del Logo al alcanzar 95% de la Sección 2 (El Diferenciador) y retorno a 5% del Hero
@@ -1415,9 +1560,8 @@ function initLogoSwap() {
     }
 
     function update() {
-        const rect = wrapper.getBoundingClientRect();
         const vh = window.innerHeight;
-        const scrolled = -rect.top;
+        const scrolled = VMScroll.scrolled();
         const progress = scrolled / vh; // 0 = Hero 100%, 1.0 = Sección 2 100% visible
 
         // Al visualizar Sección 2 al 95% (progress >= 0.95), cambia a valorISO.svg con efecto blur.
@@ -1438,12 +1582,7 @@ function initLogoSwap() {
         }
     }
 
-    const lenis = window.lenis;
-    if (lenis) {
-        lenis.on('scroll', update);
-    } else {
-        window.addEventListener('scroll', update, { passive: true });
-    }
+    VMScroll.subscribe(update);
     update();
 }
 
@@ -1642,6 +1781,7 @@ function handleCompromisoTouchMove(e) {
 
     const panel = document.getElementById('compromiso-drawer-panel');
     if (!panel || !e.touches || e.touches.length === 0) return;
+    if (e.target.closest && e.target.closest('#compromiso-drawer-panel')) return; // scroll táctil nativo
 
     const currentY = e.touches[0].clientY;
     const deltaY = compromisoTouchStartY - currentY;
@@ -1674,8 +1814,9 @@ function handleCompromisoWheel(event) {
 
     const panel = document.getElementById('compromiso-drawer-panel');
     if (!panel) return;
+    if (event.target.closest && event.target.closest('#compromiso-drawer-panel')) return; // scroll nativo
 
-    const delta = event.deltaY;
+    const delta = vmWheelDeltaY(event);
     if (panel.scrollHeight > panel.clientHeight) {
         panel.scrollTop += delta;
         event.preventDefault();
@@ -2945,6 +3086,8 @@ function handleFichaTouchStart(e) {
 function handleFichaTouchMove(e) {
     const overlay = document.getElementById('ficha-modal-overlay');
     if (!overlay || !overlay.classList.contains('active')) return;
+    // Dentro del panel técnico el scroll táctil es nativo (con inercia); no se duplica.
+    if (e.target.closest && (e.target.closest('.ficha-tech') || e.target.closest('#ficha-photos-viewport'))) return;
 
     const tech = document.querySelector('.ficha-modal .ficha-tech');
     if (!tech || !e.touches || e.touches.length === 0) return;
@@ -2984,6 +3127,13 @@ function unbindFichaWheel() {
     document.removeEventListener('touchmove', handleFichaTouchMove);
 }
 
+// Normaliza la rueda a píxeles (Firefox y algunos ratones reportan líneas o páginas)
+function vmWheelDeltaY(event) {
+    if (event.deltaMode === 1) return event.deltaY * 16;
+    if (event.deltaMode === 2) return event.deltaY * window.innerHeight;
+    return event.deltaY;
+}
+
 function handleFichaWheel(event) {
     const overlay = document.getElementById('ficha-modal-overlay');
     if (!overlay || !overlay.classList.contains('active')) return;
@@ -2991,23 +3141,25 @@ function handleFichaWheel(event) {
     const tech = document.querySelector('.ficha-modal .ficha-tech');
     if (!tech) return;
 
-    const deltaX = event.deltaX;
-    const deltaY = event.deltaY;
-    const targetWrapper = event.target.closest ? event.target.closest('.ficha-table-wrapper') : null;
+    const target = event.target.closest ? event.target : null;
 
-    // 1. Navegación en Eje X (Swipe horizontal en Touchpad / Trackpad de 2 dedos)
-    if (Math.abs(deltaX) > 0) {
-        const wrapperToScroll = targetWrapper || tech.querySelector('.ficha-table-wrapper');
-        if (wrapperToScroll && wrapperToScroll.scrollWidth > wrapperToScroll.clientWidth) {
-            wrapperToScroll.scrollLeft += deltaX;
-            event.preventDefault();
-            event.stopPropagation();
-            return;
-        }
+    // Sobre una tabla: el trackpad siempre manda un poco de movimiento horizontal y el
+    // navegador "amarraba" el gesto a la tabla, bloqueando el scroll hacia abajo.
+    // Si domina lo vertical, se desplaza la ficha; si domina lo horizontal, la tabla (nativo).
+    const tableWrapper = target ? target.closest('.ficha-table-wrapper') : null;
+    if (tableWrapper) {
+        if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;
+        tech.scrollTop += vmWheelDeltaY(event);
+        event.preventDefault();
+        return;
     }
 
-    // 2. Navegación en Eje Y (Scroll vertical del modal)
-    if (Math.abs(deltaY) > 0 && tech.scrollHeight > tech.clientHeight) {
+    // Resto del panel técnico: scroll nativo del navegador (gracias a data-lenis-prevent).
+    if (target && target.closest('.ficha-tech')) return;
+
+    // Fuera del panel (fotos, encabezado, fondo): el gesto vertical desplaza la ficha.
+    const deltaY = vmWheelDeltaY(event);
+    if (Math.abs(deltaY) > Math.abs(event.deltaX) && tech.scrollHeight > tech.clientHeight) {
         tech.scrollTop += deltaY;
         event.preventDefault();
     }
@@ -3694,7 +3846,6 @@ function initPreloader() {
             heroVideo.addEventListener('canplaythrough', onVideoReady, { once: true });
             heroVideo.addEventListener('loadeddata', onVideoReady, { once: true });
             heroVideo.addEventListener('playing', onVideoReady, { once: true });
-            heroVideo.load();
         }
     } else {
         isVideoReady = true;
